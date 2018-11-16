@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_progyearpick_progtypelabel"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+
+        android:text="@string/progyearpick_picktypeofprog"
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <RadioGroup
+        android:id="@+id/rg_progyearpick_pickprogtype"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_progyearpick_progtypelabel"
+        app:layout_constraintLeft_toLeftOf="@id/tv_progyearpick_progtypelabel"
+        app:layout_constraintRight_toRightOf="@id/tv_progyearpick_progtypelabel"
+        >
+
+        <RadioButton
+            android:id="@+id/rb_progyearpick_undergrad"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/progyearpick_undergrad"/>
+
+        <RadioButton
+            android:id="@+id/rb_progyearpick_grad"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/progyearpick_grad"/>
+
+        <RadioButton
+            android:id="@+id/rb_progyearpick_prof"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/progyearpick_prof"/>
+
+        <RadioButton
+            android:id="@+id/rb_progyearpick_diff"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/progyearpick_diff"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_progyearpick_proglabel"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+
+        android:text="@string/progyearpick_pickprog"
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rg_progyearpick_pickprogtype"
+        />
+
+    <Spinner
+        android:id="@+id/spn_progyearpick_pickprogramme"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_progyearpick_proglabel"
+        app:layout_constraintLeft_toLeftOf="@id/tv_progyearpick_proglabel"
+        app:layout_constraintRight_toRightOf="@id/tv_progyearpick_proglabel"
+        />
+
+    <TextView
+        android:id="@+id/tv_progyearpick_yearlabel"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+
+        android:text="@string/progyearpick_pickyear"
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spn_progyearpick_pickprogramme"
+        />
+
+    <Spinner
+        android:id="@+id/spn_progyearpick_pickyear"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_progyearpick_yearlabel"
+        app:layout_constraintLeft_toLeftOf="@id/tv_progyearpick_yearlabel"
+        app:layout_constraintRight_toRightOf="@id/tv_progyearpick_yearlabel"
+        />
+
+    <Button
+        android:id="@+id/btn_progyearpick_save"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/progyearpick_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spn_progyearpick_pickyear"
+
+        app:layout_constraintVertical_bias="0.70"
+        />
+
+</android.support.constraint.ConstraintLayout>
