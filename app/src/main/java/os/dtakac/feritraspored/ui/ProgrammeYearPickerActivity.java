@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
@@ -22,6 +23,7 @@ import os.dtakac.feritraspored.model.programmes.ProgrammeType;
 import os.dtakac.feritraspored.model.programmes.Undergrad;
 import os.dtakac.feritraspored.model.programmes.Year;
 
+// TODO: 16-Nov-18 make spinners prettier
 public class ProgrammeYearPickerActivity extends AppCompatActivity {
 
     @BindView(R.id.rg_progyearpick_pickprogtype)
@@ -32,6 +34,9 @@ public class ProgrammeYearPickerActivity extends AppCompatActivity {
 
     @BindView(R.id.spn_progyearpick_pickyear)
     Spinner spnYear;
+
+    @BindView(R.id.btn_progyearpick_save)
+    Button btnSave;
 
     private ArrayAdapter<Programme> progAdapter;
 
@@ -44,11 +49,13 @@ public class ProgrammeYearPickerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSpinnersEnabled(false);
+        setSaveEnabled(false);
 
         rgProgType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 setSpinnersEnabled(true);
+                setSaveEnabled(true);
                 setSpinnerDataBasedOnId(checkedId);
             }
         });
@@ -112,5 +119,9 @@ public class ProgrammeYearPickerActivity extends AppCompatActivity {
 
     private void startScheduleActivity() {
         startActivity(new Intent(this, SplashActivity.class));
+    }
+
+    public void setSaveEnabled(boolean isEnabled) {
+        btnSave.setEnabled(isEnabled);
     }
 }

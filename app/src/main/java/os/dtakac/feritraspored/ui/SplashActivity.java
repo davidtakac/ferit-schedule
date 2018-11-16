@@ -10,7 +10,6 @@ import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.util.SharedPrefsUtil;
 
-// TODO: 14-Nov-18 make startup activity that makes user choose year and programme
 public class SplashActivity extends AppCompatActivity {
 
     @BindView(R.id.wv_schedule)
