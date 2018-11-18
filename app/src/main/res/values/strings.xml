@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">FERIT Raspored</string>
-    <string name="progyearpick_pickprog">Odaberi studijski program:</string>
-    <string name="progyearpick_pickyear">Odaberi godinu:</string>
-    <string name="progyearpick_undergrad">Preddiplomski</string>
-    <string name="progyearpick_grad">Diplomski</string>
-    <string name="progyearpick_picktypeofprog">Odaberi tip programa:</string>
-    <string name="progyearpick_prof">Stručni</string>
-    <string name="progyearpick_diff">Razlikovna</string>
-    <string name="progyearpick_save">Spremi</string>
+    <string name="options_pickprog">Odaberi studijski program:</string>
+    <string name="options_pickyear">Odaberi godinu:</string>
+    <string name="options_undergrad">Preddiplomski</string>
+    <string name="options_grad">Diplomski</string>
+    <string name="options_picktypeofprog">Odaberi tip programa:</string>
+    <string name="options_prof">Stručni</string>
+    <string name="options_diff">Razlikovna</string>
+    <string name="options_save">Spremi</string>
     <string name="menu_editprogyear">Promijeni studij/godinu…</string>
 </resources>

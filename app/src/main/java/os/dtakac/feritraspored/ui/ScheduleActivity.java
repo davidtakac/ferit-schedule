@@ -16,10 +16,13 @@ import org.joda.time.LocalDate;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import os.dtakac.feritraspored.model.programmes.Undergrad;
+import os.dtakac.feritraspored.model.programmes.Year;
 import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.util.SharedPrefsUtil;
 
+// TODO: 17-Nov-18 add fab to skip to next week
 public class ScheduleActivity extends AppCompatActivity {
 
     @BindView(R.id.wv_schedule)
@@ -37,7 +40,7 @@ public class ScheduleActivity extends AppCompatActivity {
         if(!SharedPrefsUtil.get(this, Constants.PREVIOUSLY_STARTED, false)){
             SharedPrefsUtil.save(this, Constants.PREVIOUSLY_STARTED, true);
 
-            startProgYearPickerActivity();
+            startOptionsActivity();
             finish();
         }
 
@@ -67,7 +70,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
     private void handleSelectedItem(int itemId) {
         switch (itemId){
-            case R.id.item_menu_editprogyear: startProgYearPickerActivity(); break;
+            case R.id.item_menu_editprogyear: startOptionsActivity(); break;
         }
     }
 
@@ -87,6 +90,7 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 setLoading(false);
+                injectJsHighlighting();
             }
         });
 
@@ -94,19 +98,26 @@ public class ScheduleActivity extends AppCompatActivity {
         wvSchedule.getSettings().setJavaScriptEnabled(true);
     }
 
+    private void injectJsHighlighting() {
+        // TODO: 16-Nov-18 separate parts of this js code for easier upgradability
+        wvSchedule.loadUrl("javascript:($(\"p:contains('4/24'),p:contains('PR-2'),p:contains('4/16')\").css(\"text-transform\",\"uppercase\").css(\"color\",\"#EF271B\"))");
+
+        //wvSchedule.loadUrl("javascript:(" + buildJsBody() + ")");
+    }
+
     private String getUrl() {
         LocalDate date = new LocalDate();
         String url = Constants.BASE_FERIT_URL + Constants.BASE_SCHEDULE_URL;
 
-        if(date.getDayOfWeek() >= 6) {
-            //if now is on a weekend, set now to be next monday.
-            date.plusDays(8 - date.getDayOfWeek());
+        if(date.getDayOfWeek() == 7) {
+            //if now is on a sunday, set now to be next monday and display next week's schedule
+            date = date.plusDays(1);
         }
 
         return  url
                 + date.withDayOfWeek(DateTimeConstants.MONDAY).toString()
-                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, "1")
-                + "-" + SharedPrefsUtil.get(this, Constants.PROGRAMME_KEY, "1")
+                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, Undergrad.EE.getId())
+                + "-" + SharedPrefsUtil.get(this, Constants.PROGRAMME_KEY, Year.FIRST.getId())
 
                 //scroll to current day of the week
                 + "#" + date.toString()
@@ -122,8 +133,8 @@ public class ScheduleActivity extends AppCompatActivity {
         }
     }
 
-    private void startProgYearPickerActivity(){
-        startActivity(new Intent(this, ProgrammeYearPickerActivity.class));
+    private void startOptionsActivity(){
+        startActivity(new Intent(this, OptionsActivity.class));
     }
 
     private void setLoading(boolean isLoading){

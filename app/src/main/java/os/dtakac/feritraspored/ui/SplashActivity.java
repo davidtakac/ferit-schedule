@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         //if the app was started for the first time, let the user pick his programme and year
         if(!SharedPrefsUtil.get(this, Constants.PREVIOUSLY_STARTED, false)){
             SharedPrefsUtil.save(this, Constants.PREVIOUSLY_STARTED, true);
-            startActivity(new Intent(this, ProgrammeYearPickerActivity.class));
+            startActivity(new Intent(this, OptionsActivity.class));
         } else {
             startActivity(new Intent(this, ScheduleActivity.class));
         }

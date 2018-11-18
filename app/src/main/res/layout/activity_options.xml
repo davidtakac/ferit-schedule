@@ -6,13 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/tv_progyearpick_progtypelabel"
+        android:id="@+id/tv_options_progtypelabel"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
 
-        android:text="@string/progyearpick_picktypeofprog"
+        android:text="@string/options_picktypeofprog"
         android:textAlignment="center"
         android:textSize="18sp"
 
@@ -22,116 +22,116 @@
         />
 
     <RadioGroup
-        android:id="@+id/rg_progyearpick_pickprogtype"
+        android:id="@+id/rg_options_pickprogtype"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
 
-        app:layout_constraintTop_toBottomOf="@id/tv_progyearpick_progtypelabel"
-        app:layout_constraintLeft_toLeftOf="@id/tv_progyearpick_progtypelabel"
-        app:layout_constraintRight_toRightOf="@id/tv_progyearpick_progtypelabel"
+        app:layout_constraintTop_toBottomOf="@id/tv_options_progtypelabel"
+        app:layout_constraintLeft_toLeftOf="@id/tv_options_progtypelabel"
+        app:layout_constraintRight_toRightOf="@id/tv_options_progtypelabel"
         >
 
         <RadioButton
-            android:id="@+id/rb_progyearpick_undergrad"
+            android:id="@+id/rb_options_undergrad"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/progyearpick_undergrad"/>
+            android:text="@string/options_undergrad"/>
 
         <RadioButton
-            android:id="@+id/rb_progyearpick_grad"
+            android:id="@+id/rb_options_grad"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/progyearpick_grad"/>
+            android:text="@string/options_grad"/>
 
         <RadioButton
-            android:id="@+id/rb_progyearpick_prof"
+            android:id="@+id/rb_options_prof"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/progyearpick_prof"/>
+            android:text="@string/options_prof"/>
 
         <RadioButton
-            android:id="@+id/rb_progyearpick_diff"
+            android:id="@+id/rb_options_diff"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/progyearpick_diff"/>
+            android:text="@string/options_diff"/>
 
     </RadioGroup>
 
     <TextView
-        android:id="@+id/tv_progyearpick_proglabel"
+        android:id="@+id/tv_options_proglabel"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
 
-        android:text="@string/progyearpick_pickprog"
+        android:text="@string/options_pickprog"
         android:textAlignment="center"
         android:textSize="18sp"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rg_progyearpick_pickprogtype"
+        app:layout_constraintTop_toBottomOf="@id/rg_options_pickprogtype"
         />
 
     <Spinner
-        android:id="@+id/spn_progyearpick_pickprogramme"
+        android:id="@+id/spn_options_pickprogramme"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/tv_progyearpick_proglabel"
-        app:layout_constraintLeft_toLeftOf="@id/tv_progyearpick_proglabel"
-        app:layout_constraintRight_toRightOf="@id/tv_progyearpick_proglabel"
+        app:layout_constraintTop_toBottomOf="@id/tv_options_proglabel"
+        app:layout_constraintLeft_toLeftOf="@id/tv_options_proglabel"
+        app:layout_constraintRight_toRightOf="@id/tv_options_proglabel"
         />
 
     <TextView
-        android:id="@+id/tv_progyearpick_yearlabel"
+        android:id="@+id/tv_options_yearlabel"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
 
-        android:text="@string/progyearpick_pickyear"
+        android:text="@string/options_pickyear"
         android:textAlignment="center"
         android:textSize="18sp"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spn_progyearpick_pickprogramme"
+        app:layout_constraintTop_toBottomOf="@id/spn_options_pickprogramme"
         />
 
     <Spinner
-        android:id="@+id/spn_progyearpick_pickyear"
+        android:id="@+id/spn_options_pickyear"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/tv_progyearpick_yearlabel"
-        app:layout_constraintLeft_toLeftOf="@id/tv_progyearpick_yearlabel"
-        app:layout_constraintRight_toRightOf="@id/tv_progyearpick_yearlabel"
+        app:layout_constraintTop_toBottomOf="@id/tv_options_yearlabel"
+        app:layout_constraintLeft_toLeftOf="@id/tv_options_yearlabel"
+        app:layout_constraintRight_toRightOf="@id/tv_options_yearlabel"
         />
 
     <Button
-        android:id="@+id/btn_progyearpick_save"
+        android:id="@+id/btn_options_save"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:text="@string/progyearpick_save"
+        android:text="@string/options_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spn_progyearpick_pickyear"
+        app:layout_constraintTop_toBottomOf="@id/spn_options_pickyear"
 
         app:layout_constraintVertical_bias="0.70"
         />

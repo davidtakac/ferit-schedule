@@ -24,18 +24,18 @@ import os.dtakac.feritraspored.model.programmes.Undergrad;
 import os.dtakac.feritraspored.model.programmes.Year;
 
 // TODO: 16-Nov-18 make spinners prettier
-public class ProgrammeYearPickerActivity extends AppCompatActivity {
+public class OptionsActivity extends AppCompatActivity {
 
-    @BindView(R.id.rg_progyearpick_pickprogtype)
+    @BindView(R.id.rg_options_pickprogtype)
     RadioGroup rgProgType;
 
-    @BindView(R.id.spn_progyearpick_pickprogramme)
+    @BindView(R.id.spn_options_pickprogramme)
     Spinner spnProg;
 
-    @BindView(R.id.spn_progyearpick_pickyear)
+    @BindView(R.id.spn_options_pickyear)
     Spinner spnYear;
 
-    @BindView(R.id.btn_progyearpick_save)
+    @BindView(R.id.btn_options_save)
     Button btnSave;
 
     private ArrayAdapter<Programme> progAdapter;
@@ -45,7 +45,7 @@ public class ProgrammeYearPickerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_progyearpick);
+        setContentView(R.layout.activity_options);
         ButterKnife.bind(this);
 
         setSpinnersEnabled(false);
@@ -61,7 +61,7 @@ public class ProgrammeYearPickerActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.btn_progyearpick_save)
+    @OnClick(R.id.btn_options_save)
     void savePickToPrefs(){
         SharedPrefsUtil.save(this, Constants.PROGRAMME_KEY, progAdapter.getItem(spnProg.getSelectedItemPosition()).getId());
         SharedPrefsUtil.save(this, Constants.YEAR_KEY, yearAdapter.getItem(spnYear.getSelectedItemPosition()).getId());
@@ -73,9 +73,9 @@ public class ProgrammeYearPickerActivity extends AppCompatActivity {
         ProgrammeType type = ProgrammeType.UNDERGRAD;
 
         switch(checkedId){
-            case R.id.rb_progyearpick_grad: type = ProgrammeType.GRAD; break;
-            case R.id.rb_progyearpick_prof: type = ProgrammeType.PROF; break;
-            case R.id.rb_progyearpick_diff: type = ProgrammeType.DIFF; break;
+            case R.id.rb_options_grad: type = ProgrammeType.GRAD; break;
+            case R.id.rb_options_prof: type = ProgrammeType.PROF; break;
+            case R.id.rb_options_diff: type = ProgrammeType.DIFF; break;
             default: break;
         }
 

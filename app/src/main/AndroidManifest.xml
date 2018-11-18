@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ProgrammeYearPickerActivity" />
+        <activity android:name=".ui.OptionsActivity" />
         <activity android:name=".ui.ScheduleActivity"/>
     </application>
 
