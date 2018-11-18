@@ -97,6 +97,8 @@ public class OptionsActivity extends AppCompatActivity {
             default: break;
         }
 
+        //dataToDisplay = Programmes.getProgrammesByType(type) will replace switch
+
         progAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -140,5 +142,22 @@ public class OptionsActivity extends AppCompatActivity {
         });
 
         rgProgType.check(R.id.rb_options_undergrad);
+    }
+
+    // TODO: 18-Nov-18 initialize input from prefs
+    private void initInputFromPrefs(){
+        //int prevProgId = SharedPrefs.get(Constants.PROGRAMME_KEY)
+        //Programme prevProg = Programmes.getProgrammeById(prevProgId);
+
+        //rgProgType.check(getCorrespondingRbId(prevProg)), nema drugog nacina jer Programmes nema XML odgovornost
+        //spnProg.setSelectedPosition(Programmes.getIndexOfProgramme(prevProgId), dohvati indeks programa s ID-em
+        //spnYear.setSelectedPosition(Year.getIndex(SharedPrefs.get(Constants.YEAR_KEY)), dohvati indeks godine
+        //swSkipSaturday.setChecked(SharedPrefs.get(Constants.SATURDAY_KEY))
+        //swNextDay.setChecked(SharedPrefs.get(Constants.NEXT_DAY_KEY))
+    }
+
+    // TODO: 18-Nov-18 switch statement to return corresponding id
+    private int getCorrespondingRbId(Programme programme){
+        return R.id.rb_options_undergrad;
     }
 }
