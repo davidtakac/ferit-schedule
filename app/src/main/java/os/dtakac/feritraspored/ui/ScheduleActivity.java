@@ -34,15 +34,6 @@ public class ScheduleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-
-        //if the app was started for the first time, let the user pick his programme and year
-        if(!SharedPrefsUtil.get(this, Constants.PREVIOUSLY_STARTED, false)){
-            SharedPrefsUtil.save(this, Constants.PREVIOUSLY_STARTED, true);
-
-            startOptionsActivity();
-            finish();
-        }
-
         ButterKnife.bind(this);
 
         initWebView();
