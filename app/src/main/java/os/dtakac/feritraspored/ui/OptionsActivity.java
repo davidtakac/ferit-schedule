@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +41,12 @@ public class OptionsActivity extends AppCompatActivity {
     @BindView(R.id.btn_options_save)
     Button btnSave;
 
+    @BindView(R.id.sw_options_skipsat)
+    Switch swSkipSaturday;
+
+    @BindView(R.id.sw_options_nextday8pm)
+    Switch swNextDayAt8pm;
+
     private ArrayAdapter<Programme> progAdapter;
 
     private ArrayAdapter<Year> yearAdapter;
@@ -50,21 +59,18 @@ public class OptionsActivity extends AppCompatActivity {
 
         setSpinnersEnabled(false);
         setSaveEnabled(false);
-
-        rgProgType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSpinnersEnabled(true);
-                setSaveEnabled(true);
-                setSpinnerDataBasedOnId(checkedId);
-            }
-        });
+        initRadioGroup();
     }
 
     @OnClick(R.id.btn_options_save)
-    void savePickToPrefs(){
+    void saveOptions(){
+        //save programme and year
         SharedPrefsUtil.save(this, Constants.PROGRAMME_KEY, progAdapter.getItem(spnProg.getSelectedItemPosition()).getId());
         SharedPrefsUtil.save(this, Constants.YEAR_KEY, yearAdapter.getItem(spnYear.getSelectedItemPosition()).getId());
+
+        //save other options
+        SharedPrefsUtil.save(this, Constants.SKIP_SATURDAY_KEY, swSkipSaturday.isChecked());
+        SharedPrefsUtil.save(this, Constants.NEXTDAY_AT_8PM_KEY, swNextDayAt8pm.isChecked());
 
         startScheduleActivity();
     }
@@ -121,7 +127,20 @@ public class OptionsActivity extends AppCompatActivity {
         startActivity(new Intent(this, SplashActivity.class));
     }
 
-    public void setSaveEnabled(boolean isEnabled) {
+    private void setSaveEnabled(boolean isEnabled) {
         btnSave.setEnabled(isEnabled);
+    }
+
+    private void initRadioGroup(){
+        rgProgType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSpinnersEnabled(true);
+                setSaveEnabled(true);
+                setSpinnerDataBasedOnId(checkedId);
+            }
+        });
+
+        rgProgType.check(R.id.rb_options_undergrad);
     }
 }

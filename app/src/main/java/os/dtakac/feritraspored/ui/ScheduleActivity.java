@@ -22,7 +22,6 @@ import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.util.SharedPrefsUtil;
 
-// TODO: 17-Nov-18 add fab to skip to next week
 public class ScheduleActivity extends AppCompatActivity {
 
     @BindView(R.id.wv_schedule)
