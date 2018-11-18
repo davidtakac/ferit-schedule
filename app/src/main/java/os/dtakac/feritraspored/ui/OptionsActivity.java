@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -26,7 +25,6 @@ import os.dtakac.feritraspored.model.programmes.ProgrammeType;
 import os.dtakac.feritraspored.model.programmes.Undergrad;
 import os.dtakac.feritraspored.model.programmes.Year;
 
-// TODO: 16-Nov-18 make spinners prettier
 public class OptionsActivity extends AppCompatActivity {
 
     @BindView(R.id.rg_options_pickprogtype)
@@ -70,7 +68,7 @@ public class OptionsActivity extends AppCompatActivity {
 
         //save other options
         SharedPrefsUtil.save(this, Constants.SKIP_SATURDAY_KEY, swSkipSaturday.isChecked());
-        SharedPrefsUtil.save(this, Constants.NEXTDAY_AT_8PM_KEY, swNextDayAt8pm.isChecked());
+        SharedPrefsUtil.save(this, Constants.NEXTDAY_AFTER_8PM_KEY, swNextDayAt8pm.isChecked());
 
         startScheduleActivity();
     }

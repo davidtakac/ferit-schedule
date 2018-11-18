@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,10 +100,8 @@ public class ScheduleActivity extends AppCompatActivity {
         LocalDate date = new LocalDate();
         String url = Constants.BASE_FERIT_URL + Constants.BASE_SCHEDULE_URL;
 
-        if(date.getDayOfWeek() == 7) {
-            //if now is on a sunday, set now to be next monday and display next week's schedule
-            date = date.plusDays(1);
-        }
+        date = skipToNextDayAfter8pm(date);
+        date = advanceToNextMondayOnWeekend(date);
 
         return  url
                 + date.withDayOfWeek(DateTimeConstants.MONDAY).toString()
@@ -112,6 +111,26 @@ public class ScheduleActivity extends AppCompatActivity {
                 //scroll to current day of the week
                 + "#" + date.toString()
                 ;
+    }
+
+    private LocalDate skipToNextDayAfter8pm(LocalDate date) {
+        LocalTime time = new LocalTime();
+        boolean nextDayAfter8pm = SharedPrefsUtil.get(this, Constants.NEXTDAY_AFTER_8PM_KEY, false);
+
+        return date.plusDays((nextDayAfter8pm && time.getHourOfDay() >= 20) ? 1 : 0);
+    }
+
+    private LocalDate advanceToNextMondayOnWeekend(LocalDate date) {
+        boolean skipSaturday = SharedPrefsUtil.get(this, Constants.SKIP_SATURDAY_KEY, false);
+        int daysToAdd = 0;
+
+        if(date.getDayOfWeek() == DateTimeConstants.SATURDAY && skipSaturday){
+            daysToAdd = 2;
+        } else if(date.getDayOfWeek() == DateTimeConstants.SUNDAY){
+            daysToAdd = 1;
+        }
+
+        return date.plusDays(daysToAdd);
     }
 
     @Override
