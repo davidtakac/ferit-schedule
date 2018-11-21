@@ -13,6 +13,7 @@ import android.widget.Switch;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import os.dtakac.feritraspored.App;
 import os.dtakac.feritraspored.model.programmes.Programme;
 import os.dtakac.feritraspored.model.programmes.Programmes;
 import os.dtakac.feritraspored.util.Constants;
@@ -53,7 +54,7 @@ public class OptionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_options);
         ButterKnife.bind(this);
 
-        programmes = new Programmes(getAssets());
+        programmes = App.getProgrammes();
 
         setSpinnersEnabled(false);
         setSaveEnabled(false);
