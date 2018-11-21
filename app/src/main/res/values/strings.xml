@@ -8,7 +8,7 @@
     <string name="options_prof">Stručni</string>
     <string name="options_diff">Razlikovna</string>
     <string name="options_save">Spremi</string>
-    <string name="menu_editprogyear">Promijeni studij/godinu…</string>
+    <string name="menu_editprogyear">Opcije</string>
     <string name="options_skipsat">Subotom učitaj sljedeći ponedjeljak</string>
     <string name="options_nextday8pm">Poslije 20:00 učitaj sljedeći dan</string>
 </resources>

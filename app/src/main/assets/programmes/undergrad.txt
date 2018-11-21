@@ -1,0 +1,3 @@
+Računarstvo,2
+Elekrotehnika/elektroenergetika,1
+Komunikacije i informatika,21

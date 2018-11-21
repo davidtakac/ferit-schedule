@@ -10,4 +10,7 @@ public class Constants {
     public static final String PREVIOUSLY_STARTED = "previously_started";
     public static final String SKIP_SATURDAY_KEY = "skip_saturday";
     public static final String NEXTDAY_AFTER_8PM_KEY = "next_day_8pm";
+    public static final String CHECKED_PROGTYPE_ID_IKEY = "checked_progtype_id";
+    public static final String CHECKED_PROG_POS_KEY = "checked_prog_id";
+    public static final String CHECKED_YEAR_POS_KEY = "checked_yr_id";
 }

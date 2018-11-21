@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioGroup;
@@ -14,16 +13,13 @@ import android.widget.Switch;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import os.dtakac.feritraspored.model.programmes.Programme;
+import os.dtakac.feritraspored.model.programmes.Programmes;
 import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.util.SharedPrefsUtil;
-import os.dtakac.feritraspored.model.programmes.Differential;
-import os.dtakac.feritraspored.model.programmes.Graduate;
-import os.dtakac.feritraspored.model.programmes.Professional;
-import os.dtakac.feritraspored.model.programmes.Programme;
 import os.dtakac.feritraspored.model.programmes.ProgrammeType;
-import os.dtakac.feritraspored.model.programmes.Undergrad;
-import os.dtakac.feritraspored.model.programmes.Year;
+import os.dtakac.feritraspored.model.year.Year;
 
 public class OptionsActivity extends AppCompatActivity {
 
@@ -49,19 +45,57 @@ public class OptionsActivity extends AppCompatActivity {
 
     private ArrayAdapter<Year> yearAdapter;
 
+    private Programmes programmes;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
         ButterKnife.bind(this);
 
+        programmes = new Programmes(getAssets());
+
         setSpinnersEnabled(false);
         setSaveEnabled(false);
         initRadioGroup();
+        initSpinners();
+        initOtherOptions();
+    }
+
+    private void initRadioGroup(){
+        rgProgType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                setSpinnersEnabled(true);
+                setSaveEnabled(true);
+                setSpinnerDataBasedOnId(checkedId);
+            }
+        });
+
+        int prevChecked = SharedPrefsUtil.get(this, Constants.CHECKED_PROGTYPE_ID_IKEY, 0);
+        rgProgType.check(prevChecked != 0 ? prevChecked : R.id.rb_options_undergrad);
+    }
+
+    private void initSpinners(){
+        int prevChkProgPos = SharedPrefsUtil.get(this, Constants.CHECKED_PROG_POS_KEY, -1);
+        int prevYearPos = SharedPrefsUtil.get(this, Constants.CHECKED_YEAR_POS_KEY, -1);
+
+        spnProg.setSelection(prevChkProgPos != -1 ? prevChkProgPos : 0);
+        spnYear.setSelection(prevYearPos != -1 ? prevYearPos : 0);
+    }
+
+    private void initOtherOptions() {
+        swSkipSaturday.setChecked(SharedPrefsUtil.get(this, Constants.SKIP_SATURDAY_KEY, false));
+        swNextDayAt8pm.setChecked(SharedPrefsUtil.get(this, Constants.NEXTDAY_AFTER_8PM_KEY, false));
     }
 
     @OnClick(R.id.btn_options_save)
     void saveOptions(){
+        saveOptionsToPrefs();
+        startScheduleActivity();
+    }
+
+    private void saveOptionsToPrefs() {
         //save programme and year
         SharedPrefsUtil.save(this, Constants.PROGRAMME_KEY, progAdapter.getItem(spnProg.getSelectedItemPosition()).getId());
         SharedPrefsUtil.save(this, Constants.YEAR_KEY, yearAdapter.getItem(spnYear.getSelectedItemPosition()).getId());
@@ -70,7 +104,10 @@ public class OptionsActivity extends AppCompatActivity {
         SharedPrefsUtil.save(this, Constants.SKIP_SATURDAY_KEY, swSkipSaturday.isChecked());
         SharedPrefsUtil.save(this, Constants.NEXTDAY_AFTER_8PM_KEY, swNextDayAt8pm.isChecked());
 
-        startScheduleActivity();
+        //save options for pre-selection
+        SharedPrefsUtil.save(this, Constants.CHECKED_PROGTYPE_ID_IKEY, rgProgType.getCheckedRadioButtonId());
+        SharedPrefsUtil.save(this, Constants.CHECKED_PROG_POS_KEY, spnProg.getSelectedItemPosition());
+        SharedPrefsUtil.save(this, Constants.CHECKED_YEAR_POS_KEY, spnYear.getSelectedItemPosition());
     }
 
     private void setSpinnerDataBasedOnId(int checkedId) {
@@ -88,21 +125,10 @@ public class OptionsActivity extends AppCompatActivity {
     }
 
     private void setProgSpinnerData(ProgrammeType type) {
-        Programme[] dataToDisplay = Undergrad.values();
-
-        switch (type){
-            case GRAD: dataToDisplay = Graduate.values(); break;
-            case PROF: dataToDisplay = Professional.values(); break;
-            case DIFF: dataToDisplay = Differential.values(); break;
-            default: break;
-        }
-
-        //dataToDisplay = Programmes.getProgrammesByType(type) will replace switch
-
         progAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
-                dataToDisplay
+                programmes.getProgrammes(type)
         );
 
         spnProg.setAdapter(progAdapter);
@@ -123,41 +149,11 @@ public class OptionsActivity extends AppCompatActivity {
         spnYear.setEnabled(isEnabled);
     }
 
-    private void startScheduleActivity() {
-        startActivity(new Intent(this, SplashActivity.class));
-    }
-
     private void setSaveEnabled(boolean isEnabled) {
         btnSave.setEnabled(isEnabled);
     }
 
-    private void initRadioGroup(){
-        rgProgType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setSpinnersEnabled(true);
-                setSaveEnabled(true);
-                setSpinnerDataBasedOnId(checkedId);
-            }
-        });
-
-        rgProgType.check(R.id.rb_options_undergrad);
-    }
-
-    // TODO: 18-Nov-18 initialize input from prefs
-    private void initInputFromPrefs(){
-        //int prevProgId = SharedPrefs.get(Constants.PROGRAMME_KEY)
-        //Programme prevProg = Programmes.getProgrammeById(prevProgId);
-
-        //rgProgType.check(getCorrespondingRbId(prevProg)), nema drugog nacina jer Programmes nema XML odgovornost
-        //spnProg.setSelectedPosition(Programmes.getIndexOfProgramme(prevProgId), dohvati indeks programa s ID-em
-        //spnYear.setSelectedPosition(Year.getIndex(SharedPrefs.get(Constants.YEAR_KEY)), dohvati indeks godine
-        //swSkipSaturday.setChecked(SharedPrefs.get(Constants.SATURDAY_KEY))
-        //swNextDay.setChecked(SharedPrefs.get(Constants.NEXT_DAY_KEY))
-    }
-
-    // TODO: 18-Nov-18 switch statement to return corresponding id
-    private int getCorrespondingRbId(Programme programme){
-        return R.id.rb_options_undergrad;
+    private void startScheduleActivity() {
+        startActivity(new Intent(this, ScheduleActivity.class));
     }
 }

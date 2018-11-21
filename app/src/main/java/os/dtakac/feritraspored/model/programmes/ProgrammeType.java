@@ -1,5 +1,7 @@
 package os.dtakac.feritraspored.model.programmes;
 
+import os.dtakac.feritraspored.model.year.Year;
+
 public enum ProgrammeType {
     UNDERGRAD(3), GRAD(2), PROF(3), DIFF(1);
 
@@ -16,5 +18,4 @@ public enum ProgrammeType {
         }
         return years;
     }
-
 }

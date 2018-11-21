@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,8 +17,9 @@ import org.joda.time.LocalTime;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import os.dtakac.feritraspored.model.programmes.Undergrad;
-import os.dtakac.feritraspored.model.programmes.Year;
+import os.dtakac.feritraspored.App;
+import os.dtakac.feritraspored.model.programmes.ProgrammeType;
+import os.dtakac.feritraspored.model.year.Year;
 import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.util.SharedPrefsUtil;
@@ -106,7 +106,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         return  url
                 + date.withDayOfWeek(DateTimeConstants.MONDAY).toString()
-                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, Undergrad.EE.getId())
+                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, App.getProgrammes().getProgrammes(ProgrammeType.UNDERGRAD).get(0).getId())
                 + "-" + SharedPrefsUtil.get(this, Constants.PROGRAMME_KEY, Year.FIRST.getId())
 
                 //scroll to current day of the week

@@ -1,17 +1,38 @@
 package os.dtakac.feritraspored.model.programmes;
 
-import java.util.HashMap;
+import android.content.res.AssetManager;
 
-// TODO: 18-Nov-18 rewrite programme classes and save their stylized names in strings.xml
-// TODO: 18-Nov-18 write missing methods
-// TODO: 18-Nov-18 relocate programme classes to this class
+import java.io.IOException;
+import java.util.List;
+
+import os.dtakac.feritraspored.util.FileUtil;
+
 public class Programmes {
 
-    public Programme getProgrammeById(int id){
-        return Undergrad.EE;
+    private List<Programme> undergrad;
+    private List<Programme> graduate;
+    private List<Programme> professional;
+    private List<Programme> differential;
+
+    public Programmes(AssetManager am){
+        try {
+            undergrad = FileUtil.parseListOfProgrammes(am.open("programmes/undergrad.txt"));
+            graduate = FileUtil.parseListOfProgrammes(am.open("programmes/graduate.txt"));
+            professional = FileUtil.parseListOfProgrammes(am.open("programmes/professional.txt"));
+            differential = FileUtil.parseListOfProgrammes(am.open("programmes/differential.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Programme[] getProgrammesByType(ProgrammeType type){
-        return Undergrad.values();
+    public List<Programme> getProgrammes(ProgrammeType type){
+        List<Programme> result = undergrad;
+        switch (type){
+            case GRAD: result = graduate; break;
+            case PROF: result = professional; break;
+            case DIFF: result = differential; break;
+            default: break;
+        }
+        return result;
     }
 }
