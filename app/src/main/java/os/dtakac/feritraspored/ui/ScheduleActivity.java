@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,9 +14,13 @@ import android.webkit.WebViewClient;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import os.dtakac.feritraspored.App;
+import os.dtakac.feritraspored.model.programmes.ProgrammeType;
+import os.dtakac.feritraspored.model.year.Year;
 import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.util.SharedPrefsUtil;
@@ -32,15 +37,6 @@ public class ScheduleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-
-        //if the app was started for the first time, let the user pick his programme and year
-        if(!SharedPrefsUtil.get(this, Constants.PREVIOUSLY_STARTED, false)){
-            SharedPrefsUtil.save(this, Constants.PREVIOUSLY_STARTED, true);
-
-            startProgYearPickerActivity();
-            finish();
-        }
-
         ButterKnife.bind(this);
 
         initWebView();
@@ -67,7 +63,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
     private void handleSelectedItem(int itemId) {
         switch (itemId){
-            case R.id.item_menu_editprogyear: startProgYearPickerActivity(); break;
+            case R.id.item_menu_editprogyear: startOptionsActivity(); break;
         }
     }
 
@@ -87,6 +83,8 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 setLoading(false);
+                Log.d(Constants.LOG_TAG, "finished loading");
+                //injectJsHighlighting();
             }
         });
 
@@ -94,23 +92,48 @@ public class ScheduleActivity extends AppCompatActivity {
         wvSchedule.getSettings().setJavaScriptEnabled(true);
     }
 
+    private void injectJsHighlighting() {
+        // TODO: 16-Nov-18 separate parts of this js code for easier upgradability
+        wvSchedule.loadUrl("javascript:($(\"p:contains('4/24'),p:contains('PR-2'),p:contains('4/16')\").css(\"text-transform\",\"uppercase\").css(\"color\",\"#EF271B\"))");
+
+        //wvSchedule.loadUrl("javascript:(" + buildJsBody() + ")");
+    }
+
     private String getUrl() {
         LocalDate date = new LocalDate();
         String url = Constants.BASE_FERIT_URL + Constants.BASE_SCHEDULE_URL;
 
-        if(date.getDayOfWeek() >= 6) {
-            //if now is on a weekend, set now to be next monday.
-            date.plusDays(8 - date.getDayOfWeek());
-        }
+        date = skipToNextDayAfter8pm(date);
+        date = advanceToNextMondayOnWeekend(date);
 
         return  url
                 + date.withDayOfWeek(DateTimeConstants.MONDAY).toString()
-                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, "1")
-                + "-" + SharedPrefsUtil.get(this, Constants.PROGRAMME_KEY, "1")
+                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, App.getProgrammes().getProgrammes(ProgrammeType.UNDERGRAD).get(0).getId())
+                + "-" + SharedPrefsUtil.get(this, Constants.PROGRAMME_KEY, Year.FIRST.getId())
 
                 //scroll to current day of the week
                 + "#" + date.toString()
                 ;
+    }
+
+    private LocalDate skipToNextDayAfter8pm(LocalDate date) {
+        LocalTime time = new LocalTime();
+        boolean nextDayAfter8pm = SharedPrefsUtil.get(this, Constants.NEXTDAY_AFTER_8PM_KEY, false);
+
+        return date.plusDays((nextDayAfter8pm && time.getHourOfDay() >= 20) ? 1 : 0);
+    }
+
+    private LocalDate advanceToNextMondayOnWeekend(LocalDate date) {
+        boolean skipSaturday = SharedPrefsUtil.get(this, Constants.SKIP_SATURDAY_KEY, false);
+        int daysToAdd = 0;
+
+        if(date.getDayOfWeek() == DateTimeConstants.SATURDAY && skipSaturday){
+            daysToAdd = 2;
+        } else if(date.getDayOfWeek() == DateTimeConstants.SUNDAY){
+            daysToAdd = 1;
+        }
+
+        return date.plusDays(daysToAdd);
     }
 
     @Override
@@ -122,8 +145,8 @@ public class ScheduleActivity extends AppCompatActivity {
         }
     }
 
-    private void startProgYearPickerActivity(){
-        startActivity(new Intent(this, ProgrammeYearPickerActivity.class));
+    private void startOptionsActivity(){
+        startActivity(new Intent(this, OptionsActivity.class));
     }
 
     private void setLoading(boolean isLoading){

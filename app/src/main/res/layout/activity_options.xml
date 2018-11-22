@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_options_progtypelabel"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+
+        android:text="@string/options_picktypeofprog"
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <RadioGroup
+        android:id="@+id/rg_options_pickprogtype"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_options_progtypelabel"
+        app:layout_constraintLeft_toLeftOf="@id/tv_options_progtypelabel"
+        app:layout_constraintRight_toRightOf="@id/tv_options_progtypelabel"
+        >
+
+        <RadioButton
+            android:id="@+id/rb_options_undergrad"
+
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+
+            android:text="@string/options_undergrad"
+            android:ellipsize="end"
+            android:lines="1"/>
+
+        <RadioButton
+            android:id="@+id/rb_options_grad"
+
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+
+            android:text="@string/options_grad"
+            android:ellipsize="end"
+            android:lines="1"/>
+
+        <RadioButton
+            android:id="@+id/rb_options_prof"
+
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+
+            android:text="@string/options_prof"
+            android:ellipsize="end"
+            android:lines="1"/>
+
+        <RadioButton
+            android:id="@+id/rb_options_diff"
+
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+
+            android:text="@string/options_diff"
+            android:ellipsize="end"
+            android:lines="1"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_options_proglabel"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+
+        android:text="@string/options_pickprog"
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rg_options_pickprogtype"
+        />
+
+    <Spinner
+        android:id="@+id/spn_options_pickprogramme"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_options_proglabel"
+        app:layout_constraintLeft_toLeftOf="@id/tv_options_proglabel"
+        app:layout_constraintRight_toRightOf="@id/tv_options_proglabel"
+        />
+
+    <TextView
+        android:id="@+id/tv_options_yearlabel"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+
+        android:text="@string/options_pickyear"
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spn_options_pickprogramme"
+        />
+
+    <Spinner
+        android:id="@+id/spn_options_pickyear"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_options_yearlabel"
+        app:layout_constraintLeft_toLeftOf="@id/tv_options_yearlabel"
+        app:layout_constraintRight_toRightOf="@id/tv_options_yearlabel"
+        />
+
+    <Button
+        android:id="@+id/btn_options_save"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/options_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sw_options_nextday8pm"
+
+        app:layout_constraintVertical_bias="0.70"
+        />
+
+    <TextView
+        android:id="@+id/tv_options_skipsatlabel"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+
+        android:text="@string/options_skipsat"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+
+        app:layout_constraintTop_toTopOf="@id/sw_options_skipsat"
+        app:layout_constraintBottom_toBottomOf="@id/sw_options_skipsat"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <Switch
+        android:id="@+id/sw_options_skipsat"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+
+
+        app:layout_constraintTop_toBottomOf="@id/spn_options_pickyear"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+    
+    <TextView
+        android:id="@+id/tv_options_nextday8pmlabel"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+
+        android:text="@string/options_nextday8pm"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        
+        app:layout_constraintTop_toTopOf="@id/sw_options_nextday8pm"
+        app:layout_constraintBottom_toBottomOf="@id/sw_options_nextday8pm"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+    
+    <Switch
+        android:id="@+id/sw_options_nextday8pm"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+
+        app:layout_constraintTop_toBottomOf="@id/sw_options_skipsat"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+</android.support.constraint.ConstraintLayout>

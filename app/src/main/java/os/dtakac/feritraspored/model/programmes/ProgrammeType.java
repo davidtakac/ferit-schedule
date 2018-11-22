@@ -1,13 +1,13 @@
 package os.dtakac.feritraspored.model.programmes;
 
-public enum ProgrammeType {
-    UNDERGRAD("Preddiplomski", 3), GRAD("Diplomski", 2), PROF("Stručni", 3), DIFF("Razlikovna", 1);
+import os.dtakac.feritraspored.model.year.Year;
 
-    private final String name;
+public enum ProgrammeType {
+    UNDERGRAD(3), GRAD(2), PROF(3), DIFF(1);
+
     private final int yearAmount;
 
-    ProgrammeType(String name, int yearAmount) {
-        this.name = name;
+    ProgrammeType(int yearAmount) {
         this.yearAmount = yearAmount;
     }
 
@@ -17,9 +17,5 @@ public enum ProgrammeType {
             years[i] = Year.values()[i];
         }
         return years;
-    }
-
-    public String getName() {
-        return name;
     }
 }

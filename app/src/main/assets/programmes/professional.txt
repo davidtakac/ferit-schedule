@@ -1,0 +1,4 @@
+Elektrotehnika-Računarstvo,53
+Elektrotehnika-Informatika,7
+Automatika,8
+Elektroenergetika,9

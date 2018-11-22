@@ -20,6 +20,13 @@ public class SharedPrefsUtil {
         editor.apply();
     }
 
+    public static void save(Context context, String key, int value){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
     public static String get(Context context, String key, String defaultValue){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         try {
@@ -34,6 +41,16 @@ public class SharedPrefsUtil {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         try{
             return sharedPrefs.getBoolean(key, defaultValue);
+        } catch(Exception e){
+            e.printStackTrace();
+            return defaultValue;
+        }
+    }
+
+    public static int get(Context context, String key, int defaultValue){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        try{
+            return sharedPrefs.getInt(key, defaultValue);
         } catch(Exception e){
             e.printStackTrace();
             return defaultValue;
