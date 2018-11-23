@@ -133,6 +133,13 @@
         app:layout_constraintRight_toRightOf="@id/tv_options_yearlabel"
         />
 
+    <View
+        android:id="@+id/div_options_divider"
+        style="@style/Divider"
+        app:layout_constraintTop_toBottomOf="@id/spn_options_pickyear"
+        android:layout_marginTop="5dp"
+        />
+
     <TextView
         android:id="@+id/tv_options_labgrouplabel"
 
@@ -140,12 +147,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
 
         android:text="Isticanje grupa(odvoji svaku grupu zarezom):"
         android:textSize="16sp"
         android:textColor="@color/black"
 
-        app:layout_constraintTop_toBottomOf="@id/spn_options_pickyear"
+        app:layout_constraintTop_toBottomOf="@id/div_options_divider"
         app:layout_constraintBottom_toTopOf="@id/et_options_labgroups"
         app:layout_constraintLeft_toLeftOf="parent"
         />
