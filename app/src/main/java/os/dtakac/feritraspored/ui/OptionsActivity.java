@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -42,6 +43,9 @@ public class OptionsActivity extends AppCompatActivity {
     @BindView(R.id.sw_options_nextday8pm)
     Switch swNextDayAt8pm;
 
+    @BindView(R.id.et_options_labgroups)
+    EditText etGroupFilter;
+
     private ArrayAdapter<Programme> progAdapter;
 
     private ArrayAdapter<Year> yearAdapter;
@@ -58,9 +62,14 @@ public class OptionsActivity extends AppCompatActivity {
 
         setSpinnersEnabled(false);
         setSaveEnabled(false);
+        initViewsFromPrefs();
+    }
+
+    private void initViewsFromPrefs() {
         initRadioGroup();
         initSpinners();
         initOtherOptions();
+        initGroupFilter();
     }
 
     private void initRadioGroup(){
@@ -90,6 +99,10 @@ public class OptionsActivity extends AppCompatActivity {
         swNextDayAt8pm.setChecked(SharedPrefsUtil.get(this, Constants.NEXTDAY_AFTER_8PM_KEY, false));
     }
 
+    private void initGroupFilter(){
+        etGroupFilter.setText(SharedPrefsUtil.get(this, Constants.GROUP_FILTER_KEY, ""));
+    }
+
     @OnClick(R.id.btn_options_save)
     void saveOptions(){
         saveOptionsToPrefs();
@@ -104,6 +117,7 @@ public class OptionsActivity extends AppCompatActivity {
         //save other options
         SharedPrefsUtil.save(this, Constants.SKIP_SATURDAY_KEY, swSkipSaturday.isChecked());
         SharedPrefsUtil.save(this, Constants.NEXTDAY_AFTER_8PM_KEY, swNextDayAt8pm.isChecked());
+        SharedPrefsUtil.save(this, Constants.GROUP_FILTER_KEY, etGroupFilter.getText().toString());
 
         //save options for pre-selection
         SharedPrefsUtil.save(this, Constants.CHECKED_PROGTYPE_ID_IKEY, rgProgType.getCheckedRadioButtonId());

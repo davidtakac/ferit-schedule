@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +22,7 @@ import os.dtakac.feritraspored.model.programmes.ProgrammeType;
 import os.dtakac.feritraspored.model.year.Year;
 import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.R;
+import os.dtakac.feritraspored.util.JsUtil;
 import os.dtakac.feritraspored.util.SharedPrefsUtil;
 
 public class ScheduleActivity extends AppCompatActivity {
@@ -83,8 +83,9 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 setLoading(false);
-                Log.d(Constants.LOG_TAG, "finished loading");
-                //injectJsHighlighting();
+                if(url.contains(Constants.BASE_SCHEDULE_URL)) {
+                    injectScheduleHighlighting();
+                }
             }
         });
 
@@ -92,11 +93,11 @@ public class ScheduleActivity extends AppCompatActivity {
         wvSchedule.getSettings().setJavaScriptEnabled(true);
     }
 
-    private void injectJsHighlighting() {
-        // TODO: 16-Nov-18 separate parts of this js code for easier upgradability
-        wvSchedule.loadUrl("javascript:($(\"p:contains('4/24'),p:contains('PR-2'),p:contains('4/16')\").css(\"text-transform\",\"uppercase\").css(\"color\",\"#EF271B\"))");
-
-        //wvSchedule.loadUrl("javascript:(" + buildJsBody() + ")");
+    private void injectScheduleHighlighting() {
+        String pContainsQuery = JsUtil.parseToPContains(
+                SharedPrefsUtil.get(this, Constants.GROUP_FILTER_KEY, "")
+        );
+        wvSchedule.loadUrl("javascript:($(\"" + pContainsQuery + "\").css(\"text-transform\",\"uppercase\").css(\"color\",\"#EF271B\"))");
     }
 
     private String getUrl() {

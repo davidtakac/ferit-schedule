@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-<<<<<<< HEAD
-      <module fileurl="file://$PROJECT_DIR$/.idea/FeritSchedule.iml" filepath="$PROJECT_DIR$/.idea/FeritSchedule.iml" />
-=======
       <module fileurl="file://$PROJECT_DIR$/FeritSchedule.iml" filepath="$PROJECT_DIR$/FeritSchedule.iml" />
->>>>>>> 586e4e8173c381a3162c1818f3659dd51aee65f3
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

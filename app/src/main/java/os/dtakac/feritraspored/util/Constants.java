@@ -13,4 +13,5 @@ public class Constants {
     public static final String CHECKED_PROGTYPE_ID_IKEY = "checked_progtype_id";
     public static final String CHECKED_PROG_POS_KEY = "checked_prog_id";
     public static final String CHECKED_YEAR_POS_KEY = "checked_yr_id";
+    public static final String GROUP_FILTER_KEY = "group_filter_key";
 }

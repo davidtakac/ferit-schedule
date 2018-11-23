@@ -12,9 +12,6 @@ import os.dtakac.feritraspored.util.SharedPrefsUtil;
 
 public class SplashActivity extends AppCompatActivity {
 
-    @BindView(R.id.wv_schedule)
-    WebView wvSchedule;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
