@@ -25,6 +25,7 @@ import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.util.JsUtil;
 import os.dtakac.feritraspored.util.SharedPrefsUtil;
 
+// TODO: 11/23/18 clean up
 public class ScheduleActivity extends AppCompatActivity {
 
     @BindView(R.id.wv_schedule)
@@ -45,7 +46,7 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private void loadSchedule() {
-        wvSchedule.loadUrl(getUrl());
+        wvSchedule.loadUrl(buildScheduleUrl());
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ScheduleActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        wvSchedule.loadUrl(getUrl());
+        wvSchedule.loadUrl(buildScheduleUrl());
     }
 
     private void initWebView() {
@@ -84,12 +85,13 @@ public class ScheduleActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 setLoading(false);
                 if(url.contains(Constants.BASE_SCHEDULE_URL)) {
+                    //only highlight groups if the schedule is being displayed.
                     injectScheduleHighlighting();
                 }
             }
         });
 
-        //enables logging in to aai edu in one click.
+        //enables logging in to aai edu in one click and js injection for highlighting
         wvSchedule.getSettings().setJavaScriptEnabled(true);
     }
 
@@ -100,41 +102,52 @@ public class ScheduleActivity extends AppCompatActivity {
         wvSchedule.loadUrl("javascript:($(\"" + pContainsQuery + "\").css(\"text-transform\",\"uppercase\").css(\"color\",\"#EF271B\"))");
     }
 
-    private String getUrl() {
-        LocalDate date = new LocalDate();
+    private String buildScheduleUrl() {
         String url = Constants.BASE_FERIT_URL + Constants.BASE_SCHEDULE_URL;
 
-        date = skipToNextDayAfter8pm(date);
-        date = advanceToNextMondayOnWeekend(date);
+        LocalDate date = createDateToDisplayByUserPrefs();
+
+        String prevSelectedProgId = App.getProgrammes().getProgrammesByType(ProgrammeType.UNDERGRAD).get(0).getId();
+        String prevSelectedYearId = Year.FIRST.getId();
 
         return  url
+                //load current week
                 + date.withDayOfWeek(DateTimeConstants.MONDAY).toString()
-                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, App.getProgrammes().getProgrammes(ProgrammeType.UNDERGRAD).get(0).getId())
-                + "-" + SharedPrefsUtil.get(this, Constants.PROGRAMME_KEY, Year.FIRST.getId())
-
+                //load selected programme
+                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, prevSelectedProgId)
+                //load selected year
+                + "-" + SharedPrefsUtil.get(this, Constants.PROGRAMME_KEY, prevSelectedYearId)
                 //scroll to current day of the week
                 + "#" + date.toString()
                 ;
     }
 
-    private LocalDate skipToNextDayAfter8pm(LocalDate date) {
+    private LocalDate createDateToDisplayByUserPrefs() {
+        LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
+
+        boolean skipSaturday = SharedPrefsUtil.get(this, Constants.SKIP_SATURDAY_KEY, false);
         boolean nextDayAfter8pm = SharedPrefsUtil.get(this, Constants.NEXTDAY_AFTER_8PM_KEY, false);
 
-        return date.plusDays((nextDayAfter8pm && time.getHourOfDay() >= 20) ? 1 : 0);
-    }
-
-    private LocalDate advanceToNextMondayOnWeekend(LocalDate date) {
-        boolean skipSaturday = SharedPrefsUtil.get(this, Constants.SKIP_SATURDAY_KEY, false);
-        int daysToAdd = 0;
-
-        if(date.getDayOfWeek() == DateTimeConstants.SATURDAY && skipSaturday){
-            daysToAdd = 2;
-        } else if(date.getDayOfWeek() == DateTimeConstants.SUNDAY){
-            daysToAdd = 1;
+        if(nextDayAfter8pm) {
+            date = skipToNextDayAfter8pm(date, time);
         }
 
-        return date.plusDays(daysToAdd);
+        if(date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+            date = date.plusDays(1);
+        } else if(skipSaturday) {
+            date = skipSaturday(date);
+        }
+
+        return date;
+    }
+
+    private LocalDate skipToNextDayAfter8pm(LocalDate date, LocalTime time) {
+        return date.plusDays((time.getHourOfDay() >= 20) ? 1 : 0);
+    }
+
+    private LocalDate skipSaturday(LocalDate date){
+        return date.plusDays((date.getDayOfWeek() == DateTimeConstants.SATURDAY) ? 2 : 0);
     }
 
     @Override

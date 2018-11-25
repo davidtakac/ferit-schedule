@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import java.io.IOException;
 import java.util.List;
 
+import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.FileUtil;
 
 public class Programmes {
@@ -25,7 +26,7 @@ public class Programmes {
         }
     }
 
-    public List<Programme> getProgrammes(ProgrammeType type){
+    public List<Programme> getProgrammesByType(ProgrammeType type){
         List<Programme> result = undergrad;
         switch (type){
             case GRAD: result = graduate; break;

@@ -8,8 +8,12 @@ public class JsUtil {
     /**
      * Parses comma separated string that contains different group ID's to
      * a series of connected JS p:contains([group]) queries. <br>
+     *
      * e.g. for the input String of "PR-LV4,PR-2,4/16" the output will be: <br>
      * "p:contains("PR-LV4"),p:contains("PR-2"),p:contains("4/16")
+     *
+     * @param commaSeparatedFilters the input string to be parsed into series of p:contains queries.
+     * @return String containing p:contains queries separated by comma(ready for JS injection).
      *
      */
     public static String parseToPContains(String commaSeparatedFilters){
