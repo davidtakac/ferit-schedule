@@ -98,7 +98,10 @@ public class ScheduleActivity extends AppCompatActivity {
         String pContainsQuery = JsUtil.parseToPContains(
                 SharedPrefsUtil.get(this, Constants.GROUP_FILTER_KEY, "")
         );
-        wvSchedule.loadUrl("javascript:($(\"" + pContainsQuery + "\").css(\"text-transform\",\"uppercase\").css(\"color\",\"#EF271B\"))");
+        wvSchedule.loadUrl("javascript:($(\"" + pContainsQuery + "\")" +
+                ".css(\"text-transform\",\"uppercase\")" +
+                ".css(\"color\",\"#EF271B\"))"
+        );
     }
 
     private String buildScheduleUrl() {
@@ -112,9 +115,9 @@ public class ScheduleActivity extends AppCompatActivity {
         return  url
                 //load current week
                 + date.withDayOfWeek(DateTimeConstants.MONDAY).toString()
-                //load selected programme
-                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, prevSelectedProgId)
                 //load selected year
+                + "/" + SharedPrefsUtil.get(this, Constants.YEAR_KEY, prevSelectedProgId)
+                //load selected programme
                 + "-" + SharedPrefsUtil.get(this, Constants.PROGRAMME_KEY, prevSelectedYearId)
                 //scroll to current day of the week
                 + "#" + date.toString()
