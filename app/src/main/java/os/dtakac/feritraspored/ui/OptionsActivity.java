@@ -30,7 +30,6 @@ import os.dtakac.feritraspored.util.SharedPrefsUtil;
 import os.dtakac.feritraspored.model.programmes.ProgrammeType;
 import os.dtakac.feritraspored.model.year.Year;
 
-// TODO: 11/23/18 elektrotehnika-racunarstvo/informatika situacija
 public class OptionsActivity extends AppCompatActivity {
 
     @BindView(R.id.rg_options_pickprogtype)
@@ -59,6 +58,8 @@ public class OptionsActivity extends AppCompatActivity {
 
     private ProgrammeType checkedType;
 
+    private boolean wasYearInitialized = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,23 +67,40 @@ public class OptionsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         programmes = App.getProgrammes();
+        rgProgType.setOnCheckedChangeListener(getCheckedChangeListener());
+        spnProg.setOnItemSelectedListener(getOnItemSelectedListener());
 
-        rgProgType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        initViewsFromPrefs();
+    }
+
+    private RadioGroup.OnCheckedChangeListener getCheckedChangeListener(){
+        return new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 setCheckedType(checkedId);
                 setProgSpinnerData(checkedType);
+            }
+        };
+    }
+
+    private AdapterView.OnItemSelectedListener getOnItemSelectedListener(){
+        return new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setYearSpinnerData(checkedType);
             }
-        });
 
-        initViewsFromPrefs();
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
     }
 
     private void initViewsFromPrefs() {
         initRadioGroupFromPrefs();
         initProgSpinnerFromPrefs();
-        initYearSpinnerFromPrefs();
+        //year spinner gets initialized when programme is first picked.
         initOtherOptionsFromPrefs();
         initGroupFilterFromPrefs();
     }
@@ -98,15 +116,44 @@ public class OptionsActivity extends AppCompatActivity {
     }
 
     private void setYearSpinnerData(ProgrammeType type) {
-        //Programme selected = progAdapter.getItem(spnProg.getSelectedItemPosition());
+        List<Year> years = new ArrayList<>();
+
+        if(type == ProgrammeType.PROF){
+            //this is a special case because there are two courses that differ in year count.
+            //'Elektrotehnika - racunarstvo' only has a FIRST year, while 'Elektrotehnika - informatika'
+            //only has SECOND and THIRD year. we need to update the spinner accordingly.
+
+            Programme selected = progAdapter.getItem(spnProg.getSelectedItemPosition());
+
+            if(selected.getId().equals("53")){
+                //53 is the ID of 'Elektrotehnika - racunarstvo' which only has
+                //one year - the first.
+                years.add(Year.FIRST);
+            } else if(selected.getId().equals("7")){
+                //7 is the ID of 'Elektrotehnika - informatika' which only has
+                //two years - the second and the third.
+                years.add(Year.SECOND);
+                years.add(Year.THIRD);
+            } else {
+                //for any other programme of type PROF, get years as you would normally.
+                years = Arrays.asList(ProgrammeType.PROF.getYears());
+            }
+        } else {
+            years = Arrays.asList(type.getYears());
+        }
 
         yearAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
-                type.getYears()
+                years
         );
 
         spnYear.setAdapter(yearAdapter);
+
+        if(!wasYearInitialized){
+            initYearSpinnerFromPrefs();
+            wasYearInitialized = true;
+        }
     }
 
     private void initRadioGroupFromPrefs(){
@@ -115,13 +162,13 @@ public class OptionsActivity extends AppCompatActivity {
     }
 
     private void initYearSpinnerFromPrefs(){
-        int prevYearPos = SharedPrefsUtil.get(this, Constants.CHECKED_YEAR_POS_KEY, -1);
-        spnYear.setSelection(prevYearPos != -1 ? prevYearPos : 0);
+        int prevPos = SharedPrefsUtil.get(this, Constants.CHECKED_YEAR_POS_KEY, 0);
+        spnYear.setSelection(prevPos);
     }
 
     private void initProgSpinnerFromPrefs(){
-        int prevChkProgPos = SharedPrefsUtil.get(this, Constants.CHECKED_PROG_POS_KEY, -1);
-        spnProg.setSelection(prevChkProgPos != -1 ? prevChkProgPos : 0);
+        int prevPos = SharedPrefsUtil.get(this, Constants.CHECKED_PROG_POS_KEY, 0);
+        spnProg.setSelection(prevPos);
     }
 
     private void initOtherOptionsFromPrefs() {

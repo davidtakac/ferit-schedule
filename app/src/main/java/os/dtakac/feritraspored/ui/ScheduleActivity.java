@@ -25,7 +25,6 @@ import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.util.JsUtil;
 import os.dtakac.feritraspored.util.SharedPrefsUtil;
 
-// TODO: 11/23/18 clean up
 public class ScheduleActivity extends AppCompatActivity {
 
     @BindView(R.id.wv_schedule)
