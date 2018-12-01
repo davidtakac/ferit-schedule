@@ -2,18 +2,17 @@ package os.dtakac.feritraspored.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.webkit.CookieManager;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,13 +47,21 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
         initWebView();
         initSwipeRefresh();
-
-        presenter.loadSchedule();
     }
 
     @Override
-    public void loadUrlOrJavascript(String toLoad){
-        wvSchedule.loadUrl(toLoad);
+    public void loadUrl(String url){
+        wvSchedule.loadUrl(url);
+    }
+
+    @Override
+    public void injectJavascript(String script){
+        wvSchedule.evaluateJavascript(script, new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String value) {
+                Log.d(Constants.LOG_TAG, "Javascript return value: " + value);
+            }
+        });
     }
 
     @Override
@@ -96,7 +103,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         wvSchedule.getSettings().setJavaScriptEnabled(true);
     }
 
-    private void injectJs() {
+    private void modifySchedulePage() {
         presenter.hideElementsOtherThanSchedule();
         presenter.scrollToCurrentDay();
         presenter.highlightSelectedGroups();
@@ -114,7 +121,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.loadSchedule();
+                wvSchedule.reload();
             }
         });
     }
@@ -128,7 +135,9 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         @Override
         public void onPageFinished(WebView view, String url) {
             setLoading(false);
-            injectJs();
+            if(url.contains(Constants.BASE_SCHEDULE_URL)) {
+                modifySchedulePage();
+            }
         }
 
         @Override

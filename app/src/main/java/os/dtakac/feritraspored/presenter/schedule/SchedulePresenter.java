@@ -31,23 +31,23 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void loadSchedule() {
-        view.loadUrlOrJavascript(buildScheduleUrl());
+        view.loadUrl(buildScheduleUrl());
     }
 
     @Override
     public void hideElementsOtherThanSchedule() {
-        view.loadUrlOrJavascript(createHideElementsJsFunction());
-        view.loadUrlOrJavascript(createRemoveElementsJsFunction());
+        view.injectJavascript(createHideElementsJsFunction());
+        view.injectJavascript(createRemoveElementsJsFunction());
     }
 
     @Override
     public void scrollToCurrentDay() {
-        view.loadUrlOrJavascript(createScrollIntoViewJsFunction());
+        view.injectJavascript(createScrollIntoViewJsFunction());
     }
 
     @Override
     public void highlightSelectedGroups() {
-        view.loadUrlOrJavascript(createElementHighlightJsFunction());
+        view.injectJavascript(createElementHighlightJsFunction());
     }
 
     private LocalDate generateDateBasedOnUserPrefs() {
@@ -95,19 +95,19 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String createHideElementsJsFunction() {
-        return "javascript:(" +
+        return "(" +
                 JsUtil.toHideElementsWithIdFunction("header-top,header,gototopdiv,footer,sidebar") +
                 "())";
     }
 
     private String createRemoveElementsJsFunction() {
-        return "javascript:(" +
+        return "(" +
                 JsUtil.toRemoveElementsWithIdFunction("izbor-studija") +
                 "())";
     }
 
     private String createScrollIntoViewJsFunction() {
-        return "javascript:(" +
+        return  "(" +
                 JsUtil.toScrollIntoViewFunction(dateToDisplay.toString()) +
                 "())";
     }
@@ -117,7 +117,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
                 repo.get(Constants.GROUP_FILTER_KEY, "")
         );
 
-        return "javascript:($(\"" +
+        return "($(\"" +
                 pContainsQuery +
                 "\").css(\"text-transform\",\"uppercase\").css(\"color\",\"#EF271B\"))";
     }

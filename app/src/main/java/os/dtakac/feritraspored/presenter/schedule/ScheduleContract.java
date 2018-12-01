@@ -9,6 +9,7 @@ public interface ScheduleContract {
     }
 
     interface View {
-        void loadUrlOrJavascript(String toLoad);
+        void loadUrl(String toLoad);
+        void injectJavascript(String script);
     }
 }
