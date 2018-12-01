@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -132,13 +133,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if(url.contains(Constants.BASE_SCHEDULE_URL)){
-                //this is my webpage, so let the webview load the page
-                return false;
-            }
-            //otherwise it's not displaying the schedule webpage, so load with external browser.
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            return true;
+            return false;
         }
     }
 }
