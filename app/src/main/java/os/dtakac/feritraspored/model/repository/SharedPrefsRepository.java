@@ -1,6 +1,8 @@
-package os.dtakac.feritraspored;
+package os.dtakac.feritraspored.model.repository;
 
 import android.content.SharedPreferences;
+
+import os.dtakac.feritraspored.model.repository.IRepository;
 
 public class SharedPrefsRepository implements IRepository {
 

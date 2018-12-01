@@ -10,15 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import os.dtakac.feritraspored.App;
-import os.dtakac.feritraspored.SharedPrefsRepository;
-import os.dtakac.feritraspored.ScheduleContract;
-import os.dtakac.feritraspored.SchedulePresenter;
+import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
+import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
+import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.R;
 

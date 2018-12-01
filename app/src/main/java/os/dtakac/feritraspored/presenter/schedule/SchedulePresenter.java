@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored;
+package os.dtakac.feritraspored.presenter.schedule;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -6,6 +6,7 @@ import org.joda.time.LocalTime;
 
 import os.dtakac.feritraspored.model.programmes.ProgrammeType;
 import os.dtakac.feritraspored.model.programmes.Programmes;
+import os.dtakac.feritraspored.model.repository.IRepository;
 import os.dtakac.feritraspored.model.year.Year;
 import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JsUtil;
@@ -95,7 +96,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private String createHideElementsJsFunction() {
         return "javascript:(" +
-                JsUtil.toHideElementsWithIdFunction("header-top,header,gototopdiv,footer,sidebar,btnSave,print button") +
+                JsUtil.toHideElementsWithIdFunction("header-top,header,gototopdiv,footer,sidebar") +
                 "())";
     }
 

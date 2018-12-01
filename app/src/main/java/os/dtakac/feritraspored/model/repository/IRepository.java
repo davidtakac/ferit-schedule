@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored;
+package os.dtakac.feritraspored.model.repository;
 
 public interface IRepository {
 
