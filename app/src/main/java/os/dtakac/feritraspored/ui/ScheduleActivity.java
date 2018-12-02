@@ -11,11 +11,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.ValueCallback;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import os.dtakac.feritraspored.App;
 import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
 import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
@@ -47,6 +49,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
         initWebView();
         initSwipeRefresh();
+        presenter.loadSchedule();
     }
 
     @Override
@@ -83,9 +86,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    @OnClick(R.id.fab_schedule_loadschedule)
+    void onFabClick(){
         presenter.loadSchedule();
     }
 
@@ -138,11 +140,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
             if(url.contains(Constants.BASE_SCHEDULE_URL)) {
                 modifySchedulePage();
             }
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return false;
         }
     }
 }
