@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/tv_options_progtypelabel"
@@ -201,24 +202,24 @@
         />
     
     <TextView
-        android:id="@+id/tv_options_nextday8pmlabel"
+        android:id="@+id/tv_options_nextdaylabel"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
 
-        android:text="@string/options_nextday8pm"
+        android:text="@string/options_nextday"
 
         android:textSize="15sp"
         android:textColor="@color/black"
         
-        app:layout_constraintTop_toTopOf="@id/sw_options_nextday8pm"
-        app:layout_constraintBottom_toBottomOf="@id/sw_options_nextday8pm"
+        app:layout_constraintTop_toTopOf="@id/sw_options_nextday"
+        app:layout_constraintBottom_toBottomOf="@id/sw_options_nextday"
         app:layout_constraintLeft_toLeftOf="parent"
         />
     
     <Switch
-        android:id="@+id/sw_options_nextday8pm"
+        android:id="@+id/sw_options_nextday"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -245,6 +246,26 @@
 
         app:fabSize="normal"
         android:clickable="true"
+        />
+
+    <Button
+        android:id="@+id/btn_options_timepicker"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="20:00"
+        tools:textColor="@color/grey"
+        android:textSize="15sp"
+        android:textColor="@color/darkGreen"
+
+        style="?android:attr/borderlessButtonStyle"
+
+        app:layout_constraintTop_toTopOf="@id/tv_options_nextdaylabel"
+        app:layout_constraintBottom_toBottomOf="@id/tv_options_nextdaylabel"
+        app:layout_constraintRight_toLeftOf="@id/sw_options_nextday"
+
+        app:layout_constraintHorizontal_bias="0"
         />
 
 </android.support.constraint.ConstraintLayout>

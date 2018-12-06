@@ -10,7 +10,7 @@
     <string name="options_save">Spremi</string>
     <string name="menu_editprogyear">Opcije</string>
     <string name="options_skipsat">Subotom učitaj sljedeći ponedjeljak</string>
-    <string name="options_nextday8pm">Poslije 20:00 učitaj sljedeći dan</string>
+    <string name="options_nextday">Učitaj sljedeći dan poslije</string>
     <string name="string_groupfilterhint">npr: LV4/24,PR-2,LV1/16</string>
     <string name="string_grouphighlighting_hint">Isticanje grupa(odvoji svaku grupu zarezom):</string>
 </resources>

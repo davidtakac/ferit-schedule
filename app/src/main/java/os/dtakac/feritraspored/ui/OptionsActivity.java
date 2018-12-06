@@ -1,13 +1,17 @@
 package os.dtakac.feritraspored.ui;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -19,6 +23,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import os.dtakac.feritraspored.App;
+import os.dtakac.feritraspored.model.Time24Hour;
+import os.dtakac.feritraspored.ui.TimePicker.TimePickerFragment;
+import os.dtakac.feritraspored.ui.TimePicker.TimeSetListener;
 import os.dtakac.feritraspored.presenter.options.OptionsContract;
 import os.dtakac.feritraspored.presenter.options.OptionsPresenter;
 import os.dtakac.feritraspored.model.programmes.Programme;
@@ -40,11 +47,14 @@ public class OptionsActivity extends AppCompatActivity implements OptionsContrac
     @BindView(R.id.sw_options_skipsat)
     Switch swSkipSaturday;
 
-    @BindView(R.id.sw_options_nextday8pm)
-    Switch swNextDayAfter8pm;
+    @BindView(R.id.sw_options_nextday)
+    Switch swNextDay;
 
     @BindView(R.id.et_options_labgroups)
     EditText etGroupFilter;
+
+    @BindView(R.id.btn_options_timepicker)
+    Button btnTimePicker;
 
     private OptionsContract.Presenter presenter;
 
@@ -71,6 +81,7 @@ public class OptionsActivity extends AppCompatActivity implements OptionsContrac
     private void initViews() {
         rgProgType.setOnCheckedChangeListener(getCheckedChangeListener());
         spnProg.setOnItemSelectedListener(getOnItemSelectedListener());
+        swNextDay.setOnCheckedChangeListener(getTimeSwitchChangedListener());
     }
 
     private RadioGroup.OnCheckedChangeListener getCheckedChangeListener(){
@@ -96,35 +107,57 @@ public class OptionsActivity extends AppCompatActivity implements OptionsContrac
         };
     }
 
+    private CompoundButton.OnCheckedChangeListener getTimeSwitchChangedListener() {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setTimePickerButtonEnabled(isChecked);
+            }
+        };
+    }
+
     @OnClick(R.id.fab_options_save)
     void saveOptions(){
         presenter.saveOptions();
         startScheduleActivity();
     }
 
+    @OnClick(R.id.btn_options_timepicker)
+    void showTimePicker(){
+        Time24Hour prevSelectedTime = presenter.getSelectedTime();
+
+        DialogFragment f = TimePickerFragment.newInstance(prevSelectedTime, new TimeSetListener() {
+            @Override
+            public void onTimeSet(Time24Hour setTime) {
+                presenter.setSelectedTime(setTime);
+            }
+        });
+        f.show(getSupportFragmentManager(), "TimePicker");
+    }
+
     @Override
-    public void checkRadioButton(int radioButtonId) {
+    public void setCheckedRadioButton(int radioButtonId) {
         rgProgType.check(radioButtonId);
     }
 
     @Override
-    public void selectYear(int position) {
+    public void setYear(int position) {
         spnYear.setSelection(position);
     }
 
     @Override
-    public void selectProgramme(int position) {
+    public void setProgramme(int position) {
         spnProg.setSelection(position);
     }
 
     @Override
-    public void checkSkipSaturdayOption(boolean isChecked) {
+    public void setSkipSaturdayChecked(boolean isChecked) {
         swSkipSaturday.setChecked(isChecked);
     }
 
     @Override
-    public void checkNextDayAfter8pmOption(boolean isChecked) {
-        swNextDayAfter8pm.setChecked(isChecked);
+    public void setNextDayChecked(boolean isChecked) {
+        swNextDay.setChecked(isChecked);
     }
 
     @Override
@@ -153,6 +186,18 @@ public class OptionsActivity extends AppCompatActivity implements OptionsContrac
     }
 
     @Override
+    public void setTimePickerButtonText(String time) {
+        btnTimePicker.setText(time);
+    }
+
+    @Override
+    public void setTimePickerButtonEnabled(boolean isEnabled) {
+        Resources r = getResources();
+        btnTimePicker.setEnabled(isEnabled);
+        btnTimePicker.setTextColor(isEnabled ? r.getColor(R.color.darkGreen) : r.getColor(R.color.grey));
+    }
+
+    @Override
     public Programme getSelectedProgramme() {
         return progAdapter.getItem(getProgSpinnerPosition());
     }
@@ -168,8 +213,8 @@ public class OptionsActivity extends AppCompatActivity implements OptionsContrac
     }
 
     @Override
-    public boolean getNextDayAfter8pmOption() {
-        return swNextDayAfter8pm.isChecked();
+    public boolean getNextDayOption() {
+        return swNextDay.isChecked();
     }
 
     @Override

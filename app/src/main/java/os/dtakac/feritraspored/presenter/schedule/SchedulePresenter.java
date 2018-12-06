@@ -1,7 +1,5 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
-import android.util.Log;
-
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -64,10 +62,10 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         LocalTime time = new LocalTime();
 
         boolean skipSaturday = repo.get(Constants.SKIP_SATURDAY_KEY, false);
-        boolean nextDayAfter8pm = repo.get(Constants.NEXTDAY_AFTER_8PM_KEY, false);
+        boolean skipToNextDay = repo.get(Constants.NEXTDAY_KEY, false);
 
-        if(nextDayAfter8pm) {
-            date = skipToNextDayAfter8pm(date, time);
+        if(skipToNextDay) {
+            date = skipToNextDay(date, time);
         }
 
         if(date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
@@ -79,8 +77,13 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         return date;
     }
 
-    private LocalDate skipToNextDayAfter8pm(LocalDate date, LocalTime time){
-        return date.plusDays((time.getHourOfDay() >= 20) ? 1 : 0);
+    private LocalDate skipToNextDay(LocalDate date, LocalTime time){
+        int hour = repo.get(Constants.SELECTED_HOUR_KEY, 20);
+        int minute = repo.get(Constants.SELECTED_MIN_KEY, 0);
+
+        return date.plusDays(
+                (time.getHourOfDay() >= hour && time.getMinuteOfHour() >= minute) ? 1 : 0
+        );
     }
 
     private LocalDate skipSaturday(LocalDate date){

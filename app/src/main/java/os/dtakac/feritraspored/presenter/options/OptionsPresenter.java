@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import os.dtakac.feritraspored.R;
+import os.dtakac.feritraspored.model.Time24Hour;
 import os.dtakac.feritraspored.model.programmes.Programme;
 import os.dtakac.feritraspored.model.programmes.ProgrammeType;
 import os.dtakac.feritraspored.model.programmes.Programmes;
@@ -24,21 +25,32 @@ public class OptionsPresenter implements OptionsContract.Presenter {
 
     private boolean wasYearInitialized;
 
+    private Time24Hour selectedTime;
+
     public OptionsPresenter(OptionsContract.View view, IRepository repo, Programmes progs) {
         this.view = view;
         this.repo = repo;
         this.progs = progs;
         this.checkedType = ProgrammeType.UNDERGRAD;
         this.wasYearInitialized = false;
+        this.selectedTime = getPreviouslySelectedTime();
     }
 
     @Override
     public void initViewValues() {
-        view.checkRadioButton(repo.get(Constants.CHECKED_PROGTYPE_ID_KEY, R.id.rb_options_undergrad));
-        view.selectProgramme(repo.get(Constants.CHECKED_PROG_POS_KEY, 0));
-        view.checkSkipSaturdayOption(repo.get(Constants.SKIP_SATURDAY_KEY, false));
-        view.checkNextDayAfter8pmOption(repo.get(Constants.NEXTDAY_AFTER_8PM_KEY, false));
+        view.setCheckedRadioButton(repo.get(Constants.CHECKED_PROGTYPE_ID_KEY, R.id.rb_options_undergrad));
+
+        view.setProgramme(repo.get(Constants.CHECKED_PROG_POS_KEY, 0));
+
+        view.setSkipSaturdayChecked(repo.get(Constants.SKIP_SATURDAY_KEY, false));
+
+        view.setNextDayChecked(repo.get(Constants.NEXTDAY_KEY, false));
+
         view.setGroupFilterText(repo.get(Constants.GROUP_FILTER_KEY, ""));
+
+        view.setTimePickerButtonText(getPreviouslySelectedTime().toString());
+
+        view.setTimePickerButtonEnabled(repo.get(Constants.NEXTDAY_KEY, false));
     }
 
     @Override
@@ -68,7 +80,7 @@ public class OptionsPresenter implements OptionsContract.Presenter {
         view.setYearSpinnerData(years);
 
         if(!wasYearInitialized){
-            view.selectYear(repo.get(Constants.CHECKED_YEAR_POS_KEY, 0));
+            view.setYear(repo.get(Constants.CHECKED_YEAR_POS_KEY, 0));
             wasYearInitialized = true;
         }
     }
@@ -79,13 +91,33 @@ public class OptionsPresenter implements OptionsContract.Presenter {
         repo.add(Constants.YEAR_KEY, view.getSelectedYear().getId());
 
         repo.add(Constants.SKIP_SATURDAY_KEY, view.getSkipSaturdayOption());
-        repo.add(Constants.NEXTDAY_AFTER_8PM_KEY, view.getNextDayAfter8pmOption());
+        repo.add(Constants.NEXTDAY_KEY, view.getNextDayOption());
         repo.add(Constants.GROUP_FILTER_KEY, view.getGroupFilterText());
 
         repo.add(Constants.CHECKED_PROGTYPE_ID_KEY, view.getCheckedRbId());
         repo.add(Constants.CHECKED_PROG_POS_KEY, view.getProgSpinnerPosition());
         repo.add(Constants.CHECKED_YEAR_POS_KEY, view.getYearSpinnerPosition());
 
+        repo.add(Constants.SELECTED_HOUR_KEY, selectedTime.getHour());
+        repo.add(Constants.SELECTED_MIN_KEY, selectedTime.getMinute());
+    }
+
+    private Time24Hour getPreviouslySelectedTime(){
+        int hour = repo.get(Constants.SELECTED_HOUR_KEY, 20);
+        int min = repo.get(Constants.SELECTED_MIN_KEY, 0);
+
+        return new Time24Hour(hour,min);
+    }
+
+    @Override
+    public Time24Hour getSelectedTime() {
+        return selectedTime;
+    }
+
+    @Override
+    public void setSelectedTime(Time24Hour selectedTime) {
+        this.selectedTime = selectedTime;
+        view.setTimePickerButtonText(selectedTime.toString());
     }
 
     private void setCheckedType(int checkedId) {
