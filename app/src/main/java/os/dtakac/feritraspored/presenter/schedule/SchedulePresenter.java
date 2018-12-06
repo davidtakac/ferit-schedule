@@ -1,5 +1,7 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
+import android.util.Log;
+
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -30,8 +32,15 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void loadSchedule() {
-        view.loadUrl(buildScheduleUrl());
+    public void loadCurrentDay() {
+        String currentWeekUrl = buildScheduleUrl();
+        String loadedUrl = view.getLoadedUrl();
+
+        if(loadedUrl == null || !loadedUrl.equals(currentWeekUrl)){
+            view.loadUrl(currentWeekUrl);
+        } else {
+            scrollToCurrentDay();
+        }
     }
 
     @Override

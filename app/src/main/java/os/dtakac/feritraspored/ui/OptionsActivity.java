@@ -96,7 +96,7 @@ public class OptionsActivity extends AppCompatActivity implements OptionsContrac
         };
     }
 
-    @OnClick(R.id.btn_options_save)
+    @OnClick(R.id.fab_options_save)
     void saveOptions(){
         presenter.saveOptions();
         startScheduleActivity();

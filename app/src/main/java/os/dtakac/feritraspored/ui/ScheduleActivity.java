@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.ValueCallback;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -49,7 +47,14 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
         initWebView();
         initSwipeRefresh();
-        presenter.loadSchedule();
+
+        presenter.loadCurrentDay();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.loadCurrentDay();
     }
 
     @Override
@@ -62,9 +67,14 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         wvSchedule.evaluateJavascript(script, new ValueCallback<String>() {
             @Override
             public void onReceiveValue(String value) {
-                Log.d(Constants.LOG_TAG, "Javascript return value: " + value);
+                //nothing yet
             }
         });
+    }
+
+    @Override
+    public String getLoadedUrl() {
+        return wvSchedule.getUrl();
     }
 
     @Override
@@ -82,13 +92,18 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     private void handleSelectedMenuItem(int itemId) {
         switch (itemId){
-            case R.id.item_menu_editprogyear: startOptionsActivity(); break;
+            case R.id.item_menu_editprogyear:
+                startOptionsActivity();
+                break;
+
+            default:
+                break;
         }
     }
 
     @OnClick(R.id.fab_schedule_loadschedule)
     void onFabClick(){
-        presenter.loadSchedule();
+        presenter.loadCurrentDay();
     }
 
     @Override
