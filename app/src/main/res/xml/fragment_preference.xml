@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:iconSpaceReserved="false">
 
     <PreferenceCategory
         android:title="@string/settings_scheduledisplaycategory_title"
@@ -32,7 +33,6 @@
             android:key="@string/prefkey_groups"
             android:title="@string/settings_grouphighlight_title"
             android:summary="@string/settings_grouphighlight_summary"
-            android:hint="sfgdsfdsh"
             android:negativeButtonText="@string/cancel_label"
             android:positiveButtonText="@string/confirm_label"
             />

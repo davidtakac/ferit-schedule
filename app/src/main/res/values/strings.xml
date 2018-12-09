@@ -32,6 +32,8 @@
     <string name="prefkey_time">timepicker_key</string>
     <string name="prefkey_time_hour">hour_key</string>
     <string name="prefkey_time_minute">minute_key</string>
+    <string name="settings_grouphighlight_hint">LV4/24,PR-2,KV2/16,…</string>
+    <string name="settings_grouphighlight_empty">Unesi grupe</string>
 
     <!--Programme type names and IDs-->
     <string-array name="programmetype_names">

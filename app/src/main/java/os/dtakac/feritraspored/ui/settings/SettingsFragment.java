@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
+
+import com.takisoft.fix.support.v7.preference.EditTextPreference;
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.Time24Hour;
@@ -29,6 +30,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private ListPreference yearList;
     private Preference timePickerPref;
     private SwitchPreference skipDay;
+    private EditTextPreference groupsPref;
 
     private IRepository repo;
 
@@ -45,12 +47,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     @Override
-    public void onCreatePreferences(Bundle bundle, String s) {
+    public void onCreatePreferencesFix(Bundle bundle, String s) {
         setPreferencesFromResource(R.xml.fragment_preference, s);
 
         initPrefReferences();
         initPreferenceLists();
         initTimePickerPref();
+        initGroupsPref();
     }
 
     @Override
@@ -72,6 +75,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         yearList = (ListPreference) m.findPreference(getStr(R.string.prefkey_year));
         timePickerPref = m.findPreference(getStr(R.string.prefkey_time));
         skipDay = (SwitchPreference) m.findPreference(getStr(R.string.prefkey_skipday));
+        groupsPref = (EditTextPreference) m.findPreference(getStr(R.string.prefkey_groups));
     }
 
     private void initPreferenceLists(){
@@ -92,6 +96,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                         .toString()
         );
         timePickerPref.setEnabled(skipDay.isChecked());
+    }
+
+    private void initGroupsPref(){
+        groupsPref.getEditText().setHint(getStr(R.string.settings_grouphighlight_hint));
+        setGroupsSummaryFromPrefs();
+    }
+
+    private void setGroupsSummaryFromPrefs(){
+        String summary = repo.get(getStr(R.string.prefkey_groups), getStr(R.string.settings_grouphighlight_empty));
+        groupsPref.setSummary(summary.isEmpty() ? getStr(R.string.settings_grouphighlight_empty) : summary);
     }
 
     private void setUpProgrammeTypeList(){
@@ -185,6 +199,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             yearList.setValueIndex(0);
         } else if(key.equals(getStr(R.string.prefkey_skipday))){
             timePickerPref.setEnabled(skipDay.isChecked());
+        } else if(key.equals(getStr(R.string.prefkey_groups))){
+            setGroupsSummaryFromPrefs();
         }
     }
 
