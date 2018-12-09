@@ -70,6 +70,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private void initPrefReferences() {
         PreferenceManager m = getPreferenceManager();
+
         progTypeList = (ListPreference) m.findPreference(getStr(R.string.prefkey_progtype));
         programmeList = (ListPreference) m.findPreference(getStr(R.string.prefkey_programme));
         yearList = (ListPreference) m.findPreference(getStr(R.string.prefkey_year));
@@ -90,12 +91,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private void initTimePickerPref(){
         timePickerPref.setOnPreferenceClickListener(this);
-        timePickerPref.setSummary(
-                new Time24Hour(
-                        repo.get(getStr(R.string.prefkey_time_hour), 20), repo.get(getStr(R.string.prefkey_time_minute), 0))
-                        .toString()
-        );
-        timePickerPref.setEnabled(skipDay.isChecked());
+
+        setTimePickerSummaryFromPrefs();
+        setTimePickerEnabled(skipDay.isChecked());
+    }
+
+    private void setTimePickerSummaryFromPrefs(){
+        int prevHour = repo.get(getStr(R.string.prefkey_time_hour), 20);
+        int prevMinute = repo.get(getStr(R.string.prefkey_time_minute), 0);
+        timePickerPref.setSummary(new Time24Hour(prevHour, prevMinute).toString());
+    }
+
+    private void setTimePickerEnabled(boolean isEnabled){
+        timePickerPref.setEnabled(isEnabled);
     }
 
     private void initGroupsPref(){
@@ -112,6 +120,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         progTypeList.setEntries(getStrArray(R.array.programmetype_names));
         progTypeList.setEntryValues(getStrArray(R.array.programmetype_values));
         progTypeList.setValue(repo.get(getStr(R.string.prefkey_progtype), "1"));
+    }
+
+    private void setProgrammeValue(int index){
+        programmeList.setValueIndex(index);
+    }
+
+    private void setYearValue(int index){
+        yearList.setValueIndex(index);
     }
 
     private void setUpProgrammeList(int selectedProgTypeId) {
@@ -142,7 +158,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         if(!wasProgrammeInitialized){
             int valueIndex = programmeList.findIndexOfValue(repo.get(getStr(R.string.prefkey_programme), ""));
-            programmeList.setValueIndex(valueIndex != -1 ? valueIndex : 0);
+            setProgrammeValue(valueIndex != -1 ? valueIndex : 0);
             wasProgrammeInitialized = true;
         }
     }
@@ -183,7 +199,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         if(!wasYearInitialized){
             int valueIndex = yearList.findIndexOfValue(repo.get(getStr(R.string.prefkey_year), ""));
-            yearList.setValueIndex(valueIndex != -1 ? valueIndex : 0);
+            setYearValue(valueIndex != -1 ? valueIndex : 0);
             wasYearInitialized = true;
         }
     }
@@ -193,12 +209,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         Log.d(Constants.LOG_TAG, key);
         if(key.equals(getStr(R.string.prefkey_progtype))){
             setUpProgrammeList(Integer.parseInt(progTypeList.getValue()));
-            programmeList.setValueIndex(0);
+            setProgrammeValue(0);
         } else if(key.equals(getStr(R.string.prefkey_programme))){
             setUpYearList(Integer.parseInt(progTypeList.getValue()), Integer.parseInt(programmeList.getValue()));
-            yearList.setValueIndex(0);
+            setYearValue(0);
         } else if(key.equals(getStr(R.string.prefkey_skipday))){
-            timePickerPref.setEnabled(skipDay.isChecked());
+            setTimePickerEnabled(skipDay.isChecked());
         } else if(key.equals(getStr(R.string.prefkey_groups))){
             setGroupsSummaryFromPrefs();
         }
@@ -214,12 +230,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 public void onTimeSet(Time24Hour setTime) {
                     repo.add(getStr(R.string.prefkey_time_hour), setTime.getHour());
                     repo.add(getStr(R.string.prefkey_time_minute), setTime.getMinute());
-                    timePickerPref.setSummary(setTime.toString());
+                    setTimePickerSummaryFromPrefs();
                 }
             });
+
             if(getActivity() != null){
                 f.show(getActivity().getSupportFragmentManager(), Constants.TIMEPICKER_KEY);
             }
+
         }
         return true;
     }
