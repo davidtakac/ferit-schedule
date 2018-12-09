@@ -30,9 +30,15 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         String currentWeekUrl = buildScheduleUrl();
         String loadedUrl = view.getLoadedUrl();
 
-        if(loadedUrl == null || !loadedUrl.equals(currentWeekUrl)){
+        if(loadedUrl == null || !loadedUrl.equals(currentWeekUrl) || repo.get(resManager.getSettingsModifiedKey(), false)) {
+            //if the webview doesn't have a loaded url, the loaded url isn't of the current week
+            //or if the settings were modified, load the url again.
+
             view.loadUrl(currentWeekUrl);
+            repo.add(resManager.getSettingsModifiedKey(), false);
         } else {
+            //else, the schedule is already on the current week, so just scroll to the current week.
+
             scrollToCurrentDay();
         }
     }

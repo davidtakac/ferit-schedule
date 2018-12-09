@@ -21,6 +21,8 @@
     <string name="settings_scheduledisplaycategory_title">Prikaz rasporeda</string>
     <string name="cancel_label">Natrag</string>
     <string name="confirm_label">Spremi</string>
+    <string name="settings_grouphighlight_hint">LV4/24,PR-2,KV2/16,…</string>
+    <string name="settings_grouphighlight_empty">Unesi grupe</string>
 
     <!--Preference key strings-->
     <string name="prefkey_skipsaturday">skip_saturday_key</string>
@@ -32,8 +34,7 @@
     <string name="prefkey_time">timepicker_key</string>
     <string name="prefkey_time_hour">hour_key</string>
     <string name="prefkey_time_minute">minute_key</string>
-    <string name="settings_grouphighlight_hint">LV4/24,PR-2,KV2/16,…</string>
-    <string name="settings_grouphighlight_empty">Unesi grupe</string>
+    <string name="settings_modified_key">settings_modified</string>
 
     <!--Programme type names and IDs-->
     <string-array name="programmetype_names">

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +23,9 @@ import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
+import os.dtakac.feritraspored.util.Constants;
 
+// TODO: 12/9/18 after the user exits settings activity, reload this activity(or apply settings)
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
     @BindView(R.id.wv_schedule)
@@ -120,7 +123,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         wvSchedule.getSettings().setJavaScriptEnabled(true);
     }
 
-    private void modifySchedulePage() {
+    private void applyJavascript() {
         presenter.hideElementsOtherThanSchedule();
         presenter.scrollToCurrentDay();
         presenter.highlightSelectedGroups();
@@ -149,7 +152,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         public void onPageFinished(WebView view, String url) {
             setLoading(false);
             if(url.contains(getString(R.string.ferit_scheduleurl))) {
-                modifySchedulePage();
+                applyJavascript();
             }
         }
     }

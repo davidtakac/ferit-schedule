@@ -33,17 +33,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private EditTextPreference groupsPref;
 
     private IRepository repo;
+    private SharedPreferences prefs;
 
     private boolean wasProgrammeInitialized = false;
     private boolean wasYearInitialized = false;
+
+    private boolean werePrefsModified = false;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
-        p.registerOnSharedPreferenceChangeListener(this);
-        repo = new SharedPrefsRepository(p);
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        repo = new SharedPrefsRepository(prefs);
     }
 
     @Override
@@ -57,6 +59,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        prefs.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
     public void onPause() {
         if(getActivity() !=null) {
             Fragment timepicker = getActivity().getSupportFragmentManager().findFragmentByTag(Constants.TIMEPICKER_KEY);
@@ -65,6 +73,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 df.dismiss();
             }
         }
+        prefs.unregisterOnSharedPreferenceChangeListener(this);
+        repo.add(getStr(R.string.settings_modified_key), werePrefsModified);
         super.onPause();
     }
 
@@ -207,6 +217,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Log.d(Constants.LOG_TAG, key);
+        if(!werePrefsModified) {
+            werePrefsModified = true;
+        }
+
         if(key.equals(getStr(R.string.prefkey_progtype))){
             setUpProgrammeList(Integer.parseInt(progTypeList.getValue()));
             setProgrammeValue(0);

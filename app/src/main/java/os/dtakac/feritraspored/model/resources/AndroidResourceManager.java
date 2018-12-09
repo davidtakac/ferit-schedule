@@ -49,6 +49,11 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
+    public String getSettingsModifiedKey() {
+        return r.getString(R.string.settings_modified_key);
+    }
+
+    @Override
     public String getScheduleUrl() {
         return r.getString(R.string.ferit_baseurl) + r.getString(R.string.ferit_scheduleurl);
     }

@@ -9,6 +9,7 @@ public interface ResourceManager {
     String getProgrammeKey();
     String getYearKey();
     String getGroupsKey();
+    String getSettingsModifiedKey();
 
     String getScheduleUrl();
 
