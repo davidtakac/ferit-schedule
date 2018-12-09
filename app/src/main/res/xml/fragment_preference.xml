@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <PreferenceCategory
+        android:title="@string/settings_scheduledisplaycategory_title"
+        >
+
+        <SwitchPreference
+            android:key="@string/prefkey_skipsaturday"
+            android:title="@string/settings_skipsaturday_title"
+            />
+
+        <SwitchPreference
+            android:key="@string/prefkey_skipday"
+            android:title="@string/settings_skipday_title"
+            android:summary="@string/settings_skipday_summary"
+            />
+
+        <Preference
+            android:key="@string/prefkey_time"
+            android:title="@string/settings_timepicker_title"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_grouphighlightcategory_title">
+
+        <EditTextPreference
+            android:key="@string/prefkey_groups"
+            android:title="@string/settings_grouphighlight_title"
+            android:summary="@string/settings_grouphighlight_summary"
+            android:hint="sfgdsfdsh"
+            android:negativeButtonText="@string/cancel_label"
+            android:positiveButtonText="@string/confirm_label"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_studypickcategory_title">
+
+        <ListPreference
+            android:key="@string/prefkey_progtype"
+            android:title="@string/settings_progtype_title"
+            android:summary="%s"
+            android:negativeButtonText="@string/cancel_label"
+            />
+
+        <ListPreference
+            android:key="@string/prefkey_programme"
+            android:title="@string/settings_programme_title"
+            android:summary="%s"
+            android:negativeButtonText="@string/cancel_label"
+            />
+
+        <ListPreference
+            android:key="@string/prefkey_year"
+            android:title="@string/settings_year_title"
+            android:summary="%s"
+            android:negativeButtonText="@string/cancel_label"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

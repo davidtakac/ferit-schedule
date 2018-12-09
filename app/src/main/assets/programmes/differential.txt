@@ -1,6 +1,0 @@
-Računarstvo blok I,42
-Računarstvo blok A,24
-Elektroenergetika blok E,41
-Elektroenergetika blok A,23
-Komunikacije i informatika blok I,40
-Komunikacije i informatika blok A,22

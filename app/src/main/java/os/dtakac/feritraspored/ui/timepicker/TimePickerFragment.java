@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.ui.TimePicker;
+package os.dtakac.feritraspored.ui.timepicker;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.widget.TimePicker;
 
+import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.Time24Hour;
 import os.dtakac.feritraspored.util.Constants;
 
@@ -35,10 +36,11 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
             initialTime = (Time24Hour) args.getSerializable(Constants.TIMEPICK_TIME_KEY);
         }
 
-        return new TimePickerDialog(
-                getActivity(), this,
-                initialTime.getHour(), initialTime.getMinute(), true
-        );
+        TimePickerDialog tpd = new TimePickerDialog(getActivity(), this, initialTime.getHour(), initialTime.getMinute(), true);
+        tpd.setButton(TimePickerDialog.BUTTON_NEGATIVE, getString(R.string.cancel_label), tpd);
+        tpd.setButton(TimePickerDialog.BUTTON_POSITIVE, getString(R.string.confirm_label), tpd);
+
+        return tpd;
     }
 
     @Override

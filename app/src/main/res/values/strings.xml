@@ -1,16 +1,178 @@
 <resources>
+
+    <!--url strings-->
+    <string name="ferit_baseurl">https://www.ferit.unios.hr/</string>
+    <string name="ferit_scheduleurl">studenti/raspored-nastave-i-ispita/</string>
+
+    <!--User interface strings-->
     <string name="app_name">FERIT Raspored</string>
-    <string name="options_pickprog">Odaberi studijski program:</string>
-    <string name="options_pickyear">Odaberi godinu:</string>
-    <string name="options_undergrad">Preddiplomski</string>
-    <string name="options_grad">Diplomski</string>
-    <string name="options_picktypeofprog">Odaberi tip programa:</string>
-    <string name="options_prof">Stručni</string>
-    <string name="options_diff">Razlikovna</string>
-    <string name="options_save">Spremi</string>
-    <string name="menu_editprogyear">Opcije</string>
-    <string name="options_skipsat">Subotom učitaj sljedeći ponedjeljak</string>
-    <string name="options_nextday">Učitaj sljedeći dan poslije</string>
-    <string name="string_groupfilterhint">npr: LV4/24,PR-2,LV1/16</string>
-    <string name="string_grouphighlighting_hint">Isticanje grupa(odvoji svaku grupu zarezom):</string>
+    <string name="settings_grouphighlight_summary">npr. \"LV4/24,PR-2,LV1/16\"</string>
+    <string name="settings_label">Postavke</string>
+    <string name="settings_progtype_title">Tip studija</string>
+    <string name="settings_programme_title">Studij</string>
+    <string name="settings_year_title">Godina</string>
+    <string name="settings_studypickcategory_title">Studij i godina</string>
+    <string name="settings_grouphighlight_title">Grupe</string>
+    <string name="settings_grouphighlightcategory_title">Označavanje grupa</string>
+    <string name="settings_timepicker_title">Vrijeme</string>
+    <string name="settings_skipday_title">Preskakanje dana</string>
+    <string name="settings_skipday_summary">Prikazuj sljedeći dan poslije dolje definiranog vremena</string>
+    <string name="settings_skipsaturday_title">Preskoči subotu</string>
+    <string name="settings_scheduledisplaycategory_title">Prikaz rasporeda</string>
+    <string name="cancel_label">Natrag</string>
+    <string name="confirm_label">Spremi</string>
+
+    <!--Preference key strings-->
+    <string name="prefkey_skipsaturday">skip_saturday_key</string>
+    <string name="prefkey_skipday">skip_day_key</string>
+    <string name="prefkey_groups">group_highlight_key</string>
+    <string name="prefkey_progtype">prog_type_key</string>
+    <string name="prefkey_programme">programme_key</string>
+    <string name="prefkey_year">year_key</string>
+    <string name="prefkey_time">timepicker_key</string>
+    <string name="prefkey_time_hour">hour_key</string>
+    <string name="prefkey_time_minute">minute_key</string>
+
+    <!--Programme type names and IDs-->
+    <string-array name="programmetype_names">
+        <item>Preddiplomski</item>
+        <item>Diplomski</item>
+        <item>Stručni</item>
+        <item>Razlikovna</item>
+    </string-array>
+    <string-array name="programmetype_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <!--Undergrad programme names and IDs-->
+    <string-array name="undergrad_names">
+        <item>Računarstvo</item>
+        <item>Elektrotehnika</item>
+        <item>Elektroenergetika</item>
+        <item>Komunikcije i informatika</item>
+    </string-array>
+    <string-array name="undergrad_values">
+        <item>2</item>
+        <item>1</item>
+        <item>1</item>
+        <item>21</item>
+    </string-array>
+
+    <!--Graduate programme names and IDs-->
+    <string-array name="graduate_names">
+        <item>DKA</item>
+        <item>DKB</item>
+        <item>DEA</item>
+        <item>DEB</item>
+        <item>DEC</item>
+        <item>DRA</item>
+        <item>DRB</item>
+        <item>DRC</item>
+        <item>DRD</item>
+        <item>DA</item>
+    </string-array>
+    <string-array name="graduate_values">
+        <item>34</item>
+        <item>35</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+        <item>52</item>
+    </string-array>
+
+    <!--Professional names and IDs-->
+    <string-array name="professional_names">
+        <item>Elektrotehnika - računarstvo</item>
+        <item>Elektrotehnika - informatika</item>
+        <item>Automatika</item>
+        <item>Elektroenergetika</item>
+    </string-array>
+    <string-array name="professional_values">
+        <item>53</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+
+    <!--Differential names and IDs-->
+    <string-array name="differential_names">
+        <item>Računarstvo blok I</item>
+        <item>Računarstvo blok A</item>
+        <item>Elektroenergetika blok E</item>
+        <item>Elektroenergetika blok A</item>
+        <item>Komunikacije i informatika blok I</item>
+        <item>Komunikacije i informatika blok A</item>
+    </string-array>
+    <string-array name="differential_values">
+        <item>42</item>
+        <item>24</item>
+        <item>41</item>
+        <item>23</item>
+        <item>40</item>
+        <item>22</item>
+    </string-array>
+
+    <!--Years and their IDs-->
+    <string-array name="year_undergrad_names">
+        <item>Prva</item>
+        <item>Druga</item>
+        <item>Treća</item>
+    </string-array>
+    <string-array name="year_undergrad_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="year_graduate_names">
+        <item>Prva</item>
+        <item>Druga</item>
+    </string-array>
+    <string-array name="year_graduate_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="year_professional_names">
+        <item>Prva</item>
+        <item>Druga</item>
+        <item>Treća</item>
+    </string-array>
+    <string-array name="year_professional_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="year_differential_names">
+        <item>Prva</item>
+    </string-array>
+    <string-array name="year_differential_values">
+        <item>1</item>
+    </string-array>
+
+    <!--Professional studies specific year count because who needs consistency, right, FERIT?-->
+    <string-array name="year_ETRAC_professional_names">
+        <item>Prva</item>
+    </string-array>
+    <string-array name="year_ETRAC_professional_values">
+        <item>1</item>
+    </string-array>
+
+    <string-array name="year_ETINF_professional_names">
+        <item>Druga</item>
+        <item>Treća</item>
+    </string-array>
+    <string-array name="year_ETINF_professional_values">
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
 </resources>

@@ -4,11 +4,8 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-import os.dtakac.feritraspored.model.programmes.ProgrammeType;
-import os.dtakac.feritraspored.model.programmes.Programmes;
+import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.model.repository.IRepository;
-import os.dtakac.feritraspored.model.year.Year;
-import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JsUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
@@ -16,15 +13,14 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private ScheduleContract.View view;
 
     private IRepository repo;
-
-    private Programmes progs;
+    private ResourceManager resManager;
 
     private LocalDate dateToDisplay;
 
-    public SchedulePresenter(ScheduleContract.View view, IRepository repo, Programmes progs) {
+    public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager) {
         this.view = view;
         this.repo = repo;
-        this.progs = progs;
+        this.resManager = resManager;
 
         this.dateToDisplay = generateDateBasedOnUserPrefs();
     }
@@ -61,8 +57,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
 
-        boolean skipSaturday = repo.get(Constants.SKIP_SATURDAY_KEY, false);
-        boolean skipToNextDay = repo.get(Constants.NEXTDAY_KEY, false);
+        boolean skipSaturday = repo.get(resManager.getSkipSaturdayKey(), false);
+        boolean skipToNextDay = repo.get(resManager.getSkipDayKey(), false);
 
         if(skipToNextDay) {
             date = skipToNextDay(date, time);
@@ -78,8 +74,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private LocalDate skipToNextDay(LocalDate date, LocalTime time){
-        int hour = repo.get(Constants.SELECTED_HOUR_KEY, 20);
-        int minute = repo.get(Constants.SELECTED_MIN_KEY, 0);
+        int hour = repo.get(resManager.getHourKey(), 20);
+        int minute = repo.get(resManager.getMinuteKey(), 0);
 
         return date.plusDays(
                 (time.getHourOfDay() >= hour && time.getMinuteOfHour() >= minute) ? 1 : 0
@@ -91,18 +87,17 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildScheduleUrl() {
-        String url = Constants.BASE_FERIT_URL + Constants.BASE_SCHEDULE_URL;
 
-        String defaultProgId = progs.getProgrammesByType(ProgrammeType.UNDERGRAD).get(0).getId();
-        String defaultYearId = Year.FIRST.getId();
+        String defaultProgId = resManager.getUndergradProgrammeId(0);
+        String defaultYearId = resManager.getUndergradYearId(0);
 
-        return  url
+        return  resManager.getScheduleUrl()
                 //load current week
                 + dateToDisplay.withDayOfWeek(DateTimeConstants.MONDAY).toString()
                 //load selected year
-                + "/" + repo.get(Constants.YEAR_KEY, defaultYearId)
+                + "/" + repo.get(resManager.getYearKey(), defaultYearId)
                 //load selected programme
-                + "-" + repo.get(Constants.PROGRAMME_KEY, defaultProgId)
+                + "-" + repo.get(resManager.getProgrammeKey(), defaultProgId)
                 ;
     }
 
@@ -126,7 +121,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private String createElementHighlightJsFunction() {
         String pContainsQuery = JsUtil.toPContains(
-                repo.get(Constants.GROUP_FILTER_KEY, "")
+                repo.get(resManager.getGroupsKey(), "")
         );
 
         return "($(\"" +

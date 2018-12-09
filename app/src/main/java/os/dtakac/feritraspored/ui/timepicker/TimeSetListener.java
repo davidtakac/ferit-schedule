@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.ui.TimePicker;
+package os.dtakac.feritraspored.ui.timepicker;
 
 import java.io.Serializable;
 

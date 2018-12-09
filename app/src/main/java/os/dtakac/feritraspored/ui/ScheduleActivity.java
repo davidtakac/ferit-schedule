@@ -16,12 +16,12 @@ import android.webkit.WebViewClient;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import os.dtakac.feritraspored.App;
+import os.dtakac.feritraspored.model.resources.AndroidResourceManager;
 import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
 import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
-import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.R;
+import os.dtakac.feritraspored.ui.settings.SettingsActivity;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
@@ -42,7 +42,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         presenter = new SchedulePresenter(
                 this,
                 new SharedPrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),
-                App.getProgrammes()
+                new AndroidResourceManager(getResources())
         );
 
         initWebView();
@@ -92,8 +92,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     private void handleSelectedMenuItem(int itemId) {
         switch (itemId){
-            case R.id.item_menu_editprogyear:
-                startOptionsActivity();
+            case R.id.item_menu_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
 
             default:
@@ -126,10 +126,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         presenter.highlightSelectedGroups();
     }
 
-    private void startOptionsActivity(){
-        startActivity(new Intent(this, OptionsActivity.class));
-    }
-
     private void setLoading(boolean isLoading){
         swipeRefresh.setRefreshing(isLoading);
     }
@@ -152,7 +148,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         @Override
         public void onPageFinished(WebView view, String url) {
             setLoading(false);
-            if(url.contains(Constants.BASE_SCHEDULE_URL)) {
+            if(url.contains(getString(R.string.ferit_scheduleurl))) {
                 modifySchedulePage();
             }
         }
