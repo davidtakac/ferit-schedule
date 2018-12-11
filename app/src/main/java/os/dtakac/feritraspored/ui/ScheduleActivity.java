@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +27,6 @@ import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
 import os.dtakac.feritraspored.util.Constants;
 
-// TODO: 12/9/18 after the user exits settings activity, reload this activity(or apply settings)
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
     @BindView(R.id.wv_schedule)
@@ -123,12 +124,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         wvSchedule.getSettings().setJavaScriptEnabled(true);
     }
 
-    private void applyJavascript() {
-        presenter.hideElementsOtherThanSchedule();
-        presenter.scrollToCurrentDay();
-        presenter.highlightSelectedGroups();
-    }
-
     private void setLoading(boolean isLoading){
         swipeRefresh.setRefreshing(isLoading);
     }
@@ -155,5 +150,11 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                 applyJavascript();
             }
         }
+    }
+
+    private void applyJavascript() {
+        presenter.hideElementsOtherThanSchedule();
+        presenter.scrollToCurrentDay();
+        presenter.highlightSelectedGroups();
     }
 }

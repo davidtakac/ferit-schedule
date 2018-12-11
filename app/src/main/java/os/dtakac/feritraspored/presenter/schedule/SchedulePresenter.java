@@ -1,11 +1,14 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
+import android.util.Log;
+
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.model.repository.IRepository;
+import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JsUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
@@ -29,34 +32,34 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     public void loadCurrentDay() {
         String currentWeekUrl = buildScheduleUrl();
         String loadedUrl = view.getLoadedUrl();
+        boolean settingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
 
-        if(loadedUrl == null || !loadedUrl.equals(currentWeekUrl) || repo.get(resManager.getSettingsModifiedKey(), false)) {
-            //if the webview doesn't have a loaded url, the loaded url isn't of the current week
-            //or if the settings were modified, load the url again.
-
+        if(settingsModified || loadedUrl == null || !loadedUrl.equals(currentWeekUrl)){
+            dateToDisplay = generateDateBasedOnUserPrefs();
             view.loadUrl(currentWeekUrl);
+
             repo.add(resManager.getSettingsModifiedKey(), false);
         } else {
-            //else, the schedule is already on the current week, so just scroll to the current week.
-
             scrollToCurrentDay();
         }
     }
 
     @Override
     public void hideElementsOtherThanSchedule() {
-        view.injectJavascript(createHideElementsJsFunction());
-        view.injectJavascript(createRemoveElementsJsFunction());
+        view.injectJavascript(hideElementsScript());
+        view.injectJavascript(removeElementsScript());
     }
 
     @Override
     public void scrollToCurrentDay() {
-        view.injectJavascript(createScrollIntoViewJsFunction());
+        view.injectJavascript(scrollIntoViewScript());
     }
 
     @Override
     public void highlightSelectedGroups() {
-        view.injectJavascript(createElementHighlightJsFunction());
+        Log.d(Constants.LOG_TAG, "highlighting groups");
+
+        view.injectJavascript(highlightElementsScript());
     }
 
     private LocalDate generateDateBasedOnUserPrefs() {
@@ -107,25 +110,25 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
                 ;
     }
 
-    private String createHideElementsJsFunction() {
+    private String hideElementsScript() {
         return "(" +
                 JsUtil.toHideElementsWithIdFunction("header-top,header,gototopdiv,footer,sidebar") +
                 "())";
     }
 
-    private String createRemoveElementsJsFunction() {
+    private String removeElementsScript() {
         return "(" +
                 JsUtil.toRemoveElementsWithIdFunction("izbor-studija") +
                 "())";
     }
 
-    private String createScrollIntoViewJsFunction() {
+    private String scrollIntoViewScript() {
         return  "(" +
                 JsUtil.toScrollIntoViewFunction(dateToDisplay.toString()) +
                 "())";
     }
 
-    private String createElementHighlightJsFunction() {
+    private String highlightElementsScript() {
         String pContainsQuery = JsUtil.toPContains(
                 repo.get(resManager.getGroupsKey(), "")
         );
