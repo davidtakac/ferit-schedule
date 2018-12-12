@@ -29,7 +29,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private ListPreference programmeList;
     private ListPreference yearList;
     private Preference timePickerPref;
-    private SwitchPreference skipDay;
     private EditTextPreference groupsPref;
 
     private IRepository repo;
@@ -85,7 +84,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         programmeList = (ListPreference) m.findPreference(getStr(R.string.prefkey_programme));
         yearList = (ListPreference) m.findPreference(getStr(R.string.prefkey_year));
         timePickerPref = m.findPreference(getStr(R.string.prefkey_time));
-        skipDay = (SwitchPreference) m.findPreference(getStr(R.string.prefkey_skipday));
         groupsPref = (EditTextPreference) m.findPreference(getStr(R.string.prefkey_groups));
     }
 
@@ -103,7 +101,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         timePickerPref.setOnPreferenceClickListener(this);
 
         setTimePickerSummaryFromPrefs();
-        setTimePickerEnabled(skipDay.isChecked());
+        setTimePickerEnabled(repo.get(getStr(R.string.prefkey_skipday), false));
     }
 
     private void setTimePickerSummaryFromPrefs(){
@@ -228,7 +226,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             setUpYearList(Integer.parseInt(progTypeList.getValue()), Integer.parseInt(programmeList.getValue()));
             setYearValue(0);
         } else if(key.equals(getStr(R.string.prefkey_skipday))){
-            setTimePickerEnabled(skipDay.isChecked());
+            setTimePickerEnabled(repo.get(key,false));
         } else if(key.equals(getStr(R.string.prefkey_groups))){
             setGroupsSummaryFromPrefs();
         }
@@ -239,13 +237,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         if(preference.getKey().equals(getStr(R.string.prefkey_time))){
             Time24Hour prevTime = new Time24Hour(repo.get(getStr(R.string.prefkey_time_hour), 20), repo.get(getStr(R.string.prefkey_time_minute), 0));
 
-            DialogFragment f = TimePickerFragment.newInstance(prevTime, new TimeSetListener() {
-                @Override
-                public void onTimeSet(Time24Hour setTime) {
-                    repo.add(getStr(R.string.prefkey_time_hour), setTime.getHour());
-                    repo.add(getStr(R.string.prefkey_time_minute), setTime.getMinute());
-                    setTimePickerSummaryFromPrefs();
-                }
+            DialogFragment f = TimePickerFragment.newInstance(prevTime, (TimeSetListener) setTime -> {
+                repo.add(getStr(R.string.prefkey_time_hour), setTime.getHour());
+                repo.add(getStr(R.string.prefkey_time_minute), setTime.getMinute());
+                setTimePickerSummaryFromPrefs();
             });
 
             if(getActivity() != null){
