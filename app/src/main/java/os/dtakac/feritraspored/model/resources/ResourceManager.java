@@ -10,6 +10,7 @@ public interface ResourceManager {
     String getYearKey();
     String getGroupsKey();
     String getSettingsModifiedKey();
+    String getLastDisplayedDateKey();
 
     String getScheduleUrl();
 

@@ -2,19 +2,17 @@ package os.dtakac.feritraspored.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +24,7 @@ import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
 import os.dtakac.feritraspored.util.Constants;
+import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
@@ -46,7 +45,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         presenter = new SchedulePresenter(
                 this,
                 new SharedPrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),
-                new AndroidResourceManager(getResources())
+                new AndroidResourceManager(getResources()),
+                new JavascriptUtil(getAssets())
         );
 
         initWebView();
@@ -68,11 +68,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void injectJavascript(String script){
-        wvSchedule.evaluateJavascript(script, new ValueCallback<String>() {
-            @Override
-            public void onReceiveValue(String value) {
-                //nothing yet
-            }
+        wvSchedule.evaluateJavascript(script, value -> {
+            //nothing yet
         });
     }
 
@@ -129,15 +126,21 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void initSwipeRefresh() {
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                wvSchedule.reload();
-            }
-        });
+        swipeRefresh.setOnRefreshListener(() -> wvSchedule.reload());
     }
 
     private class ScheduleClient extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.d(Constants.LOG_TAG, "URL to load: " + url);
+            if(url.contains(getString(R.string.ferit_baseurl)) || url.contains(getString(R.string.aaiedu_loginurl))){
+                return false;
+            }
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            return true;
+        }
+
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             setLoading(true);

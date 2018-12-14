@@ -9,7 +9,6 @@ import android.support.v4.app.DialogFragment;
 import android.widget.TimePicker;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.model.Time24Hour;
 import os.dtakac.feritraspored.util.Constants;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {

@@ -3,7 +3,6 @@ package os.dtakac.feritraspored.model.resources;
 import android.content.res.Resources;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.model.resources.ResourceManager;
 
 public class AndroidResourceManager implements ResourceManager {
 
@@ -50,7 +49,12 @@ public class AndroidResourceManager implements ResourceManager {
 
     @Override
     public String getSettingsModifiedKey() {
-        return r.getString(R.string.settings_modified_key);
+        return r.getString(R.string.prefkey_settings_modified);
+    }
+
+    @Override
+    public String getLastDisplayedDateKey() {
+        return r.getString(R.string.prefkey_lastdisplayed_date);
     }
 
     @Override

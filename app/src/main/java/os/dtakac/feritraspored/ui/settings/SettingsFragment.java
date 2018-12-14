@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import android.support.v14.preference.SwitchPreference;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.ListPreference;
@@ -16,7 +15,7 @@ import com.takisoft.fix.support.v7.preference.EditTextPreference;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.model.Time24Hour;
+import os.dtakac.feritraspored.ui.timepicker.Time24Hour;
 import os.dtakac.feritraspored.model.repository.IRepository;
 import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
 import os.dtakac.feritraspored.ui.timepicker.TimePickerFragment;
@@ -72,8 +71,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 df.dismiss();
             }
         }
+        repo.add(getStr(R.string.prefkey_settings_modified), werePrefsModified);
         prefs.unregisterOnSharedPreferenceChangeListener(this);
-        repo.add(getStr(R.string.settings_modified_key), werePrefsModified);
         super.onPause();
     }
 

@@ -9,60 +9,73 @@ import org.joda.time.LocalTime;
 import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.model.repository.IRepository;
 import os.dtakac.feritraspored.util.Constants;
-import os.dtakac.feritraspored.util.JsUtil;
+import os.dtakac.feritraspored.util.JavascriptUtil;
 
+// TODO: 12/12/18 implement forward/backward buttons
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
-    private ScheduleContract.View view;
+    private static String[] idsToHide = {"header-top","header","gototopdiv","footer","sidebar","napomene"};
+    private static String[] classesToHide = {"naslov-kategorije"};
+    private static String[] idsToRemove = {"izbor-studija"};
 
+    private ScheduleContract.View view;
     private IRepository repo;
     private ResourceManager resManager;
+    private JavascriptUtil jsUtil;
 
     private LocalDate dateToDisplay;
 
-    public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager) {
+    public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager, JavascriptUtil jsUtil) {
         this.view = view;
         this.repo = repo;
         this.resManager = resManager;
+        this.jsUtil = jsUtil;
 
-        this.dateToDisplay = generateDateBasedOnUserPrefs();
+        updateDateToDisplay();
     }
 
     @Override
     public void loadCurrentDay() {
-        String currentWeekUrl = buildScheduleUrl();
         String loadedUrl = view.getLoadedUrl();
+
         boolean settingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
+        boolean isDateOutdated = !dateToDisplay.toString().equals(repo.get(resManager.getLastDisplayedDateKey(), ""));
 
-        if(settingsModified || loadedUrl == null || !loadedUrl.equals(currentWeekUrl)){
-            dateToDisplay = generateDateBasedOnUserPrefs();
-            view.loadUrl(currentWeekUrl);
+        if(settingsModified || isDateOutdated || loadedUrl == null || !loadedUrl.equals(buildScheduleUrl())){
+            //re-evaluate the date to display and load the URL again
 
+            updateDateToDisplay();
+            view.loadUrl(buildScheduleUrl());
+
+            //settings were applied so update the settings modified key
             repo.add(resManager.getSettingsModifiedKey(), false);
         } else {
+            //the date is correct and the webview is already on the current week,
+            //so just scroll to current day.
+
             scrollToCurrentDay();
         }
     }
 
     @Override
     public void hideElementsOtherThanSchedule() {
-        view.injectJavascript(hideElementsScript());
-        view.injectJavascript(removeElementsScript());
+        view.injectJavascript(jsUtil.hideElementsScript(idsToHide));
+        view.injectJavascript(jsUtil.removeElementsScript(idsToRemove));
+        view.injectJavascript(jsUtil.hideClassesScript(classesToHide));
     }
 
     @Override
     public void scrollToCurrentDay() {
-        view.injectJavascript(scrollIntoViewScript());
+        view.injectJavascript(jsUtil.scrollIntoViewScript(dateToDisplay.toString()));
     }
 
     @Override
     public void highlightSelectedGroups() {
-        Log.d(Constants.LOG_TAG, "highlighting groups");
-
-        view.injectJavascript(highlightElementsScript());
+        String[] filters = repo.get(resManager.getGroupsKey(), "").split(",");
+        view.injectJavascript(jsUtil.highlightElementsScript(filters));
     }
 
-    private LocalDate generateDateBasedOnUserPrefs() {
+    private void updateDateToDisplay() {
         LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
 
@@ -79,7 +92,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             date = skipSaturday(date);
         }
 
-        return date;
+        dateToDisplay = date;
+        repo.add(resManager.getLastDisplayedDateKey(), dateToDisplay.toString());
     }
 
     private LocalDate skipToNextDay(LocalDate date, LocalTime time){
@@ -96,7 +110,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildScheduleUrl() {
-
         String defaultProgId = resManager.getUndergradProgrammeId(0);
         String defaultYearId = resManager.getUndergradYearId(0);
 
@@ -108,33 +121,5 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
                 //load selected programme
                 + "-" + repo.get(resManager.getProgrammeKey(), defaultProgId)
                 ;
-    }
-
-    private String hideElementsScript() {
-        return "(" +
-                JsUtil.toHideElementsWithIdFunction("header-top,header,gototopdiv,footer,sidebar") +
-                "())";
-    }
-
-    private String removeElementsScript() {
-        return "(" +
-                JsUtil.toRemoveElementsWithIdFunction("izbor-studija") +
-                "())";
-    }
-
-    private String scrollIntoViewScript() {
-        return  "(" +
-                JsUtil.toScrollIntoViewFunction(dateToDisplay.toString()) +
-                "())";
-    }
-
-    private String highlightElementsScript() {
-        String pContainsQuery = JsUtil.toPContains(
-                repo.get(resManager.getGroupsKey(), "")
-        );
-
-        return "($(\"" +
-                pContainsQuery +
-                "\").css(\"text-transform\",\"uppercase\").css(\"color\",\"#EF271B\"))";
     }
 }

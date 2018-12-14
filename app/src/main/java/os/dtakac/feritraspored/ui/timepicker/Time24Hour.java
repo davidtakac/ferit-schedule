@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.model;
+package os.dtakac.feritraspored.ui.timepicker;
 
 import android.support.annotation.NonNull;
 
