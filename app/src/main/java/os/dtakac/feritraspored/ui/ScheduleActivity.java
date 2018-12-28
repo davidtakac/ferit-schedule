@@ -139,20 +139,12 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @OnClick({R.id.item_navitems_current, R.id.item_navitems_next, R.id.item_navitems_previous})
     void navItemClicked(View v){
-        animateButtonPress(v);
         switch(v.getId()){
             case R.id.item_navitems_current: loadCurrentDay(); break;
             case R.id.item_navitems_previous: presenter.loadPreviousWeek(); break;
             case R.id.item_navitems_next: presenter.loadNextWeek(); break;
             default: break;
         }
-    }
-
-    private void animateButtonPress(View v){
-        AlphaAnimation a = new AlphaAnimation(0.5f, 1.0f);
-        a.setDuration(300);
-        a.setFillAfter(true);
-        v.startAnimation(a);
     }
 
     private void setLoading(boolean isLoading){
