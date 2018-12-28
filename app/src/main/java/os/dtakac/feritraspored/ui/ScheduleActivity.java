@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -31,6 +29,7 @@ import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
+// TODO: 12/28/18 theme switching from dark to light
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
     @BindView(R.id.wv_schedule)
@@ -70,7 +69,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void loadCurrentDay(){
-        presenter.loadCurrentWeek();
+        presenter.loadCurrentWeekScrollToCurrentDay();
     }
 
     @Override
@@ -79,8 +78,9 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
         SharedPreferences m = PreferenceManager.getDefaultSharedPreferences(this);
         boolean loadOnResume = m.getBoolean(getString(R.string.prefkey_loadonresume), false);
+        boolean settingsModified = m.getBoolean(getString(R.string.prefkey_settings_modified), false);
 
-        if(loadOnResume) {
+        if(loadOnResume || settingsModified) {
             loadCurrentDay();
         }
     }
@@ -121,7 +121,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.item_menu_openinbrowser:
-                openUrlInExternalBrowser(wvSchedule.getUrl());
+                openUrlInExternalBrowser(getLoadedUrl());
                 break;
             default:
                 break;
@@ -160,7 +160,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private class ScheduleClient extends WebViewClient {
-
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Snackbar s = Snackbar.make(ScheduleActivity.this.findViewById(R.id.constraintlayout_scheduleactivity),
@@ -191,6 +190,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         presenter.hideElementsOtherThanSchedule();
         presenter.scrollToCurrentDay();
         presenter.highlightSelectedGroups();
-        presenter.changeToDarkBackground();
+        //presenter.changeToDarkBackground();
     }
 }

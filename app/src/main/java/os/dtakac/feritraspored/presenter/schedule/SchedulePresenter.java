@@ -37,7 +37,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void loadCurrentWeek() {
+    public void loadCurrentWeekScrollToCurrentDay() {
         String loadedUrl = view.getLoadedUrl();
         setDisplayedWeek(currentWeek);
 
@@ -45,14 +45,15 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
         if(settingsModified || loadedUrl == null || !loadedUrl.equals(buildDisplayedWeekUrl())){
             //re-evaluate the date to display and load the URL again
-
             evaluateCurrentWeek();
             setDisplayedWeek(currentWeek);
             view.loadUrl(buildDisplayedWeekUrl());
+
+            //settings were applied so update the settings modified key
+            repo.add(resManager.getSettingsModifiedKey(), false);
         } else {
             //the date is correct and the webview is already on the current week,
             //so just scroll to current day.
-
             scrollToCurrentDay();
         }
     }

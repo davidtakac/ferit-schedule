@@ -1,12 +1,20 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.MaterialComponents">
+    <style name="DarkTheme" parent="@style/Theme.MaterialComponents">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorPrimary">@color/gray900</item>
+        <item name="colorAccent">@color/lightBlue500</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="android:colorBackground">@color/materialDarkBackground</item>
+        <item name="colorForeground">@color/white</item>
+    </style>
+
+    <style name="LightTheme" parent="@style/Theme.MaterialComponents.Light">
+        <item name="colorAccent">@color/lightBlue500</item>
+        <item name="colorPrimary">@color/gray200</item>
+        <item name="colorPrimaryDark">@color/gray400</item>
+        <item name="colorForeground">@android:color/black</item>
     </style>
 
 </resources>

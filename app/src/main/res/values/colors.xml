@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/almostBlack</color>
-    <color name="colorPrimaryDark">@color/black</color>
-    <color name="colorAccent">#03A9F4</color>
-    <color name="colorBackground">#303030</color>
-
     <color name="black">#000000</color>
-    <color name="almostBlack">#212121</color>
+    <color name="gray900">#212121</color>
     <color name="white">#FFFFFF</color>
+    <color name="lightBlue500">#03A9F4</color>
+    <color name="materialDarkBackground">#303030</color>
+    <color name="gray200">#EEEEEE</color>
+    <color name="gray400">#BDBDBD</color>
 </resources>
