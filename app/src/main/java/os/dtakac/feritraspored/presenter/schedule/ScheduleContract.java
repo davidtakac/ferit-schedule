@@ -2,10 +2,12 @@ package os.dtakac.feritraspored.presenter.schedule;
 
 public interface ScheduleContract {
     interface Presenter {
-        void loadCurrentDay();
+        void loadCurrentWeek();
         void hideElementsOtherThanSchedule();
         void scrollToCurrentDay();
         void highlightSelectedGroups();
+        void loadPreviousWeek();
+        void loadNextWeek();
     }
 
     interface View {

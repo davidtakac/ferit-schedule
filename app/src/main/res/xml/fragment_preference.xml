@@ -7,8 +7,16 @@
         >
 
         <SwitchPreference
+            android:key="@string/prefkey_loadonresume"
+            android:title="@string/settings_loadonresume_title"
+            android:summary="@string/settings_loadonresume_summary"
+            android:defaultValue="true"
+            />
+
+        <SwitchPreference
             android:key="@string/prefkey_skipsaturday"
             android:title="@string/settings_skipsaturday_title"
+            android:summary="@string/settings_skipsaturday_summary"
             />
 
         <SwitchPreference

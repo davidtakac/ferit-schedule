@@ -53,8 +53,8 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
-    public String getLastDisplayedDateKey() {
-        return r.getString(R.string.prefkey_lastdisplayed_date);
+    public String getLoadOnResumeKey() {
+        return r.getString(R.string.prefkey_loadonresume);
     }
 
     @Override

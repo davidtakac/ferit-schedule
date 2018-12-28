@@ -2,4 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/item_menu_settings"
         android:title="@string/settings_label"/>
+
+    <item android:id="@+id/item_menu_openinbrowser"
+        android:title="@string/schedule_openscheduleinbrowser"/>
 </menu>

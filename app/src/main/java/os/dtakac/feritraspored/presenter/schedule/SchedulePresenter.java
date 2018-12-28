@@ -1,21 +1,17 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
-import android.util.Log;
-
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.model.repository.IRepository;
-import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
-// TODO: 12/12/18 implement forward/backward buttons
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private static String[] idsToHide = {"header-top","header","gototopdiv","footer","sidebar","napomene"};
-    private static String[] classesToHide = {"naslov-kategorije"};
+    private static String[] classesToHide = {"naslov-kategorije","odabir"};
     private static String[] idsToRemove = {"izbor-studija"};
 
     private ScheduleContract.View view;
@@ -23,7 +19,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private ResourceManager resManager;
     private JavascriptUtil jsUtil;
 
-    private LocalDate dateToDisplay;
+    private LocalDate currentWeek;
+    private LocalDate displayedWeek;
 
     public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager, JavascriptUtil jsUtil) {
         this.view = view;
@@ -31,24 +28,22 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         this.resManager = resManager;
         this.jsUtil = jsUtil;
 
-        updateDateToDisplay();
+        evaluateCurrentWeek();
     }
 
     @Override
-    public void loadCurrentDay() {
+    public void loadCurrentWeek() {
         String loadedUrl = view.getLoadedUrl();
+        setDisplayedWeek(currentWeek);
 
         boolean settingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
-        boolean isDateOutdated = !dateToDisplay.toString().equals(repo.get(resManager.getLastDisplayedDateKey(), ""));
 
-        if(settingsModified || isDateOutdated || loadedUrl == null || !loadedUrl.equals(buildScheduleUrl())){
+        if(settingsModified || loadedUrl == null || !loadedUrl.equals(buildDisplayedWeekUrl())){
             //re-evaluate the date to display and load the URL again
 
-            updateDateToDisplay();
-            view.loadUrl(buildScheduleUrl());
-
-            //settings were applied so update the settings modified key
-            repo.add(resManager.getSettingsModifiedKey(), false);
+            evaluateCurrentWeek();
+            setDisplayedWeek(currentWeek);
+            view.loadUrl(buildDisplayedWeekUrl());
         } else {
             //the date is correct and the webview is already on the current week,
             //so just scroll to current day.
@@ -66,7 +61,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void scrollToCurrentDay() {
-        view.injectJavascript(jsUtil.scrollIntoViewScript(dateToDisplay.toString()));
+        view.injectJavascript(jsUtil.scrollIntoViewScript(displayedWeek.toString()));
     }
 
     @Override
@@ -75,7 +70,29 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         view.injectJavascript(jsUtil.highlightElementsScript(filters));
     }
 
-    private void updateDateToDisplay() {
+    @Override
+    public void loadPreviousWeek() {
+        setDisplayedWeek(displayedWeek.minusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
+
+        if(displayedWeek.equals(currentWeek.withDayOfWeek(DateTimeConstants.MONDAY))){
+            evaluateCurrentWeek();
+            setDisplayedWeek(currentWeek);
+        }
+        view.loadUrl(buildDisplayedWeekUrl());
+    }
+
+    @Override
+    public void loadNextWeek() {
+        setDisplayedWeek(displayedWeek.plusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
+
+        if(displayedWeek.equals(currentWeek.withDayOfWeek(DateTimeConstants.MONDAY))){
+            evaluateCurrentWeek();
+            setDisplayedWeek(currentWeek);
+        }
+        view.loadUrl(buildDisplayedWeekUrl());
+    }
+
+    private void evaluateCurrentWeek() {
         LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
 
@@ -92,8 +109,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             date = skipSaturday(date);
         }
 
-        dateToDisplay = date;
-        repo.add(resManager.getLastDisplayedDateKey(), dateToDisplay.toString());
+        currentWeek = date;
     }
 
     private LocalDate skipToNextDay(LocalDate date, LocalTime time){
@@ -109,17 +125,21 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         return date.plusDays((date.getDayOfWeek() == DateTimeConstants.SATURDAY) ? 2 : 0);
     }
 
-    private String buildScheduleUrl() {
+    private String buildDisplayedWeekUrl() {
         String defaultProgId = resManager.getUndergradProgrammeId(0);
         String defaultYearId = resManager.getUndergradYearId(0);
 
         return  resManager.getScheduleUrl()
                 //load current week
-                + dateToDisplay.withDayOfWeek(DateTimeConstants.MONDAY).toString()
+                + displayedWeek.withDayOfWeek(DateTimeConstants.MONDAY).toString()
                 //load selected year
                 + "/" + repo.get(resManager.getYearKey(), defaultYearId)
                 //load selected programme
                 + "-" + repo.get(resManager.getProgrammeKey(), defaultProgId)
                 ;
+    }
+
+    private void setDisplayedWeek(LocalDate week){
+        displayedWeek = week;
     }
 }
