@@ -67,11 +67,10 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void changeToDarkBackground() {
-        Log.d(Constants.LOG_TAG, jsUtil.changeClassBackgroundColor(classesToChangeBackgroundColor, resManager.getBackgroundColorInRgb()));
-        Log.d(Constants.LOG_TAG, jsUtil.changeIdBackgroundColor(idsToChangeBackgroundColor, resManager.getBackgroundColorInRgb()));
-
-        view.injectJavascript(jsUtil.changeClassBackgroundColor(classesToChangeBackgroundColor, resManager.getBackgroundColorInRgb()));
-        view.injectJavascript(jsUtil.changeIdBackgroundColor(idsToChangeBackgroundColor, resManager.getBackgroundColorInRgb()));
+        if(repo.get(resManager.getDarkScheduleKey(), false)) {
+            view.injectJavascript(jsUtil.changeClassBackgroundColor(classesToChangeBackgroundColor, resManager.getDarkBackgroundColor()));
+            view.injectJavascript(jsUtil.changeIdBackgroundColor(idsToChangeBackgroundColor, resManager.getDarkBackgroundColor()));
+        }
     }
 
     @Override

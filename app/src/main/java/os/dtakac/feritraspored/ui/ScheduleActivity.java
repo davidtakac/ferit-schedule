@@ -29,7 +29,7 @@ import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
-// TODO: 12/28/18 theme switching from dark to light
+// TODO: 12/28/18 refactor, let presenter handle deciding what to do 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
     @BindView(R.id.wv_schedule)
@@ -46,6 +46,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme();
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
 
@@ -76,12 +77,19 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     protected void onResume() {
         super.onResume();
 
-        SharedPreferences m = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean loadOnResume = m.getBoolean(getString(R.string.prefkey_loadonresume), false);
-        boolean settingsModified = m.getBoolean(getString(R.string.prefkey_settings_modified), false);
+        SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean themeChanged = s.getBoolean(getString(R.string.prefkey_themechanged), false);
 
-        if(loadOnResume || settingsModified) {
-            loadCurrentDay();
+        if(themeChanged){
+            s.edit().putBoolean(getString(R.string.prefkey_themechanged), false).apply();
+            recreate();
+        } else {
+            boolean loadOnResume = s.getBoolean(getString(R.string.prefkey_loadonresume), false);
+            boolean settingsModified = s.getBoolean(getString(R.string.prefkey_settings_modified), false);
+
+            if (loadOnResume || settingsModified) {
+                loadCurrentDay();
+            }
         }
     }
 
@@ -190,6 +198,13 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         presenter.hideElementsOtherThanSchedule();
         presenter.scrollToCurrentDay();
         presenter.highlightSelectedGroups();
-        //presenter.changeToDarkBackground();
+        presenter.changeToDarkBackground();
+    }
+
+    private void setTheme(){
+        SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean darkTheme = s.getBoolean(getString(R.string.prefkey_darktheme), false);
+
+        setTheme(darkTheme ? R.style.DarkTheme : R.style.LightTheme);
     }
 }

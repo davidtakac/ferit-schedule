@@ -228,6 +228,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             setTimePickerEnabled(repo.get(key,false));
         } else if(key.equals(getStr(R.string.prefkey_groups))){
             setGroupsSummaryFromPrefs();
+        } else if(key.equals(getStr(R.string.prefkey_darktheme))) {
+            if (getActivity() != null) {
+                repo.add(getString(R.string.prefkey_themechanged), true);
+                getActivity().recreate();
+            }
         }
     }
 

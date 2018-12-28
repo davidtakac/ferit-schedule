@@ -48,6 +48,13 @@
     <string name="settings_loadonresume_title">Automatski pomakni na trenutni dan</string>
     <string name="settings_loadonresume_summary">Svakim ponovnim ulaskom u aplikaciju učitaj trenutni tjedan i pomakni na trenutni dan</string>
     <string name="settings_skipsaturday_summary">Umjesto pomicanja na subotu, učitaj sljedeći tjedan</string>
+    <string name="prefkey_darkschedule">dark_theme_schedule_key</string>
+    <string name="settings_darktheme">Tamna tema aplikacije</string>
+    <string name="settings_themecategory_title">Tema</string>
+    <string name="prefkey_darktheme">dark_theme_key</string>
+    <string name="settings_darkschedule_title">Tamna pozadina rasporeda</string>
+    <string name="settings_darkschedule_summary">Napomena: horizontalne crte koje odvajaju vremenske blokove ne mogu se prikazati ako je ovo odabrano</string>
+    <string name="prefkey_themechanged">theme_changed_key</string>
 
     <!--Programme type names and IDs-->
     <string-array name="programmetype_names">
