@@ -15,6 +15,8 @@ public class JavascriptUtil {
     private static String SCROLL_INTO_VIEW_PATH = "scroll-into-view-script.txt";
     private static String P_CONTAINS_PATH = "p-contains-script.txt";
     private static String HIGHLIGHT_PATH = "highlight-paragraphs-script.txt";
+    private static String ID_BACKGROUND_PATH = "modify-id-background-script.txt";
+    private static String CLASS_BACKGROUND_PATH = "modify-class-background-script.txt";
 
     private AssetManager am;
 
@@ -35,6 +37,42 @@ public class JavascriptUtil {
         b.append(FUNCTION_START).append("\n");
         for(String arg: args){
             b.append(String.format(script, arg));
+        }
+        b.append(FUNCTION_END);
+        return b.toString();
+    }
+
+    public String changeIdBackgroundColor(String[] elementIds, String color){
+        String script = "";
+        try {
+            script = FileUtil.readFile(am.open(ID_BACKGROUND_PATH));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        StringBuilder b = new StringBuilder();
+        b.append(FUNCTION_START).append("\n");
+        for(String id: elementIds){
+            b.append(String.format(script, id, color));
+        }
+        b.append(FUNCTION_END);
+        return b.toString();
+    }
+
+    public String changeClassBackgroundColor(String[] classNames, String color){
+        String script = "";
+        try {
+            script = FileUtil.readFile(am.open(CLASS_BACKGROUND_PATH));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        StringBuilder b = new StringBuilder();
+        b.append(FUNCTION_START).append("\n");
+        for(String c: classNames){
+            b.append(String.format(script, c, color));
         }
         b.append(FUNCTION_END);
         return b.toString();

@@ -8,6 +8,7 @@ public interface ScheduleContract {
         void highlightSelectedGroups();
         void loadPreviousWeek();
         void loadNextWeek();
+        void changeToDarkBackground();
     }
 
     interface View {

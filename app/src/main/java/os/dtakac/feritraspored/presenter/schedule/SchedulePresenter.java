@@ -1,11 +1,14 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
+import android.util.Log;
+
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.model.repository.IRepository;
+import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
@@ -13,6 +16,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private static String[] idsToHide = {"header-top","header","gototopdiv","footer","sidebar","napomene"};
     private static String[] classesToHide = {"naslov-kategorije","odabir"};
     private static String[] idsToRemove = {"izbor-studija"};
+    private static String[] idsToChangeBackgroundColor = {"raspored","content-contain"};
+    private static String[] classesToChangeBackgroundColor = {"tok"};
 
     private ScheduleContract.View view;
     private IRepository repo;
@@ -57,6 +62,15 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         view.injectJavascript(jsUtil.hideElementsScript(idsToHide));
         view.injectJavascript(jsUtil.removeElementsScript(idsToRemove));
         view.injectJavascript(jsUtil.hideClassesScript(classesToHide));
+    }
+
+    @Override
+    public void changeToDarkBackground() {
+        Log.d(Constants.LOG_TAG, jsUtil.changeClassBackgroundColor(classesToChangeBackgroundColor, resManager.getBackgroundColorInRgb()));
+        Log.d(Constants.LOG_TAG, jsUtil.changeIdBackgroundColor(idsToChangeBackgroundColor, resManager.getBackgroundColorInRgb()));
+
+        view.injectJavascript(jsUtil.changeClassBackgroundColor(classesToChangeBackgroundColor, resManager.getBackgroundColorInRgb()));
+        view.injectJavascript(jsUtil.changeIdBackgroundColor(idsToChangeBackgroundColor, resManager.getBackgroundColorInRgb()));
     }
 
     @Override

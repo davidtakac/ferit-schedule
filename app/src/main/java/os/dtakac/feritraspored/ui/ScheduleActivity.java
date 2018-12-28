@@ -199,5 +199,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         presenter.hideElementsOtherThanSchedule();
         presenter.scrollToCurrentDay();
         presenter.highlightSelectedGroups();
+        presenter.changeToDarkBackground();
     }
 }

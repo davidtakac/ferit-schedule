@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FeritSchedule.iml" filepath="$PROJECT_DIR$/FeritSchedule.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ferit-schedule.iml" filepath="$PROJECT_DIR$/ferit-schedule.iml" />
     </modules>
   </component>
 </project>

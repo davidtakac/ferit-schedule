@@ -1,8 +1,10 @@
 package os.dtakac.feritraspored.model.resources;
 
 import android.content.res.Resources;
+import android.util.Log;
 
 import os.dtakac.feritraspored.R;
+import os.dtakac.feritraspored.util.Constants;
 
 public class AndroidResourceManager implements ResourceManager {
 
@@ -53,8 +55,9 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
-    public String getLoadOnResumeKey() {
-        return r.getString(R.string.prefkey_loadonresume);
+    public String getBackgroundColorInRgb() {
+        String rgb = Integer.toHexString(r.getColor(R.color.colorBackground)).substring(2);
+        return "#" + rgb;
     }
 
     @Override

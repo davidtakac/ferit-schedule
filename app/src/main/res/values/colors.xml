@@ -3,6 +3,7 @@
     <color name="colorPrimary">@color/almostBlack</color>
     <color name="colorPrimaryDark">@color/black</color>
     <color name="colorAccent">#03A9F4</color>
+    <color name="colorBackground">#303030</color>
 
     <color name="black">#000000</color>
     <color name="almostBlack">#212121</color>
