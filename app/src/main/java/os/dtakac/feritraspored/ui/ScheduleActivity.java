@@ -128,15 +128,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (wvSchedule.canGoBack()) {
-            wvSchedule.goBack();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
     private void initWebView() {
         wvSchedule.setWebViewClient(new ScheduleClient());
         wvSchedule.getSettings().setJavaScriptEnabled(true);
