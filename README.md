@@ -1,15 +1,25 @@
 # FERIT Schedule
 
-[Downloads](https://github.com/davidtakac/FeritSchedule/releases/latest)
+[Latest version](https://github.com/davidtakac/FeritSchedule/releases/latest)
 
 ## Description
-A simple wrapper app for the www.ferit.unios.hr online schedule. 
+This is a wrapper app for the [FERIT](www.ferit.unios.hr) online schedule.
 
-After you choose your study programme and year, the app will automatically display the schedule for the current week with the page scrolled to the current day. 
+Main feature:
+- After setting the study programme and year you're currently in, the app will always load the current week and scroll to the current day each time you open it. 
 
-You can change your study programme and year using the menu. The app also allows highlighting the exercise groups you're in so you don't have to manually check every time. 
+Other features include: 
+- Highlighting the groups you're in. For example, you can enter "LV4,KV2,PR-2" and each lecture of the type will be highlighted in red so you don't have to manually check each time
+- Skipping days after a certain time.
+- Skipping Saturdays
+- Stripped down schedule webpage that only displays the most relevant elements(the lectures)
+- Navigation bar that lets you navigate to previous, current and next week
+- Dark theme
+
+Every feature, other than the navigation bar, is optional and configured in the settings.
 
 ## Credit
-Robert Sorić helped me with the Javascript code needed to highlight lab groups.
+- Robert Sorić helped me with the Javascript code needed to highlight lab groups. 
+- [Luka Šimić](https://github.com/lsimic) pointed me in the right direction when I had trouble with CSS.
 
 Thanks!
