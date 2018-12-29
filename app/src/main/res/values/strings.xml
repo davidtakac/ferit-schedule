@@ -73,13 +73,11 @@
     <!--Undergrad programme names and IDs-->
     <string-array name="undergrad_names">
         <item>Računarstvo</item>
-        <item>Elektrotehnika</item>
-        <item>Elektroenergetika</item>
-        <item>Komunikcije i informatika</item>
+        <item>Elektrotehnika ili elektroenergetika</item>
+        <item>Komunikacije i informatika</item>
     </string-array>
     <string-array name="undergrad_values">
         <item>2</item>
-        <item>1</item>
         <item>1</item>
         <item>21</item>
     </string-array>
@@ -181,7 +179,7 @@
         <item>1</item>
     </string-array>
 
-    <!--Professional studies specific year count because who needs consistency, right, FERIT?-->
+    <!--Some study programmes have specific year counts because who needs consistency, right, FERIT?-->
     <string-array name="year_ETRAC_professional_names">
         <item>Prva</item>
     </string-array>
@@ -194,6 +192,15 @@
         <item>Treća</item>
     </string-array>
     <string-array name="year_ETINF_professional_values">
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="year_ETKINF_undergrad_names">
+        <item>Druga</item>
+        <item>Treća</item>
+    </string-array>
+    <string-array name="year_ETKINF_undergrad_values">
         <item>2</item>
         <item>3</item>
     </string-array>

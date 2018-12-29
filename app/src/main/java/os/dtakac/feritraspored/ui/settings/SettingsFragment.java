@@ -175,14 +175,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         int valuesId = R.array.year_undergrad_values;
 
         switch (selectedProgTypeId){
+            case 1:{
+                if(selectedProgrammeId == 21){
+                    entriesId = R.array.year_ETKINF_undergrad_names;
+                    valuesId = R.array.year_ETKINF_undergrad_values;
+                } else {
+                    entriesId = R.array.year_undergrad_names;
+                    valuesId = R.array.year_undergrad_values;
+                }
+                break;
+            }
             case 2:{
                 entriesId = R.array.year_graduate_names;
                 valuesId = R.array.year_graduate_values;
-                break;
-            }
-            case 4:{
-                entriesId = R.array.year_differential_names;
-                valuesId = R.array.year_differential_values;
                 break;
             }
             case 3:{
@@ -196,6 +201,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     entriesId = R.array.year_professional_names;
                     valuesId = R.array.year_professional_values;
                 }
+                break;
+            }
+            case 4:{
+                entriesId = R.array.year_differential_names;
+                valuesId = R.array.year_differential_values;
                 break;
             }
             default: break;
