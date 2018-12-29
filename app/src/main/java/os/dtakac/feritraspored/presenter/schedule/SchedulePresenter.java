@@ -1,14 +1,11 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
-import android.util.Log;
-
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.model.repository.IRepository;
-import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
@@ -37,7 +34,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void loadCurrentWeekScrollToCurrentDay() {
+    public void loadCurrentWeekOrScrollToDay() {
         String loadedUrl = view.getLoadedUrl();
         setDisplayedWeek(currentWeek);
 
@@ -67,9 +64,33 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void changeToDarkBackground() {
+        view.injectJavascript(jsUtil.changeClassBackgroundColor(classesToChangeBackgroundColor, resManager.getDarkBackgroundColor()));
+        view.injectJavascript(jsUtil.changeIdBackgroundColor(idsToChangeBackgroundColor, resManager.getDarkBackgroundColor()));
+    }
+
+    @Override
+    public void onResume() {
+        boolean themeChanged = repo.get(resManager.getThemeChangedKey(), false);
+
+        if(themeChanged){
+            repo.add(resManager.getThemeChangedKey(), false);
+            view.refreshUi();
+        } else {
+            boolean loadOnResume = repo.get(resManager.getLoadOnResumeKey(), false);
+            boolean settingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
+            if (loadOnResume || settingsModified) {
+                loadCurrentWeekOrScrollToDay();
+            }
+        }
+    }
+
+    @Override
+    public void applyJavascript() {
+        hideElementsOtherThanSchedule();
+        scrollToCurrentDay();
+        highlightSelectedGroups();
         if(repo.get(resManager.getDarkScheduleKey(), false)) {
-            view.injectJavascript(jsUtil.changeClassBackgroundColor(classesToChangeBackgroundColor, resManager.getDarkBackgroundColor()));
-            view.injectJavascript(jsUtil.changeIdBackgroundColor(idsToChangeBackgroundColor, resManager.getDarkBackgroundColor()));
+            changeToDarkBackground();
         }
     }
 

@@ -64,6 +64,16 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
+    public String getThemeChangedKey() {
+        return r.getString(R.string.prefkey_themechanged);
+    }
+
+    @Override
+    public String getLoadOnResumeKey() {
+        return r.getString(R.string.prefkey_loadonresume);
+    }
+
+    @Override
     public String getScheduleUrl() {
         return r.getString(R.string.ferit_baseurl) + r.getString(R.string.ferit_scheduleurl);
     }

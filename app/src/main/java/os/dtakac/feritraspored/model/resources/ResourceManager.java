@@ -11,6 +11,8 @@ public interface ResourceManager {
     String getGroupsKey();
     String getSettingsModifiedKey();
     String getDarkScheduleKey();
+    String getThemeChangedKey();
+    String getLoadOnResumeKey();
 
     String getScheduleUrl();
 

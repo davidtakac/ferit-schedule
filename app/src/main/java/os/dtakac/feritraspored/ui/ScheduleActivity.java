@@ -29,7 +29,6 @@ import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
-// TODO: 12/28/18 refactor, let presenter handle deciding what to do
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
     @BindView(R.id.wv_schedule)
@@ -65,32 +64,23 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         loadCurrentDay();
     }
 
-    private void initActionBar() {
-        setTitle(getString(R.string.schedule_label));
-    }
-
-    private void loadCurrentDay(){
-        presenter.loadCurrentWeekScrollToCurrentDay();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.onResume();
+    }
 
-        SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean themeChanged = s.getBoolean(getString(R.string.prefkey_themechanged), false);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        if(themeChanged){
-            s.edit().putBoolean(getString(R.string.prefkey_themechanged), false).apply();
-            recreate();
-        } else {
-            boolean loadOnResume = s.getBoolean(getString(R.string.prefkey_loadonresume), false);
-            boolean settingsModified = s.getBoolean(getString(R.string.prefkey_settings_modified), false);
-
-            if (loadOnResume || settingsModified) {
-                loadCurrentDay();
-            }
-        }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        handleSelectedMenuItem(item.getItemId());
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -111,16 +101,12 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void refreshUi() {
+        recreate();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        handleSelectedMenuItem(item.getItemId());
-        return super.onOptionsItemSelected(item);
+    private void loadCurrentDay(){
+        presenter.loadCurrentWeekOrScrollToDay();
     }
 
     private void handleSelectedMenuItem(int itemId) {
@@ -136,15 +122,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         }
     }
 
-    private void initWebView() {
-        wvSchedule.setWebViewClient(new ScheduleClient());
-        wvSchedule.getSettings().setJavaScriptEnabled(true);
-    }
-
-    private void initNavbar(){
-        navbar.enableAnimation(false);
-    }
-
     @OnClick({R.id.item_navitems_current, R.id.item_navitems_next, R.id.item_navitems_previous})
     void navItemClicked(View v){
         switch(v.getId()){
@@ -155,16 +132,36 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         }
     }
 
-    private void setLoading(boolean isLoading){
-        swipeRefresh.setRefreshing(isLoading);
+    private void initActionBar() {
+        setTitle(getString(R.string.schedule_label));
+    }
+
+    private void initWebView() {
+        wvSchedule.setWebViewClient(new ScheduleClient());
+        wvSchedule.getSettings().setJavaScriptEnabled(true);
+    }
+
+    private void initNavbar(){
+        navbar.enableAnimation(false);
     }
 
     private void initSwipeRefresh() {
         swipeRefresh.setOnRefreshListener(() -> wvSchedule.reload());
     }
 
+    private void setLoading(boolean isLoading){
+        swipeRefresh.setRefreshing(isLoading);
+    }
+
     private void openUrlInExternalBrowser(String url){
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    private void setTheme(){
+        SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean darkTheme = s.getBoolean(getString(R.string.prefkey_darktheme), false);
+
+        setTheme(darkTheme ? R.style.DarkTheme : R.style.LightTheme);
     }
 
     private class ScheduleClient extends WebViewClient {
@@ -189,22 +186,9 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         public void onPageFinished(WebView view, String url) {
             setLoading(false);
             if(url.contains(getString(R.string.ferit_scheduleurl))) {
-                applyJavascript();
+                presenter.applyJavascript();
             }
         }
     }
 
-    private void applyJavascript() {
-        presenter.hideElementsOtherThanSchedule();
-        presenter.scrollToCurrentDay();
-        presenter.highlightSelectedGroups();
-        presenter.changeToDarkBackground();
-    }
-
-    private void setTheme(){
-        SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean darkTheme = s.getBoolean(getString(R.string.prefkey_darktheme), false);
-
-        setTheme(darkTheme ? R.style.DarkTheme : R.style.LightTheme);
-    }
 }
