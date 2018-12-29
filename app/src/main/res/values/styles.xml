@@ -1,8 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="DarkTheme" parent="@style/Theme.MaterialComponents">
-        <!-- Customize your theme here. -->
+    <style name="DarkTheme" parent="@style/Theme.AppCompat">
         <item name="colorPrimary">@color/gray900</item>
         <item name="colorAccent">@color/lightBlue500</item>
         <item name="colorPrimaryDark">@color/black</item>
@@ -10,7 +8,7 @@
         <item name="colorForeground">@color/white</item>
     </style>
 
-    <style name="LightTheme" parent="@style/Theme.MaterialComponents.Light">
+    <style name="LightTheme" parent="@style/Theme.AppCompat.Light">
         <item name="colorAccent">@color/lightBlue500</item>
         <item name="colorPrimary">@color/gray200</item>
         <item name="colorPrimaryDark">@color/gray400</item>

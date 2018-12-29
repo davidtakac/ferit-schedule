@@ -29,7 +29,7 @@ import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
-// TODO: 12/28/18 refactor, let presenter handle deciding what to do 
+// TODO: 12/28/18 refactor, let presenter handle deciding what to do
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
     @BindView(R.id.wv_schedule)
