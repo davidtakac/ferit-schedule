@@ -13,8 +13,11 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private static String[] idsToHide = {"header-top","header","gototopdiv","footer","sidebar","napomene"};
     private static String[] classesToHide = {"naslov-kategorije","odabir"};
     private static String[] idsToRemove = {"izbor-studija"};
-    private static String[] idsToChangeBackgroundColor = {"raspored","content-contain"};
-    private static String[] classesToChangeBackgroundColor = {"tok"};
+    private static String[] idsToInvertColor = {"content-contain"};
+    private static String[] classesToInvertColor = {"thumbnail"};
+
+    private static String[] classesToSetBackground = {"blokovi LV", "blokovi KV", "blokovi PR", "blokovi AV", "blokovi IS"};
+    private static String[] classBackgrounds = {"#002636", "#000149", "#1E0520", "#322100", "#002A7F"};
 
     private ScheduleContract.View view;
     private IRepository repo;
@@ -64,8 +67,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void changeToDarkBackground() {
-        view.injectJavascript(jsUtil.changeClassBackgroundColor(classesToChangeBackgroundColor, resManager.getDarkBackgroundColor()));
-        view.injectJavascript(jsUtil.changeIdBackgroundColor(idsToChangeBackgroundColor, resManager.getDarkBackgroundColor()));
+        view.injectJavascript(jsUtil.invertElementsColor(idsToInvertColor, "0.925"));
+        view.injectJavascript(jsUtil.invertClassesColor(classesToInvertColor, "1"));
+        view.injectJavascript(jsUtil.changeClassesBackground(classesToSetBackground, classBackgrounds));
     }
 
     @Override
@@ -86,12 +90,12 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void applyJavascript() {
+        if(repo.get(resManager.getDarkThemeKey(), false)) {
+            changeToDarkBackground();
+        }
         hideElementsOtherThanSchedule();
         scrollToCurrentDay();
         highlightSelectedGroups();
-        if(repo.get(resManager.getDarkScheduleKey(), false)) {
-            changeToDarkBackground();
-        }
     }
 
     @Override

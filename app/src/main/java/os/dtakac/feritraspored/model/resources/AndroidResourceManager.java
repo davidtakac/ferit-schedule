@@ -53,14 +53,8 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
-    public String getDarkScheduleKey() {
-        return r.getString(R.string.prefkey_darkschedule);
-    }
-
-    @Override
-    public String getDarkBackgroundColor() {
-        String rgb = Integer.toHexString(r.getColor(R.color.materialDarkBackground)).substring(2);
-        return "#" + rgb;
+    public String getDarkThemeKey() {
+        return r.getString(R.string.prefkey_darktheme);
     }
 
     @Override

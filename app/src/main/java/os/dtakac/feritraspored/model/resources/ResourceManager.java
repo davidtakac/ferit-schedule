@@ -10,7 +10,7 @@ public interface ResourceManager {
     String getYearKey();
     String getGroupsKey();
     String getSettingsModifiedKey();
-    String getDarkScheduleKey();
+    String getDarkThemeKey();
     String getThemeChangedKey();
     String getLoadOnResumeKey();
 
@@ -18,6 +18,4 @@ public interface ResourceManager {
 
     String getUndergradProgrammeId(int index);
     String getUndergradYearId(int index);
-
-    String getDarkBackgroundColor();
 }
