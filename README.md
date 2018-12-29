@@ -3,7 +3,7 @@
 [Latest version](https://github.com/davidtakac/FeritSchedule/releases/latest)
 
 ## Description
-This is a wrapper app for the [FERIT](www.ferit.unios.hr) online schedule.
+This is a wrapper app for the [FERIT](https://www.ferit.unios.hr) online schedule.
 
 Main feature:
 - After setting the study programme and year you're currently in, the app will always load the current week and scroll to the current day each time you open it. 
