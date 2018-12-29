@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
+import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
@@ -167,7 +169,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     private class ScheduleClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Snackbar s = Snackbar.make(ScheduleActivity.this.findViewById(R.id.constraintlayout_scheduleactivity),
+            Snackbar s = Snackbar.make(
+                    ScheduleActivity.this.findViewById(R.id.constraintlayout_scheduleactivity),
                     R.string.schedule_openurlinbrowser,
                     Snackbar.LENGTH_LONG
             );

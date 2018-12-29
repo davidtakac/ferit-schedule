@@ -3,7 +3,6 @@
     <!--url strings-->
     <string name="ferit_baseurl">https://www.ferit.unios.hr/</string>
     <string name="ferit_scheduleurl">studenti/raspored-nastave-i-ispita/</string>
-    <string name="aaiedu_loginurl">https://login.aaiedu.hr/</string>
 
     <!--Preference key strings-->
     <string name="prefkey_skipsaturday">skip_saturday_key</string>
@@ -16,7 +15,6 @@
     <string name="prefkey_time_hour">hour_key</string>
     <string name="prefkey_time_minute">minute_key</string>
     <string name="prefkey_settings_modified">settings_modified</string>
-    <string name="prefkey_lastdisplayed_date">last_displayed_date</string>
     <string name="prefkey_loadonresume">load_on_resume_key</string>
     <string name="prefkey_darktheme">dark_theme_key</string>
     <string name="prefkey_themechanged">theme_changed_key</string>

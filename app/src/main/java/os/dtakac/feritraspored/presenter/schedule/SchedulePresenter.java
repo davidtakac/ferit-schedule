@@ -13,10 +13,11 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private static String[] idsToHide = {"header-top","header","gototopdiv","footer","sidebar","napomene"};
     private static String[] classesToHide = {"naslov-kategorije","odabir"};
     private static String[] idsToRemove = {"izbor-studija"};
+
     private static String[] idsToInvertColor = {"content-contain"};
     private static String[] classesToInvertColor = {"thumbnail"};
-
     private static String[] classesToSetBackground = {"blokovi LV", "blokovi KV", "blokovi PR", "blokovi AV", "blokovi IS"};
+    //class backgrounds are inverted colors of the original backgrounds
     private static String[] classBackgrounds = {"#002636", "#000149", "#1E0520", "#322100", "#002A7F"};
 
     private ScheduleContract.View view;
@@ -174,8 +175,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
                 //load selected year
                 + "/" + repo.get(resManager.getYearKey(), defaultYearId)
                 //load selected programme
-                + "-" + repo.get(resManager.getProgrammeKey(), defaultProgId)
-                ;
+                + "-" + repo.get(resManager.getProgrammeKey(), defaultProgId);
     }
 
     private void setDisplayedWeek(LocalDate week){
