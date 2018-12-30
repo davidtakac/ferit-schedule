@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -92,9 +93,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void injectJavascript(String script){
-        wvSchedule.evaluateJavascript(script, value -> {
-            //nothing yet
-        });
+        wvSchedule.evaluateJavascript(script, null);
     }
 
     @Override
@@ -113,23 +112,33 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     private void handleSelectedMenuItem(int itemId) {
         switch (itemId){
-            case R.id.item_menu_settings:
+            case R.id.item_menu_settings: {
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.item_menu_openinbrowser:
+            }
+            case R.id.item_menu_openinbrowser: {
                 openUrlInExternalBrowser(getLoadedUrl());
                 break;
-            default:
-                break;
+            }
+            default: break;
         }
     }
 
     @OnClick({R.id.item_navitems_current, R.id.item_navitems_next, R.id.item_navitems_previous})
     void navItemClicked(View v){
         switch(v.getId()){
-            case R.id.item_navitems_current: loadCurrentDay(); break;
-            case R.id.item_navitems_previous: presenter.loadPreviousWeek(); break;
-            case R.id.item_navitems_next: presenter.loadNextWeek(); break;
+            case R.id.item_navitems_current: {
+                loadCurrentDay();
+                break;
+            }
+            case R.id.item_navitems_previous:{
+                presenter.loadPreviousWeek();
+                break;
+            }
+            case R.id.item_navitems_next: {
+                presenter.loadNextWeek();
+                break;
+            }
             default: break;
         }
     }
@@ -155,10 +164,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         swipeRefresh.setRefreshing(isLoading);
     }
 
-    private void openUrlInExternalBrowser(String url){
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-    }
-
     private void setTheme(){
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
         boolean darkTheme = s.getBoolean(getString(R.string.prefkey_darktheme), false);
@@ -166,17 +171,24 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         setTheme(darkTheme ? R.style.DarkTheme : R.style.LightTheme);
     }
 
+    private void showOpenInExternalBrowserSnackbar(String urlToOpen){
+        Snackbar s = Snackbar.make(
+                findViewById(R.id.constraintlayout_scheduleactivity),
+                R.string.schedule_openurlinbrowser,
+                Snackbar.LENGTH_LONG
+        );
+        s.setAction(R.string.schedule_actionopen, v -> openUrlInExternalBrowser(urlToOpen));
+        s.show();
+    }
+
+    private void openUrlInExternalBrowser(String url){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
     private class ScheduleClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Snackbar s = Snackbar.make(
-                    ScheduleActivity.this.findViewById(R.id.constraintlayout_scheduleactivity),
-                    R.string.schedule_openurlinbrowser,
-                    Snackbar.LENGTH_LONG
-            );
-            s.setAction(R.string.schedule_actionopen, v -> openUrlInExternalBrowser(url));
-            s.show();
-
+            showOpenInExternalBrowserSnackbar(url);
             return true;
         }
 
@@ -188,9 +200,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         @Override
         public void onPageFinished(WebView view, String url) {
             setLoading(false);
-            if(url.contains(getString(R.string.ferit_scheduleurl))) {
-                presenter.applyJavascript();
-            }
+            presenter.applyJavascript();
         }
     }
 

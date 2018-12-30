@@ -13,6 +13,7 @@ public interface ResourceManager {
     String getDarkThemeKey();
     String getThemeChangedKey();
     String getLoadOnResumeKey();
+    String getDarkScheduleKey();
 
     String getScheduleUrl();
 

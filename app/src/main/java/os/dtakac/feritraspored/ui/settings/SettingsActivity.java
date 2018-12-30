@@ -39,6 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
+            default: break;
         }
         return super.onOptionsItemSelected(item);
     }

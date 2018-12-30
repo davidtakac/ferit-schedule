@@ -8,7 +8,7 @@ public interface ScheduleContract {
         void highlightSelectedGroups();
         void loadPreviousWeek();
         void loadNextWeek();
-        void changeToDarkBackground();
+        void changeToDarkScheduleBackground();
         void onResume();
         void applyJavascript();
     }

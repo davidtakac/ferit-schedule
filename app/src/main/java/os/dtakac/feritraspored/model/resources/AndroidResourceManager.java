@@ -68,6 +68,11 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
+    public String getDarkScheduleKey() {
+        return r.getString(R.string.prefkey_darkschedule);
+    }
+
+    @Override
     public String getScheduleUrl() {
         return r.getString(R.string.ferit_baseurl) + r.getString(R.string.ferit_scheduleurl);
     }

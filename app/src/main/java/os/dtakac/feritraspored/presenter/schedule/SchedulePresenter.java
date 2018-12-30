@@ -62,12 +62,12 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void hideElementsOtherThanSchedule() {
         view.injectJavascript(jsUtil.hideElementsScript(idsToHide));
-        view.injectJavascript(jsUtil.removeElementsScript(idsToRemove));
         view.injectJavascript(jsUtil.hideClassesScript(classesToHide));
+        view.injectJavascript(jsUtil.removeElementsScript(idsToRemove));
     }
 
     @Override
-    public void changeToDarkBackground() {
+    public void changeToDarkScheduleBackground() {
         view.injectJavascript(jsUtil.invertElementsColor(idsToInvertColor, "0.925"));
         view.injectJavascript(jsUtil.invertClassesColor(classesToInvertColor, "1"));
         view.injectJavascript(jsUtil.changeClassesBackground(classesToSetBackground, classBackgrounds));
@@ -91,12 +91,12 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void applyJavascript() {
-        if(repo.get(resManager.getDarkThemeKey(), false)) {
-            changeToDarkBackground();
-        }
         hideElementsOtherThanSchedule();
-        scrollToCurrentDay();
+        if(repo.get(resManager.getDarkScheduleKey(), false)) {
+            changeToDarkScheduleBackground();
+        }
         highlightSelectedGroups();
+        scrollToCurrentDay();
     }
 
     @Override

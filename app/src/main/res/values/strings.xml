@@ -18,6 +18,7 @@
     <string name="prefkey_loadonresume">load_on_resume_key</string>
     <string name="prefkey_darktheme">dark_theme_key</string>
     <string name="prefkey_themechanged">theme_changed_key</string>
+    <string name="prefkey_darkschedule">dark_schedule_key</string>
 
     <!--User interface strings-->
     <string name="app_name">FERIT Raspored</string>
@@ -26,8 +27,8 @@
     <string name="settings_progtype_title">Tip studija</string>
     <string name="settings_programme_title">Studijski program</string>
     <string name="settings_year_title">Godina</string>
-    <string name="settings_studypickcategory_title">Tvoj studij i godina</string>
-    <string name="settings_grouphighlight_title">Tvoje grupe</string>
+    <string name="settings_studypickcategory_title">Studij i godina</string>
+    <string name="settings_grouphighlight_title">Grupe</string>
     <string name="settings_grouphighlightcategory_title">Označavanje grupa</string>
     <string name="settings_timepicker_title">Vrijeme</string>
     <string name="settings_skipday_title">Preskakanje dana</string>
@@ -36,7 +37,7 @@
     <string name="settings_scheduledisplaycategory_title">Prikaz rasporeda</string>
     <string name="cancel_label">Natrag</string>
     <string name="confirm_label">Spremi</string>
-    <string name="settings_grouphighlight_hint">LV4/24,PR-2,KV2/16,…</string>
+    <string name="settings_grouphighlight_hint">LV4,PR-2,KV2/16,LV2/24…</string>
     <string name="settings_grouphighlight_empty">(Nema unosa)</string>
     <string name="navbar_previousweek">Prošli tjedan</string>
     <string name="navbar_currentweek">Ovaj tjedan</string>
@@ -48,8 +49,10 @@
     <string name="settings_loadonresume_title">Automatski pomakni na trenutni dan</string>
     <string name="settings_loadonresume_summary">Svakim ponovnim ulaskom u aplikaciju učitaj trenutni tjedan i pomakni na trenutni dan</string>
     <string name="settings_skipsaturday_summary">Umjesto pomicanja na subotu, učitaj sljedeći tjedan</string>
-    <string name="settings_darktheme">Tamna tema</string>
+    <string name="settings_darktheme">Tamna tema aplikacije</string>
     <string name="settings_themecategory_title">Tema</string>
+    <string name="settings_darkschedule_title">Tamna pozadina rasporeda</string>
+    <string name="settings_darkschedule_summary">Na nekim starijim uređajima pozadina rasporeda može biti samo bijela. Ovo se može popraviti nadogradnjom sustava na noviju verziju.</string>
 
     <!--Programme type names and IDs-->
     <string-array name="programmetype_names">
