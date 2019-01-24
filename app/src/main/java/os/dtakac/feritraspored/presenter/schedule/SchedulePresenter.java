@@ -90,6 +90,13 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         }
     }
 
+    @Override
+    public void onReload() {
+        evaluateCurrentWeek();
+        view.reloadCurrentPage();
+    }
+
+    @Override
     public void applyJavascript() {
         hideElementsOtherThanSchedule();
         if(repo.get(resManager.getDarkScheduleKey(), false)) {
@@ -184,7 +191,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void scrollToCurrentDay() {
-        view.injectJavascript(jsUtil.scrollIntoViewScript(displayedWeek.toString()));
+        view.injectJavascript(jsUtil.scrollIntoViewScript(currentWeek.toString()));
     }
 
     @Override

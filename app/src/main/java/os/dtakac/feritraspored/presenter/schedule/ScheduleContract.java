@@ -10,6 +10,7 @@ public interface ScheduleContract {
         void loadNextWeek();
         void changeToDarkScheduleBackground();
         void onResume();
+        void onReload();
         void applyJavascript();
     }
 
@@ -18,5 +19,6 @@ public interface ScheduleContract {
         void injectJavascript(String script);
         String getLoadedUrl();
         void refreshUi();
+        void reloadCurrentPage();
     }
 }

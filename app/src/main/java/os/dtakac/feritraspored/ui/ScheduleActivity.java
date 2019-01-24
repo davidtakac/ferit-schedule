@@ -9,12 +9,10 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -29,7 +27,6 @@ import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
-import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
@@ -106,6 +103,11 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         recreate();
     }
 
+    @Override
+    public void reloadCurrentPage() {
+        wvSchedule.reload();
+    }
+
     private void loadCurrentDay(){
         presenter.loadCurrentWeekOrScrollToDay();
     }
@@ -157,7 +159,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void initSwipeRefresh() {
-        swipeRefresh.setOnRefreshListener(() -> wvSchedule.reload());
+        swipeRefresh.setOnRefreshListener(() -> presenter.onReload());
     }
 
     private void setLoading(boolean isLoading){
