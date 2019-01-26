@@ -67,19 +67,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // TODO: 25-Jan-19 load previously displayed week from prefs if the option is checked
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // TODO: 25-Jan-19 save currently displayed week to prefs
+        presenter.onViewResumed();
     }
 
     @Override
@@ -121,7 +109,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void loadCurrentDay(){
-        presenter.loadCurrentWeekOrScrollToDay();
+        presenter.loadCurrentDay();
     }
 
     private void handleSelectedMenuItem(int itemId) {
@@ -146,11 +134,11 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                 break;
             }
             case R.id.item_navitems_previous:{
-                presenter.loadPreviousWeek();
+                presenter.loadPreviousMonday();
                 break;
             }
             case R.id.item_navitems_next: {
-                presenter.loadNextWeek();
+                presenter.loadNextMonday();
                 break;
             }
             default: break;
@@ -171,7 +159,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void initSwipeRefresh() {
-        swipeRefresh.setOnRefreshListener(() -> presenter.onReload());
+        swipeRefresh.setOnRefreshListener(() -> presenter.onSwipeRefresh());
     }
 
     private void setLoading(boolean isLoading){

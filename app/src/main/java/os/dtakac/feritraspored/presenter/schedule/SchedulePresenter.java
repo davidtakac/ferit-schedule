@@ -1,11 +1,14 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
+import android.util.Log;
+
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.model.repository.IRepository;
+import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
@@ -16,9 +19,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private JavascriptUtil jsUtil;
 
     //the week with day that needs to be displayed according to user prefs
-    private LocalDate currentWeek;
+    private LocalDate currentDay;
     //the week with day that is currently being displayed
-    private LocalDate displayedWeek;
+    private LocalDate displayedDay;
 
     public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager, JavascriptUtil jsUtil) {
         this.view = view;
@@ -26,19 +29,19 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         this.resManager = resManager;
         this.jsUtil = jsUtil;
 
-        evaluateCurrentWeek();
+        evaluateCurrentDay();
     }
 
     @Override
-    public void loadCurrentWeekOrScrollToDay() {
+    public void loadCurrentDay() {
         //re-evaluate current date to display because it is possible the app was paused
         //before the time after which the display should be shifted to next day and
         //resumed after it. not including this line here would result in the app not
         //shifting to the next day correctly.
-        evaluateCurrentWeek();
+        evaluateCurrentDay();
 
         //after evaluating current week, set it as the week to display
-        setDisplayedWeek(currentWeek);
+        setDisplayedDay(currentDay);
 
         //build the URL that should be shown
         String displayedWeekUrl = buildDisplayedWeekUrl();
@@ -63,7 +66,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void onResume() {
+    public void onViewResumed() {
         boolean wasThemeChanged = repo.get(resManager.getThemeChangedKey(), false);
 
         if(wasThemeChanged){
@@ -73,14 +76,14 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             boolean loadOnResume = repo.get(resManager.getLoadOnResumeKey(), false);
             boolean settingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
             if (loadOnResume || settingsModified) {
-                loadCurrentWeekOrScrollToDay();
+                loadCurrentDay();
             }
         }
     }
 
     @Override
-    public void onReload() {
-        evaluateCurrentWeek();
+    public void onSwipeRefresh() {
+        evaluateCurrentDay();
         view.reloadCurrentPage();
     }
 
@@ -95,28 +98,28 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void loadPreviousWeek() {
-        setDisplayedWeek(displayedWeek.minusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
+    public void loadPreviousMonday() {
+        setDisplayedDay(displayedDay.minusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
 
-        if(displayedWeek.equals(currentWeek.withDayOfWeek(DateTimeConstants.MONDAY))){
-            evaluateCurrentWeek();
-            setDisplayedWeek(currentWeek);
+        if(displayedDay.equals(currentDay.withDayOfWeek(DateTimeConstants.MONDAY))){
+            evaluateCurrentDay();
+            setDisplayedDay(currentDay);
         }
         view.loadUrl(buildDisplayedWeekUrl());
     }
 
     @Override
-    public void loadNextWeek() {
-        setDisplayedWeek(displayedWeek.plusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
+    public void loadNextMonday() {
+        setDisplayedDay(displayedDay.plusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
 
-        if(displayedWeek.equals(currentWeek.withDayOfWeek(DateTimeConstants.MONDAY))){
-            evaluateCurrentWeek();
-            setDisplayedWeek(currentWeek);
+        if(displayedDay.equals(currentDay.withDayOfWeek(DateTimeConstants.MONDAY))){
+            evaluateCurrentDay();
+            setDisplayedDay(currentDay);
         }
         view.loadUrl(buildDisplayedWeekUrl());
     }
 
-    private void evaluateCurrentWeek() {
+    private void evaluateCurrentDay() {
         LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
 
@@ -133,7 +136,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             date = date.plusDays(2);
         }
 
-        currentWeek = date;
+        currentDay = date;
     }
 
     private LocalDate addDayIfTimeGreaterThanPrefs(LocalDate date, LocalTime time){
@@ -150,16 +153,16 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         String defaultYearId = resManager.getUndergradYearId(0);
 
         return  resManager.getScheduleUrl()
-                //load current week
-                + displayedWeek.withDayOfWeek(DateTimeConstants.MONDAY).toString()
-                //load selected year
+                //current week
+                + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString()
+                //selected year
                 + "/" + repo.get(resManager.getYearKey(), defaultYearId)
-                //load selected programme
+                //selected programme
                 + "-" + repo.get(resManager.getProgrammeKey(), defaultProgId);
     }
 
-    private void setDisplayedWeek(LocalDate week){
-        displayedWeek = week;
+    private void setDisplayedDay(LocalDate week){
+        displayedDay = week;
     }
 
     @Override
@@ -179,7 +182,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void scrollToCurrentDay() {
-        view.injectJavascript(jsUtil.scrollIntoViewScript(currentWeek.toString()));
+        if(currentDay.withDayOfWeek(DateTimeConstants.MONDAY).equals(displayedDay.withDayOfWeek(DateTimeConstants.MONDAY))) {
+            view.injectJavascript(jsUtil.scrollIntoViewScript(currentDay.toString()));
+        }
     }
 
     @Override
