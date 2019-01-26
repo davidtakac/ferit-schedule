@@ -14,78 +14,78 @@ public class AndroidResourceManager implements ResourceManager {
 
     @Override
     public String getSkipSaturdayKey() {
-        return r.getString(R.string.prefkey_skipsaturday);
+        return getStr(R.string.prefkey_skipsaturday);
     }
 
     @Override
     public String getSkipDayKey() {
-        return r.getString(R.string.prefkey_skipday);
+        return getStr(R.string.prefkey_skipday);
     }
 
     @Override
     public String getHourKey() {
-        return r.getString(R.string.prefkey_time_hour);
+        return getStr(R.string.prefkey_time_hour);
     }
 
     @Override
     public String getMinuteKey() {
-        return r.getString(R.string.prefkey_time_minute);
+        return getStr(R.string.prefkey_time_minute);
     }
 
     @Override
     public String getProgrammeKey() {
-        return r.getString(R.string.prefkey_programme);
+        return getStr(R.string.prefkey_programme);
     }
 
     @Override
     public String getYearKey() {
-        return r.getString(R.string.prefkey_year);
+        return getStr(R.string.prefkey_year);
     }
 
     @Override
     public String getGroupsKey() {
-        return r.getString(R.string.prefkey_groups);
+        return getStr(R.string.prefkey_groups);
     }
 
     @Override
     public String getSettingsModifiedKey() {
-        return r.getString(R.string.prefkey_settings_modified);
+        return getStr(R.string.prefkey_settings_modified);
     }
 
     @Override
     public String getThemeChangedKey() {
-        return r.getString(R.string.prefkey_themechanged);
+        return getStr(R.string.prefkey_themechanged);
     }
 
     @Override
     public String getLoadOnResumeKey() {
-        return r.getString(R.string.prefkey_loadonresume);
+        return getStr(R.string.prefkey_loadonresume);
     }
 
     @Override
     public String getDarkScheduleKey() {
-        return r.getString(R.string.prefkey_darkschedule);
+        return getStr(R.string.prefkey_darkschedule);
     }
 
     @Override
     public String getScheduleUrl() {
-        return r.getString(R.string.ferit_baseurl) + r.getString(R.string.ferit_scheduleurl);
+        return getStr(R.string.ferit_baseurl) + getStr(R.string.ferit_scheduleurl);
     }
 
     @Override
     public String getUndergradProgrammeId(int index) {
-        String[] undergrad = r.getStringArray(R.array.undergrad_values);
+        String[] undergrad = getStrArray(R.array.undergrad_values);
         if(index <= undergrad.length - 1){
-            return r.getStringArray(R.array.undergrad_values)[index];
+            return getStrArray(R.array.undergrad_values)[index];
         }
         return null;
     }
 
     @Override
     public String getUndergradYearId(int index) {
-        String[] undergrad = r.getStringArray(R.array.year_undergrad_values);
+        String[] undergrad = getStrArray(R.array.year_undergrad_values);
         if(index <= undergrad.length - 1){
-            return r.getStringArray(R.array.year_undergrad_values)[index];
+            return getStrArray(R.array.year_undergrad_values)[index];
         }
         return null;
     }
