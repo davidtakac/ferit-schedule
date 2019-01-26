@@ -53,11 +53,6 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
-    public String getDarkThemeKey() {
-        return r.getString(R.string.prefkey_darktheme);
-    }
-
-    @Override
     public String getThemeChangedKey() {
         return r.getString(R.string.prefkey_themechanged);
     }
@@ -93,5 +88,48 @@ public class AndroidResourceManager implements ResourceManager {
             return r.getStringArray(R.array.year_undergrad_values)[index];
         }
         return null;
+    }
+
+    @Override
+    public String[] getIdsToHide() {
+        return getStrArray(R.array.idsToHide);
+    }
+
+    @Override
+    public String[] getClassesToHide() {
+        return getStrArray(R.array.classesToHide);
+    }
+
+    @Override
+    public String[] getIdsToRemove() {
+        return getStrArray(R.array.idsToRemove);
+    }
+
+    @Override
+    public String[] getIdsToInvertColor() {
+        return getStrArray(R.array.idsToInvertColor);
+    }
+
+    @Override
+    public String[] getClassesToInvertColor() {
+        return getStrArray(R.array.classesToInvertColor);
+    }
+
+    @Override
+    public String[] getClassesToSetBackground() {
+        return getStrArray(R.array.classesToSetBackground);
+    }
+
+    @Override
+    public String[] getClassBackgrounds() {
+        return getStrArray(R.array.classBackgrounds);
+    }
+
+    private String getStr(int id){
+        return r.getString(id);
+    }
+
+    private String[] getStrArray(int id){
+        return r.getStringArray(id);
     }
 }

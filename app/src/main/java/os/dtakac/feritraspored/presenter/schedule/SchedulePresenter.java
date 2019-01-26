@@ -10,18 +10,6 @@ import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
-    //names of ids and classes to hide in order to simplify website
-    private static final String[] idsToHide = {"header-top","header","gototopdiv","footer","sidebar","napomene"};
-    private static final String[] classesToHide = {"naslov-kategorije","odabir"};
-    private static final String[] idsToRemove = {"izbor-studija"};
-
-    //ids and class names needed to apply dark schedule theme
-    private static final String[] idsToInvertColor = {"content-contain"};
-    private static final String[] classesToInvertColor = {"thumbnail"};
-    private static final String[] classesToSetBackground = {"blokovi LV", "blokovi KV", "blokovi PR", "blokovi AV", "blokovi IS"};
-    //class backgrounds are inverted colors of the original backgrounds
-    private static final String[] classBackgrounds = {"#002636", "#000149", "#1E0520", "#322100", "#002A7F"};
-
     private ScheduleContract.View view;
     private IRepository repo;
     private ResourceManager resManager;
@@ -176,16 +164,16 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void hideElementsOtherThanSchedule() {
-        view.injectJavascript(jsUtil.hideElementsScript(idsToHide));
-        view.injectJavascript(jsUtil.hideClassesScript(classesToHide));
-        view.injectJavascript(jsUtil.removeElementsScript(idsToRemove));
+        view.injectJavascript(jsUtil.hideElementsScript(resManager.getIdsToHide()));
+        view.injectJavascript(jsUtil.hideClassesScript(resManager.getClassesToHide()));
+        view.injectJavascript(jsUtil.removeElementsScript(resManager.getIdsToRemove()));
     }
 
     @Override
     public void changeToDarkScheduleBackground() {
-        view.injectJavascript(jsUtil.invertElementsColor(idsToInvertColor, "0.925"));
-        view.injectJavascript(jsUtil.invertClassesColor(classesToInvertColor, "1"));
-        view.injectJavascript(jsUtil.changeClassesBackground(classesToSetBackground, classBackgrounds));
+        view.injectJavascript(jsUtil.invertElementsColor(resManager.getIdsToInvertColor(), "0.925"));
+        view.injectJavascript(jsUtil.invertClassesColor(resManager.getClassesToInvertColor(), "1"));
+        view.injectJavascript(jsUtil.changeClassesBackground(resManager.getClassesToSetBackground(), resManager.getClassBackgrounds()));
     }
 
 

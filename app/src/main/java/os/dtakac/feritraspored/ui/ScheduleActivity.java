@@ -71,6 +71,18 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        // TODO: 25-Jan-19 load previously displayed week from prefs if the option is checked
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // TODO: 25-Jan-19 save currently displayed week to prefs
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
