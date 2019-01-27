@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
+import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
@@ -62,7 +64,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         initNavbar();
 
         presenter.onViewCreated();
-        //loadCurrentDay();
     }
 
     @Override
@@ -92,6 +93,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void loadUrl(String url){
+        Log.d(Constants.LOG_TAG, "loading url: " + url);
         wvSchedule.loadUrl(url);
     }
 

@@ -68,14 +68,15 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onViewResumed() {
         boolean wasThemeChanged = repo.get(resManager.getThemeChangedKey(), false);
+        boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
 
-        if(wasThemeChanged){
+        if(wasThemeChanged || wereSettingsModified){
             repo.add(resManager.getThemeChangedKey(), false);
+            repo.add(resManager.getSettingsModifiedKey(), false);
             view.refreshUi();
         } else {
             boolean loadOnResume = repo.get(resManager.getLoadOnResumeKey(), false);
-            boolean settingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
-            if (loadOnResume || settingsModified) {
+            if (loadOnResume) {
                 loadCurrentDay();
             }
         }
