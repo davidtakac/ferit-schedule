@@ -48,8 +48,8 @@
     <string name="schedule_actionopen">Otvori</string>
     <string name="schedule_openscheduleinbrowser">Otvori u pregledniku</string>
     <string name="settings_loadonresume_title">Automatski pomakni na trenutni dan</string>
-    <string name="settings_loadonresume_summary">Svakim ponovnim ulaskom u aplikaciju učitaj trenutni tjedan i pomakni na trenutni dan</string>
-    <string name="settings_skipsaturday_summary">Umjesto pomicanja na subotu, učitaj sljedeći tjedan</string>
+    <string name="settings_loadonresume_summary">Učitaj trenutni dan svakim ulaskom u aplikaciju</string>
+    <string name="settings_skipsaturday_summary">Učitaj sljedeći ponedjeljak umjesto pomicanja na subotu</string>
     <string name="settings_darktheme">Tamna tema aplikacije</string>
     <string name="settings_themecategory_title">Tema</string>
     <string name="settings_darkschedule_title">Tamna pozadina rasporeda</string>
