@@ -98,6 +98,28 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
+    public void onViewCreated() {
+        boolean loadOnResume = repo.get(resManager.getLoadOnResumeKey(), false);
+        if(loadOnResume){
+            return;
+        }
+
+        String prevDisplayedWeek = repo.get(resManager.getPrevDisplayedWeekKey(), null);
+
+        if(prevDisplayedWeek == null){
+            loadCurrentDay();
+        } else {
+            setDisplayedDay(LocalDate.parse(prevDisplayedWeek));
+            view.loadUrl(buildDisplayedWeekUrl());
+        }
+    }
+
+    @Override
+    public void onViewStopped() {
+        repo.add(resManager.getPrevDisplayedWeekKey(), displayedDay.toString());
+    }
+
+    @Override
     public void loadPreviousMonday() {
         setDisplayedDay(displayedDay.minusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
 

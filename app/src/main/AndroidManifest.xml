@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/LightTheme">
         <activity
-            android:name=".ui.ScheduleActivity"
+            android:name=".ui.schedule.ScheduleActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

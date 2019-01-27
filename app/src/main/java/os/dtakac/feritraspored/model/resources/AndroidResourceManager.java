@@ -68,6 +68,11 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
+    public String getPrevDisplayedWeekKey() {
+        return getStr(R.string.prefkey_prevdisplayedweek);
+    }
+
+    @Override
     public String getScheduleUrl() {
         return getStr(R.string.ferit_baseurl) + getStr(R.string.ferit_scheduleurl);
     }

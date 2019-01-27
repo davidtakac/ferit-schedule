@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.ui;
+package os.dtakac.feritraspored.ui.schedule;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -61,13 +61,20 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         initSwipeRefresh();
         initNavbar();
 
-        loadCurrentDay();
+        presenter.onViewCreated();
+        //loadCurrentDay();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         presenter.onViewResumed();
+    }
+
+    @Override
+    protected void onStop() {
+        presenter.onViewStopped();
+        super.onStop();
     }
 
     @Override

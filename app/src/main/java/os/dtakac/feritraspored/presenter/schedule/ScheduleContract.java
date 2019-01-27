@@ -12,6 +12,8 @@ public interface ScheduleContract {
         void onViewResumed();
         void onSwipeRefresh();
         void applyJavascript();
+        void onViewCreated();
+        void onViewStopped();
     }
 
     interface View {

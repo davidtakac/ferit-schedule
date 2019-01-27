@@ -19,6 +19,7 @@
     <string name="prefkey_darktheme">dark_theme_key</string>
     <string name="prefkey_themechanged">theme_changed_key</string>
     <string name="prefkey_darkschedule">dark_schedule_key</string>
+    <string name="prefkey_prevdisplayedweek">prev_displayed_week_key</string>
 
     <!--User interface strings-->
     <string name="app_name">FERIT Raspored</string>
