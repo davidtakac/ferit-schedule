@@ -4,15 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.EditText;
 
-import com.takisoft.fix.support.v7.preference.EditTextPreference;
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
+import com.takisoft.preferencex.EditTextPreference;
+import com.takisoft.preferencex.PreferenceFragmentCompat;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.timepicker.Time24Hour;
@@ -114,7 +116,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void initGroupsPref(){
-        groupsPref.getEditText().setHint(getStr(R.string.settings_grouphighlight_hint));
+        groupsPref.setOnBindEditTextListener(editText -> editText.setHint(getStr(R.string.settings_grouphighlight_hint)));
         setGroupsSummaryFromPrefs();
     }
 
