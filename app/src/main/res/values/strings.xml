@@ -22,7 +22,7 @@
     <string name="prefkey_prevdisplayedweek">prev_displayed_week_key</string>
 
     <!--User interface strings-->
-    <string name="app_name">FERIT Raspored</string>
+    <string name="app_name">Ferit Raspored</string>
     <string name="settings_grouphighlight_summary">npr. \"LV4/24,PR-2,LV1/16\"</string>
     <string name="settings_label">Postavke</string>
     <string name="settings_progtype_title">Tip studija</string>
@@ -53,7 +53,7 @@
     <string name="settings_darktheme">Tamna tema aplikacije</string>
     <string name="settings_themecategory_title">Tema</string>
     <string name="settings_darkschedule_title">Tamna pozadina rasporeda</string>
-    <string name="settings_darkschedule_summary">Na nekim starijim uređajima pozadina rasporeda može biti samo bijela. Ovo se može popraviti nadogradnjom sustava na noviju verziju.</string>
+    <string name="settings_darkschedule_summary">Eksperimentalna opcija</string>
 
     <!--Programme type names and IDs-->
     <string-array name="programmetype_names">
