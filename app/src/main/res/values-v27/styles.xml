@@ -9,6 +9,7 @@
         <item name="colorForeground">@color/white</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:navigationBarColor">@color/black</item>
     </style>
 
     <style name="LightTheme" parent="@style/Theme.AppCompat.Light">
