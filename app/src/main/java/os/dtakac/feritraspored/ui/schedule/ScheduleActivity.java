@@ -1,15 +1,19 @@
 package os.dtakac.feritraspored.ui.schedule;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.ColorInt;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -158,6 +162,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         setTitle(getString(R.string.schedule_label));
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         wvSchedule.setWebViewClient(new ScheduleClient());
         wvSchedule.getSettings().setJavaScriptEnabled(true);
@@ -182,24 +187,31 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         setTheme(darkTheme ? R.style.DarkTheme : R.style.LightTheme);
     }
 
-    private void showOpenInExternalBrowserSnackbar(String urlToOpen){
-        Snackbar s = Snackbar.make(
-                findViewById(R.id.constraintlayout_scheduleactivity),
-                R.string.schedule_openurlinbrowser,
-                Snackbar.LENGTH_LONG
-        );
-        s.setAction(R.string.schedule_actionopen, v -> openUrlInExternalBrowser(urlToOpen));
-        s.show();
-    }
-
     private void openUrlInExternalBrowser(String url){
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    private void openUrlInCustomTabs(String url){
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+
+        //gets primary color of current theme
+        int appCompatAttribute = this.getResources().getIdentifier("colorPrimary", "attr", this.getPackageName());
+        TypedValue value = new TypedValue();
+        this.getTheme().resolveAttribute (appCompatAttribute, value, true);
+        @ColorInt int colorPrimary = value.data;
+
+        //sets toolbar color to match app
+        builder.setToolbarColor(colorPrimary);
+
+        //launches url in custom tab
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(ScheduleActivity.this, Uri.parse(url));
     }
 
     private class ScheduleClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            showOpenInExternalBrowserSnackbar(url);
+            openUrlInCustomTabs(url);
             return true;
         }
 

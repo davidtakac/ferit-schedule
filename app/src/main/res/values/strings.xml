@@ -44,7 +44,6 @@
     <string name="navbar_currentweek">Ovaj tjedan</string>
     <string name="navbar_nextweek">Sljedeći tjedan</string>
     <string name="schedule_label">Raspored nastave i ispita</string>
-    <string name="schedule_openurlinbrowser">Otvori poveznicu u pregledniku?</string>
     <string name="schedule_actionopen">Otvori</string>
     <string name="schedule_openscheduleinbrowser">Otvori u pregledniku</string>
     <string name="settings_loadonresume_title">Automatski pomakni na trenutni dan</string>
