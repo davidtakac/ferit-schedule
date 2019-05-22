@@ -20,6 +20,7 @@
     <string name="prefkey_themechanged">theme_changed_key</string>
     <string name="prefkey_darkschedule">dark_schedule_key</string>
     <string name="prefkey_prevdisplayedweek">prev_displayed_week_key</string>
+    <string name="prefkey_groups_toggle">group_toggle_key</string>
 
     <!--User interface strings-->
     <string name="app_name">Ferit Raspored</string>
@@ -53,7 +54,6 @@
     <string name="settings_themecategory_title">Tema</string>
     <string name="settings_darkschedule_title">Tamna pozadina rasporeda</string>
     <string name="settings_darkschedule_summary">Eksperimentalna opcija</string>
-    <string name="prefkey_groups_toggle">group_toggle_key</string>
     <string name="settings_groupstoggle_title">Označi grupe</string>
     <string name="settings_groupstoggle_summary">Istakni dolje navedene grupe crvenom bojom i velikim slovima</string>
 

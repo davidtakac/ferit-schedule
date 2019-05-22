@@ -3,9 +3,10 @@ package os.dtakac.feritraspored.ui.settings;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.MenuItem;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import os.dtakac.feritraspored.R;
 

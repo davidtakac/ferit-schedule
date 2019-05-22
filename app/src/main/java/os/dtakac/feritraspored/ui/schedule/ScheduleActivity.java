@@ -7,12 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
-import androidx.annotation.ColorInt;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,18 +15,22 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.annotation.ColorInt;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import os.dtakac.feritraspored.model.resources.AndroidResourceManager;
+import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
+import os.dtakac.feritraspored.model.resources.AndroidResourceManager;
 import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
-import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
-import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
@@ -97,7 +95,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void loadUrl(String url){
-        Log.d(Constants.LOG_TAG, "loading url: " + url);
         wvSchedule.loadUrl(url);
     }
 

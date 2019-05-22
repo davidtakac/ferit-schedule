@@ -4,22 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.EditText;
 
 import com.takisoft.preferencex.EditTextPreference;
 import com.takisoft.preferencex.PreferenceFragmentCompat;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.ui.timepicker.Time24Hour;
 import os.dtakac.feritraspored.model.repository.IRepository;
 import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
+import os.dtakac.feritraspored.ui.timepicker.Time24Hour;
 import os.dtakac.feritraspored.ui.timepicker.TimePickerFragment;
 import os.dtakac.feritraspored.ui.timepicker.TimeSetListener;
 import os.dtakac.feritraspored.util.Constants;
@@ -230,7 +227,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d(Constants.LOG_TAG, key);
         if(!werePrefsModified && !key.equals(getStr(R.string.prefkey_prevdisplayedweek))) {
             werePrefsModified = true;
         }

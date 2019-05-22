@@ -1,16 +1,11 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
-import android.util.Log;
-
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-import java.util.Arrays;
-
-import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.model.repository.IRepository;
-import os.dtakac.feritraspored.util.Constants;
+import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
