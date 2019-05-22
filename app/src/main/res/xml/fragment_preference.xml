@@ -35,6 +35,12 @@
     <PreferenceCategory
         android:title="@string/settings_grouphighlightcategory_title">
 
+        <SwitchPreference
+            android:key="@string/prefkey_groups_toggle"
+            android:title="@string/settings_groupstoggle_title"
+            android:summary="@string/settings_groupstoggle_summary"
+            />
+
         <EditTextPreference
             android:key="@string/prefkey_groups"
             android:title="@string/settings_grouphighlight_title"

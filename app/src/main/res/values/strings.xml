@@ -53,6 +53,9 @@
     <string name="settings_themecategory_title">Tema</string>
     <string name="settings_darkschedule_title">Tamna pozadina rasporeda</string>
     <string name="settings_darkschedule_summary">Eksperimentalna opcija</string>
+    <string name="prefkey_groups_toggle">group_toggle_key</string>
+    <string name="settings_groupstoggle_title">Označi grupe</string>
+    <string name="settings_groupstoggle_summary">Istakni dolje navedene grupe crvenom bojom i velikim slovima</string>
 
     <!--Programme type names and IDs-->
     <string-array name="programmetype_names">

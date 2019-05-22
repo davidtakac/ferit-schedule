@@ -73,6 +73,11 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
+    public String getGroupsToggledKey() {
+        return getStr(R.string.prefkey_groups_toggle);
+    }
+
+    @Override
     public String getScheduleUrl() {
         return getStr(R.string.ferit_baseurl) + getStr(R.string.ferit_scheduleurl);
     }

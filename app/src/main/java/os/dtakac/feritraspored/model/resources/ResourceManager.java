@@ -15,6 +15,7 @@ public interface ResourceManager {
     String getLoadOnResumeKey();
     String getDarkScheduleKey();
     String getPrevDisplayedWeekKey();
+    String getGroupsToggledKey();
 
     String getScheduleUrl();
 

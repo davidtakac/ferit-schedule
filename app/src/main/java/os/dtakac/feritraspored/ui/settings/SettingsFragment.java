@@ -115,9 +115,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         timePickerPref.setEnabled(isEnabled);
     }
 
+    private void setGroupsPreferenceEnabled(boolean isEnabled){
+        groupsPref.setEnabled(isEnabled);
+    }
+
     private void initGroupsPref(){
         groupsPref.setOnBindEditTextListener(editText -> editText.setHint(getStr(R.string.settings_grouphighlight_hint)));
         setGroupsSummaryFromPrefs();
+        setGroupsPreferenceEnabled(repo.get(getStr(R.string.prefkey_groups_toggle), false));
     }
 
     private void setGroupsSummaryFromPrefs(){
@@ -245,6 +250,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 repo.add(getString(R.string.prefkey_themechanged), true);
                 getActivity().recreate();
             }
+        } else if(key.equals(getStr(R.string.prefkey_groups_toggle))){
+            setGroupsPreferenceEnabled(repo.get(key, false));
         }
     }
 

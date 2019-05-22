@@ -6,6 +6,8 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
+import java.util.Arrays;
+
 import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.model.repository.IRepository;
 import os.dtakac.feritraspored.util.Constants;
@@ -94,7 +96,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         if(repo.get(resManager.getDarkScheduleKey(), false)) {
             changeToDarkScheduleBackground();
         }
-        highlightSelectedGroups();
+        if(repo.get(resManager.getGroupsToggledKey(), false)) {
+            highlightSelectedGroups();
+        }
         scrollToCurrentDay();
     }
 
