@@ -15,7 +15,7 @@
         <item name="colorAccent">@color/lightBlue500</item>
         <item name="colorPrimary">@color/gray200</item>
         <item name="colorPrimaryDark">@color/gray400</item>
-        <item name="android:statusBarColor">@color/gray400</item>
+        <item name="android:statusBarColor">@color/gray300</item>
         <item name="colorForeground">@android:color/black</item>
     </style>
 </resources>

@@ -3,17 +3,17 @@ package os.dtakac.feritraspored.presenter.schedule;
 public interface ScheduleContract {
     interface Presenter {
         void loadCurrentDay();
-        void hideElementsOtherThanSchedule();
-        void scrollToCurrentDay();
-        void highlightSelectedGroups();
-        void loadPreviousMonday();
-        void loadNextMonday();
-        void changeToDarkScheduleBackground();
+        void onClickedPrevious();
+        void onClickedNext();
         void onViewResumed();
-        void onSwipeRefresh();
+        void onRefresh();
         void applyJavascript();
         void onViewCreated();
         void onViewStopped();
+        void onErrorReceived(int errorCode, String description, String failingUrl);
+        void onPageFinished(boolean wasErrorReceived);
+
+        void onClickedCurrent();
     }
 
     interface View {
@@ -22,5 +22,9 @@ public interface ScheduleContract {
         String getLoadedUrl();
         void refreshUi();
         void reloadCurrentPage();
+        void showErrorMessage(String errMsg);
+
+        void showShortToast(String message);
+        void setControlsEnabled(boolean enabled);
     }
 }

@@ -135,6 +135,21 @@ public class AndroidResourceManager implements ResourceManager {
         return getStrArray(R.array.classBackgrounds);
     }
 
+    @Override
+    public String getCheckNetworkString() {
+        return getStr(R.string.notify_no_network);
+    }
+
+    @Override
+    public String getCantLoadPageString() {
+        return getStr(R.string.notify_cant_load_page);
+    }
+
+    @Override
+    public String getUnexpectedErrorString() {
+        return getStr(R.string.notify_unexpected_error);
+    }
+
     private String getStr(int id){
         return r.getString(id);
     }

@@ -6,25 +6,31 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import os.dtakac.feritraspored.ui.listener.DebouncedMenuItemClickListener;
+import os.dtakac.feritraspored.ui.listener.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
 import os.dtakac.feritraspored.model.resources.AndroidResourceManager;
@@ -32,17 +38,37 @@ import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
 import os.dtakac.feritraspored.util.JavascriptUtil;
+import os.dtakac.feritraspored.util.NetworkUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
     @BindView(R.id.wv_schedule)
     WebView wvSchedule;
 
-    @BindView(R.id.srl_schedule_swiperefresh)
-    SwipeRefreshLayout swipeRefresh;
+    //navigation buttons
+    @BindView(R.id.btn_navbar_current)
+    ImageButton btnCurrent;
 
-    @BindView(R.id.navbar_schedule_navigation)
-    BottomNavigationViewEx navbar;
+    @BindView(R.id.btn_navbar_next)
+    ImageButton btnNext;
+
+    @BindView(R.id.btn_navbar_previous)
+    ImageButton btnPrevious;
+
+    private MenuItem itemRefresh;
+
+    //status views
+    @BindView(R.id.cl_schedule_status)
+    ConstraintLayout clStatus;
+
+    @BindView(R.id.pbar_schedule_status)
+    ProgressBar pbarStatus;
+
+    @BindView(R.id.iv_schedule_error_status)
+    ImageView ivError;
+
+    @BindView(R.id.tv_schedule_status)
+    TextView tvStatus;
 
     private ScheduleContract.Presenter presenter;
 
@@ -57,12 +83,12 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                 this,
                 new SharedPrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),
                 new AndroidResourceManager(getResources()),
-                new JavascriptUtil(getAssets())
+                new JavascriptUtil(getAssets()),
+                new NetworkUtil(this)
         );
 
         initActionBar();
         initWebView();
-        initSwipeRefresh();
         initNavbar();
 
         presenter.onViewCreated();
@@ -84,12 +110,24 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+        itemRefresh = menu.getItem(0);
+        initRefresh();
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        handleSelectedMenuItem(item.getItemId());
+        switch (item.getItemId()){
+            case R.id.item_menu_settings: {
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            }
+            case R.id.item_menu_openinbrowser: {
+                openUrlInExternalBrowser(getLoadedUrl());
+                break;
+            }
+            default: break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -100,7 +138,18 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void injectJavascript(String script){
-        wvSchedule.evaluateJavascript(script, null);
+        wvSchedule.evaluateJavascript(script, new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String s) {
+                setControlsEnabled(true);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setLoading(false);
+                    }
+                }, 100);
+            }
+        });
     }
 
     @Override
@@ -118,63 +167,38 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         wvSchedule.reload();
     }
 
-    private void loadCurrentDay(){
-        presenter.loadCurrentDay();
+    @Override
+    public void setControlsEnabled(boolean enabled) {
+        float disabledAlpha = 0.4f;
+        float enabledAlpha = 1f;
+        btnNext.setEnabled(enabled);
+        btnNext.setAlpha(enabled ? enabledAlpha : disabledAlpha);
+        btnPrevious.setEnabled(enabled);
+        btnPrevious.setAlpha(enabled ? enabledAlpha : disabledAlpha);
+        btnCurrent.setEnabled(enabled);
+        btnCurrent.setAlpha(enabled ? enabledAlpha : disabledAlpha);
+        itemRefresh.setEnabled(enabled);
+        itemRefresh.getIcon().setAlpha(enabled ? 255 : 102);
     }
 
-    private void handleSelectedMenuItem(int itemId) {
-        switch (itemId){
-            case R.id.item_menu_settings: {
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            }
-            case R.id.item_menu_openinbrowser: {
-                openUrlInExternalBrowser(getLoadedUrl());
-                break;
-            }
-            default: break;
-        }
+    private void setLoading(boolean loading){
+        ivError.setVisibility(View.GONE);
+        pbarStatus.setVisibility(View.VISIBLE);
+        tvStatus.setText("");
+        clStatus.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
-    @OnClick({R.id.item_navitems_current, R.id.item_navitems_next, R.id.item_navitems_previous})
-    void navItemClicked(View v){
-        switch(v.getId()){
-            case R.id.item_navitems_current: {
-                loadCurrentDay();
-                break;
-            }
-            case R.id.item_navitems_previous:{
-                presenter.loadPreviousMonday();
-                break;
-            }
-            case R.id.item_navitems_next: {
-                presenter.loadNextMonday();
-                break;
-            }
-            default: break;
-        }
+    @Override
+    public void showErrorMessage(String message){
+        ivError.setVisibility(View.VISIBLE);
+        pbarStatus.setVisibility(View.INVISIBLE);
+        tvStatus.setText(message);
+        clStatus.setVisibility(View.VISIBLE);
     }
 
-    private void initActionBar() {
-        setTitle(getString(R.string.schedule_label));
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private void initWebView() {
-        wvSchedule.setWebViewClient(new ScheduleClient());
-        wvSchedule.getSettings().setJavaScriptEnabled(true);
-    }
-
-    private void initNavbar(){
-        navbar.enableAnimation(false);
-    }
-
-    private void initSwipeRefresh() {
-        swipeRefresh.setOnRefreshListener(() -> presenter.onSwipeRefresh());
-    }
-
-    private void setLoading(boolean isLoading){
-        swipeRefresh.setRefreshing(isLoading);
+    @Override
+    public void showShortToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void setTheme(){
@@ -205,7 +229,51 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         customTabsIntent.launchUrl(ScheduleActivity.this, Uri.parse(url));
     }
 
+    private void initActionBar() {
+        setTitle(getString(R.string.schedule_label));
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void initWebView() {
+        wvSchedule.setWebViewClient(new ScheduleClient());
+        wvSchedule.getSettings().setJavaScriptEnabled(true);
+    }
+
+    private void initNavbar(){
+        long threshold = 500;
+        btnNext.setOnClickListener(new DebouncedOnClickListener(threshold) {
+            @Override
+            public void onDebouncedClick() {
+                presenter.onClickedNext();
+            }
+        });
+        btnCurrent.setOnClickListener(new DebouncedOnClickListener(threshold) {
+            @Override
+            public void onDebouncedClick() {
+                presenter.onClickedCurrent();
+            }
+        });
+        btnPrevious.setOnClickListener(new DebouncedOnClickListener(threshold) {
+            @Override
+            public void onDebouncedClick() {
+                presenter.onClickedPrevious();
+            }
+        });
+    }
+
+    private void initRefresh() {
+        itemRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListener(500) {
+            @Override
+            public void onDebouncedClick() {
+                presenter.onRefresh();
+            }
+        });
+    }
+
     private class ScheduleClient extends WebViewClient {
+
+        private boolean errorReceived = false;
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             openUrlInCustomTabs(url);
@@ -215,13 +283,25 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             setLoading(true);
+            setControlsEnabled(false);
+        }
+
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            errorReceived = true;
+            presenter.onErrorReceived(errorCode, description, failingUrl);
+
+            super.onReceivedError(view, errorCode, description, failingUrl);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            setLoading(false);
-            presenter.applyJavascript();
+            presenter.onPageFinished(errorReceived);
+            if(errorReceived){
+                //if there was an error, enable the navbar so the user can spam it or something
+                setControlsEnabled(true);
+            }
+            errorReceived = false;
         }
     }
-
 }

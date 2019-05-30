@@ -7,7 +7,7 @@ import java.io.IOException;
 public class JavascriptUtil {
 
     private static String FUNCTION_START = "(function(){";
-    private static String FUNCTION_END = "}())";
+    private static String FUNCTION_END = "}());\n";
 
     private static String HIDE_CLASS_PATH = "hide-class-script.txt";
     private static String HIDE_ID_PATH = "hide-id-script.txt";

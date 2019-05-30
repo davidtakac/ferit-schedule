@@ -31,4 +31,9 @@ public interface ResourceManager {
     String[] getClassesToInvertColor();
     String[] getClassesToSetBackground();
     String[] getClassBackgrounds();
+
+    //user interface strings
+    String getCheckNetworkString();
+    String getCantLoadPageString();
+    String getUnexpectedErrorString();
 }

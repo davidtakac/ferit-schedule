@@ -1,12 +1,16 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
+import android.util.Log;
+
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import os.dtakac.feritraspored.model.repository.IRepository;
 import os.dtakac.feritraspored.model.resources.ResourceManager;
+import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
+import os.dtakac.feritraspored.util.NetworkUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
@@ -14,17 +18,23 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private IRepository repo;
     private ResourceManager resManager;
     private JavascriptUtil jsUtil;
+    private NetworkUtil netUtil;
 
     //the week with day that needs to be displayed according to user prefs
     private LocalDate currentDay;
     //the week with day that is currently being displayed
     private LocalDate displayedDay;
 
-    public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager, JavascriptUtil jsUtil) {
+    private boolean errorReceived;
+
+    public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager, JavascriptUtil jsUtil, NetworkUtil netUtil) {
         this.view = view;
         this.repo = repo;
         this.resManager = resManager;
         this.jsUtil = jsUtil;
+        this.netUtil = netUtil;
+
+        this.errorReceived = false;
 
         evaluateCurrentDay();
     }
@@ -40,25 +50,21 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         //after evaluating current week, set it as the week to display
         setDisplayedDay(currentDay);
 
-        //build the URL that should be shown
         String displayedWeekUrl = buildDisplayedWeekUrl();
 
-        //get the currently shown URL from the webview
         String loadedUrl = view.getLoadedUrl();
 
         boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
 
-        if(wereSettingsModified || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl)){
-            //if the settings were modified or the currently loaded URL doesn't equal the one
-            //that is supposed to be showing, make the view load the correct url
+        if(wereSettingsModified || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl) || errorReceived){
             view.loadUrl(displayedWeekUrl);
 
             //settings were applied so update the settings modified key
             repo.add(resManager.getSettingsModifiedKey(), false);
         } else {
-            //the date is correct and the webview is already on the current week,
-            //so just scroll to current day.
-            scrollToCurrentDay();
+            //the date is correct, the webview is already on the current week, there was no error,
+            //so just scroll to current day
+            view.injectJavascript(buildScrollToCurrentDayScript());
         }
     }
 
@@ -80,21 +86,37 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void onSwipeRefresh() {
+    public void onRefresh() {
+        if(!netUtil.isDeviceOnline()){
+            view.showShortToast(resManager.getCheckNetworkString());
+            return;
+        }
+
         evaluateCurrentDay();
         view.reloadCurrentPage();
     }
 
     @Override
     public void applyJavascript() {
-        hideElementsOtherThanSchedule();
+        if(errorReceived){
+            return;
+        }
+
+        String js = "";
+
+        js += buildHideElementsScript();
+
         if(repo.get(resManager.getDarkScheduleKey(), false)) {
-            changeToDarkScheduleBackground();
+            js += buildDarkBackgroundScript();
         }
         if(repo.get(resManager.getGroupsToggledKey(), false)) {
-            highlightSelectedGroups();
+            js += buildHighlightGroupsScript();
         }
-        scrollToCurrentDay();
+        if(currentDay.withDayOfWeek(DateTimeConstants.MONDAY).equals(displayedDay.withDayOfWeek(DateTimeConstants.MONDAY))) {
+            js += buildScrollToCurrentDayScript();
+        }
+
+        view.injectJavascript(js);
     }
 
     @Override
@@ -120,7 +142,39 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void loadPreviousMonday() {
+    public void onErrorReceived(int errorCode, String description, String failingUrl) {
+        if(!netUtil.isDeviceOnline()){
+            view.showErrorMessage(resManager.getCantLoadPageString());
+        } else {
+            view.showErrorMessage(
+                    String.format(resManager.getUnexpectedErrorString(), errorCode, description, failingUrl)
+            );
+        }
+    }
+
+    @Override
+    public void onPageFinished(boolean wasErrorReceived) {
+        errorReceived = wasErrorReceived;
+        if(!errorReceived){
+            applyJavascript();
+        }
+    }
+
+    @Override
+    public void onClickedCurrent() {
+        if(!netUtil.isDeviceOnline()){
+            view.showShortToast(resManager.getCheckNetworkString());
+            return;
+        }
+        loadCurrentDay();
+    }
+
+    @Override
+    public void onClickedPrevious() {
+        if(!netUtil.isDeviceOnline()){
+            view.showShortToast(resManager.getCheckNetworkString());
+            return;
+        }
         setDisplayedDay(displayedDay.minusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
 
         if(displayedDay.equals(currentDay.withDayOfWeek(DateTimeConstants.MONDAY))){
@@ -131,7 +185,11 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void loadNextMonday() {
+    public void onClickedNext() {
+        if(!netUtil.isDeviceOnline()){
+            view.showShortToast(resManager.getCheckNetworkString());
+            return;
+        }
         setDisplayedDay(displayedDay.plusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
 
         if(displayedDay.equals(currentDay.withDayOfWeek(DateTimeConstants.MONDAY))){
@@ -187,31 +245,32 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         displayedDay = week;
     }
 
-    @Override
-    public void hideElementsOtherThanSchedule() {
-        view.injectJavascript(jsUtil.hideElementsScript(resManager.getIdsToHide()));
-        view.injectJavascript(jsUtil.hideClassesScript(resManager.getClassesToHide()));
-        view.injectJavascript(jsUtil.removeElementsScript(resManager.getIdsToRemove()));
+    private String buildHideElementsScript() {
+        String js = "";
+
+        js = jsUtil.hideElementsScript(resManager.getIdsToHide())
+                + jsUtil.hideClassesScript(resManager.getClassesToHide())
+                + jsUtil.removeElementsScript(resManager.getIdsToRemove());
+
+        return js;
     }
 
-    @Override
-    public void changeToDarkScheduleBackground() {
-        view.injectJavascript(jsUtil.invertElementsColor(resManager.getIdsToInvertColor(), "0.925"));
-        view.injectJavascript(jsUtil.invertClassesColor(resManager.getClassesToInvertColor(), "1"));
-        view.injectJavascript(jsUtil.changeClassesBackground(resManager.getClassesToSetBackground(), resManager.getClassBackgrounds()));
+    private String buildDarkBackgroundScript() {
+        String js = "";
+
+        js = jsUtil.invertElementsColor(resManager.getIdsToInvertColor(), "0.925")
+                + jsUtil.invertClassesColor(resManager.getClassesToInvertColor(), "1")
+                + jsUtil.changeClassesBackground(resManager.getClassesToSetBackground(), resManager.getClassBackgrounds());
+
+        return js;
     }
 
-
-    @Override
-    public void scrollToCurrentDay() {
-        if(currentDay.withDayOfWeek(DateTimeConstants.MONDAY).equals(displayedDay.withDayOfWeek(DateTimeConstants.MONDAY))) {
-            view.injectJavascript(jsUtil.scrollIntoViewScript(currentDay.toString()));
-        }
+    private String buildScrollToCurrentDayScript() {
+        return jsUtil.scrollIntoViewScript(currentDay.toString());
     }
 
-    @Override
-    public void highlightSelectedGroups() {
+    private String buildHighlightGroupsScript() {
         String[] filters = repo.get(resManager.getGroupsKey(), "").split(",");
-        view.injectJavascript(jsUtil.highlightElementsScript(filters));
+        return jsUtil.highlightElementsScript(filters);
     }
 }

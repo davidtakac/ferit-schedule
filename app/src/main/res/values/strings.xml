@@ -41,11 +41,7 @@
     <string name="confirm_label">Spremi</string>
     <string name="settings_grouphighlight_hint">LV4,PR-2,KV2/16,LV2/24…</string>
     <string name="settings_grouphighlight_empty">(Nema unosa)</string>
-    <string name="navbar_previousweek">Prošli tjedan</string>
-    <string name="navbar_currentweek">Ovaj tjedan</string>
-    <string name="navbar_nextweek">Sljedeći tjedan</string>
     <string name="schedule_label">Raspored nastave i ispita</string>
-    <string name="schedule_actionopen">Otvori</string>
     <string name="schedule_openscheduleinbrowser">Otvori u pregledniku</string>
     <string name="settings_loadonresume_title">Automatski pomakni na trenutni dan</string>
     <string name="settings_loadonresume_summary">Učitaj trenutni dan svakim ulaskom u aplikaciju</string>
@@ -56,6 +52,10 @@
     <string name="settings_darkschedule_summary">Eksperimentalna opcija</string>
     <string name="settings_groupstoggle_title">Označi grupe</string>
     <string name="settings_groupstoggle_summary">Istakni dolje navedene grupe crvenom bojom i velikim slovima</string>
+    <string name="menu_refresh">Osvježi</string>
+    <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
+    <string name="notify_cant_load_page">Stranica se ne može učitati. Provjerite mrežu i probajte opet.</string>
+    <string name="notify_unexpected_error">Došlo je do neočekivane pogreške.  Kod: %d Opis: %s URL: %s</string>
 
     <!--Programme type names and IDs-->
     <string-array name="programmetype_names">
