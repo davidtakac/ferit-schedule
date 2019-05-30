@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +37,7 @@ import os.dtakac.feritraspored.model.resources.AndroidResourceManager;
 import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
+import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 import os.dtakac.feritraspored.util.NetworkUtil;
 
@@ -171,17 +173,11 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void setControlsEnabled(boolean enabled) {
-        float disabledAlpha = 0.4f;
-        float enabledAlpha = 1f;
         btnNext.setEnabled(enabled);
-        btnNext.setAlpha(enabled ? enabledAlpha : disabledAlpha);
         btnPrevious.setEnabled(enabled);
-        btnPrevious.setAlpha(enabled ? enabledAlpha : disabledAlpha);
         btnCurrent.setEnabled(enabled);
-        btnCurrent.setAlpha(enabled ? enabledAlpha : disabledAlpha);
         if(itemRefresh != null) {
             itemRefresh.setEnabled(enabled);
-            itemRefresh.getIcon().setAlpha(enabled ? 255 : 102);
         }
     }
 
