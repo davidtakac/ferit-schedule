@@ -77,19 +77,4 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/settings_themecategory_title">
-
-        <SwitchPreference
-            android:key="@string/prefkey_darktheme"
-            android:title="@string/settings_darktheme"
-            />
-        <SwitchPreference
-            android:key="@string/prefkey_darkschedule"
-            android:title="@string/settings_darkschedule_title"
-            android:summary="@string/settings_darkschedule_summary"
-            />
-
-    </PreferenceCategory>
-
 </PreferenceScreen>

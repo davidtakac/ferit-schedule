@@ -2,7 +2,6 @@ package os.dtakac.feritraspored.ui.schedule;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -72,10 +71,12 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     private ScheduleContract.Presenter presenter;
 
+    //in millis
+    private long debounceThreshold = 500;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme();
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
 
@@ -111,7 +112,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         itemRefresh = menu.getItem(0);
-        initRefresh();
+        initRefreshButton();
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -142,6 +143,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
             @Override
             public void onReceiveValue(String s) {
                 setControlsEnabled(true);
+                //delayed loading turn off so the webview has time to update
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -177,8 +179,10 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         btnPrevious.setAlpha(enabled ? enabledAlpha : disabledAlpha);
         btnCurrent.setEnabled(enabled);
         btnCurrent.setAlpha(enabled ? enabledAlpha : disabledAlpha);
-        itemRefresh.setEnabled(enabled);
-        itemRefresh.getIcon().setAlpha(enabled ? 255 : 102);
+        if(itemRefresh != null) {
+            itemRefresh.setEnabled(enabled);
+            itemRefresh.getIcon().setAlpha(enabled ? 255 : 102);
+        }
     }
 
     private void setLoading(boolean loading){
@@ -199,13 +203,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     @Override
     public void showShortToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void setTheme(){
-        SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean darkTheme = s.getBoolean(getString(R.string.prefkey_darktheme), false);
-
-        setTheme(darkTheme ? R.style.DarkTheme : R.style.LightTheme);
     }
 
     private void openUrlInExternalBrowser(String url){
@@ -240,20 +237,19 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void initNavbar(){
-        long threshold = 500;
-        btnNext.setOnClickListener(new DebouncedOnClickListener(threshold) {
+        btnNext.setOnClickListener(new DebouncedOnClickListener(debounceThreshold) {
             @Override
             public void onDebouncedClick() {
                 presenter.onClickedNext();
             }
         });
-        btnCurrent.setOnClickListener(new DebouncedOnClickListener(threshold) {
+        btnCurrent.setOnClickListener(new DebouncedOnClickListener(debounceThreshold) {
             @Override
             public void onDebouncedClick() {
                 presenter.onClickedCurrent();
             }
         });
-        btnPrevious.setOnClickListener(new DebouncedOnClickListener(threshold) {
+        btnPrevious.setOnClickListener(new DebouncedOnClickListener(debounceThreshold) {
             @Override
             public void onDebouncedClick() {
                 presenter.onClickedPrevious();
@@ -261,8 +257,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         });
     }
 
-    private void initRefresh() {
-        itemRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListener(500) {
+    private void initRefreshButton() {
+        itemRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListener(debounceThreshold) {
             @Override
             public void onDebouncedClick() {
                 presenter.onRefresh();
@@ -298,7 +294,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         public void onPageFinished(WebView view, String url) {
             presenter.onPageFinished(errorReceived);
             if(errorReceived){
-                //if there was an error, enable the navbar so the user can spam it or something
+                //if there was an error, enable the controls so the user can spam them or something
                 setControlsEnabled(true);
             }
             errorReceived = false;

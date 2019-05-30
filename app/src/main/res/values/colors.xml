@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#000000</color>
-    <color name="gray900">#212121</color>
     <color name="white">#FFFFFF</color>
     <color name="lightBlue500">#03A9F4</color>
-    <color name="materialDarkBackground">#303030</color>
     <color name="gray200">#EEEEEE</color>
     <color name="gray300">#E0E0E0</color>
     <color name="gray400">#BDBDBD</color>

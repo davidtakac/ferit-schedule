@@ -41,8 +41,10 @@
 
         <TextView
             android:id="@+id/tv_schedule_status"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             app:layout_constraintTop_toBottomOf="@id/pbar_schedule_status"
             app:layout_constraintLeft_toLeftOf="@id/pbar_schedule_status"
             app:layout_constraintRight_toRightOf="@id/pbar_schedule_status"

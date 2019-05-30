@@ -11,9 +11,7 @@ public interface ResourceManager {
     String getYearKey();
     String getGroupsKey();
     String getSettingsModifiedKey();
-    String getThemeChangedKey();
     String getLoadOnResumeKey();
-    String getDarkScheduleKey();
     String getPrevDisplayedWeekKey();
     String getGroupsToggledKey();
 
@@ -27,10 +25,6 @@ public interface ResourceManager {
     String[] getIdsToHide();
     String[] getClassesToHide();
     String[] getIdsToRemove();
-    String[] getIdsToInvertColor();
-    String[] getClassesToInvertColor();
-    String[] getClassesToSetBackground();
-    String[] getClassBackgrounds();
 
     //user interface strings
     String getCheckNetworkString();

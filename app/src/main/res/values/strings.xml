@@ -16,14 +16,11 @@
     <string name="prefkey_time_minute">minute_key</string>
     <string name="prefkey_settings_modified">settings_modified</string>
     <string name="prefkey_loadonresume">load_on_resume_key</string>
-    <string name="prefkey_darktheme">dark_theme_key</string>
-    <string name="prefkey_themechanged">theme_changed_key</string>
-    <string name="prefkey_darkschedule">dark_schedule_key</string>
     <string name="prefkey_prevdisplayedweek">prev_displayed_week_key</string>
     <string name="prefkey_groups_toggle">group_toggle_key</string>
 
     <!--User interface strings-->
-    <string name="app_name">Ferit Raspored</string>
+    <string name="app_name">Ferit Raspored - Studentska Aplikacija</string>
     <string name="settings_grouphighlight_summary">npr. \"LV4/24,PR-2,LV1/16\"</string>
     <string name="settings_label">Postavke</string>
     <string name="settings_progtype_title">Tip studija</string>
@@ -46,16 +43,12 @@
     <string name="settings_loadonresume_title">Automatski pomakni na trenutni dan</string>
     <string name="settings_loadonresume_summary">Učitaj trenutni dan svakim ulaskom u aplikaciju</string>
     <string name="settings_skipsaturday_summary">Učitaj sljedeći ponedjeljak umjesto pomicanja na subotu</string>
-    <string name="settings_darktheme">Tamna tema aplikacije</string>
-    <string name="settings_themecategory_title">Tema</string>
-    <string name="settings_darkschedule_title">Tamna pozadina rasporeda</string>
-    <string name="settings_darkschedule_summary">Eksperimentalna opcija</string>
     <string name="settings_groupstoggle_title">Označi grupe</string>
     <string name="settings_groupstoggle_summary">Istakni dolje navedene grupe crvenom bojom i velikim slovima</string>
     <string name="menu_refresh">Osvježi</string>
     <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
-    <string name="notify_cant_load_page">Stranica se ne može učitati. Provjerite mrežu i probajte opet.</string>
-    <string name="notify_unexpected_error">Došlo je do neočekivane pogreške.  Kod: %d Opis: %s URL: %s</string>
+    <string name="notify_cant_load_page">Stranica se ne može učitati. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
+    <string name="notify_unexpected_error">Došlo je do neočekivane pogreške. [Kod]: %d [Opis]: %s [URL]: %s</string>
 
     <!--Programme type names and IDs-->
     <string-array name="programmetype_names">
@@ -222,30 +215,6 @@
     <string-array name="classesToHide">
         <item>naslov-kategorije</item>
         <item>odabir</item>
-    </string-array>
-
-    <string-array name="idsToInvertColor">
-        <item>content-contain</item>
-    </string-array>
-
-    <string-array name="classesToInvertColor">
-        <item>thumbnail</item>
-    </string-array>
-
-    <string-array name="classesToSetBackground">
-        <item>blokovi LV</item>
-        <item>blokovi KV</item>
-        <item>blokovi PR</item>
-        <item>blokovi AV</item>
-        <item>blokovi IS</item>
-    </string-array>
-
-    <string-array name="classBackgrounds">
-        <item>#002636</item>
-        <item>#000149</item>
-        <item>#1E0520</item>
-        <item>#322100</item>
-        <item>#002A7F</item>
     </string-array>
 
 </resources>

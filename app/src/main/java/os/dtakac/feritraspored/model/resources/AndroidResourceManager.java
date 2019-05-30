@@ -53,18 +53,8 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
-    public String getThemeChangedKey() {
-        return getStr(R.string.prefkey_themechanged);
-    }
-
-    @Override
     public String getLoadOnResumeKey() {
         return getStr(R.string.prefkey_loadonresume);
-    }
-
-    @Override
-    public String getDarkScheduleKey() {
-        return getStr(R.string.prefkey_darkschedule);
     }
 
     @Override
@@ -113,26 +103,6 @@ public class AndroidResourceManager implements ResourceManager {
     @Override
     public String[] getIdsToRemove() {
         return getStrArray(R.array.idsToRemove);
-    }
-
-    @Override
-    public String[] getIdsToInvertColor() {
-        return getStrArray(R.array.idsToInvertColor);
-    }
-
-    @Override
-    public String[] getClassesToInvertColor() {
-        return getStrArray(R.array.classesToInvertColor);
-    }
-
-    @Override
-    public String[] getClassesToSetBackground() {
-        return getStrArray(R.array.classesToSetBackground);
-    }
-
-    @Override
-    public String[] getClassBackgrounds() {
-        return getStrArray(R.array.classBackgrounds);
     }
 
     @Override

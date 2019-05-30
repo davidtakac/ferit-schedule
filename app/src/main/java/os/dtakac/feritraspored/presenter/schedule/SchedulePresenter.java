@@ -70,11 +70,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onViewResumed() {
-        boolean wasThemeChanged = repo.get(resManager.getThemeChangedKey(), false);
         boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
 
-        if(wasThemeChanged || wereSettingsModified){
-            repo.add(resManager.getThemeChangedKey(), false);
+        if(wereSettingsModified){
             repo.add(resManager.getSettingsModifiedKey(), false);
             view.refreshUi();
         } else {
@@ -106,9 +104,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
         js += buildHideElementsScript();
 
-        if(repo.get(resManager.getDarkScheduleKey(), false)) {
-            js += buildDarkBackgroundScript();
-        }
         if(repo.get(resManager.getGroupsToggledKey(), false)) {
             js += buildHighlightGroupsScript();
         }
@@ -251,16 +246,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         js = jsUtil.hideElementsScript(resManager.getIdsToHide())
                 + jsUtil.hideClassesScript(resManager.getClassesToHide())
                 + jsUtil.removeElementsScript(resManager.getIdsToRemove());
-
-        return js;
-    }
-
-    private String buildDarkBackgroundScript() {
-        String js = "";
-
-        js = jsUtil.invertElementsColor(resManager.getIdsToInvertColor(), "0.925")
-                + jsUtil.invertClassesColor(resManager.getClassesToInvertColor(), "1")
-                + jsUtil.changeClassesBackground(resManager.getClassesToSetBackground(), resManager.getClassBackgrounds());
 
         return js;
     }

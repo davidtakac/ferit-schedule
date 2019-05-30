@@ -15,7 +15,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme();
         setContentView(R.layout.activity_settings);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -24,13 +23,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fl_settings_settingsfragment, new SettingsFragment())
                 .commit();
-    }
-
-    private void setTheme(){
-        SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean darkTheme = s.getBoolean(getString(R.string.prefkey_darktheme), false);
-
-        setTheme(darkTheme ? R.style.DarkTheme : R.style.LightTheme);
     }
 
     @Override
