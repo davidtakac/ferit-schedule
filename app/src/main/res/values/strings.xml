@@ -36,7 +36,7 @@
     <string name="settings_scheduledisplaycategory_title">Prikaz rasporeda</string>
     <string name="cancel_label">Natrag</string>
     <string name="confirm_label">Spremi</string>
-    <string name="settings_grouphighlight_hint">LV8/16,AV1,Elektronika I  PR-LV1/16,PR-2,…</string>
+    <string name="settings_grouphighlight_hint">LV4,PR-2,KV2/16,LV2/24…</string>
     <string name="settings_grouphighlight_empty">(Nema unosa)</string>
     <string name="schedule_label">Raspored nastave i ispita</string>
     <string name="schedule_openscheduleinbrowser">Otvori u pregledniku</string>
@@ -49,12 +49,6 @@
     <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_cant_load_page">Stranica se ne može učitati. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_unexpected_error">Došlo je do neočekivane pogreške. [Kod]: %d [Opis]: %s [URL]: %s</string>
-    <string name="prefkey_groupshelp">group_help_key</string>
-    <string name="settings_groupshelp_title">Pomoć</string>
-    <string name="settings_groupshelp_summary">Upute za pravilan unos grupa</string>
-    <string name="settings_groupshelp_dialogtext">1) Grupe se unose bez navodnika odvojene jednostrukim zarezom. U ovim uputama ću koristiti navodnike samo zbog čitljivosti.\n\n2) Grupe se moraju unijeti točno kako pišu u rasporedu. \"AV1\" nije isto što \"av1\" ili \"aV1\".\n\n3) Svaka posebna grupa mora biti odvojena jednostrukim zarezom bez razmaka.\n\"AV1,LV1/16,PR-2\" je primjer pravilnog unosa, dok \"AV1, LV1/16, PR-2\" nije.\n\n4) Možete specificirati točan predmet i grupu. Pri tome je bitno da između naziva predmeta i grupe stavite dva razmaka, a ne jedan.\n\"Elektronika I__PR-LV1/16\" je primjer pravilnog unosa, dok \"Elektronika I_PR-LV1/16\" nije(zamijenite donju crtu razmakom).\n\n5) Također je moguće unijeti samo ime predmeta kojeg želite označiti, npr.\n\"Osnove elektrotehnike II\" će označiti sva predavanja i vježbe iz tog predmeta.</string>
-    <string name="settings_groupshelp_dialogtitle">Upute za grupe</string>
-    <string name="settings_groupshelp_dialogbutton">U redu</string>
 
     <!--Programme type names and IDs-->
     <string-array name="programmetype_names">

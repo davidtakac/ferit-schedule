@@ -116,11 +116,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onViewCreated() {
-        boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
-        if(wereSettingsModified){
-            repo.add(resManager.getSettingsModifiedKey(), false);
-        }
-
         boolean loadOnResume = repo.get(resManager.getLoadOnResumeKey(), false);
         if(loadOnResume){
             return;
@@ -138,7 +133,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onViewStopped() {
-        //if(displayedDay == null) return;
         repo.add(resManager.getPrevDisplayedWeekKey(), displayedDay.toString());
     }
 
