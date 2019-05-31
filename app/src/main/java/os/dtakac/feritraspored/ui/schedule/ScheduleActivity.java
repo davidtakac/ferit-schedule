@@ -208,7 +208,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     private void openUrlInCustomTabs(String url){
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
 
-        //gets primary color of current theme
+        //gets primary color
         int appCompatAttribute = this.getResources().getIdentifier("colorPrimary", "attr", this.getPackageName());
         TypedValue value = new TypedValue();
         this.getTheme().resolveAttribute (appCompatAttribute, value, true);

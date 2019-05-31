@@ -44,9 +44,14 @@
         <EditTextPreference
             android:key="@string/prefkey_groups"
             android:title="@string/settings_grouphighlight_title"
-            android:summary="@string/settings_grouphighlight_summary"
             android:negativeButtonText="@string/cancel_label"
             android:positiveButtonText="@string/confirm_label"
+            />
+
+        <Preference
+            android:key="@string/prefkey_groupshelp"
+            android:title="@string/settings_groupshelp_title"
+            android:summary="@string/settings_groupshelp_summary"
             />
 
     </PreferenceCategory>
