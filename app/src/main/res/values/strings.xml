@@ -21,7 +21,6 @@
 
     <!--User interface strings-->
     <string name="app_name">Ferit Raspored - Studentska Aplikacija</string>
-    <string name="settings_grouphighlight_summary">npr. \"LV4/24,PR-2,LV1/16\"</string>
     <string name="settings_label">Postavke</string>
     <string name="settings_progtype_title">Tip studija</string>
     <string name="settings_programme_title">Studijski program</string>
