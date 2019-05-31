@@ -3,24 +3,26 @@ package os.dtakac.feritraspored.ui.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-
-import com.takisoft.preferencex.EditTextPreference;
-import com.takisoft.preferencex.PreferenceFragmentCompat;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.repository.IRepository;
 import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
+import os.dtakac.feritraspored.ui.groups.GroupsHelpDialogFragment;
 import os.dtakac.feritraspored.ui.timepicker.Time24Hour;
 import os.dtakac.feritraspored.ui.timepicker.TimePickerFragment;
 import os.dtakac.feritraspored.ui.timepicker.TimeSetListener;
 import os.dtakac.feritraspored.util.Constants;
 
+// TODO: 30-May-19 kad klikne na pomoc, otvori alert dialog u kojem ces objasnit kako funkcionira oznacavanje grupa
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
     private ListPreference progTypeList;
@@ -28,6 +30,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private ListPreference yearList;
     private Preference timePickerPref;
     private EditTextPreference groupsPref;
+    private Preference groupsHelpPref;
 
     private IRepository repo;
     private SharedPreferences prefs;
@@ -46,7 +49,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     @Override
-    public void onCreatePreferencesFix(Bundle bundle, String s) {
+    public void onCreatePreferences(Bundle bundle, String s) {
         setPreferencesFromResource(R.xml.fragment_preference, s);
 
         initPrefReferences();
@@ -78,11 +81,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private void initPrefReferences() {
         PreferenceManager m = getPreferenceManager();
 
-        progTypeList = (ListPreference) m.findPreference(getStr(R.string.prefkey_progtype));
-        programmeList = (ListPreference) m.findPreference(getStr(R.string.prefkey_programme));
-        yearList = (ListPreference) m.findPreference(getStr(R.string.prefkey_year));
+        progTypeList = m.findPreference(getStr(R.string.prefkey_progtype));
+        programmeList = m.findPreference(getStr(R.string.prefkey_programme));
+        yearList = m.findPreference(getStr(R.string.prefkey_year));
         timePickerPref = m.findPreference(getStr(R.string.prefkey_time));
-        groupsPref = (EditTextPreference) m.findPreference(getStr(R.string.prefkey_groups));
+        groupsPref = m.findPreference(getStr(R.string.prefkey_groups));
+        groupsHelpPref = m.findPreference(getStr(R.string.prefkey_groupshelp));
     }
 
     private void initPreferenceLists(){
@@ -114,10 +118,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private void setGroupsPreferenceEnabled(boolean isEnabled){
         groupsPref.setEnabled(isEnabled);
+        groupsHelpPref.setEnabled(isEnabled);
     }
 
     private void initGroupsPref(){
         groupsPref.setOnBindEditTextListener(editText -> editText.setHint(getStr(R.string.settings_grouphighlight_hint)));
+        groupsHelpPref.setOnPreferenceClickListener(this);
         setGroupsSummaryFromPrefs();
         setGroupsPreferenceEnabled(repo.get(getStr(R.string.prefkey_groups_toggle), false));
     }
@@ -248,7 +254,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if(preference.getKey().equals(getStr(R.string.prefkey_time))){
+        Log.d(Constants.LOG_TAG, "pref clicked");
+        String key = preference.getKey();
+        if(key.equals(getStr(R.string.prefkey_time))){
             Time24Hour prevTime = new Time24Hour(repo.get(getStr(R.string.prefkey_time_hour), 20), repo.get(getStr(R.string.prefkey_time_minute), 0));
 
             DialogFragment f = TimePickerFragment.newInstance(prevTime, (TimeSetListener) setTime -> {
@@ -261,6 +269,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 f.show(getActivity().getSupportFragmentManager(), Constants.TIMEPICKER_KEY);
             }
 
+        } else if(key.equals(getStr(R.string.prefkey_groupshelp))){
+            DialogFragment f = new GroupsHelpDialogFragment();
+            if(getActivity() != null){
+                f.show(getActivity().getSupportFragmentManager(), Constants.GROUPSHELP_KEY);
+            }
         }
         return true;
     }
