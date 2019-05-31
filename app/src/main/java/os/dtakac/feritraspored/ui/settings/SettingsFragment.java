@@ -22,7 +22,6 @@ import os.dtakac.feritraspored.ui.timepicker.TimePickerFragment;
 import os.dtakac.feritraspored.ui.timepicker.TimeSetListener;
 import os.dtakac.feritraspored.util.Constants;
 
-// TODO: 30-May-19 kad klikne na pomoc, otvori alert dialog u kojem ces objasnit kako funkcionira oznacavanje grupa
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
     private ListPreference progTypeList;
@@ -254,7 +253,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        Log.d(Constants.LOG_TAG, "pref clicked");
         String key = preference.getKey();
         if(key.equals(getStr(R.string.prefkey_time))){
             Time24Hour prevTime = new Time24Hour(repo.get(getStr(R.string.prefkey_time_hour), 20), repo.get(getStr(R.string.prefkey_time_minute), 0));
