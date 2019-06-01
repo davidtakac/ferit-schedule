@@ -51,7 +51,6 @@
         <Preference
             android:key="@string/prefkey_groupshelp"
             android:title="@string/settings_groupshelp_title"
-            android:summary="@string/settings_groupshelp_summary"
             />
 
     </PreferenceCategory>

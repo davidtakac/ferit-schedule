@@ -261,6 +261,10 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private String buildHighlightGroupsScript() {
         String[] filters = repo.get(resManager.getGroupsKey(), "").split(",");
+        //remove trailing and leading whitespaces
+        for(int i = 0; i < filters.length; i++){
+            filters[i] = filters[i].trim();
+        }
         return jsUtil.highlightElementsScript(filters);
     }
 }

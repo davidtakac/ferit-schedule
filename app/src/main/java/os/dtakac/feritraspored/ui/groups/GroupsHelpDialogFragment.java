@@ -23,7 +23,7 @@ public class GroupsHelpDialogFragment extends DialogFragment {
                 dismiss();
             }
         });
-        builder.setTitle(getString(R.string.settings_groupshelp_dialogtitle));
+        builder.setTitle(getString(R.string.settings_groupshelp_title));
         builder.setMessage(getString(R.string.settings_groupshelp_dialogtext));
         return builder.create();
     }
