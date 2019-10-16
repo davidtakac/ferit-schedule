@@ -99,7 +99,7 @@
         <item>32</item>
         <item>33</item>
         <item>36</item>
-        <item>37</item>
+        <item>54</item>
         <item>38</item>
         <item>39</item>
         <item>52</item>
@@ -107,10 +107,10 @@
 
     <!--Professional names and IDs-->
     <string-array name="professional_names">
-        <item>Elektrotehnika - računarstvo</item>
+        <item>Računarstvo</item>
         <item>Elektrotehnika - informatika</item>
-        <item>Automatika</item>
-        <item>Elektroenergetika</item>
+        <item>Elektrotehnika - automatika</item>
+        <item>Elektrotehnika - elektroenergetika</item>
     </string-array>
     <string-array name="professional_values">
         <item>53</item>
@@ -179,17 +179,17 @@
     <!--Some study programmes have specific year counts because who needs consistency, right, FERIT?-->
     <string-array name="year_ETRAC_professional_names">
         <item>Prva</item>
+        <item>Druga</item>
     </string-array>
     <string-array name="year_ETRAC_professional_values">
         <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="year_ETINF_professional_names">
-        <item>Druga</item>
         <item>Treća</item>
     </string-array>
     <string-array name="year_ETINF_professional_values">
-        <item>2</item>
         <item>3</item>
     </string-array>
 

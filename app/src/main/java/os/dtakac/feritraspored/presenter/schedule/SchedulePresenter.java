@@ -51,6 +51,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         setDisplayedDay(currentDay);
 
         String displayedWeekUrl = buildDisplayedWeekUrl();
+        Log.d("prestag", "url: " + displayedWeekUrl);
 
         String loadedUrl = view.getLoadedUrl();
 
