@@ -265,8 +265,10 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("E");
         String dayCroatian = formatter.withLocale(new Locale("hr", "HR")).print(currentDay);
 
-        // capitalize it to fit format used in url
-        dayCroatian = dayCroatian.substring(0,1).toUpperCase() + dayCroatian.substring(1);
+        // capitalize first letter to fit format used in url
+        String firstLetter = dayCroatian.substring(0,1);
+        firstLetter = firstLetter.equals("č") ? "C" : firstLetter.toUpperCase();
+        dayCroatian = firstLetter + dayCroatian.substring(1);
 
         // scroll schedule to display current day
         return jsUtil.scrollIntoViewScript(dayCroatian);
