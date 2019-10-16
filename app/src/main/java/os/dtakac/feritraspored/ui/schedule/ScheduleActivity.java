@@ -141,6 +141,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void injectJavascript(String script){
+        Log.d("scheduletag", script);
+
         wvSchedule.evaluateJavascript(script, new ValueCallback<String>() {
             @Override
             public void onReceiveValue(String s) {

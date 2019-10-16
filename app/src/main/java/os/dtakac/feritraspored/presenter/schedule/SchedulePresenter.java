@@ -5,6 +5,10 @@ import android.util.Log;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.util.Locale;
 
 import os.dtakac.feritraspored.model.repository.IRepository;
 import os.dtakac.feritraspored.model.resources.ResourceManager;
@@ -257,7 +261,15 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildScrollToCurrentDayScript() {
-        return jsUtil.scrollIntoViewScript(currentDay.toString());
+        // get short day name in croatian (pon, fri, sri..)
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("E");
+        String dayCroatian = formatter.withLocale(new Locale("hr", "HR")).print(currentDay);
+
+        // capitalize it to fit format used in url
+        dayCroatian = dayCroatian.substring(0,1).toUpperCase() + dayCroatian.substring(1);
+
+        // scroll schedule to display current day
+        return jsUtil.scrollIntoViewScript(dayCroatian);
     }
 
     private String buildHighlightGroupsScript() {
