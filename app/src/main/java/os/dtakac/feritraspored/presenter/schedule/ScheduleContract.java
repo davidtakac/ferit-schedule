@@ -12,7 +12,6 @@ public interface ScheduleContract {
         void onViewStopped();
         void onErrorReceived(int errorCode, String description, String failingUrl);
         void onPageFinished(boolean wasErrorReceived);
-
         void onClickedCurrent();
     }
 
@@ -26,5 +25,6 @@ public interface ScheduleContract {
 
         void showShortToast(String message);
         void setControlsEnabled(boolean enabled);
+        void setWeekNumber(String script);
     }
 }

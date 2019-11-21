@@ -15,6 +15,7 @@ public class JavascriptUtil {
     private static String SCROLL_INTO_VIEW_PATH = "scroll-into-view-script.txt";
     private static String P_CONTAINS_PATH = "p-contains-script.txt";
     private static String HIGHLIGHT_PATH = "highlight-paragraphs-script.txt";
+    private static String WEEKNUM_PATH = "week-num-script.txt";
 
     private AssetManager am;
 
@@ -74,5 +75,14 @@ public class JavascriptUtil {
 
     public String removeElementsScript(String[] elementIds){
         return buildScript(elementIds, REMOVE_ID_PATH);
+    }
+
+    public String getWeekNumberScript(){
+        try {
+            return FUNCTION_START + FileUtil.readFile(am.open(WEEKNUM_PATH)) + FUNCTION_END;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

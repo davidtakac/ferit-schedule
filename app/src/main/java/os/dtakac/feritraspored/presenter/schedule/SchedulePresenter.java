@@ -105,6 +105,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             return;
         }
 
+        view.setWeekNumber(jsUtil.getWeekNumberScript());
+
         String js = "";
 
         js += buildHideElementsScript();
