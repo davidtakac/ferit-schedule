@@ -152,7 +152,16 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void setWeekNumber(String script){
-        wvSchedule.evaluateJavascript(script, s -> setTitle(s.replace("\"", "")));
+        wvSchedule.evaluateJavascript(script, s -> {
+            String noQuotations = s.replace("\"", "");
+            String title = noQuotations;
+
+            if(noQuotations.isEmpty() || noQuotations.equals("null") || noQuotations.equals("undefined")){
+                title = getString(R.string.schedule_label);
+            }
+
+            setTitle(title);
+        });
     }
 
     @Override
