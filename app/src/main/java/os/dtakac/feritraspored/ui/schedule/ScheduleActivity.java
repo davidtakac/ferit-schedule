@@ -141,8 +141,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void injectJavascript(String script){
-        Log.d("scheduletag", script);
-
         wvSchedule.evaluateJavascript(script, s -> {
             setControlsEnabled(true);
             //delayed loading turn off so the webview has time to update

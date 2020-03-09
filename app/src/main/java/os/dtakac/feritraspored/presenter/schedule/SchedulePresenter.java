@@ -36,9 +36,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         this.resManager = resManager;
         this.jsUtil = jsUtil;
         this.netUtil = netUtil;
-
         this.errorReceived = false;
-
         evaluateCurrentDay();
     }
 
@@ -49,20 +47,15 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         //resumed after it. not including this line here would result in the app not
         //shifting to the next day correctly.
         evaluateCurrentDay();
-
         //after evaluating current week, set it as the week to display
         setDisplayedDay(currentDay);
 
         String displayedWeekUrl = buildDisplayedWeekUrl();
-        Log.d("prestag", "url: " + displayedWeekUrl);
-
         String loadedUrl = view.getLoadedUrl();
 
         boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
-
         if(wereSettingsModified || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl) || errorReceived){
             view.loadUrl(displayedWeekUrl);
-
             //settings were applied so update the settings modified key
             repo.add(resManager.getSettingsModifiedKey(), false);
         } else {
@@ -75,7 +68,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onViewResumed() {
         boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
-
         if(wereSettingsModified){
             repo.add(resManager.getSettingsModifiedKey(), false);
             view.refreshUi();
@@ -93,7 +85,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             view.showShortToast(resManager.getCheckNetworkString());
             return;
         }
-
         evaluateCurrentDay();
         view.reloadCurrentPage();
     }
@@ -103,20 +94,16 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         if(errorReceived){
             return;
         }
-
         view.setWeekNumber(jsUtil.weekNumberScript());
 
         String js = "";
-
         js += buildHideElementsScript();
-
         if(repo.get(resManager.getGroupsToggledKey(), false)) {
             js += buildHighlightGroupsScript();
         }
         if(currentDay.withDayOfWeek(DateTimeConstants.MONDAY).equals(displayedDay.withDayOfWeek(DateTimeConstants.MONDAY))) {
             js += buildScrollToCurrentDayScript();
         }
-
         view.injectJavascript(js);
     }
 
@@ -126,14 +113,12 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         if(wereSettingsModified){
             repo.add(resManager.getSettingsModifiedKey(), false);
         }
-
         boolean loadOnResume = repo.get(resManager.getLoadOnResumeKey(), false);
         if(loadOnResume){
             return;
         }
 
         String prevDisplayedWeek = repo.get(resManager.getPrevDisplayedWeekKey(), null);
-
         if(prevDisplayedWeek == null){
             loadCurrentDay();
         } else {
@@ -209,19 +194,17 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
 
-        boolean skipSaturday = repo.get(resManager.getSkipSaturdayKey(), false);
         boolean skipToNextDay = repo.get(resManager.getSkipDayKey(), false);
-
         if(skipToNextDay) {
             date = addDayIfTimeGreaterThanPrefs(date, time);
         }
 
+        boolean skipSaturday = repo.get(resManager.getSkipSaturdayKey(), false);
         if(date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
             date = date.plusDays(1);
         } else if(skipSaturday && date.getDayOfWeek() == DateTimeConstants.SATURDAY) {
             date = date.plusDays(2);
         }
-
         currentDay = date;
     }
 
