@@ -12,7 +12,6 @@ import java.util.Locale;
 
 import os.dtakac.feritraspored.model.repository.IRepository;
 import os.dtakac.feritraspored.model.resources.ResourceManager;
-import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 import os.dtakac.feritraspored.util.NetworkUtil;
 
@@ -105,7 +104,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             return;
         }
 
-        view.setWeekNumber(jsUtil.getWeekNumberScript());
+        view.setWeekNumber(jsUtil.weekNumberScript());
 
         String js = "";
 
@@ -253,13 +252,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildHideElementsScript() {
-        String js = "";
-
-        js = jsUtil.hideElementsScript(resManager.getIdsToHide())
-                + jsUtil.hideClassesScript(resManager.getClassesToHide())
-                + jsUtil.removeElementsScript(resManager.getIdsToRemove());
-
-        return js;
+        return jsUtil.hideAllButScheduleScript();
     }
 
     private String buildScrollToCurrentDayScript() {

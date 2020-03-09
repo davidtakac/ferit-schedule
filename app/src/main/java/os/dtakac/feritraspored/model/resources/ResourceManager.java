@@ -21,11 +21,6 @@ public interface ResourceManager {
     String getUndergradProgrammeId(int index);
     String getUndergradYearId(int index);
 
-    //string arrays for modifying schedule webpage
-    String[] getIdsToHide();
-    String[] getClassesToHide();
-    String[] getIdsToRemove();
-
     //user interface strings
     String getCheckNetworkString();
     String getCantLoadPageString();

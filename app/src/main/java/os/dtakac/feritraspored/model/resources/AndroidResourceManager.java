@@ -91,21 +91,6 @@ public class AndroidResourceManager implements ResourceManager {
     }
 
     @Override
-    public String[] getIdsToHide() {
-        return getStrArray(R.array.idsToHide);
-    }
-
-    @Override
-    public String[] getClassesToHide() {
-        return getStrArray(R.array.classesToHide);
-    }
-
-    @Override
-    public String[] getIdsToRemove() {
-        return getStrArray(R.array.idsToRemove);
-    }
-
-    @Override
     public String getCheckNetworkString() {
         return getStr(R.string.notify_no_network);
     }
