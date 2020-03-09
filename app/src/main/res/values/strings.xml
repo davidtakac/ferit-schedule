@@ -201,23 +201,4 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-
-    <string-array name="idsToHide">
-        <item>header-top</item>
-        <item>header</item>
-        <item>gototopdiv</item>
-        <item>footer</item>
-        <item>sidebar</item>
-        <item>napomene</item>
-    </string-array>
-
-    <string-array name="idsToRemove">
-        <item>izbor-studija</item>
-    </string-array>
-
-    <string-array name="classesToHide">
-        <item>naslov-kategorije</item>
-        <item>odabir</item>
-    </string-array>
-
 </resources>

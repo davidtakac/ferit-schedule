@@ -1,1 +1,0 @@
-try{document.getElementById("%s").style.display = "none";}catch(err){};
