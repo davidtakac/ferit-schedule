@@ -1,0 +1,6 @@
+$("#content-contain").css("filter","invert(100)");
+$(".PR").css("background", "#1E0520");
+$(".AV").css("background", "#322100");
+$(".LV").css("background", "#002636");
+$(".KV").css("background", "#000149");
+$(".IS").css("background", "#002A7F");
