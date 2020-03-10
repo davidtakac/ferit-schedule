@@ -6,14 +6,15 @@ import java.io.IOException;
 
 public class JavascriptUtil {
 
-    private static String FUNCTION_START = "(function(){";
-    private static String FUNCTION_END = "}());\n";
+    public static String FUNCTION_START = "(function(){";
+    public static String FUNCTION_END = "}());\n";
 
     private static String SCROLL_INTO_VIEW_PATH = "scroll-into-view-script.txt";
     private static String P_CONTAINS_PATH = "p-contains-script.txt";
     private static String HIGHLIGHT_PATH = "highlight-paragraphs-script.txt";
     private static String WEEKNUM_PATH = "week-num-script.txt";
     private static String HIDE_ALL_BUT_SCHEDULE_PATH = "hide-all-but-schedule-script.txt";
+    private static String DARK_THEME_PATH = "dark-theme-script.txt";
 
     private AssetManager am;
 
@@ -75,6 +76,15 @@ public class JavascriptUtil {
     public String hideAllButScheduleScript(){
         try{
             return FUNCTION_START + FileUtil.readFile(am.open(HIDE_ALL_BUT_SCHEDULE_PATH)) + FUNCTION_END;
+        } catch (IOException e){
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String darkThemeScript(){
+        try{
+            return FUNCTION_START + FileUtil.readFile(am.open(DARK_THEME_PATH)) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
