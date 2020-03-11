@@ -1,5 +1,7 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import org.joda.time.DateTimeConstants;
@@ -29,6 +31,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private LocalDate displayedDay;
 
     private boolean errorReceived;
+
+    private int currentNightMode = Configuration.UI_MODE_NIGHT_NO;
 
     public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager, JavascriptUtil jsUtil, NetworkUtil netUtil) {
         this.view = view;
@@ -66,7 +70,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void onViewResumed() {
+    public void onViewResumed(int currentNightMode) {
+        this.currentNightMode = currentNightMode;
         boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
         if(wereSettingsModified){
             repo.add(resManager.getSettingsModifiedKey(), false);
@@ -98,6 +103,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
         String js = "";
         js += buildHideElementsScript();
+        if(currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+            js += jsUtil.darkThemeScript();
+        }
         if(repo.get(resManager.getGroupsToggledKey(), false)) {
             js += buildHighlightGroupsScript();
         }
@@ -147,7 +155,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     public void onPageFinished(boolean wasErrorReceived) {
         errorReceived = wasErrorReceived;
         if(!errorReceived){
-            view.injectJavascript(jsUtil.darkThemeScript());
             applyJavascript();
         }
     }
