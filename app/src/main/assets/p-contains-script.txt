@@ -1,1 +1,1 @@
-p:contains(%s)
+p:contains(\"%s\")

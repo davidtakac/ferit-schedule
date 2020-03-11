@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="gray300_to_black">@color/black</color>
+    <color name="lightBlue200_to_700">#81D4FA</color>
 </resources>

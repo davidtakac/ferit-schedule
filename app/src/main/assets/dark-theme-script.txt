@@ -13,3 +13,13 @@ $(".satnica").css("background-color",fg);
 $(".naziv-dan").css("background-color",fg);
 $(".naziv-dan a").css("background-color",fg).css("color",textColor);
 $(".vrijeme-mobitel .satnica").css("color",textColor);
+
+/*blocks*/
+var blockTextColor = "#EEEEEE";
+$(".blokovi").css("border-top","none");
+$(".blokovi p").css("color",blockTextColor);
+$(".PR").css("background-color","#517652");
+$(".AV").css("background-color","#717FA4");
+$(".LV").css("background-color","#9d6f5b");
+$(".IS").css("background-color","#a7843d");
+$(".KV").css("background-color","#9b9a3f");

@@ -8,6 +8,7 @@
     <color name="gray400">#BDBDBD</color>
     <color name="gray900">#212121</color>
     <color name="errorRed">#B00020</color>
+    <color name="lightBlue200_to_700">#0288D1</color>
 
     <color name="gray300_to_black">@color/gray300</color>
 </resources>

@@ -61,6 +61,6 @@
             android:summary="%s"
             android:negativeButtonText="@string/cancel_label"
             android:entries="@array/theme_options_human"
-            android:entryValues="@array/theme_options"/>
+            android:entryValues="@array/theme_options" />
     </PreferenceCategory>
 </PreferenceScreen>

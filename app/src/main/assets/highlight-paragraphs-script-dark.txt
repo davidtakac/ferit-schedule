@@ -1,1 +1,1 @@
-$("%s").css("text-decoration","underline wavy white").css("text-transform","uppercase");
+$("%s").css("border-style","solid").css("border-color","#B9F6CA");
