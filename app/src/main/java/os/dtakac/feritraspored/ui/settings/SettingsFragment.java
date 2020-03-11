@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.preference.EditTextPreference;
@@ -12,6 +13,9 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.repository.IRepository;
@@ -27,6 +31,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private ListPreference progTypeList;
     private ListPreference programmeList;
     private ListPreference yearList;
+    private ListPreference themeList;
     private Preference timePickerPref;
     private EditTextPreference groupsPref;
     private Preference groupsHelpPref;
@@ -86,6 +91,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         timePickerPref = m.findPreference(getStr(R.string.prefkey_time));
         groupsPref = m.findPreference(getStr(R.string.prefkey_groups));
         groupsHelpPref = m.findPreference(getStr(R.string.prefkey_groupshelp));
+        themeList = m.findPreference(getStr(R.string.prefkey_theme));
     }
 
     private void initPreferenceLists(){
@@ -96,6 +102,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         int programmeValue = Integer.parseInt(programmeList.getValue());
         setUpYearList(progTypeValue, programmeValue);
+
+        setupThemeList();
     }
 
     private void initTimePickerPref(){
@@ -230,6 +238,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
     }
 
+    private void setupThemeList(){
+        String theme = repo.get(getStr(R.string.prefkey_theme), getStrArray(R.array.theme_options)[0]);
+        themeList.setValue(theme);
+    }
+
+    private void setTheme(){
+        String themeStr = repo.get(getStr(R.string.prefkey_theme), getStrArray(R.array.theme_options)[0]);
+        AppCompatDelegate.setDefaultNightMode(Integer.parseInt(themeStr));
+    }
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(!werePrefsModified && !key.equals(getStr(R.string.prefkey_prevdisplayedweek))) {
@@ -248,6 +266,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             setGroupsSummaryFromPrefs();
         } else if(key.equals(getStr(R.string.prefkey_groups_toggle))){
             setGroupsPreferenceEnabled(repo.get(key, false));
+        } else if(key.equals(getStr(R.string.prefkey_theme))){
+            setTheme();
         }
     }
 

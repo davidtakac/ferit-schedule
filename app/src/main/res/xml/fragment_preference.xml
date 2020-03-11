@@ -1,84 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
-
     <PreferenceCategory
-        android:title="@string/settings_scheduledisplaycategory_title"
-        >
-
+        android:title="@string/settings_scheduledisplaycategory_title">
         <SwitchPreference
             android:key="@string/prefkey_loadonresume"
             android:title="@string/settings_loadonresume_title"
             android:summary="@string/settings_loadonresume_summary"
-            android:defaultValue="true"
-            />
-
+            android:defaultValue="true" />
         <SwitchPreference
             android:key="@string/prefkey_skipsaturday"
             android:title="@string/settings_skipsaturday_title"
-            android:summary="@string/settings_skipsaturday_summary"
-            />
-
+            android:summary="@string/settings_skipsaturday_summary" />
         <SwitchPreference
             android:key="@string/prefkey_skipday"
             android:title="@string/settings_skipday_title"
-            android:summary="@string/settings_skipday_summary"
-            />
-
+            android:summary="@string/settings_skipday_summary" />
         <Preference
             android:key="@string/prefkey_time"
-            android:title="@string/settings_timepicker_title"
-            />
-
+            android:title="@string/settings_timepicker_title" />
     </PreferenceCategory>
-
     <PreferenceCategory
         android:title="@string/settings_grouphighlightcategory_title">
-
         <SwitchPreference
             android:key="@string/prefkey_groups_toggle"
             android:title="@string/settings_groupstoggle_title"
-            android:summary="@string/settings_groupstoggle_summary"
-            />
-
+            android:summary="@string/settings_groupstoggle_summary" />
         <EditTextPreference
             android:key="@string/prefkey_groups"
             android:title="@string/settings_grouphighlight_title"
             android:negativeButtonText="@string/cancel_label"
-            android:positiveButtonText="@string/confirm_label"
-            />
-
+            android:positiveButtonText="@string/confirm_label" />
         <Preference
             android:key="@string/prefkey_groupshelp"
-            android:title="@string/settings_groupshelp_title"
-            />
-
+            android:title="@string/settings_groupshelp_title" />
     </PreferenceCategory>
-
     <PreferenceCategory
         android:title="@string/settings_studypickcategory_title">
-
         <ListPreference
             android:key="@string/prefkey_progtype"
             android:title="@string/settings_progtype_title"
             android:summary="%s"
-            android:negativeButtonText="@string/cancel_label"
-            />
-
+            android:negativeButtonText="@string/cancel_label" />
         <ListPreference
             android:key="@string/prefkey_programme"
             android:title="@string/settings_programme_title"
             android:summary="%s"
-            android:negativeButtonText="@string/cancel_label"
-            />
-
+            android:negativeButtonText="@string/cancel_label" />
         <ListPreference
             android:key="@string/prefkey_year"
             android:title="@string/settings_year_title"
             android:summary="%s"
-            android:negativeButtonText="@string/cancel_label"
-            />
-
+            android:negativeButtonText="@string/cancel_label" />
     </PreferenceCategory>
-
+    <PreferenceCategory
+        android:title="@string/settings_theme_title">
+        <ListPreference
+            android:key="@string/prefkey_theme"
+            android:title="@string/settings_theme_preftitle"
+            android:summary="%s"
+            android:negativeButtonText="@string/cancel_label"
+            android:entries="@array/theme_options_human"
+            android:entryValues="@array/theme_options"/>
+    </PreferenceCategory>
 </PreferenceScreen>
