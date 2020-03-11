@@ -1,9 +1,3 @@
 <resources>
-    <style name="LightTheme" parent="@style/Theme.AppCompat.Light">
-        <item name="colorAccent">@color/lightBlue500</item>
-        <item name="colorPrimary">@color/gray200</item>
-        <item name="colorPrimaryDark">@color/gray400</item>
-        <item name="colorForeground">@color/black</item>
-    </style>
-
+    <style name="AppTheme" parent="@style/Theme.MaterialComponents.DayNight"/>
 </resources>

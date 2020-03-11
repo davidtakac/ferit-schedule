@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
         android:title="@string/menu_refresh"
         app:showAsAction="always"
         android:icon="@drawable/ic_baseline_refresh_24px"
-        app:iconTint="?attr/colorForeground"
-        />
-
+        app:iconTint="?colorOnSurface" />
     <item android:id="@+id/item_menu_settings"
         android:title="@string/settings_label"/>
-
     <item android:id="@+id/item_menu_openinbrowser"
         android:title="@string/schedule_openscheduleinbrowser"/>
 </menu>
