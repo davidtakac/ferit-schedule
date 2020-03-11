@@ -1,5 +1,15 @@
+/*set background color region*/
 var bg = "#121212";
 $("#raspored").css("background-color",bg);
 $("#content-contain").css("background-color",bg);
 $(".vrijeme-mobitel .tok").css("border-right","none");
 $(".raspored div.dan div.tok").css("background-image", "url(\"https://i.postimg.cc/DwJj4gcy/raspored-pozadina-tamna.png\")");
+$(".vrijeme-mobitel .tok .satnica").css("border-top","none").css("border-bottom","none");
+
+/*change element colors*/
+var fg = "#212121";
+var textColor = "#BDBDBD";
+$(".satnica").css("background-color",fg);
+$(".naziv-dan").css("background-color",fg);
+$(".naziv-dan a").css("background-color",fg).css("color",textColor);
+$(".vrijeme-mobitel .satnica").css("color",textColor);
