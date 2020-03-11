@@ -148,16 +148,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         errorReceived = wasErrorReceived;
         if(!errorReceived){
             applyJavascript();
-            //todo: remove
-            view.injectJavascript(JavascriptUtil.FUNCTION_START +
-                    "$(\"#content-contain\").css(\"filter\",\"invert(100)\");" +
-                    "$(\".PR\").css(\"background\", \"#1E0520\");" +
-                    "$(\".AV\").css(\"background\", \"#322100\");" +
-                    "$(\".LV\").css(\"background\", \"#002636\");" +
-                    "$(\".KV\").css(\"background\", \"#000149\");" +
-                    "$(\".IS\").css(\"background\", \"#002A7F\");" +
-                    JavascriptUtil.FUNCTION_END
-            );
+            view.injectJavascript(jsUtil.darkThemeScript());
         }
     }
 
