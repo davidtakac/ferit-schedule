@@ -1,14 +1,5 @@
-$("#content-contain").css("filter","invert(100)");
-$(".PR").css("background", "#bc5fb8"); /*green600 inverted*/
-$(".AV").css("background", "#fd772e"); /*blue700 inverted*/
-$(".LV").css("background", "#1ac6ca"); /*red600 inverted*/
-$(".KV").css("background", "#043fd2"); /*yellow700 inverted*/
-$(".IS").css("background", "#0473ff"); /*orange600 inverted*/
-$(".thumbnail>p").css("color","#000"); /*white inverted, color of block title*/
-$(".thumbnail>p>i").css("color","#00322d"); /*red100 inverted, color of block additional info such as Kolokvij*/
-
-/*special text colors for KV and IS blocks for readability*/
-$(".KV>.thumbnail>p").css("color", "#bdbdbd");
-$(".KV>.thumbnail>p>i").css("color", "#10acaf"); /*red400 inverted*/
-$(".IS>.thumbnail>p").css("color", "#bdbdbd");
-$(".IS>.thumbnail>p>i").css("color", "#10acaf"); /*red400 inverted*/
+var bg = "#121212";
+$("#raspored").css("background-color",bg);
+$("#content-contain").css("background-color",bg);
+$(".vrijeme-mobitel .tok").css("border-right","none");
+$(".raspored div.dan div.tok").css("background-image", "url(\"https://i.postimg.cc/DwJj4gcy/raspored-pozadina-tamna.png\")");
