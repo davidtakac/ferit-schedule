@@ -1,0 +1,3 @@
+<resources>
+    <bool name="window_light_to_dark">false</bool>
+</resources>

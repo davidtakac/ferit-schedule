@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="@style/Theme.MaterialComponents.DayNight">
+    <style name="AppTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/gray300_to_black</item>
+        <item name="colorAccent">@color/lightBlue500</item>
     </style>
 </resources>

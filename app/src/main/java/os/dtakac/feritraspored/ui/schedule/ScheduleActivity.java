@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -37,7 +37,6 @@ import os.dtakac.feritraspored.model.resources.AndroidResourceManager;
 import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
-import os.dtakac.feritraspored.util.Constants;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 import os.dtakac.feritraspored.util.NetworkUtil;
 
@@ -56,8 +55,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     @BindView(R.id.btn_navbar_previous)
     ImageButton btnPrevious;
 
-    private MenuItem itemRefresh;
-
     //status views
     @BindView(R.id.cl_schedule_status)
     ConstraintLayout clStatus;
@@ -70,6 +67,9 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @BindView(R.id.tv_schedule_status)
     TextView tvStatus;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private ScheduleContract.Presenter presenter;
 
@@ -90,7 +90,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                 new NetworkUtil(this)
         );
 
-        initActionBar();
+        initToolbar();
         initWebView();
         initNavbar();
 
@@ -109,29 +109,20 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         super.onStop();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        itemRefresh = menu.getItem(0);
-        initRefreshButton();
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.item_menu_settings: {
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            }
-            case R.id.item_menu_openinbrowser: {
-                openUrlInExternalBrowser(getLoadedUrl());
-                break;
-            }
-            default: break;
-        }
-        return super.onOptionsItemSelected(item);
+    private void initToolbar() {
+        toolbar.inflateMenu(R.menu.menu);
+        toolbar.getMenu().findItem(R.id.item_menu_refresh).setOnMenuItemClickListener(item -> {
+            presenter.onRefresh();
+            return true;
+        });
+        toolbar.getMenu().findItem(R.id.item_menu_settings).setOnMenuItemClickListener(item -> {
+            startActivity(new Intent(ScheduleActivity.this, SettingsActivity.class));
+            return true;
+        });
+        toolbar.getMenu().findItem(R.id.item_menu_openinbrowser).setOnMenuItemClickListener(item -> {
+            openUrlInExternalBrowser(getLoadedUrl());
+            return true;
+        });
     }
 
     @Override
@@ -158,7 +149,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                 title = getString(R.string.schedule_label);
             }
 
-            setTitle(title);
+            setToolbarTitle(title);
         });
     }
 
@@ -182,9 +173,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         btnNext.setEnabled(enabled);
         btnPrevious.setEnabled(enabled);
         btnCurrent.setEnabled(enabled);
-        if(itemRefresh != null) {
-            itemRefresh.setEnabled(enabled);
-        }
     }
 
     private void setLoading(boolean loading){
@@ -228,8 +216,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         customTabsIntent.launchUrl(ScheduleActivity.this, Uri.parse(url));
     }
 
-    private void initActionBar() {
-        setTitle(getString(R.string.schedule_label));
+    private void setToolbarTitle(String title){
+        toolbar.setTitle(title);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -255,15 +243,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
             @Override
             public void onDebouncedClick() {
                 presenter.onClickedPrevious();
-            }
-        });
-    }
-
-    private void initRefreshButton() {
-        itemRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListener(debounceThreshold) {
-            @Override
-            public void onDebouncedClick() {
-                presenter.onRefresh();
             }
         });
     }
