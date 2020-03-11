@@ -6,5 +6,6 @@
         <item name="colorAccent">@color/lightBlue500</item>
          <item name="android:windowLightStatusBar">@bool/window_light_to_dark</item>
          <item name="android:windowLightNavigationBar">@bool/window_light_to_dark</item>
+         <item name="colorPrimary">@color/lightBlue200_to_700</item>
     </style>
 </resources>
