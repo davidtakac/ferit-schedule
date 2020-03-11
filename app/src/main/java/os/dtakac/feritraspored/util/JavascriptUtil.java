@@ -4,6 +4,8 @@ import android.content.res.AssetManager;
 
 import java.io.IOException;
 
+import os.dtakac.feritraspored.model.resources.ResourceManager;
+
 public class JavascriptUtil {
 
     public static String FUNCTION_START = "(function(){";
@@ -11,15 +13,16 @@ public class JavascriptUtil {
 
     private static String SCROLL_INTO_VIEW_PATH = "scroll-into-view-script.txt";
     private static String P_CONTAINS_PATH = "p-contains-script.txt";
-    private static String HIGHLIGHT_PATH = "highlight-paragraphs-script.txt";
     private static String WEEKNUM_PATH = "week-num-script.txt";
     private static String HIDE_ALL_BUT_SCHEDULE_PATH = "hide-all-but-schedule-script.txt";
     private static String DARK_THEME_PATH = "dark-theme-script.txt";
 
     private AssetManager am;
+    private ResourceManager rm;
 
-    public JavascriptUtil(AssetManager assetManager){
+    public JavascriptUtil(AssetManager assetManager, ResourceManager resManager){
         am = assetManager;
+        rm = resManager;
     }
 
     private String buildScript(String[] args, String scriptPath){
@@ -45,7 +48,7 @@ public class JavascriptUtil {
         String highlightScript = "";
         try {
             pContains = FileUtil.readFile(am.open(P_CONTAINS_PATH));
-            highlightScript = FileUtil.readFile(am.open(HIGHLIGHT_PATH));
+            highlightScript = FileUtil.readFile(am.open(rm.getHighlightScriptPath()));
         } catch (IOException e) {
             e.printStackTrace();
             return "";
