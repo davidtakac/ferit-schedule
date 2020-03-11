@@ -105,6 +105,11 @@ public class AndroidResourceManager implements ResourceManager {
         return getStr(R.string.notify_unexpected_error);
     }
 
+    @Override
+    public String getHighlightScriptPath() {
+        return getStr(R.string.highlight_script_path);
+    }
+
     private String getStr(int id){
         return r.getString(id);
     }

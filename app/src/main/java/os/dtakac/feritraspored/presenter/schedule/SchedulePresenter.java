@@ -147,8 +147,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     public void onPageFinished(boolean wasErrorReceived) {
         errorReceived = wasErrorReceived;
         if(!errorReceived){
-            applyJavascript();
             view.injectJavascript(jsUtil.darkThemeScript());
+            applyJavascript();
         }
     }
 

@@ -25,4 +25,7 @@ public interface ResourceManager {
     String getCheckNetworkString();
     String getCantLoadPageString();
     String getUnexpectedErrorString();
+
+    //file paths
+    String getHighlightScriptPath();
 }

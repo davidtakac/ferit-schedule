@@ -1,0 +1,1 @@
+($("%s").css("text-transform","uppercase").css("color","#EF271B")) /*todo: different color*/

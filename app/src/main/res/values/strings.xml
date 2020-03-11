@@ -56,6 +56,8 @@
     <string name="settings_theme_preftitle">Tema</string>
     <string name="prefkey_theme">prefkey_theme</string>
 
+    <string name="highlight_script_path">highlight-paragraphs-script.txt</string>
+
     <string-array name="theme_options_human">
         <item>Prati sustavsku temu</item>
         <item>Svijetla</item>

@@ -29,6 +29,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.ui.listener.DebouncedMenuItemClickListener;
 import os.dtakac.feritraspored.ui.listener.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
@@ -82,11 +83,12 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
 
+        ResourceManager rm = new AndroidResourceManager(getResources());
         presenter = new SchedulePresenter(
                 this,
                 new SharedPrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),
-                new AndroidResourceManager(getResources()),
-                new JavascriptUtil(getAssets()),
+                rm,
+                new JavascriptUtil(getAssets(), rm),
                 new NetworkUtil(this)
         );
 
