@@ -6,19 +6,20 @@ import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 
-import os.dtakac.feritraspored.util.Constants;
-
 public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //initTheme();
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        initTheme();
     }
-
     private void initTheme(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        int theme = prefs.getInt(Constants.THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        AppCompatDelegate.setDefaultNightMode(theme);
+        String theme = prefs.getString(getString(R.string.prefkey_theme), null);
+        if(theme == null){
+            String defaultTheme = Integer.toString(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+            prefs.edit().putString(getString(R.string.prefkey_theme), defaultTheme).apply();
+            theme = defaultTheme;
+        }
+        AppCompatDelegate.setDefaultNightMode(Integer.parseInt(theme));
     }
 }
