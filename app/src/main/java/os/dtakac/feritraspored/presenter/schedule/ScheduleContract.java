@@ -5,7 +5,7 @@ public interface ScheduleContract {
         void loadCurrentDay();
         void onClickedPrevious();
         void onClickedNext();
-        void onViewResumed();
+        void onViewResumed(int currentNightMode);
         void onRefresh();
         void applyJavascript();
         void onViewCreated();
