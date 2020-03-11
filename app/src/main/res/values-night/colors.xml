@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="colorForeground" format="reference"/>
+    <color name="gray300_to_black">@color/black</color>
 </resources>

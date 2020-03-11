@@ -6,5 +6,8 @@
     <color name="gray200">#EEEEEE</color>
     <color name="gray300">#E0E0E0</color>
     <color name="gray400">#BDBDBD</color>
+    <color name="gray900">#212121</color>
     <color name="errorRed">#B00020</color>
+
+    <color name="gray300_to_black">@color/gray300</color>
 </resources>
