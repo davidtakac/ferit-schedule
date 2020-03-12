@@ -24,6 +24,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import os.dtakac.feritraspored.model.resources.ResourceManager;
@@ -190,8 +192,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     @Override
-    public void showShortToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showMessage(String message) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
     }
 
     private void openUrlInExternalBrowser(String url){
@@ -200,15 +202,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     private void openUrlInCustomTabs(String url){
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-
-        //gets primary color
-        int appCompatAttribute = this.getResources().getIdentifier("colorPrimary", "attr", this.getPackageName());
-        TypedValue value = new TypedValue();
-        this.getTheme().resolveAttribute (appCompatAttribute, value, true);
-        @ColorInt int colorPrimary = value.data;
-
-        //sets toolbar color to match app
-        builder.setToolbarColor(colorPrimary);
+        builder.setToolbarColor(getResources().getColor(R.color.gray900));
 
         //launches url in custom tab
         CustomTabsIntent customTabsIntent = builder.build();

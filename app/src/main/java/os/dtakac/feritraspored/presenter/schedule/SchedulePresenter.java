@@ -1,8 +1,6 @@
 package os.dtakac.feritraspored.presenter.schedule;
 
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.util.Log;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -87,7 +85,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onRefresh() {
         if(!netUtil.isDeviceOnline()){
-            view.showShortToast(resManager.getCheckNetworkString());
+            view.showMessage(resManager.getCheckNetworkString());
             return;
         }
         evaluateCurrentDay();
@@ -162,7 +160,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onClickedCurrent() {
         if(!netUtil.isDeviceOnline()){
-            view.showShortToast(resManager.getCheckNetworkString());
+            view.showMessage(resManager.getCheckNetworkString());
             return;
         }
         loadCurrentDay();
@@ -171,7 +169,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onClickedPrevious() {
         if(!netUtil.isDeviceOnline()){
-            view.showShortToast(resManager.getCheckNetworkString());
+            view.showMessage(resManager.getCheckNetworkString());
             return;
         }
         setDisplayedDay(displayedDay.minusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
@@ -186,7 +184,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onClickedNext() {
         if(!netUtil.isDeviceOnline()){
-            view.showShortToast(resManager.getCheckNetworkString());
+            view.showMessage(resManager.getCheckNetworkString());
             return;
         }
         setDisplayedDay(displayedDay.plusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
