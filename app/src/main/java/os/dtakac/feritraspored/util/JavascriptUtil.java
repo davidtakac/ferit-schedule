@@ -16,6 +16,7 @@ public class JavascriptUtil {
     private static String WEEKNUM_PATH = "week-num-script.txt";
     private static String HIDE_ALL_BUT_SCHEDULE_PATH = "hide-all-but-schedule-script.txt";
     private static String DARK_THEME_PATH = "dark-theme-script.txt";
+    private static String TIME_BLOCKS_PATH = "time-on-blocks-script.txt";
 
     private AssetManager am;
     private ResourceManager rm;
@@ -88,6 +89,15 @@ public class JavascriptUtil {
     public String darkThemeScript(){
         try{
             return FUNCTION_START + FileUtil.readFile(am.open(DARK_THEME_PATH)) + FUNCTION_END;
+        } catch (IOException e){
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String timeOnBlocksScript(){
+        try{
+            return FUNCTION_START + FileUtil.readFile(am.open(TIME_BLOCKS_PATH)) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
