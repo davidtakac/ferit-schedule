@@ -134,7 +134,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         wvSchedule.evaluateJavascript(script, s -> {
             setControlsEnabled(true);
             //delayed loading turn off so the webview has time to update
-            new Handler().postDelayed(() -> setLoading(false), 100);
+            new Handler().postDelayed(() -> setLoading(false), 200);
         });
     }
 
