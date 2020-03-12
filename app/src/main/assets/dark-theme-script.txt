@@ -22,4 +22,4 @@ $(".PR").css("background-color","#517652");
 $(".AV").css("background-color","#717FA4");
 $(".LV").css("background-color","#9d6f5b");
 $(".IS").css("background-color","#a7843d");
-$(".KV").css("background-color","#9b9a3f");
+$(".KV").css("background-color","#a29343");

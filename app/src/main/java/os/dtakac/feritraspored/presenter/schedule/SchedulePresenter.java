@@ -136,7 +136,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void onViewStopped() {
+    public void onViewPaused() {
         repo.add(resManager.getPrevDisplayedWeekKey(), displayedDay.toString());
     }
 
