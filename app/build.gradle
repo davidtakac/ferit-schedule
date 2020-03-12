@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.0-alpha05'
 
     //for the preference screen
-    implementation 'androidx.preference:preference:1.1.0-alpha05'
+    implementation 'androidx.preference:preference:1.1.0'
 
     //butterknife
     implementation 'com.jakewharton:butterknife:10.1.0'
@@ -47,5 +47,5 @@ dependencies {
     implementation 'joda-time:joda-time:2.10.1'
 
     //custom tabs
-    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.browser:browser:1.2.0'
 }
