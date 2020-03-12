@@ -43,14 +43,14 @@
     <string name="settings_loadonresume_summary">Učitaj trenutni dan svakim ulaskom u aplikaciju</string>
     <string name="settings_skipsaturday_summary">Učitaj sljedeći ponedjeljak umjesto pomicanja na subotu</string>
     <string name="settings_groupstoggle_title">Označi grupe</string>
-    <string name="settings_groupstoggle_summary">Istakni dolje navedene grupe crvenom bojom i velikim slovima</string>
+    <string name="settings_groupstoggle_summary">Istakni odabrane grupe crvenom bojom</string>
     <string name="menu_refresh">Osvježi</string>
     <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_cant_load_page">Stranica se ne može učitati. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_unexpected_error">Došlo je do neočekivane pogreške. [Kod]: %d [Opis]: %s [URL]: %s</string>
     <string name="prefkey_groupshelp">group_help_key</string>
     <string name="settings_groupshelp_title">Upute za pravilan unos grupa</string>
-    <string name="settings_groupshelp_dialogtext">1) Grupe se unose bez navodnika odvojene jednostrukim zarezom. Ovdje se koriste navodnici samo zbog čitljivosti.\n\n2) Grupe su osjetljive na mala i velika slova. \"AV1\" nije isto što \"av1\" ili \"aV1\".\n\n3) Moguće je specificirati točan predmet i grupu. Pri tome je bitno da se između naziva predmeta i grupe stave dva razmaka, a ne jedan.\n\"Elektronika I__PR-LV1/16\" je primjer pravilnog unosa, dok \"Elektronika I_PR-LV1/16\" nije(donju crtu zamijenite razmakom).\n\n4) Također je moguće unijeti samo ime predmeta kojeg se želi označiti, npr.\n\"Osnove elektrotehnike II\" će označiti sve blokove tog predmeta.</string>
+    <string name="settings_groupshelp_dialogtext">1) Grupe se unose bez navodnika odvojene jednostrukim zarezom. Ovdje se navodnici koriste samo zbog čitljivosti.\n\n2) Grupe su osjetljive na mala i velika slova. \"AV1\" nije isto što \"av1\" ili \"aV1\".\n\n3) Moguće je odabrati točan predmet i grupu. Pri tome je bitno da se između naziva predmeta i grupe stave dva razmaka, a ne jedan.\n\"Elektronika I__PR-LV1/16\" je primjer pravilnog unosa, dok \"Elektronika I_PR-LV1/16\" nije (donju crtu zamijenite razmakom).\n\n4) Također je moguće unijeti samo ime predmeta kojeg se želi označiti, npr.\n\"Osnove elektrotehnike II\" će označiti sve blokove tog predmeta.</string>
     <string name="settings_groupshelp_dialogbutton">U redu</string>
     <string name="settings_theme_title">Izgled aplikacije</string>
     <string name="settings_theme_preftitle">Tema</string>
