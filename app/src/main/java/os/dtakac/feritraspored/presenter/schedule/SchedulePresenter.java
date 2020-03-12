@@ -101,6 +101,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
         String js = "";
         js += buildHideElementsScript();
+        js += jsUtil.timeOnBlocksScript();
         if(currentNightMode == Configuration.UI_MODE_NIGHT_YES){
             js += jsUtil.darkThemeScript();
         }
