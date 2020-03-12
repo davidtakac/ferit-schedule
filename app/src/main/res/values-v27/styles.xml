@@ -8,4 +8,12 @@
          <item name="android:windowLightNavigationBar">@bool/window_light_to_dark</item>
          <item name="colorPrimary">@color/lightBlue200_to_700</item>
     </style>
+    <!--As to not blind the user on startup-->
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@color/almostBlack</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
 </resources>

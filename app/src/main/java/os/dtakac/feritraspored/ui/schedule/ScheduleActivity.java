@@ -75,6 +75,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
