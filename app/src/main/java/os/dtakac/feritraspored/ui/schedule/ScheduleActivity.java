@@ -8,11 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -31,7 +27,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import os.dtakac.feritraspored.model.resources.ResourceManager;
-import os.dtakac.feritraspored.ui.listener.DebouncedMenuItemClickListener;
 import os.dtakac.feritraspored.ui.listener.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
@@ -107,9 +102,9 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     @Override
-    protected void onStop() {
-        presenter.onViewStopped();
-        super.onStop();
+    protected void onPause() {
+        presenter.onViewPaused();
+        super.onPause();
     }
 
     private void initToolbar() {

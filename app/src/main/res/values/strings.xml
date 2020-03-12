@@ -59,7 +59,7 @@
     <string name="highlight_script_path">highlight-paragraphs-script.txt</string>
 
     <string-array name="theme_options_human">
-        <item>Prati sustavsku temu</item>
+        <item>Prati sistemsku temu</item>
         <item>Svijetla</item>
         <item>Tamna</item>
     </string-array>

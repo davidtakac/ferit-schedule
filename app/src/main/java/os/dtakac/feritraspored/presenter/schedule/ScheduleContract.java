@@ -9,7 +9,7 @@ public interface ScheduleContract {
         void onRefresh();
         void applyJavascript();
         void onViewCreated();
-        void onViewStopped();
+        void onViewPaused();
         void onErrorReceived(int errorCode, String description, String failingUrl);
         void onPageFinished(boolean wasErrorReceived);
         void onClickedCurrent();
