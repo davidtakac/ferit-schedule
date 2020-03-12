@@ -23,7 +23,7 @@ public interface ScheduleContract {
         void reloadCurrentPage();
         void showErrorMessage(String errMsg);
 
-        void showShortToast(String message);
+        void showMessage(String message);
         void setControlsEnabled(boolean enabled);
         void setWeekNumber(String script);
     }
