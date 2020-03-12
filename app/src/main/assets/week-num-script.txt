@@ -1,1 +1,1 @@
-return document.evaluate('//*[@id="raspored"]/h3/p/a[2]',document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerHTML
+return $("h3.odabir p a").eq(1).text();
