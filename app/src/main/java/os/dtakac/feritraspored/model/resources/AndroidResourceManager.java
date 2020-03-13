@@ -14,12 +14,12 @@ public class AndroidResourceManager implements ResourceManager {
 
     @Override
     public String getSkipSaturdayKey() {
-        return getStr(R.string.prefkey_skipsaturday);
+        return getStr(R.string.prefkey_skip_saturday);
     }
 
     @Override
     public String getSkipDayKey() {
-        return getStr(R.string.prefkey_skipday);
+        return getStr(R.string.prefkey_skip_day);
     }
 
     @Override
@@ -54,12 +54,12 @@ public class AndroidResourceManager implements ResourceManager {
 
     @Override
     public String getLoadOnResumeKey() {
-        return getStr(R.string.prefkey_loadonresume);
+        return getStr(R.string.prefkey_load_on_resume);
     }
 
     @Override
     public String getPrevDisplayedWeekKey() {
-        return getStr(R.string.prefkey_prevdisplayedweek);
+        return getStr(R.string.prefkey_previously_displayed_week);
     }
 
     @Override
@@ -69,23 +69,23 @@ public class AndroidResourceManager implements ResourceManager {
 
     @Override
     public String getScheduleUrl() {
-        return getStr(R.string.ferit_baseurl) + getStr(R.string.ferit_scheduleurl);
+        return getStr(R.string.base_url) + getStr(R.string.schedule_url);
     }
 
     @Override
     public String getUndergradProgrammeId(int index) {
-        String[] undergrad = getStrArray(R.array.undergrad_values);
+        String[] undergrad = getStrArray(R.array.values_undergrad);
         if(index <= undergrad.length - 1){
-            return getStrArray(R.array.undergrad_values)[index];
+            return getStrArray(R.array.values_undergrad)[index];
         }
         return null;
     }
 
     @Override
     public String getUndergradYearId(int index) {
-        String[] undergrad = getStrArray(R.array.year_undergrad_values);
+        String[] undergrad = getStrArray(R.array.values_years_undergrad);
         if(index <= undergrad.length - 1){
-            return getStrArray(R.array.year_undergrad_values)[index];
+            return getStrArray(R.array.values_years_undergrad)[index];
         }
         return null;
     }

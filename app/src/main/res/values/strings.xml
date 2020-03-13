@@ -1,60 +1,60 @@
 <resources>
 
     <!--url strings-->
-    <string name="ferit_baseurl">https://www.ferit.unios.hr/</string>
-    <string name="ferit_scheduleurl">studenti/raspored-nastave-i-ispita/</string>
+    <string name="base_url">https://www.ferit.unios.hr/</string>
+    <string name="schedule_url">studenti/raspored-nastave-i-ispita/</string>
 
     <!--Preference key strings-->
-    <string name="prefkey_skipsaturday">skip_saturday_key</string>
-    <string name="prefkey_skipday">skip_day_key</string>
+    <string name="prefkey_skip_saturday">skip_saturday_key</string>
+    <string name="prefkey_skip_day">skip_day_key</string>
     <string name="prefkey_groups">group_highlight_key</string>
-    <string name="prefkey_progtype">prog_type_key</string>
+    <string name="prefkey_programme_type">prog_type_key</string>
     <string name="prefkey_programme">programme_key</string>
     <string name="prefkey_year">year_key</string>
     <string name="prefkey_time">timepicker_key</string>
     <string name="prefkey_time_hour">hour_key</string>
     <string name="prefkey_time_minute">minute_key</string>
     <string name="prefkey_settings_modified">settings_modified</string>
-    <string name="prefkey_loadonresume">load_on_resume_key</string>
-    <string name="prefkey_prevdisplayedweek">prev_displayed_week_key</string>
+    <string name="prefkey_load_on_resume">load_on_resume_key</string>
+    <string name="prefkey_previously_displayed_week">prev_displayed_week_key</string>
     <string name="prefkey_groups_toggle">group_toggle_key</string>
+    <string name="prefkey_groups_help">group_help_key</string>
+    <string name="prefkey_theme">prefkey_theme</string>
 
     <!--User interface strings-->
     <string name="app_name">Ferit Raspored</string>
-    <string name="settings_label">Postavke</string>
-    <string name="settings_progtype_title">Tip studija</string>
-    <string name="settings_programme_title">Studijski program</string>
-    <string name="settings_year_title">Godina</string>
-    <string name="settings_studypickcategory_title">Studij i godina</string>
-    <string name="settings_grouphighlight_title">Grupe</string>
-    <string name="settings_grouphighlightcategory_title">Označavanje grupa</string>
-    <string name="settings_timepicker_title">Vrijeme</string>
-    <string name="settings_skipday_title">Preskakanje dana</string>
-    <string name="settings_skipday_summary">Pomiči na sljedeći dan poslije dolje definiranog vremena</string>
-    <string name="settings_skipsaturday_title">Preskoči subotu</string>
-    <string name="settings_scheduledisplaycategory_title">Prikaz rasporeda</string>
-    <string name="cancel_label">Natrag</string>
-    <string name="confirm_label">Spremi</string>
-    <string name="settings_grouphighlight_hint">LV8/16,AV1,PR-2,KV3,LV3/24,…</string>
-    <string name="settings_grouphighlight_empty">(Nema unosa)</string>
-    <string name="schedule_label">Raspored nastave i ispita</string>
-    <string name="schedule_openscheduleinbrowser">Otvori u pregledniku</string>
-    <string name="settings_loadonresume_title">Automatski pomakni na trenutni dan</string>
-    <string name="settings_loadonresume_summary">Učitaj trenutni dan svakim ulaskom u aplikaciju</string>
-    <string name="settings_skipsaturday_summary">Učitaj sljedeći ponedjeljak umjesto pomicanja na subotu</string>
-    <string name="settings_groupstoggle_title">Označi grupe</string>
-    <string name="settings_groupstoggle_summary">Istakni odabrane grupe crvenom bojom</string>
-    <string name="menu_refresh">Osvježi</string>
+    <string name="label_settings">Postavke</string>
+    <string name="title_programme_type">Tip studija</string>
+    <string name="title_programme">Studijski program</string>
+    <string name="title_year">Godina</string>
+    <string name="title_category_programme_and_year">Studij i godina</string>
+    <string name="title_group_highlight">Grupe</string>
+    <string name="title_category_group_highlight">Označavanje grupa</string>
+    <string name="title_timepicker">Vrijeme</string>
+    <string name="title_skip_day">Preskakanje dana</string>
+    <string name="summary_skip_day">Pomiči na sljedeći dan poslije dolje definiranog vremena</string>
+    <string name="title_skip_sat">Preskoči subotu</string>
+    <string name="title_category_display_options">Prikaz rasporeda</string>
+    <string name="label_cancel">Natrag</string>
+    <string name="label_confirm">Spremi</string>
+    <string name="hint_group_highlight">LV8/16,AV1,PR-2,KV3,LV3/24,…</string>
+    <string name="placeholder_group_highlight_empty">(Nema unosa)</string>
+    <string name="label_schedule">Raspored nastave i ispita</string>
+    <string name="label_open_in_browser">Otvori u pregledniku</string>
+    <string name="title_load_on_resume">Automatski pomakni na trenutni dan</string>
+    <string name="summary_load_on_resume">Učitaj trenutni dan svakim ulaskom u aplikaciju</string>
+    <string name="summary_skip_sat">Učitaj sljedeći ponedjeljak umjesto pomicanja na subotu</string>
+    <string name="title_group_toggle">Označi grupe</string>
+    <string name="summary_group_toggle">Istakni odabrane grupe crvenom bojom</string>
+    <string name="label_refresh">Osvježi</string>
     <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_cant_load_page">Stranica se ne može učitati. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_unexpected_error">Došlo je do neočekivane pogreške. [Kod]: %d [Opis]: %s [URL]: %s</string>
-    <string name="prefkey_groupshelp">group_help_key</string>
-    <string name="settings_groupshelp_title">Upute za pravilan unos grupa</string>
-    <string name="settings_groupshelp_dialogtext">1) Grupe se unose bez navodnika odvojene jednostrukim zarezom. Ovdje se navodnici koriste samo zbog čitljivosti.\n\n2) Grupe su osjetljive na mala i velika slova. \"AV1\" nije isto što \"av1\" ili \"aV1\".\n\n3) Moguće je odabrati točan predmet i grupu. Pri tome je bitno da se između naziva predmeta i grupe stave dva razmaka, a ne jedan.\n\"Elektronika I__PR-LV1/16\" je primjer pravilnog unosa, dok \"Elektronika I_PR-LV1/16\" nije (donju crtu zamijenite razmakom).\n\n4) Također je moguće unijeti samo ime predmeta kojeg se želi označiti, npr.\n\"Osnove elektrotehnike II\" će označiti sve blokove tog predmeta.</string>
-    <string name="settings_groupshelp_dialogbutton">U redu</string>
-    <string name="settings_theme_title">Izgled aplikacije</string>
-    <string name="settings_theme_preftitle">Tema</string>
-    <string name="prefkey_theme">prefkey_theme</string>
+    <string name="title_groups_help">Upute za pravilan unos grupa</string>
+    <string name="content_groups_help">1) Grupe se unose bez navodnika odvojene jednostrukim zarezom. Ovdje se navodnici koriste samo zbog čitljivosti.\n\n2) Grupe su osjetljive na mala i velika slova. \"AV1\" nije isto što \"av1\" ili \"aV1\".\n\n3) Moguće je odabrati točan predmet i grupu. Pri tome je bitno da se između naziva predmeta i grupe stave dva razmaka, a ne jedan.\n\"Elektronika I__PR-LV1/16\" je primjer pravilnog unosa, dok \"Elektronika I_PR-LV1/16\" nije (donju crtu zamijenite razmakom).\n\n4) Također je moguće unijeti samo ime predmeta kojeg se želi označiti, npr.\n\"Osnove elektrotehnike II\" će označiti sve blokove tog predmeta.</string>
+    <string name="label_groups_help_confirm_button">U redu</string>
+    <string name="title_appearance">Izgled aplikacije</string>
+    <string name="title_theme">Tema</string>
 
     <string name="highlight_script_path">highlight-paragraphs-script.txt</string>
 
@@ -74,13 +74,13 @@
     </string-array>
 
     <!--Programme type names and IDs-->
-    <string-array name="programmetype_names">
+    <string-array name="names_programme_type">
         <item>Preddiplomski</item>
         <item>Diplomski</item>
         <item>Stručni</item>
         <item>Razlikovna</item>
     </string-array>
-    <string-array name="programmetype_values">
+    <string-array name="values_programme_type">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -88,19 +88,19 @@
     </string-array>
 
     <!--Undergrad programme names and IDs-->
-    <string-array name="undergrad_names">
+    <string-array name="names_undergrad">
         <item>Računarstvo</item>
         <item>Elektrotehnika ili elektroenergetika</item>
         <item>Komunikacije i informatika</item>
     </string-array>
-    <string-array name="undergrad_values">
+    <string-array name="values_undergrad">
         <item>2</item>
         <item>1</item>
         <item>21</item>
     </string-array>
 
     <!--Graduate programme names and IDs-->
-    <string-array name="graduate_names">
+    <string-array name="names_grad">
         <item>DKA</item>
         <item>DKB</item>
         <item>DEA</item>
@@ -112,7 +112,7 @@
         <item>DRD</item>
         <item>DA</item>
     </string-array>
-    <string-array name="graduate_values">
+    <string-array name="values_grad">
         <item>34</item>
         <item>35</item>
         <item>31</item>
@@ -126,13 +126,13 @@
     </string-array>
 
     <!--Professional names and IDs-->
-    <string-array name="professional_names">
+    <string-array name="names_professional">
         <item>Računarstvo</item>
         <item>Elektrotehnika - informatika</item>
         <item>Elektrotehnika - automatika</item>
         <item>Elektrotehnika - elektroenergetika</item>
     </string-array>
-    <string-array name="professional_values">
+    <string-array name="values_professional">
         <item>53</item>
         <item>7</item>
         <item>8</item>
@@ -140,7 +140,7 @@
     </string-array>
 
     <!--Differential names and IDs-->
-    <string-array name="differential_names">
+    <string-array name="names_differential">
         <item>Računarstvo blok I</item>
         <item>Računarstvo blok A</item>
         <item>Elektroenergetika blok E</item>
@@ -148,7 +148,7 @@
         <item>Komunikacije i informatika blok I</item>
         <item>Komunikacije i informatika blok A</item>
     </string-array>
-    <string-array name="differential_values">
+    <string-array name="values_differential">
         <item>42</item>
         <item>24</item>
         <item>41</item>
@@ -158,66 +158,66 @@
     </string-array>
 
     <!--Years and their IDs-->
-    <string-array name="year_undergrad_names">
+    <string-array name="names_years_undergrad">
         <item>Prva</item>
         <item>Druga</item>
         <item>Treća</item>
     </string-array>
-    <string-array name="year_undergrad_values">
+    <string-array name="values_years_undergrad">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
-    <string-array name="year_graduate_names">
+    <string-array name="names_years_grad">
         <item>Prva</item>
         <item>Druga</item>
     </string-array>
-    <string-array name="year_graduate_values">
+    <string-array name="values_years_grad">
         <item>1</item>
         <item>2</item>
     </string-array>
 
-    <string-array name="year_professional_names">
+    <string-array name="names_years_professional">
         <item>Prva</item>
         <item>Druga</item>
         <item>Treća</item>
     </string-array>
-    <string-array name="year_professional_values">
+    <string-array name="values_years_professional">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
-    <string-array name="year_differential_names">
+    <string-array name="names_years_differential">
         <item>Prva</item>
     </string-array>
-    <string-array name="year_differential_values">
+    <string-array name="values_years_differential">
         <item>1</item>
     </string-array>
 
     <!--Some study programmes have specific year counts because who needs consistency, right, FERIT?-->
-    <string-array name="year_ETRAC_professional_names">
+    <string-array name="names_years_ETRAC">
         <item>Prva</item>
         <item>Druga</item>
     </string-array>
-    <string-array name="year_ETRAC_professional_values">
+    <string-array name="values_years_ETRAC">
         <item>1</item>
         <item>2</item>
     </string-array>
 
-    <string-array name="year_ETINF_professional_names">
+    <string-array name="names_years_ETINF">
         <item>Treća</item>
     </string-array>
-    <string-array name="year_ETINF_professional_values">
+    <string-array name="values_years_ETINF">
         <item>3</item>
     </string-array>
 
-    <string-array name="year_ETKINF_undergrad_names">
+    <string-array name="names_years_ETKINF">
         <item>Druga</item>
         <item>Treća</item>
     </string-array>
-    <string-array name="year_ETKINF_undergrad_values">
+    <string-array name="values_years_ETKINF">
         <item>2</item>
         <item>3</item>
     </string-array>

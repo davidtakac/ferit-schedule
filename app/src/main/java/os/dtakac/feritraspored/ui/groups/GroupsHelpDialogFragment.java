@@ -17,14 +17,14 @@ public class GroupsHelpDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setPositiveButton(getString(R.string.settings_groupshelp_dialogbutton), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.label_groups_help_confirm_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dismiss();
             }
         });
-        builder.setTitle(getString(R.string.settings_groupshelp_title));
-        builder.setMessage(getString(R.string.settings_groupshelp_dialogtext));
+        builder.setTitle(getString(R.string.title_groups_help));
+        builder.setMessage(getString(R.string.content_groups_help));
         return builder.create();
     }
 }

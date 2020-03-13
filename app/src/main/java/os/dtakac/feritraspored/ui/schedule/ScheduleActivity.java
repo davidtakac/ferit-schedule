@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.TypedValue;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -16,9 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -147,7 +144,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
             String title = noQuotations;
 
             if(noQuotations.isEmpty() || noQuotations.equals("null") || noQuotations.equals("undefined")){
-                title = getString(R.string.schedule_label);
+                title = getString(R.string.label_schedule);
             }
 
             setToolbarTitle(title);

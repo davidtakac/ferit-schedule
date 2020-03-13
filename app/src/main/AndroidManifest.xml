@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name=".ui.settings.SettingsActivity"
-            android:label="@string/settings_label" />
+            android:label="@string/label_settings" />
     </application>
 
 </manifest>

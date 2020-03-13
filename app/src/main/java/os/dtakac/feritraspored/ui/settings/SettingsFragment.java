@@ -3,7 +3,6 @@ package os.dtakac.feritraspored.ui.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
@@ -13,9 +12,6 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.repository.IRepository;
@@ -85,12 +81,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private void initPrefReferences() {
         PreferenceManager m = getPreferenceManager();
 
-        progTypeList = m.findPreference(getStr(R.string.prefkey_progtype));
+        progTypeList = m.findPreference(getStr(R.string.prefkey_programme_type));
         programmeList = m.findPreference(getStr(R.string.prefkey_programme));
         yearList = m.findPreference(getStr(R.string.prefkey_year));
         timePickerPref = m.findPreference(getStr(R.string.prefkey_time));
         groupsPref = m.findPreference(getStr(R.string.prefkey_groups));
-        groupsHelpPref = m.findPreference(getStr(R.string.prefkey_groupshelp));
+        groupsHelpPref = m.findPreference(getStr(R.string.prefkey_groups_help));
         themeList = m.findPreference(getStr(R.string.prefkey_theme));
     }
 
@@ -110,7 +106,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         timePickerPref.setOnPreferenceClickListener(this);
 
         setTimePickerSummaryFromPrefs();
-        setTimePickerEnabled(repo.get(getStr(R.string.prefkey_skipday), false));
+        setTimePickerEnabled(repo.get(getStr(R.string.prefkey_skip_day), false));
     }
 
     private void setTimePickerSummaryFromPrefs(){
@@ -129,21 +125,21 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void initGroupsPref(){
-        groupsPref.setOnBindEditTextListener(editText -> editText.setHint(getStr(R.string.settings_grouphighlight_hint)));
+        groupsPref.setOnBindEditTextListener(editText -> editText.setHint(getStr(R.string.hint_group_highlight)));
         groupsHelpPref.setOnPreferenceClickListener(this);
         setGroupsSummaryFromPrefs();
         setGroupsPreferenceEnabled(repo.get(getStr(R.string.prefkey_groups_toggle), false));
     }
 
     private void setGroupsSummaryFromPrefs(){
-        String summary = repo.get(getStr(R.string.prefkey_groups), getStr(R.string.settings_grouphighlight_empty));
-        groupsPref.setSummary(summary.isEmpty() ? getStr(R.string.settings_grouphighlight_empty) : summary);
+        String summary = repo.get(getStr(R.string.prefkey_groups), getStr(R.string.placeholder_group_highlight_empty));
+        groupsPref.setSummary(summary.isEmpty() ? getStr(R.string.placeholder_group_highlight_empty) : summary);
     }
 
     private void setUpProgrammeTypeList(){
-        progTypeList.setEntries(getStrArray(R.array.programmetype_names));
-        progTypeList.setEntryValues(getStrArray(R.array.programmetype_values));
-        progTypeList.setValue(repo.get(getStr(R.string.prefkey_progtype), "1"));
+        progTypeList.setEntries(getStrArray(R.array.names_programme_type));
+        progTypeList.setEntryValues(getStrArray(R.array.values_programme_type));
+        progTypeList.setValue(repo.get(getStr(R.string.prefkey_programme_type), "1"));
     }
 
     private void setProgrammeValue(int index){
@@ -155,23 +151,23 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void setUpProgrammeList(int selectedProgTypeId) {
-        int entriesId = R.array.undergrad_names;
-        int valuesId = R.array.undergrad_values;
+        int entriesId = R.array.names_undergrad;
+        int valuesId = R.array.values_undergrad;
 
         switch (selectedProgTypeId){
             case 2: {
-                entriesId = R.array.graduate_names;
-                valuesId = R.array.graduate_values;
+                entriesId = R.array.names_grad;
+                valuesId = R.array.values_grad;
                 break;
             }
             case 3: {
-                entriesId = R.array.professional_names;
-                valuesId = R.array.professional_values;
+                entriesId = R.array.names_professional;
+                valuesId = R.array.values_professional;
                 break;
             }
             case 4: {
-                entriesId = R.array.differential_names;
-                valuesId = R.array.differential_values;
+                entriesId = R.array.names_differential;
+                valuesId = R.array.values_differential;
                 break;
             }
             default: break;
@@ -188,41 +184,41 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void setUpYearList(int selectedProgTypeId, int selectedProgrammeId){
-        int entriesId = R.array.year_undergrad_names;
-        int valuesId = R.array.year_undergrad_values;
+        int entriesId = R.array.names_years_undergrad;
+        int valuesId = R.array.values_years_undergrad;
 
         switch (selectedProgTypeId){
             case 1:{
                 if(selectedProgrammeId == 21){
-                    entriesId = R.array.year_ETKINF_undergrad_names;
-                    valuesId = R.array.year_ETKINF_undergrad_values;
+                    entriesId = R.array.names_years_ETKINF;
+                    valuesId = R.array.values_years_ETKINF;
                 } else {
-                    entriesId = R.array.year_undergrad_names;
-                    valuesId = R.array.year_undergrad_values;
+                    entriesId = R.array.names_years_undergrad;
+                    valuesId = R.array.values_years_undergrad;
                 }
                 break;
             }
             case 2:{
-                entriesId = R.array.year_graduate_names;
-                valuesId = R.array.year_graduate_values;
+                entriesId = R.array.names_years_grad;
+                valuesId = R.array.values_years_grad;
                 break;
             }
             case 3:{
                 if(selectedProgrammeId == 53){
-                    entriesId = R.array.year_ETRAC_professional_names;
-                    valuesId = R.array.year_ETRAC_professional_values;
+                    entriesId = R.array.names_years_ETRAC;
+                    valuesId = R.array.values_years_ETRAC;
                 } else if(selectedProgrammeId == 7){
-                    entriesId = R.array.year_ETINF_professional_names;
-                    valuesId = R.array.year_ETINF_professional_values;
+                    entriesId = R.array.names_years_ETINF;
+                    valuesId = R.array.values_years_ETINF;
                 } else {
-                    entriesId = R.array.year_professional_names;
-                    valuesId = R.array.year_professional_values;
+                    entriesId = R.array.names_years_professional;
+                    valuesId = R.array.values_years_professional;
                 }
                 break;
             }
             case 4:{
-                entriesId = R.array.year_differential_names;
-                valuesId = R.array.year_differential_values;
+                entriesId = R.array.names_years_differential;
+                valuesId = R.array.values_years_differential;
                 break;
             }
             default: break;
@@ -250,17 +246,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(!werePrefsModified && !key.equals(getStr(R.string.prefkey_prevdisplayedweek))) {
+        if(!werePrefsModified && !key.equals(getStr(R.string.prefkey_previously_displayed_week))) {
             werePrefsModified = true;
         }
 
-        if(key.equals(getStr(R.string.prefkey_progtype))){
+        if(key.equals(getStr(R.string.prefkey_programme_type))){
             setUpProgrammeList(Integer.parseInt(progTypeList.getValue()));
             setProgrammeValue(0);
         } else if(key.equals(getStr(R.string.prefkey_programme))){
             setUpYearList(Integer.parseInt(progTypeList.getValue()), Integer.parseInt(programmeList.getValue()));
             setYearValue(0);
-        } else if(key.equals(getStr(R.string.prefkey_skipday))){
+        } else if(key.equals(getStr(R.string.prefkey_skip_day))){
             setTimePickerEnabled(repo.get(key,false));
         } else if(key.equals(getStr(R.string.prefkey_groups))){
             setGroupsSummaryFromPrefs();
@@ -287,7 +283,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 f.show(getActivity().getSupportFragmentManager(), Constants.TIMEPICKER_KEY);
             }
 
-        } else if(key.equals(getStr(R.string.prefkey_groupshelp))){
+        } else if(key.equals(getStr(R.string.prefkey_groups_help))){
             DialogFragment f = new GroupsHelpDialogFragment();
             if(getActivity() != null){
                 f.show(getActivity().getSupportFragmentManager(), Constants.GROUPSHELP_KEY);
