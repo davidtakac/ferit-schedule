@@ -12,14 +12,7 @@ public class JavascriptUtil {
     private static String FUNCTION_START = "(function(){";
     private static String FUNCTION_END = "}());\n";
 
-    private static String SCROLL_INTO_VIEW_PATH = "scroll-into-view-script.txt";
-    private static String P_CONTAINS_PATH = "p-contains-script.txt";
-    private static String WEEKNUM_PATH = "week-num-script.txt";
-    private static String HIDE_ALL_BUT_SCHEDULE_PATH = "hide-all-but-schedule-script.txt";
-    private static String DARK_THEME_PATH = "dark-theme-script.txt";
-    private static String TIME_BLOCKS_PATH = "time-on-blocks-script.txt";
-
-    private AssetManager ass;
+    private AssetManager ass; //heh
     private ResourceManager res;
 
     public JavascriptUtil(AssetManager assetManager, ResourceManager resManager){
@@ -49,7 +42,7 @@ public class JavascriptUtil {
         String pContains = "";
         String highlightScript = "";
         try {
-            pContains = FileUtil.readFile(ass.open(P_CONTAINS_PATH));
+            pContains = FileUtil.readFile(ass.open("p-contains-script.txt"));
             highlightScript = FileUtil.readFile(ass.open(res.get(R.string.highlight_script_path)));
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,12 +59,12 @@ public class JavascriptUtil {
     }
 
     public String scrollIntoViewScript(String elementName){
-        return buildScript(new String[]{elementName}, SCROLL_INTO_VIEW_PATH);
+        return buildScript(new String[]{elementName}, "scroll-into-view-script.txt");
     }
 
     public String weekNumberScript(){
         try {
-            return FUNCTION_START + FileUtil.readFile(ass.open(WEEKNUM_PATH)) + FUNCTION_END;
+            return FUNCTION_START + FileUtil.readFile(ass.open("week-num-script.txt")) + FUNCTION_END;
         } catch (IOException e) {
             e.printStackTrace();
             return "";
@@ -80,7 +73,7 @@ public class JavascriptUtil {
 
     public String hideAllButScheduleScript(){
         try{
-            return FUNCTION_START + FileUtil.readFile(ass.open(HIDE_ALL_BUT_SCHEDULE_PATH)) + FUNCTION_END;
+            return FUNCTION_START + FileUtil.readFile(ass.open("hide-all-but-schedule-script.txt")) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
@@ -89,7 +82,7 @@ public class JavascriptUtil {
 
     public String darkThemeScript(){
         try{
-            return FUNCTION_START + FileUtil.readFile(ass.open(DARK_THEME_PATH)) + FUNCTION_END;
+            return FUNCTION_START + FileUtil.readFile(ass.open("dark-theme-script.txt")) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
@@ -98,7 +91,7 @@ public class JavascriptUtil {
 
     public String timeOnBlocksScript(){
         try{
-            return FUNCTION_START + FileUtil.readFile(ass.open(TIME_BLOCKS_PATH)) + FUNCTION_END;
+            return FUNCTION_START + FileUtil.readFile(ass.open("time-on-blocks-script.txt")) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
