@@ -11,15 +11,15 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.model.repository.IRepository;
-import os.dtakac.feritraspored.model.resources.ResourceManager;
+import os.dtakac.feritraspored.common.PrefsRepository;
+import os.dtakac.feritraspored.common.ResourceManager;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 import os.dtakac.feritraspored.util.NetworkUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private ScheduleContract.View view;
-    private IRepository prefs;
+    private PrefsRepository prefs;
     private ResourceManager res;
     private JavascriptUtil jsUtil;
     private NetworkUtil netUtil;
@@ -33,9 +33,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private int currentNightMode = Configuration.UI_MODE_NIGHT_NO;
 
-    public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager, JavascriptUtil jsUtil, NetworkUtil netUtil) {
+    public SchedulePresenter(ScheduleContract.View view, PrefsRepository prefs, ResourceManager resManager, JavascriptUtil jsUtil, NetworkUtil netUtil) {
         this.view = view;
-        this.prefs = repo;
+        this.prefs = prefs;
         this.res = resManager;
         this.jsUtil = jsUtil;
         this.netUtil = netUtil;

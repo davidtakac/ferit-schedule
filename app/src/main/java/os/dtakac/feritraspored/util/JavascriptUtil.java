@@ -5,7 +5,7 @@ import android.content.res.AssetManager;
 import java.io.IOException;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.model.resources.ResourceManager;
+import os.dtakac.feritraspored.common.ResourceManager;
 
 public class JavascriptUtil {
 

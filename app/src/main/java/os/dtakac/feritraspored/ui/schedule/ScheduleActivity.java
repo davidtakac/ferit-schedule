@@ -27,8 +27,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import os.dtakac.feritraspored.ui.listener.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
-import os.dtakac.feritraspored.model.resources.ResourceManager;
+import os.dtakac.feritraspored.common.PrefsRepository;
+import os.dtakac.feritraspored.common.ResourceManager;
 import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
 import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
 import os.dtakac.feritraspored.ui.settings.SettingsActivity;
@@ -81,7 +81,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         ResourceManager rm = new ResourceManager(getResources());
         presenter = new SchedulePresenter(
                 this,
-                new SharedPrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),
+                new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),
                 rm,
                 new JavascriptUtil(getAssets(), rm),
                 new NetworkUtil(this)
