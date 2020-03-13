@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.ui.listener;
+package os.dtakac.feritraspored.common.listener;
 
 import android.os.SystemClock;
 import android.view.View;

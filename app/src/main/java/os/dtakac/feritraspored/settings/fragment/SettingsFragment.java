@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.ui.settings;
+package os.dtakac.feritraspored.settings.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,11 +15,11 @@ import androidx.preference.PreferenceManager;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
-import os.dtakac.feritraspored.ui.groups.GroupsHelpDialogFragment;
-import os.dtakac.feritraspored.ui.timepicker.Time24Hour;
-import os.dtakac.feritraspored.ui.timepicker.TimePickerFragment;
-import os.dtakac.feritraspored.ui.timepicker.TimeSetListener;
-import os.dtakac.feritraspored.util.Constants;
+import os.dtakac.feritraspored.common.views.groups.GroupsHelpDialogFragment;
+import os.dtakac.feritraspored.common.views.timepicker.Time24Hour;
+import os.dtakac.feritraspored.common.views.timepicker.TimePickerFragment;
+import os.dtakac.feritraspored.common.views.timepicker.TimeSetListener;
+import os.dtakac.feritraspored.common.util.Constants;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 

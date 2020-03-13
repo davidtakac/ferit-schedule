@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.ui.schedule;
+package os.dtakac.feritraspored.schedule.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -25,15 +25,15 @@ import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import os.dtakac.feritraspored.ui.listener.DebouncedOnClickListener;
+import os.dtakac.feritraspored.common.listener.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.common.ResourceManager;
-import os.dtakac.feritraspored.presenter.schedule.ScheduleContract;
-import os.dtakac.feritraspored.presenter.schedule.SchedulePresenter;
-import os.dtakac.feritraspored.ui.settings.SettingsActivity;
-import os.dtakac.feritraspored.util.JavascriptUtil;
-import os.dtakac.feritraspored.util.NetworkUtil;
+import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
+import os.dtakac.feritraspored.schedule.presenter.SchedulePresenter;
+import os.dtakac.feritraspored.settings.activity.SettingsActivity;
+import os.dtakac.feritraspored.common.util.JavascriptUtil;
+import os.dtakac.feritraspored.common.util.NetworkUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 

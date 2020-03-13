@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.ui.groups;
+package os.dtakac.feritraspored.common.views.groups;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

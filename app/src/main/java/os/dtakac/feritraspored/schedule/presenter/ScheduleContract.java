@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.presenter.schedule;
+package os.dtakac.feritraspored.schedule.presenter;
 
 public interface ScheduleContract {
     interface Presenter {
