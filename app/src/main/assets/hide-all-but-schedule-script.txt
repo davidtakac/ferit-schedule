@@ -4,3 +4,4 @@ $("#content").children().not("#raspored").remove();
 $("#raspored").children().not(".vrijeme, .vrijeme-mobitel, .dan, .odabir").remove();
 $("#raspored").children(".odabir").hide();
 $("#izbor-studija").remove();
+$(".naziv-dan a").removeAttr("href");
