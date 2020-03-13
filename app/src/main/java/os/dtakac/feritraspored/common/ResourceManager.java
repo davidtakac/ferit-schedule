@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.model.resources;
+package os.dtakac.feritraspored.common;
 
 import android.content.res.Resources;
 

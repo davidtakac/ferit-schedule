@@ -14,8 +14,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.model.repository.IRepository;
-import os.dtakac.feritraspored.model.repository.SharedPrefsRepository;
+import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.ui.groups.GroupsHelpDialogFragment;
 import os.dtakac.feritraspored.ui.timepicker.Time24Hour;
 import os.dtakac.feritraspored.ui.timepicker.TimePickerFragment;
@@ -32,7 +31,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private EditTextPreference groupsPref;
     private Preference groupsHelpPref;
 
-    private IRepository repo;
+    private PrefsRepository repo;
     private SharedPreferences prefs;
 
     private boolean wasProgrammeInitialized = false;
@@ -45,7 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         super.onAttach(context);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        repo = new SharedPrefsRepository(prefs);
+        repo = new PrefsRepository(prefs);
     }
 
     @Override
