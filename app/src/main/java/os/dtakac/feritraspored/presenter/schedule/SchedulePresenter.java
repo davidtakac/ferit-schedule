@@ -12,7 +12,7 @@ import java.util.Locale;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.repository.IRepository;
-import os.dtakac.feritraspored.model.resources.AndroidResourceManager;
+import os.dtakac.feritraspored.model.resources.ResourceManager;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 import os.dtakac.feritraspored.util.NetworkUtil;
 
@@ -20,7 +20,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private ScheduleContract.View view;
     private IRepository prefs;
-    private AndroidResourceManager res;
+    private ResourceManager res;
     private JavascriptUtil jsUtil;
     private NetworkUtil netUtil;
 
@@ -33,7 +33,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private int currentNightMode = Configuration.UI_MODE_NIGHT_NO;
 
-    public SchedulePresenter(ScheduleContract.View view, IRepository repo, AndroidResourceManager resManager, JavascriptUtil jsUtil, NetworkUtil netUtil) {
+    public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager, JavascriptUtil jsUtil, NetworkUtil netUtil) {
         this.view = view;
         this.prefs = repo;
         this.res = resManager;
