@@ -79,7 +79,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
 
-        ResourceManager rm = new AndroidResourceManager(getResources());
+        AndroidResourceManager rm = new AndroidResourceManager(getResources());
         presenter = new SchedulePresenter(
                 this,
                 new SharedPrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),

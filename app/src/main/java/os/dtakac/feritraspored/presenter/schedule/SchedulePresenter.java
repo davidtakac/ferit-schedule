@@ -10,16 +10,17 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Locale;
 
+import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.model.repository.IRepository;
-import os.dtakac.feritraspored.model.resources.ResourceManager;
+import os.dtakac.feritraspored.model.resources.AndroidResourceManager;
 import os.dtakac.feritraspored.util.JavascriptUtil;
 import os.dtakac.feritraspored.util.NetworkUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private ScheduleContract.View view;
-    private IRepository repo;
-    private ResourceManager resManager;
+    private IRepository prefs;
+    private AndroidResourceManager res;
     private JavascriptUtil jsUtil;
     private NetworkUtil netUtil;
 
@@ -32,10 +33,10 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private int currentNightMode = Configuration.UI_MODE_NIGHT_NO;
 
-    public SchedulePresenter(ScheduleContract.View view, IRepository repo, ResourceManager resManager, JavascriptUtil jsUtil, NetworkUtil netUtil) {
+    public SchedulePresenter(ScheduleContract.View view, IRepository repo, AndroidResourceManager resManager, JavascriptUtil jsUtil, NetworkUtil netUtil) {
         this.view = view;
-        this.repo = repo;
-        this.resManager = resManager;
+        this.prefs = repo;
+        this.res = resManager;
         this.jsUtil = jsUtil;
         this.netUtil = netUtil;
         this.errorReceived = false;
@@ -55,11 +56,11 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         String displayedWeekUrl = buildDisplayedWeekUrl();
         String loadedUrl = view.getLoadedUrl();
 
-        boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
+        boolean wereSettingsModified = getSettingsModified();
         if(wereSettingsModified || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl) || errorReceived){
             view.loadUrl(displayedWeekUrl);
             //settings were applied so update the settings modified key
-            repo.add(resManager.getSettingsModifiedKey(), false);
+            prefs.add(res.get(R.string.prefkey_settings_modified), false);
         } else {
             //the date is correct, the webview is already on the current week, there was no error,
             //so just scroll to current day
@@ -70,12 +71,12 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onViewResumed(int currentNightMode) {
         this.currentNightMode = currentNightMode;
-        boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
+        boolean wereSettingsModified = getSettingsModified();
         if(wereSettingsModified){
-            repo.add(resManager.getSettingsModifiedKey(), false);
+            prefs.add(res.get(R.string.prefkey_settings_modified), false);
             view.refreshUi();
         } else {
-            boolean loadOnResume = repo.get(resManager.getLoadOnResumeKey(), false);
+            boolean loadOnResume = prefs.get(res.get(R.string.prefkey_load_on_resume), false);
             if (loadOnResume) {
                 loadCurrentDay();
             }
@@ -85,7 +86,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onRefresh() {
         if(!netUtil.isDeviceOnline()){
-            view.showMessage(resManager.getCheckNetworkString());
+            view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
         evaluateCurrentDay();
@@ -105,7 +106,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         if(currentNightMode == Configuration.UI_MODE_NIGHT_YES){
             js += jsUtil.darkThemeScript();
         }
-        if(repo.get(resManager.getGroupsToggledKey(), false)) {
+        if(prefs.get(res.get(R.string.prefkey_groups_toggle), false)) {
             js += buildHighlightGroupsScript();
         }
         if(currentDay.withDayOfWeek(DateTimeConstants.MONDAY).equals(displayedDay.withDayOfWeek(DateTimeConstants.MONDAY))) {
@@ -116,16 +117,16 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onViewCreated() {
-        boolean wereSettingsModified = repo.get(resManager.getSettingsModifiedKey(), false);
+        boolean wereSettingsModified = getSettingsModified();
         if(wereSettingsModified){
-            repo.add(resManager.getSettingsModifiedKey(), false);
+            prefs.add(res.get(R.string.prefkey_settings_modified), false);
         }
-        boolean loadOnResume = repo.get(resManager.getLoadOnResumeKey(), false);
+        boolean loadOnResume = prefs.get(res.get(R.string.prefkey_load_on_resume), false);
         if(loadOnResume){
             return;
         }
 
-        String prevDisplayedWeek = repo.get(resManager.getPrevDisplayedWeekKey(), null);
+        String prevDisplayedWeek = prefs.get(res.get(R.string.prefkey_previously_displayed_week), null);
         if(prevDisplayedWeek == null){
             loadCurrentDay();
         } else {
@@ -136,16 +137,16 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onViewPaused() {
-        repo.add(resManager.getPrevDisplayedWeekKey(), displayedDay.toString());
+        prefs.add(res.get(R.string.prefkey_previously_displayed_week), displayedDay.toString());
     }
 
     @Override
     public void onErrorReceived(int errorCode, String description, String failingUrl) {
         if(!netUtil.isDeviceOnline()){
-            view.showErrorMessage(resManager.getCantLoadPageString());
+            view.showErrorMessage(res.get(R.string.notify_cant_load_page));
         } else {
             view.showErrorMessage(
-                    String.format(resManager.getUnexpectedErrorString(), errorCode, description, failingUrl)
+                    String.format(res.get(R.string.notify_unexpected_error), errorCode, description, failingUrl)
             );
         }
     }
@@ -161,7 +162,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onClickedCurrent() {
         if(!netUtil.isDeviceOnline()){
-            view.showMessage(resManager.getCheckNetworkString());
+            view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
         loadCurrentDay();
@@ -170,7 +171,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onClickedPrevious() {
         if(!netUtil.isDeviceOnline()){
-            view.showMessage(resManager.getCheckNetworkString());
+            view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
         setDisplayedDay(displayedDay.minusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
@@ -185,7 +186,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onClickedNext() {
         if(!netUtil.isDeviceOnline()){
-            view.showMessage(resManager.getCheckNetworkString());
+            view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
         setDisplayedDay(displayedDay.plusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
@@ -201,12 +202,12 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
 
-        boolean skipToNextDay = repo.get(resManager.getSkipDayKey(), false);
+        boolean skipToNextDay = prefs.get(res.get(R.string.prefkey_skip_day), false);
         if(skipToNextDay) {
             date = addDayIfTimeGreaterThanPrefs(date, time);
         }
 
-        boolean skipSaturday = repo.get(resManager.getSkipSaturdayKey(), false);
+        boolean skipSaturday = prefs.get(res.get(R.string.prefkey_skip_saturday), false);
         if(date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
             date = date.plusDays(1);
         } else if(skipSaturday && date.getDayOfWeek() == DateTimeConstants.SATURDAY) {
@@ -216,8 +217,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private LocalDate addDayIfTimeGreaterThanPrefs(LocalDate date, LocalTime time){
-        int hour = repo.get(resManager.getHourKey(), 20);
-        int minute = repo.get(resManager.getMinuteKey(), 0);
+        int hour = prefs.get(res.get(R.string.prefkey_time_hour), 20);
+        int minute = prefs.get(res.get(R.string.prefkey_time_minute), 0);
 
         return date.plusDays(
                 (time.getHourOfDay() >= hour && time.getMinuteOfHour() >= minute) ? 1 : 0
@@ -225,16 +226,16 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildDisplayedWeekUrl() {
-        String defaultProgId = resManager.getUndergradProgrammeId(0);
-        String defaultYearId = resManager.getUndergradYearId(0);
+        String defaultProgId = res.getUndergradProgrammeId(0);
+        String defaultYearId = res.getUndergradYearId(0);
 
-        return  resManager.getScheduleUrl()
+        return  res.get(R.string.base_url) + res.get(R.string.schedule_url)
                 //current week
                 + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString()
                 //selected year
-                + "/" + repo.get(resManager.getYearKey(), defaultYearId)
+                + "/" + prefs.get(res.get(R.string.prefkey_year), defaultYearId)
                 //selected programme
-                + "-" + repo.get(resManager.getProgrammeKey(), defaultProgId);
+                + "-" + prefs.get(res.get(R.string.prefkey_programme), defaultProgId);
     }
 
     private void setDisplayedDay(LocalDate week){
@@ -260,11 +261,15 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildHighlightGroupsScript() {
-        String[] filters = repo.get(resManager.getGroupsKey(), "").split(",");
+        String[] filters = prefs.get(res.get(R.string.prefkey_groups), "").split(",");
         //remove trailing and leading whitespaces
         for(int i = 0; i < filters.length; i++){
             filters[i] = filters[i].trim();
         }
         return jsUtil.highlightElementsScript(filters);
+    }
+
+    private boolean getSettingsModified(){
+        return prefs.get(res.get(R.string.prefkey_settings_modified), false);
     }
 }
