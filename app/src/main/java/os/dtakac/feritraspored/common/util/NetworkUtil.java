@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.util;
+package os.dtakac.feritraspored.common.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

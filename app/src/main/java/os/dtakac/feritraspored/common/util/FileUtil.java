@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.util;
+package os.dtakac.feritraspored.common.util;
 
 import java.io.InputStream;
 import java.util.Scanner;

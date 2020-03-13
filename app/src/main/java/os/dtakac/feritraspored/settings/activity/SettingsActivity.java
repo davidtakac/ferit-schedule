@@ -1,10 +1,6 @@
-package os.dtakac.feritraspored.ui.settings;
+package os.dtakac.feritraspored.settings.activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import os.dtakac.feritraspored.R;
+import os.dtakac.feritraspored.settings.fragment.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
 

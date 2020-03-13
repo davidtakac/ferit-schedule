@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.util;
+package os.dtakac.feritraspored.common.util;
 
 public class Constants {
     public static final String TIMEPICK_LISTENER_KEY = "listener_key";

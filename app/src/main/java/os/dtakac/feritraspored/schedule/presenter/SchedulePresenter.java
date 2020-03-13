@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.presenter.schedule;
+package os.dtakac.feritraspored.schedule.presenter;
 
 import android.content.res.Configuration;
 
@@ -13,8 +13,8 @@ import java.util.Locale;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.common.ResourceManager;
-import os.dtakac.feritraspored.util.JavascriptUtil;
-import os.dtakac.feritraspored.util.NetworkUtil;
+import os.dtakac.feritraspored.common.util.JavascriptUtil;
+import os.dtakac.feritraspored.common.util.NetworkUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
