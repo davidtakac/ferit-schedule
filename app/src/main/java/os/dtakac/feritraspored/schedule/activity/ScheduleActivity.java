@@ -60,7 +60,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     private ResourceManager rm;
 
     //in millis
-    private long debounceThreshold = 500;
+    private long debounceThreshold = 300;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
