@@ -29,6 +29,8 @@ import os.dtakac.feritraspored.common.listener.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.common.ResourceManager;
+import os.dtakac.feritraspored.common.util.Constants;
+import os.dtakac.feritraspored.common.views.groups.AlertDialogFragment;
 import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
 import os.dtakac.feritraspored.schedule.presenter.SchedulePresenter;
 import os.dtakac.feritraspored.settings.activity.SettingsActivity;
@@ -92,6 +94,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         initNavbar();
 
         presenter.onViewCreated();
+        showChangelog();
     }
 
     @Override
@@ -213,6 +216,11 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     private void initWebView() {
         wvSchedule.setWebViewClient(new ScheduleClient());
         wvSchedule.getSettings().setJavaScriptEnabled(true);
+    }
+
+    private void showChangelog(){
+        AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new)
+                .show(getSupportFragmentManager(), Constants.WHATS_NEW_KEY);
     }
 
     private void initNavbar(){

@@ -15,7 +15,7 @@ import androidx.preference.PreferenceManager;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
-import os.dtakac.feritraspored.common.views.groups.GroupsHelpDialogFragment;
+import os.dtakac.feritraspored.common.views.groups.AlertDialogFragment;
 import os.dtakac.feritraspored.common.views.timepicker.Time24Hour;
 import os.dtakac.feritraspored.common.views.timepicker.TimePickerFragment;
 import os.dtakac.feritraspored.common.views.timepicker.TimeSetListener;
@@ -283,9 +283,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             }
 
         } else if(key.equals(getStr(R.string.prefkey_groups_help))){
-            DialogFragment f = new GroupsHelpDialogFragment();
+            DialogFragment f = AlertDialogFragment.newInstance(R.string.title_groups_help, R.string.content_groups_help, R.string.label_groups_help_confirm);
             if(getActivity() != null){
-                f.show(getActivity().getSupportFragmentManager(), Constants.GROUPSHELP_KEY);
+                f.show(getActivity().getSupportFragmentManager(), Constants.GROUPS_HELP_KEY);
             }
         }
         return true;

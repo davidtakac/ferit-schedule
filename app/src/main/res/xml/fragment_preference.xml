@@ -29,8 +29,8 @@
         <EditTextPreference
             android:key="@string/prefkey_groups"
             android:title="@string/title_group_highlight"
-            android:negativeButtonText="@string/label_cancel"
-            android:positiveButtonText="@string/label_confirm" />
+            android:negativeButtonText="@string/label_back"
+            android:positiveButtonText="@string/label_save" />
         <Preference
             android:key="@string/prefkey_groups_help"
             android:title="@string/title_groups_help" />
@@ -41,17 +41,17 @@
             android:key="@string/prefkey_programme_type"
             android:title="@string/title_programme_type"
             android:summary="%s"
-            android:negativeButtonText="@string/label_cancel" />
+            android:negativeButtonText="@string/label_back" />
         <ListPreference
             android:key="@string/prefkey_programme"
             android:title="@string/title_programme"
             android:summary="%s"
-            android:negativeButtonText="@string/label_cancel" />
+            android:negativeButtonText="@string/label_back" />
         <ListPreference
             android:key="@string/prefkey_year"
             android:title="@string/title_year"
             android:summary="%s"
-            android:negativeButtonText="@string/label_cancel" />
+            android:negativeButtonText="@string/label_back" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_appearance">
@@ -59,7 +59,7 @@
             android:key="@string/prefkey_theme"
             android:title="@string/title_theme"
             android:summary="%s"
-            android:negativeButtonText="@string/label_cancel"
+            android:negativeButtonText="@string/label_back"
             android:entries="@array/theme_options_human"
             android:entryValues="@array/theme_options" />
     </PreferenceCategory>
