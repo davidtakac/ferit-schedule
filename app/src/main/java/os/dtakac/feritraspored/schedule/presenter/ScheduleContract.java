@@ -15,6 +15,7 @@ public interface ScheduleContract {
         void onClickedCurrent();
         void onJavascriptInjected();
         void onPageStarted();
+        void onWeekNumberReceived(String weekNumberString);
     }
 
     interface View {
@@ -28,5 +29,6 @@ public interface ScheduleContract {
         void showMessage(String message);
         void setControlsEnabled(boolean enabled);
         void setWeekNumber(String script);
+        void setToolbarTitle(String title);
     }
 }

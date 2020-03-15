@@ -111,9 +111,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         btnRefresh = toolbar.getMenu().findItem(R.id.item_menu_refresh);
         btnRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListener(debounceThreshold) {
             @Override
-            public void onDebouncedClick() {
-                presenter.onRefresh();
-            }
+            public void onDebouncedClick() { presenter.onRefresh(); }
         });
         toolbar.getMenu().findItem(R.id.item_menu_settings).setOnMenuItemClickListener(item -> {
             startActivity(new Intent(ScheduleActivity.this, SettingsActivity.class));
@@ -137,16 +135,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void setWeekNumber(String script){
-        wvSchedule.evaluateJavascript(script, s -> {
-            String noQuotations = s.replace("\"", "");
-            String title = noQuotations;
-
-            if(noQuotations.isEmpty() || noQuotations.equals("null") || noQuotations.equals("undefined")){
-                title = getString(R.string.label_schedule);
-            }
-
-            setToolbarTitle(title);
-        });
+        wvSchedule.evaluateJavascript(script, s -> presenter.onWeekNumberReceived(s));
     }
 
     @Override
@@ -209,7 +198,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         customTabsIntent.launchUrl(ScheduleActivity.this, Uri.parse(url));
     }
 
-    private void setToolbarTitle(String title){
+    @Override
+    public void setToolbarTitle(String title){
         toolbar.setTitle(title);
     }
 
