@@ -1,7 +1,9 @@
 package os.dtakac.feritraspored.settings.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -23,20 +25,15 @@ import os.dtakac.feritraspored.common.util.Constants;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
-    private ListPreference progTypeList;
-    private ListPreference programmeList;
-    private ListPreference yearList;
-    private ListPreference themeList;
-    private Preference timePickerPref;
+    private ListPreference progTypeList, programmeList, yearList, themeList;
     private EditTextPreference groupsPref;
-    private Preference groupsHelpPref;
+    private Preference groupsHelpPref, timePickerPref, changelogPref, bugReportPref;
 
     private PrefsRepository repo;
     private SharedPreferences prefs;
 
     private boolean wasProgrammeInitialized = false;
     private boolean wasYearInitialized = false;
-
     private boolean werePrefsModified = false;
 
     @Override
@@ -55,6 +52,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         initPreferenceLists();
         initTimePickerPref();
         initGroupsPref();
+        initChangelogPref();
+        initBugReportPref();
     }
 
     @Override
@@ -79,7 +78,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private void initPrefReferences() {
         PreferenceManager m = getPreferenceManager();
-
         progTypeList = m.findPreference(getStr(R.string.prefkey_programme_type));
         programmeList = m.findPreference(getStr(R.string.prefkey_programme));
         yearList = m.findPreference(getStr(R.string.prefkey_year));
@@ -87,6 +85,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         groupsPref = m.findPreference(getStr(R.string.prefkey_groups));
         groupsHelpPref = m.findPreference(getStr(R.string.prefkey_groups_help));
         themeList = m.findPreference(getStr(R.string.prefkey_theme));
+        changelogPref = m.findPreference(getStr(R.string.prefkey_changelog));
+        bugReportPref = m.findPreference(getStr(R.string.prefkey_report_bug));
     }
 
     private void initPreferenceLists(){
@@ -103,9 +103,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private void initTimePickerPref(){
         timePickerPref.setOnPreferenceClickListener(this);
-
         setTimePickerSummaryFromPrefs();
         setTimePickerEnabled(repo.get(getStr(R.string.prefkey_skip_day), false));
+    }
+
+    private void initChangelogPref(){
+        changelogPref.setOnPreferenceClickListener(this);
+    }
+
+    private void initBugReportPref(){
+        bugReportPref.setOnPreferenceClickListener(this);
     }
 
     private void setTimePickerSummaryFromPrefs(){
@@ -270,25 +277,51 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public boolean onPreferenceClick(Preference preference) {
         String key = preference.getKey();
         if(key.equals(getStr(R.string.prefkey_time))){
-            Time24Hour prevTime = new Time24Hour(repo.get(getStr(R.string.prefkey_time_hour), 20), repo.get(getStr(R.string.prefkey_time_minute), 0));
-
-            DialogFragment f = TimePickerFragment.newInstance(prevTime, (TimeSetListener) setTime -> {
-                repo.add(getStr(R.string.prefkey_time_hour), setTime.getHour());
-                repo.add(getStr(R.string.prefkey_time_minute), setTime.getMinute());
-                setTimePickerSummaryFromPrefs();
-            });
-
-            if(getActivity() != null){
-                f.show(getActivity().getSupportFragmentManager(), Constants.TIMEPICKER_KEY);
-            }
-
+            showTimePicker();
         } else if(key.equals(getStr(R.string.prefkey_groups_help))){
-            DialogFragment f = AlertDialogFragment.newInstance(R.string.title_groups_help, R.string.content_groups_help, R.string.label_groups_help_confirm);
-            if(getActivity() != null){
-                f.show(getActivity().getSupportFragmentManager(), Constants.GROUPS_HELP_KEY);
-            }
+            showGroupsHelp();
+        } else if(key.equals(getStr(R.string.prefkey_changelog))){
+            showChangelog();
+        } else if(key.equals(getStr(R.string.prefkey_report_bug))){
+            sendBugReport();
         }
         return true;
+    }
+
+    private void showTimePicker(){
+        Time24Hour prevTime = new Time24Hour(repo.get(getStr(R.string.prefkey_time_hour), 20), repo.get(getStr(R.string.prefkey_time_minute), 0));
+
+        DialogFragment f = TimePickerFragment.newInstance(prevTime, (TimeSetListener) setTime -> {
+            repo.add(getStr(R.string.prefkey_time_hour), setTime.getHour());
+            repo.add(getStr(R.string.prefkey_time_minute), setTime.getMinute());
+            setTimePickerSummaryFromPrefs();
+        });
+
+        if(getActivity() != null){
+            f.show(getActivity().getSupportFragmentManager(), Constants.TIMEPICKER_KEY);
+        }
+    }
+
+    private void showGroupsHelp(){
+        DialogFragment f = AlertDialogFragment.newInstance(R.string.title_groups_help, R.string.content_groups_help, R.string.label_groups_help_confirm);
+        if(getActivity() != null){
+            f.show(getActivity().getSupportFragmentManager(), Constants.GROUPS_HELP_KEY);
+        }
+    }
+
+    private void showChangelog(){
+        DialogFragment f = AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new);
+        if(getActivity() != null){
+            f.show(getActivity().getSupportFragmentManager(), Constants.WHATS_NEW_KEY);
+        }
+    }
+
+    private void sendBugReport(){
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, getStrArray(R.array.email_addresses));
+        intent.putExtra(Intent.EXTRA_SUBJECT, getStr(R.string.subject_bug_report));
+        startActivity(Intent.createChooser(intent, getStr(R.string.label_email_via)));
     }
 
     private String getStr(int id){

@@ -63,4 +63,15 @@
             android:entries="@array/theme_options_human"
             android:entryValues="@array/theme_options" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/title_other">
+        <Preference
+            android:key="@string/prefkey_report_bug"
+            android:title="@string/title_bug_report"
+            android:summary="@string/summary_bug_report"/>
+        <Preference
+            android:key="@string/prefkey_changelog"
+            android:title="@string/title_whats_new"
+            android:summary="@string/summary_whats_new"/>
+    </PreferenceCategory>
 </PreferenceScreen>
