@@ -1,6 +1,7 @@
 package os.dtakac.feritraspored.schedule.presenter;
 
 import android.content.res.Configuration;
+import android.os.Handler;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -90,6 +91,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             return;
         }
         evaluateCurrentDay();
+        view.setControlsEnabled(false);
         view.reloadCurrentPage();
     }
 
@@ -155,7 +157,11 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     public void onPageFinished(boolean wasErrorReceived) {
         errorReceived = wasErrorReceived;
         if(!errorReceived){
+            // the controls will be enabled when javascript is applied
             applyJavascript();
+        } else {
+            // if there was an error, enable controls so the user can spam them
+            view.setControlsEnabled(true);
         }
     }
 
@@ -181,6 +187,18 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             setDisplayedDay(currentDay);
         }
         view.loadUrl(buildDisplayedWeekUrl());
+    }
+
+    @Override
+    public void onJavascriptInjected() {
+        view.setControlsEnabled(true);
+        new Handler().postDelayed(() -> view.setLoading(false), 200);
+    }
+
+    @Override
+    public void onPageStarted() {
+        view.setLoading(true);
+        view.setControlsEnabled(false);
     }
 
     @Override
