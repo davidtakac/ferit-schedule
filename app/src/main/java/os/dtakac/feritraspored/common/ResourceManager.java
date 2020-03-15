@@ -16,6 +16,10 @@ public class ResourceManager {
         return r.getString(resId);
     }
 
+    public int getColor(int resId){
+        return r.getColor(resId);
+    }
+
     public String[] getArray(int resId){
         return r.getStringArray(resId);
     }

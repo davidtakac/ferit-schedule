@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -41,36 +42,22 @@ import os.dtakac.feritraspored.common.util.NetworkUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
-    @BindView(R.id.wv_schedule)
-    WebView wvSchedule;
+    @BindView(R.id.wv_schedule) WebView wvSchedule;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     //navigation buttons
-    @BindView(R.id.btn_navbar_current)
-    ImageButton btnCurrent;
-
-    @BindView(R.id.btn_navbar_next)
-    ImageButton btnNext;
-
-    @BindView(R.id.btn_navbar_previous)
-    ImageButton btnPrevious;
-
+    @BindView(R.id.btn_navbar_current) ImageButton btnCurrent;
+    @BindView(R.id.btn_navbar_next) ImageButton btnNext;
+    @BindView(R.id.btn_navbar_previous) ImageButton btnPrevious;
     //status views
-    @BindView(R.id.cl_schedule_status)
-    ConstraintLayout clStatus;
-
-    @BindView(R.id.pbar_schedule_status)
-    ProgressBar pbarStatus;
-
-    @BindView(R.id.iv_schedule_error_status)
-    ImageView ivError;
-
-    @BindView(R.id.tv_schedule_status)
-    TextView tvStatus;
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.cl_schedule_status) ConstraintLayout clStatus;
+    @BindView(R.id.pbar_schedule_status) ProgressBar pbarStatus;
+    @BindView(R.id.iv_schedule_error_status) ImageView ivError;
+    @BindView(R.id.tv_schedule_status) TextView tvStatus;
+    @BindView(R.id.btn_schedule_bug_report) Button btnBugReport;
 
     private ScheduleContract.Presenter presenter;
+    private ResourceManager rm;
 
     //in millis
     private long debounceThreshold = 500;
@@ -81,20 +68,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
-
-        ResourceManager rm = new ResourceManager(getResources());
-        presenter = new SchedulePresenter(
-                this,
-                new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),
-                rm,
-                new JavascriptUtil(getAssets(), rm),
-                new NetworkUtil(this)
-        );
-
-        initToolbar();
-        initWebView();
-        initNavbar();
-
+        initPresenter();
+        initViews();
         presenter.onViewCreated();
         showChangelog();
     }
@@ -109,6 +84,23 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     protected void onPause() {
         presenter.onViewPaused();
         super.onPause();
+    }
+
+    private void initViews(){
+        initToolbar();
+        initWebView();
+        initNavbar();
+    }
+
+    private void initPresenter(){
+        rm = new ResourceManager(getResources());
+        presenter = new SchedulePresenter(
+                this,
+                new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),
+                rm,
+                new JavascriptUtil(getAssets(), rm),
+                new NetworkUtil(this)
+        );
     }
 
     private void initToolbar() {
@@ -180,7 +172,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     private void setLoading(boolean loading){
         ivError.setVisibility(View.GONE);
         pbarStatus.setVisibility(View.VISIBLE);
-        tvStatus.setText("");
+        btnBugReport.setVisibility(View.GONE);
+        tvStatus.setText(null);
         clStatus.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
@@ -188,6 +181,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     public void showErrorMessage(String message){
         ivError.setVisibility(View.VISIBLE);
         pbarStatus.setVisibility(View.INVISIBLE);
+        btnBugReport.setVisibility(View.VISIBLE);
+        btnBugReport.setOnClickListener((v) -> sendBugReport(message));
         tvStatus.setText(message);
         clStatus.setVisibility(View.VISIBLE);
     }
@@ -203,7 +198,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     private void openUrlInCustomTabs(String url){
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setToolbarColor(getResources().getColor(R.color.gray900));
+        builder.setToolbarColor(rm.getColor(R.color.gray900));
 
         //launches url in custom tab
         CustomTabsIntent customTabsIntent = builder.build();
@@ -218,6 +213,15 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     private void initWebView() {
         wvSchedule.setWebViewClient(new ScheduleClient());
         wvSchedule.getSettings().setJavaScriptEnabled(true);
+    }
+
+    private void sendBugReport(String content){
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, rm.getArray(R.array.email_addresses));
+        intent.putExtra(Intent.EXTRA_SUBJECT, rm.get(R.string.subject_bug_report));
+        intent.putExtra(Intent.EXTRA_TEXT, String.format(rm.get(R.string.template_bug_report), content));
+        startActivity(Intent.createChooser(intent, rm.get(R.string.label_email_via)));
     }
 
     private void showChangelog(){
