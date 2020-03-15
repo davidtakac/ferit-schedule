@@ -30,5 +30,6 @@ public interface ScheduleContract {
         void setControlsEnabled(boolean enabled);
         void setWeekNumber(String script);
         void setToolbarTitle(String title);
+        void showChangelog();
     }
 }

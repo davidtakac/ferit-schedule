@@ -11,9 +11,11 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Locale;
 
+import os.dtakac.feritraspored.BuildConfig;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.common.ResourceManager;
+import os.dtakac.feritraspored.common.util.Constants;
 import os.dtakac.feritraspored.common.util.JavascriptUtil;
 import os.dtakac.feritraspored.common.util.NetworkUtil;
 
@@ -71,6 +73,10 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         } else {
             boolean loadOnResume = prefs.get(res.get(R.string.prefkey_load_on_resume), false);
             if (loadOnResume) { loadCurrentDay(); }
+        }
+        if(prefs.get(Constants.LAST_VERSION_KEY, -1) < BuildConfig.VERSION_CODE){
+            prefs.add(Constants.LAST_VERSION_KEY, BuildConfig.VERSION_CODE);
+            view.showChangelog();
         }
     }
 
