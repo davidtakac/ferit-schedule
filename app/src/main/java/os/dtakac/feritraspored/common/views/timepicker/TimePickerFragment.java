@@ -37,8 +37,8 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         }
 
         TimePickerDialog tpd = new TimePickerDialog(getActivity(), this, initialTime.getHour(), initialTime.getMinute(), true);
-        tpd.setButton(TimePickerDialog.BUTTON_NEGATIVE, getString(R.string.label_cancel), tpd);
-        tpd.setButton(TimePickerDialog.BUTTON_POSITIVE, getString(R.string.label_confirm), tpd);
+        tpd.setButton(TimePickerDialog.BUTTON_NEGATIVE, getString(R.string.label_back), tpd);
+        tpd.setButton(TimePickerDialog.BUTTON_POSITIVE, getString(R.string.label_save), tpd);
 
         return tpd;
     }
