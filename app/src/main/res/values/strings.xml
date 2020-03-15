@@ -30,8 +30,8 @@
     <string name="title_programme">Studijski program</string>
     <string name="title_year">Godina</string>
     <string name="title_category_programme_and_year">Studij i godina</string>
-    <string name="title_group_highlight">Grupe</string>
-    <string name="title_category_group_highlight">Označavanje grupa</string>
+    <string name="title_group_highlight">Aktivni filteri</string>
+    <string name="title_category_group_highlight">Označavanje blokova</string>
     <string name="title_timepicker">Vrijeme</string>
     <string name="title_skip_day">Preskakanje dana</string>
     <string name="summary_skip_day">Pomiči na sljedeći dan poslije dolje definiranog vremena</string>
@@ -46,25 +46,45 @@
     <string name="title_load_on_resume">Automatski pomakni na trenutni dan</string>
     <string name="summary_load_on_resume">Učitaj trenutni dan svakim ulaskom u aplikaciju</string>
     <string name="summary_skip_sat">Učitaj sljedeći ponedjeljak umjesto pomicanja na subotu</string>
-    <string name="title_group_toggle">Označi grupe</string>
-    <string name="summary_group_toggle">Istakni odabrane grupe crvenom bojom</string>
+    <string name="title_group_toggle">Primijeni filtere</string>
+    <string name="summary_group_toggle">Obrubi blokove koji sadrže jedan od aktivnih filtera crvenom bojom</string>
     <string name="label_refresh">Osvježi</string>
     <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_cant_load_page">Stranica se ne može učitati. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_unexpected_error">Došlo je do neočekivane pogreške. [Kod]: %d [Opis]: %s [URL]: %s</string>
-    <string name="title_groups_help">Upute za pravilan unos grupa</string>
-    <string name="content_groups_help">1) Grupe se unose bez navodnika odvojene jednostrukim zarezom. Ovdje se navodnici koriste samo zbog čitljivosti.\n\n2) Grupe su osjetljive na mala i velika slova. \"AV1\" nije isto što \"av1\" ili \"aV1\".\n\n3) Moguće je odabrati točan predmet i grupu. Pri tome je bitno da se između naziva predmeta i grupe stave dva razmaka, a ne jedan.\n\"Elektronika I__PR-LV1/16\" je primjer pravilnog unosa, dok \"Elektronika I_PR-LV1/16\" nije (donju crtu zamijenite razmakom).\n\n4) Također je moguće unijeti samo ime predmeta kojeg se želi označiti, npr.\n\"Osnove elektrotehnike II\" će označiti sve blokove tog predmeta.</string>
+    <string name="title_groups_help">Upute za unos filtera</string>
+    <string name="content_groups_help">
+        &#8226; Svaki blok koji u svom naslovu sadrži jedan od aktivnih filtera bit će uokviren crvenom bojom\n\n
+        &#8226; Filteri za označavanje blokova odvajaju se jednostrukim zarezom\n
+        &#8226; Filteri su osjetljivi na mala i velika slova\n
+        &#8226; Ovo se može koristiti za označavanje pojedinih grupa, npr. unos \"AV1,LV1/16\" će označiti sve blokove koji u sebi sadrže riječi \"AV1\" ili \"LV1/16\"\n\n
+        &#8226; Pri unosu predmeta i grupe, npr. \"Osnove elektrotehnike LV1\", potrebno je između \"Osnove elektrotehnike\" i \"LV1\" staviti dva razmaka, a ne jedan\n\n
+        &#8226; Primjeri ispravnih unosa:\n
+        \"Osnove elektrotehnike, LV2/16\"\n
+        \"Programiranje I LV1, PR-2\"\n
+        \"11:30 - 14:45, K2-12, AV3\"\n
+        \"LV1/24, LV2/16, AV2\"
+    </string>
     <string name="label_groups_help_confirm">U redu</string>
     <string name="title_appearance">Izgled aplikacije</string>
     <string name="title_theme">Tema</string>
     <string name="title_whats_new">Što je novo - verzija 2.2.0</string>
-    <string name="content_whats_new">&#8226; Tamna tema! Biraj između tamne i svijetle teme ili odaberi automatsko prebacivanje u ovisnosti o sistemskim postavkama\n\n&#8226; Vrijeme termina prikazuje se na bloku\n&#8226; Grupe se označavaju crvenim obrubom\n&#8226; Popravljeno rušenje aplikacije na Lollipop sustavima\n&#8226; Ostali bugfixevi i poboljšanja\n\n&#8226; Hvala vam na bug reportovima, prijedlozima i lijepim riječima. Problem u radu aplikacije možete prijaviti u postavkama pod \"Prijavi problem\" ili spopadanjem na hodniku :)</string>
+    <string name="content_whats_new">
+        &#8226; Tamna tema! Biraj između tamne i svijetle teme ili odaberi automatsko prebacivanje u ovisnosti o sistemskim postavkama\n\n
+        &#8226; Vrijeme termina prikazuje se na bloku\n
+        &#8226; Grupe se označavaju crvenim obrubom\n
+        &#8226; Popravljeno rušenje aplikacije na Lollipop sustavima\n
+        &#8226; Ostali bugfixevi i poboljšanja\n\n
+        &#8226; Hvala vam na bug reportovima, prijedlozima i lijepim riječima.
+        Problem u radu aplikacije možete prijaviti u postavkama pod
+        \"Prijavi problem\", e-mailom na developer.takac@gmail.com ili spopadanjem na hodniku :)
+    </string>
     <string name="dismiss_whats_new">Odlično!</string>
     <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
     <string name="label_email_via">Pošalji e-mail pomoću…</string>
     <string name="title_other">Ostalo</string>
     <string name="title_bug_report">Prijavi problem</string>
-    <string name="summary_bug_report">Pošalji opis problema u radu aplikacije</string>
+    <string name="summary_bug_report">Pošalji opis problema developeru</string>
     <string name="summary_whats_new">Pogledaj što je novo</string>
 
     <!--Path names-->
