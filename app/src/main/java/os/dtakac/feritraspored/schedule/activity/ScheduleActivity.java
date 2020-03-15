@@ -2,12 +2,12 @@ package os.dtakac.feritraspored.schedule.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -20,11 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import os.dtakac.feritraspored.BuildConfig;
 import os.dtakac.feritraspored.common.listener.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
@@ -219,8 +221,13 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void showChangelog(){
-        AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new)
-                .show(getSupportFragmentManager(), Constants.WHATS_NEW_KEY);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int lastSavedVersionCode = prefs.getInt(Constants.VERSION_KEY, -1);
+        if(lastSavedVersionCode < BuildConfig.VERSION_CODE){
+            AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new)
+                    .show(getSupportFragmentManager(), Constants.WHATS_NEW_KEY);
+            prefs.edit().putInt(Constants.VERSION_KEY, BuildConfig.VERSION_CODE).apply();
+        }
     }
 
     private void initNavbar(){
