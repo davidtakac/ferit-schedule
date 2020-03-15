@@ -74,7 +74,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         initPresenter();
         initViews();
         presenter.onViewCreated();
-        showChangelog();
     }
 
     @Override
@@ -218,14 +217,10 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         startActivity(Intent.createChooser(intent, rm.get(R.string.label_email_via)));
     }
 
-    private void showChangelog(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        int lastSavedVersionCode = prefs.getInt(Constants.VERSION_KEY, -1);
-        if(lastSavedVersionCode < BuildConfig.VERSION_CODE){
-            AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new)
-                    .show(getSupportFragmentManager(), Constants.WHATS_NEW_KEY);
-            prefs.edit().putInt(Constants.VERSION_KEY, BuildConfig.VERSION_CODE).apply();
-        }
+    @Override
+    public void showChangelog(){
+        AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new)
+                .show(getSupportFragmentManager(), Constants.WHATS_NEW_KEY);
     }
 
     private void initNavbar(){

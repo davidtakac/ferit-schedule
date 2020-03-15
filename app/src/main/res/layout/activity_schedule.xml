@@ -43,8 +43,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintVertical_bias="0.4"/>
+            app:layout_constraintRight_toRightOf="parent" />
         <TextView
             android:id="@+id/tv_schedule_status"
             android:layout_width="match_parent"
