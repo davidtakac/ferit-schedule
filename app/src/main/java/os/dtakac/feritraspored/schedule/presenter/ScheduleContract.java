@@ -13,6 +13,8 @@ public interface ScheduleContract {
         void onErrorReceived(int errorCode, String description, String failingUrl);
         void onPageFinished(boolean wasErrorReceived);
         void onClickedCurrent();
+        void onJavascriptInjected();
+        void onPageStarted();
     }
 
     interface View {
@@ -22,7 +24,7 @@ public interface ScheduleContract {
         void refreshUi();
         void reloadCurrentPage();
         void showErrorMessage(String errMsg);
-
+        void setLoading(boolean isLoading);
         void showMessage(String message);
         void setControlsEnabled(boolean enabled);
         void setWeekNumber(String script);

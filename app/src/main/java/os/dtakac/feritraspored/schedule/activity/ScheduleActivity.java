@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -28,6 +29,7 @@ import com.google.android.material.snackbar.Snackbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import os.dtakac.feritraspored.BuildConfig;
+import os.dtakac.feritraspored.common.listener.DebouncedMenuItemClickListener;
 import os.dtakac.feritraspored.common.listener.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
@@ -55,6 +57,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     @BindView(R.id.iv_schedule_error_status) ImageView ivError;
     @BindView(R.id.tv_schedule_status) TextView tvStatus;
     @BindView(R.id.btn_schedule_bug_report) Button btnBugReport;
+    MenuItem btnRefresh;
 
     private ScheduleContract.Presenter presenter;
     private ResourceManager rm;
@@ -105,9 +108,12 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     private void initToolbar() {
         toolbar.inflateMenu(R.menu.menu);
-        toolbar.getMenu().findItem(R.id.item_menu_refresh).setOnMenuItemClickListener(item -> {
-            presenter.onRefresh();
-            return true;
+        btnRefresh = toolbar.getMenu().findItem(R.id.item_menu_refresh);
+        btnRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListener(debounceThreshold) {
+            @Override
+            public void onDebouncedClick() {
+                presenter.onRefresh();
+            }
         });
         toolbar.getMenu().findItem(R.id.item_menu_settings).setOnMenuItemClickListener(item -> {
             startActivity(new Intent(ScheduleActivity.this, SettingsActivity.class));
@@ -126,11 +132,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void injectJavascript(String script){
-        wvSchedule.evaluateJavascript(script, s -> {
-            setControlsEnabled(true);
-            //delayed loading turn off so the webview has time to update
-            new Handler().postDelayed(() -> setLoading(false), 200);
-        });
+        wvSchedule.evaluateJavascript(script, s -> presenter.onJavascriptInjected());
     }
 
     @Override
@@ -167,9 +169,11 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         btnNext.setEnabled(enabled);
         btnPrevious.setEnabled(enabled);
         btnCurrent.setEnabled(enabled);
+        btnRefresh.setEnabled(enabled);
     }
 
-    private void setLoading(boolean loading){
+    @Override
+    public void setLoading(boolean loading){
         ivError.setVisibility(View.GONE);
         pbarStatus.setVisibility(View.VISIBLE);
         btnBugReport.setVisibility(View.GONE);
@@ -267,25 +271,19 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            setLoading(true);
-            setControlsEnabled(false);
+            presenter.onPageStarted();
         }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             errorReceived = true;
             presenter.onErrorReceived(errorCode, description, failingUrl);
-
             super.onReceivedError(view, errorCode, description, failingUrl);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             presenter.onPageFinished(errorReceived);
-            if(errorReceived){
-                //if there was an error, enable the controls so the user can spam them or something
-                setControlsEnabled(true);
-            }
             errorReceived = false;
         }
     }
