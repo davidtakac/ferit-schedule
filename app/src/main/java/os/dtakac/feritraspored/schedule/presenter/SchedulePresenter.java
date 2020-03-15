@@ -96,6 +96,16 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
+    public void onWeekNumberReceived(String weekNumberString) {
+        String noQuotations = weekNumberString.replace("\"", "");
+        String title = noQuotations;
+        if(noQuotations.isEmpty() || noQuotations.equals("null") || noQuotations.equals("undefined")){
+            title = res.get(R.string.label_schedule);
+        }
+        view.setToolbarTitle(title);
+    }
+
+    @Override
     public void applyJavascript() {
         if(errorReceived){
             return;
@@ -171,6 +181,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
+        view.setControlsEnabled(false);
         loadCurrentDay();
     }
 
@@ -180,6 +191,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
+        view.setControlsEnabled(false);
         setDisplayedDay(displayedDay.minusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
 
         if(displayedDay.equals(currentDay.withDayOfWeek(DateTimeConstants.MONDAY))){
@@ -207,6 +219,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
+        view.setControlsEnabled(false);
         setDisplayedDay(displayedDay.plusDays(7).withDayOfWeek(DateTimeConstants.MONDAY));
 
         if(displayedDay.equals(currentDay.withDayOfWeek(DateTimeConstants.MONDAY))){
