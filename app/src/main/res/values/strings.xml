@@ -51,7 +51,7 @@
     <string name="label_refresh">Osvježi</string>
     <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_cant_load_page">Stranica se ne može učitati. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
-    <string name="notify_unexpected_error">Došlo je do neočekivane pogreške. [Kod]: %d [Opis]: %s [URL]: %s</string>
+    <string name="notify_unexpected_error">Došlo je do neočekivane pogreške.\n [Kod]: %d [Opis]: %s [URL]: %s</string>
     <string name="title_groups_help">Upute za unos filtera</string>
     <string name="content_groups_help">
         &#8226; Svaki blok koji u svom naslovu sadrži jedan od aktivnih filtera bit će uokviren crvenom bojom\n\n
@@ -86,6 +86,7 @@
     <string name="title_bug_report">Prijavi problem</string>
     <string name="summary_bug_report">Pošalji opis problema developeru</string>
     <string name="summary_whats_new">Pogledaj što je novo</string>
+    <string name="template_bug_report">Poruka greške: %s\nDodatni opis: </string>
 
     <!--Path names-->
     <string name="highlight_script_path">highlight-paragraphs-script.txt</string>
