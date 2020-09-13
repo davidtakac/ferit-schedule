@@ -70,6 +70,7 @@
     <string name="title_theme">Tema</string>
     <string name="title_whats_new">[2.2.0] Fixevi</string>
     <string name="content_whats_new">
+        &#8226; Dodan DA na engleskom.\n\n
         &#8226; Uklonjen accessibility button jer ne funkcionira s aplikacijom (i jer je naporan).\n\n
         &#8226; Dodana podrška za novi sivi blok u kojem se prikazuju usmeni i sl.\n\n
         &#8226; Dolaze izmjene nekih studijskih programa u ak. godini 20/21. Ako primijetite probleme,
@@ -145,6 +146,7 @@
         <item>DRC</item>
         <item>DRD</item>
         <item>DA</item>
+        <item>DA-Eng</item>
     </string-array>
     <string-array name="values_grad">
         <item>34</item>
@@ -157,6 +159,7 @@
         <item>38</item>
         <item>39</item>
         <item>52</item>
+        <item>58</item>
     </string-array>
 
     <!--Professional names and IDs-->
