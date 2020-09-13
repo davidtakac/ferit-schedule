@@ -18,7 +18,7 @@ $(".vrijeme-mobitel .satnica").css("color",textColor);
 /*blocks*/
 var blockTextColor = "#EEEEEE";
 $(".blokovi").css("border-top","none");
-$(".blokovi p").css("color",blockTextColor);
+$(".blokovi:not(.Ne) p").css("color",blockTextColor);
 $(".PR").css("background-color","#517652");
 $(".AV").css("background-color","#717FA4");
 $(".LV").css("background-color","#9d6f5b");
