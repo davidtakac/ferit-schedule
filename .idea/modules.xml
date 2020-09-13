@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/android-ferit-schedule.iml" filepath="$PROJECT_DIR$/android-ferit-schedule.iml" group="ferit-schedule" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/ferit-schedule.iml" filepath="$PROJECT_DIR$/ferit-schedule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/ferit-schedule-app.iml" filepath="$PROJECT_DIR$/app/ferit-schedule-app.iml" group="ferit-schedule/app" />
     </modules>
   </component>
 </project>
