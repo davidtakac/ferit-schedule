@@ -42,29 +42,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     @Override
-    public void loadCurrentDay() {
-        //re-evaluate current date to display because it is possible the app was paused
-        //before the time after which the display should be shifted to next day and
-        //resumed after it. not including this line here would result in the app not
-        //shifting to the next day correctly.
-        evaluateCurrentDay();
-        displayedDay = currentDay;
-
-        String displayedWeekUrl = buildDisplayedWeekUrl();
-        String loadedUrl = view.getLoadedUrl();
-
-        if(wereSettingsModified() || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl) || errorReceived){
-            view.loadUrl(displayedWeekUrl);
-            //settings were applied so update the settings modified key
-            prefs.add(res.get(R.string.prefkey_settings_modified), false);
-        } else {
-            //the date is correct, the webview is already on the current week, there was no error,
-            //so just scroll to current day
-            view.injectJavascript(buildScrollToCurrentDayScript());
-        }
-    }
-
-    @Override
     public void onViewResumed(int currentNightMode) {
         this.currentNightMode = currentNightMode;
         if(wereSettingsModified()){
@@ -99,24 +76,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             title = res.get(R.string.label_schedule);
         }
         view.setToolbarTitle(title);
-    }
-
-    @Override
-    public void applyJavascript() {
-        if(errorReceived){ return; }
-        view.setWeekNumber(jsUtil.weekNumberScript());
-
-        String js = jsUtil.hideAllButScheduleScript() + jsUtil.timeOnBlocksScript();
-        if(currentNightMode == Configuration.UI_MODE_NIGHT_YES){
-            js += jsUtil.darkThemeScript();
-        }
-        if(prefs.get(res.get(R.string.prefkey_groups_toggle), false)) {
-            js += buildHighlightGroupsScript();
-        }
-        if(currentDay.withDayOfWeek(DateTimeConstants.MONDAY).equals(displayedDay.withDayOfWeek(DateTimeConstants.MONDAY))) {
-            js += buildScrollToCurrentDayScript();
-        }
-        view.injectJavascript(js);
     }
 
     @Override
@@ -219,6 +178,39 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         view.loadUrl(buildDisplayedWeekUrl());
     }
 
+    private void loadCurrentDay() {
+        evaluateCurrentDay();
+        displayedDay = currentDay;
+        String displayedWeekUrl = buildDisplayedWeekUrl();
+        String loadedUrl = view.getLoadedUrl();
+
+        if(wereSettingsModified() || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl) || errorReceived){
+            //not on current week's page, load it
+            view.loadUrl(displayedWeekUrl);
+            prefs.add(res.get(R.string.prefkey_settings_modified), false);
+        } else {
+            //already on current week's page, just scroll to current day
+            view.injectJavascript(buildScrollToCurrentDayScript());
+        }
+    }
+
+    private void applyJavascript() {
+        if(errorReceived){ return; }
+        view.setWeekNumber(jsUtil.weekNumberScript());
+
+        String js = jsUtil.hideAllButScheduleScript() + jsUtil.timeOnBlocksScript();
+        if(currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+            js += jsUtil.darkThemeScript();
+        }
+        if(prefs.get(res.get(R.string.prefkey_groups_toggle), false)) {
+            js += buildHighlightGroupsScript();
+        }
+        if(currentDay.withDayOfWeek(DateTimeConstants.MONDAY).equals(displayedDay.withDayOfWeek(DateTimeConstants.MONDAY))) {
+            js += buildScrollToCurrentDayScript();
+        }
+        view.injectJavascript(js);
+    }
+
     private void evaluateCurrentDay() {
         LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
@@ -251,12 +243,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         String defaultYearId = res.getUndergradYearId(0);
 
         return  res.get(R.string.base_url) + res.get(R.string.schedule_url)
-                //current week
-                + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString()
-                //selected year
-                + "/" + prefs.get(res.get(R.string.prefkey_year), defaultYearId)
-                //selected programme
-                + "-" + prefs.get(res.get(R.string.prefkey_programme), defaultProgId);
+                + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString() //date
+                + "/" + prefs.get(res.get(R.string.prefkey_year), defaultYearId) //year
+                + "-" + prefs.get(res.get(R.string.prefkey_programme), defaultProgId); //programme
     }
 
     private String buildScrollToCurrentDayScript() {

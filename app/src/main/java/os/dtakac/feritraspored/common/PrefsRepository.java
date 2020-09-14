@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 
 public class PrefsRepository {
 
+    //todo: refactor to extract key from res!
+    private ResourceManager res;
     private SharedPreferences prefs;
 
     public PrefsRepository(SharedPreferences prefs){

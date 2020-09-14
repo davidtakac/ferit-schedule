@@ -2,12 +2,10 @@ package os.dtakac.feritraspored.schedule.presenter;
 
 public interface ScheduleContract {
     interface Presenter {
-        void loadCurrentDay();
         void onClickedPrevious();
         void onClickedNext();
         void onViewResumed(int currentNightMode);
         void onRefresh();
-        void applyJavascript();
         void onViewCreated();
         void onViewPaused();
         void onErrorReceived(int errorCode, String description, String failingUrl);
