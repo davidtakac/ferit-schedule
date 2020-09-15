@@ -46,12 +46,9 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @BindView(R.id.wv_schedule) WebView wvSchedule;
     @BindView(R.id.toolbar) Toolbar toolbar;
-
-    //navigation buttons
     @BindView(R.id.btn_navbar_current) ImageButton btnCurrent;
     @BindView(R.id.btn_navbar_next) ImageButton btnNext;
     @BindView(R.id.btn_navbar_previous) ImageButton btnPrevious;
-    //status views
     @BindView(R.id.cl_schedule_status) ConstraintLayout clStatus;
     @BindView(R.id.pbar_schedule_status) ProgressBar pbarStatus;
     @BindView(R.id.iv_schedule_error_status) ImageView ivError;
@@ -85,43 +82,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         super.onPause();
     }
 
-    private void initViews(){
-        initToolbar();
-        initWebView();
-        initNavbar();
-    }
-
-    private void initPresenter(){
-        ResourceManager rm = new ResourceManager(getResources());
-        presenter = new SchedulePresenter(
-                this,
-                new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this), getResources()),
-                rm,
-                new JavascriptUtil(getAssets(), rm)
-        );
-    }
-
-    private void initToolbar() {
-        toolbar.inflateMenu(R.menu.menu);
-        btnRefresh = toolbar.getMenu().findItem(R.id.item_menu_refresh);
-        btnRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListener(debounceThreshold) {
-            @Override
-            public void onDebouncedClick() { presenter.onRefresh(); }
-        });
-        toolbar.getMenu().findItem(R.id.item_menu_settings).setOnMenuItemClickListener(item -> {
-            startActivity(new Intent(ScheduleActivity.this, SettingsActivity.class));
-            return true;
-        });
-        toolbar.getMenu().findItem(R.id.item_menu_openinbrowser).setOnMenuItemClickListener(item -> {
-            openUrlInExternalBrowser(getLoadedUrl());
-            return true;
-        });
-    }
-
     @Override
-    public void loadUrl(String url){
-        wvSchedule.loadUrl(url);
-    }
+    public void loadUrl(String url){ wvSchedule.loadUrl(url); }
 
     @Override
     public void injectJavascript(String script){
@@ -134,19 +96,13 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     @Override
-    public String getLoadedUrl() {
-        return wvSchedule.getUrl();
-    }
+    public String getLoadedUrl() { return wvSchedule.getUrl(); }
 
     @Override
-    public void refreshUi() {
-        recreate();
-    }
+    public void refreshUi() { recreate(); }
 
     @Override
-    public void reloadCurrentPage() {
-        wvSchedule.reload();
-    }
+    public void reloadCurrentPage() { wvSchedule.reload(); }
 
     @Override
     public void setControlsEnabled(boolean enabled) {
@@ -180,38 +136,13 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
     }
 
-    private void openUrlInExternalBrowser(String url){
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-    }
-
-    private void openUrlInCustomTabs(String url){
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setToolbarColor(getResources().getColor(R.color.gray900));
-
-        //launches url in custom tab
-        CustomTabsIntent customTabsIntent = builder.build();
-        customTabsIntent.launchUrl(ScheduleActivity.this, Uri.parse(url));
-    }
-
     @Override
-    public void setToolbarTitle(String title){
-        toolbar.setTitle(title);
-    }
+    public void setToolbarTitle(String title){ toolbar.setTitle(title); }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         wvSchedule.setWebViewClient(new ScheduleClient());
         wvSchedule.getSettings().setJavaScriptEnabled(true);
-    }
-
-    private void sendBugReport(String content){
-        Resources r = getResources();
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL, r.getStringArray(R.array.email_addresses));
-        intent.putExtra(Intent.EXTRA_SUBJECT, r.getString(R.string.subject_bug_report));
-        intent.putExtra(Intent.EXTRA_TEXT, String.format(r.getString(R.string.template_bug_report), content));
-        startActivity(Intent.createChooser(intent, r.getString(R.string.label_email_via)));
     }
 
     @Override
@@ -227,25 +158,71 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
+    private void initViews(){
+        initToolbar();
+        initWebView();
+        initNavbar();
+    }
+
     private void initNavbar(){
         btnNext.setOnClickListener(new DebouncedOnClickListener(debounceThreshold) {
-            @Override
-            public void onDebouncedClick() {
-                presenter.onClickedNext();
-            }
+            @Override public void onDebouncedClick() { presenter.onClickedNext(); }
         });
         btnCurrent.setOnClickListener(new DebouncedOnClickListener(debounceThreshold) {
-            @Override
-            public void onDebouncedClick() {
-                presenter.onClickedCurrent();
-            }
+            @Override public void onDebouncedClick() { presenter.onClickedCurrent(); }
         });
         btnPrevious.setOnClickListener(new DebouncedOnClickListener(debounceThreshold) {
-            @Override
-            public void onDebouncedClick() {
-                presenter.onClickedPrevious();
-            }
+            @Override public void onDebouncedClick() { presenter.onClickedPrevious(); }
         });
+    }
+
+    private void initPresenter(){
+        ResourceManager rm = new ResourceManager(getResources());
+        presenter = new SchedulePresenter(
+                this,
+                new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this), getResources()),
+                rm,
+                new JavascriptUtil(getAssets(), rm)
+        );
+    }
+
+    private void initToolbar() {
+        toolbar.inflateMenu(R.menu.menu);
+        btnRefresh = toolbar.getMenu().findItem(R.id.item_menu_refresh);
+        btnRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListener(debounceThreshold) {
+            @Override
+            public void onDebouncedClick() { presenter.onRefresh(); }
+        });
+        toolbar.getMenu().findItem(R.id.item_menu_settings).setOnMenuItemClickListener(item -> {
+            startActivity(new Intent(ScheduleActivity.this, SettingsActivity.class));
+            return true;
+        });
+        toolbar.getMenu().findItem(R.id.item_menu_openinbrowser).setOnMenuItemClickListener(item -> {
+            openUrlInExternalBrowser(getLoadedUrl());
+            return true;
+        });
+    }
+
+    private void sendBugReport(String content){
+        Resources r = getResources();
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, r.getStringArray(R.array.email_addresses));
+        intent.putExtra(Intent.EXTRA_SUBJECT, r.getString(R.string.subject_bug_report));
+        intent.putExtra(Intent.EXTRA_TEXT, String.format(r.getString(R.string.template_bug_report), content));
+        startActivity(Intent.createChooser(intent, r.getString(R.string.label_email_via)));
+    }
+
+    private void openUrlInExternalBrowser(String url){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    private void openUrlInCustomTabs(String url){
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setToolbarColor(getResources().getColor(R.color.gray900));
+        //launches url in custom tab
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(ScheduleActivity.this, Uri.parse(url));
     }
 
     private class ScheduleClient extends WebViewClient {
@@ -259,9 +236,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         }
 
         @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            presenter.onPageStarted();
-        }
+        public void onPageStarted(WebView view, String url, Bitmap favicon) { presenter.onPageStarted(); }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {

@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.ResourceManager;
 
 public class JavascriptUtil {
 
@@ -45,7 +44,7 @@ public class JavascriptUtil {
         String highlightScript = "";
         try {
             pContains = readFile(ass.open("p-contains-script.txt"));
-            highlightScript = readFile(ass.open(res.get(R.string.highlight_script_path)));
+            highlightScript = readFile(ass.open(res.getString(R.string.highlight_script_path)));
         } catch (IOException e) {
             e.printStackTrace();
             return "";

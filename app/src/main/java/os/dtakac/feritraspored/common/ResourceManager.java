@@ -12,30 +12,22 @@ public class ResourceManager {
         this.r = r;
     }
 
-    public String get(int resId){
+    public String getString(int resId){
         return r.getString(resId);
     }
 
-    public int getColor(int resId){
-        return r.getColor(resId);
-    }
-
-    public String[] getArray(int resId){
-        return r.getStringArray(resId);
-    }
-
     public String getUndergradProgrammeId(int index) {
-        String[] undergrad = getArray(R.array.values_undergrad);
+        String[] undergrad = r.getStringArray(R.array.values_undergrad);
         if(index <= undergrad.length - 1){
-            return getArray(R.array.values_undergrad)[index];
+            return r.getStringArray(R.array.values_undergrad)[index];
         }
         return null;
     }
 
     public String getUndergradYearId(int index) {
-        String[] undergrad = getArray(R.array.values_years_undergrad);
+        String[] undergrad = r.getStringArray(R.array.values_years_undergrad);
         if(index <= undergrad.length - 1){
-            return getArray(R.array.values_years_undergrad)[index];
+            return r.getStringArray(R.array.values_years_undergrad)[index];
         }
         return null;
     }

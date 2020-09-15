@@ -75,17 +75,55 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         super.onPause();
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(!werePrefsModified && !key.equals(getString(R.string.key_prev_week))) {
+            werePrefsModified = true;
+        }
+
+        if(key.equals(getString(R.string.key_programme_type))){
+            setUpProgrammeList(Integer.parseInt(progTypeList.getValue()));
+            setProgrammeValue(0);
+        } else if(key.equals(getString(R.string.key_programme))){
+            setUpYearList(Integer.parseInt(progTypeList.getValue()), Integer.parseInt(programmeList.getValue()));
+            setYearValue(0);
+        } else if(key.equals(getString(R.string.key_skip_day))){
+            setTimePickerEnabled(prefs.get(R.string.key_skip_day,false));
+        } else if(key.equals(getString(R.string.key_groups))){
+            setGroupsSummaryFromPrefs();
+        } else if(key.equals(getString(R.string.key_groups_toggle))){
+            setGroupsPreferenceEnabled(prefs.get(R.string.key_groups_toggle, false));
+        } else if(key.equals(getString(R.string.key_theme))){
+            setTheme();
+        }
+    }
+
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+        String key = preference.getKey();
+        if(key.equals(getString(R.string.key_time))){
+            showTimePicker();
+        } else if(key.equals(getString(R.string.key_groups_help))){
+            showGroupsHelp();
+        } else if(key.equals(getString(R.string.key_changelog))){
+            showChangelog();
+        } else if(key.equals(getString(R.string.key_report_bug))){
+            sendBugReport();
+        }
+        return true;
+    }
+
     private void initPrefReferences() {
         PreferenceManager m = getPreferenceManager();
-        progTypeList = m.findPreference(getStr(R.string.key_programme_type));
-        programmeList = m.findPreference(getStr(R.string.key_programme));
-        yearList = m.findPreference(getStr(R.string.key_year));
-        timePickerPref = m.findPreference(getStr(R.string.key_time));
-        groupsPref = m.findPreference(getStr(R.string.key_groups));
-        groupsHelpPref = m.findPreference(getStr(R.string.key_groups_help));
-        themeList = m.findPreference(getStr(R.string.key_theme));
-        changelogPref = m.findPreference(getStr(R.string.key_changelog));
-        bugReportPref = m.findPreference(getStr(R.string.key_report_bug));
+        progTypeList = m.findPreference(getString(R.string.key_programme_type));
+        programmeList = m.findPreference(getString(R.string.key_programme));
+        yearList = m.findPreference(getString(R.string.key_year));
+        timePickerPref = m.findPreference(getString(R.string.key_time));
+        groupsPref = m.findPreference(getString(R.string.key_groups));
+        groupsHelpPref = m.findPreference(getString(R.string.key_groups_help));
+        themeList = m.findPreference(getString(R.string.key_theme));
+        changelogPref = m.findPreference(getString(R.string.key_changelog));
+        bugReportPref = m.findPreference(getString(R.string.key_report_bug));
     }
 
     private void initPreferenceLists(){
@@ -130,20 +168,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void initGroupsPref(){
-        groupsPref.setOnBindEditTextListener(editText -> editText.setHint(getStr(R.string.hint_group_highlight)));
+        groupsPref.setOnBindEditTextListener(editText -> editText.setHint(getString(R.string.hint_group_highlight)));
         groupsHelpPref.setOnPreferenceClickListener(this);
         setGroupsSummaryFromPrefs();
         setGroupsPreferenceEnabled(prefs.get(R.string.key_groups_toggle, false));
     }
 
     private void setGroupsSummaryFromPrefs(){
-        String summary = prefs.get(R.string.key_groups, getStr(R.string.placeholder_group_highlight_empty));
-        groupsPref.setSummary(summary.isEmpty() ? getStr(R.string.placeholder_group_highlight_empty) : summary);
+        String summary = prefs.get(R.string.key_groups, getString(R.string.placeholder_group_highlight_empty));
+        groupsPref.setSummary(summary.isEmpty() ? getString(R.string.placeholder_group_highlight_empty) : summary);
     }
 
     private void setUpProgrammeTypeList(){
-        progTypeList.setEntries(getStrArray(R.array.names_programme_type));
-        progTypeList.setEntryValues(getStrArray(R.array.values_programme_type));
+        progTypeList.setEntries(getStringArray(R.array.names_programme_type));
+        progTypeList.setEntryValues(getStringArray(R.array.values_programme_type));
         progTypeList.setValue(prefs.get(R.string.key_programme_type, "1"));
     }
 
@@ -178,8 +216,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             default: break;
         }
 
-        programmeList.setEntries(getStrArray(entriesId));
-        programmeList.setEntryValues(getStrArray(valuesId));
+        programmeList.setEntries(getStringArray(entriesId));
+        programmeList.setEntryValues(getStringArray(valuesId));
 
         if(!wasProgrammeInitialized){
             int valueIndex = programmeList.findIndexOfValue(prefs.get(R.string.key_programme, ""));
@@ -229,8 +267,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             default: break;
         }
 
-        yearList.setEntries(getStrArray(entriesId));
-        yearList.setEntryValues(getStrArray(valuesId));
+        yearList.setEntries(getStringArray(entriesId));
+        yearList.setEntryValues(getStringArray(valuesId));
 
         if(!wasYearInitialized){
             int valueIndex = yearList.findIndexOfValue(prefs.get(R.string.key_year, ""));
@@ -240,51 +278,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void setupThemeList(){
-        String theme = prefs.get(R.string.key_theme, getStrArray(R.array.theme_options)[0]);
+        String theme = prefs.get(R.string.key_theme, getStringArray(R.array.theme_options)[0]);
         themeList.setValue(theme);
     }
 
     private void setTheme(){
-        String themeStr = prefs.get(R.string.key_theme, getStrArray(R.array.theme_options)[0]);
+        String themeStr = prefs.get(R.string.key_theme, getStringArray(R.array.theme_options)[0]);
         AppCompatDelegate.setDefaultNightMode(Integer.parseInt(themeStr));
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(!werePrefsModified && !key.equals(getStr(R.string.key_prev_week))) {
-            werePrefsModified = true;
-        }
-
-        if(key.equals(getStr(R.string.key_programme_type))){
-            setUpProgrammeList(Integer.parseInt(progTypeList.getValue()));
-            setProgrammeValue(0);
-        } else if(key.equals(getStr(R.string.key_programme))){
-            setUpYearList(Integer.parseInt(progTypeList.getValue()), Integer.parseInt(programmeList.getValue()));
-            setYearValue(0);
-        } else if(key.equals(getStr(R.string.key_skip_day))){
-            setTimePickerEnabled(prefs.get(R.string.key_skip_day,false));
-        } else if(key.equals(getStr(R.string.key_groups))){
-            setGroupsSummaryFromPrefs();
-        } else if(key.equals(getStr(R.string.key_groups_toggle))){
-            setGroupsPreferenceEnabled(prefs.get(R.string.key_groups_toggle, false));
-        } else if(key.equals(getStr(R.string.key_theme))){
-            setTheme();
-        }
-    }
-
-    @Override
-    public boolean onPreferenceClick(Preference preference) {
-        String key = preference.getKey();
-        if(key.equals(getStr(R.string.key_time))){
-            showTimePicker();
-        } else if(key.equals(getStr(R.string.key_groups_help))){
-            showGroupsHelp();
-        } else if(key.equals(getStr(R.string.key_changelog))){
-            showChangelog();
-        } else if(key.equals(getStr(R.string.key_report_bug))){
-            sendBugReport();
-        }
-        return true;
     }
 
     private void showTimePicker(){
@@ -318,19 +318,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private void sendBugReport(){
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL, getStrArray(R.array.email_addresses));
-        intent.putExtra(Intent.EXTRA_SUBJECT, getStr(R.string.subject_bug_report));
-        startActivity(Intent.createChooser(intent, getStr(R.string.label_email_via)));
+        intent.putExtra(Intent.EXTRA_EMAIL, getStringArray(R.array.email_addresses));
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_bug_report));
+        startActivity(Intent.createChooser(intent, getString(R.string.label_email_via)));
     }
 
-    private String getStr(int id){
-        if(getActivity() != null){
-            return getActivity().getResources().getString(id);
-        }
-        return null;
-    }
-
-    private String[] getStrArray(int id){
+    private String[] getStringArray(int id){
         if(getActivity() != null){
             return getActivity().getResources().getStringArray(id);
         }
