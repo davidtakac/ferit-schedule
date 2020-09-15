@@ -40,7 +40,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onViewResumed(int currentNightMode) {
         this.currentNightMode = currentNightMode;
-        if(wereSettingsModified()){
+        if(prefs.get(R.string.key_settings_modified, false)){
             prefs.add(R.string.key_settings_modified,false);
             view.refreshUi();
         } else {
@@ -56,7 +56,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onRefresh() {
         if(!view.isOnline()){
-            view.showMessage(res.get(R.string.notify_no_network));
+            view.showMessage(res.getString(R.string.notify_no_network));
             return;
         }
         evaluateCurrentDay();
@@ -69,14 +69,14 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         String noQuotations = weekNumberString.replace("\"", "");
         String title = noQuotations;
         if(noQuotations.isEmpty() || noQuotations.equals("null") || noQuotations.equals("undefined")){
-            title = res.get(R.string.label_schedule);
+            title = res.getString(R.string.label_schedule);
         }
         view.setToolbarTitle(title);
     }
 
     @Override
     public void onViewCreated() {
-        if(wereSettingsModified()){
+        if(prefs.get(R.string.key_settings_modified, false)){
             prefs.add(R.string.key_settings_modified, false);
         }
         boolean loadOnResume = prefs.get(R.string.key_load_on_resume, false);
@@ -99,9 +99,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onErrorReceived(int errorCode, String description, String failingUrl) {
         if(!view.isOnline()){
-            view.showErrorMessage(res.get(R.string.notify_cant_load_page));
+            view.showErrorMessage(res.getString(R.string.notify_cant_load_page));
         } else {
-            String errMsg = String.format(res.get(R.string.notify_unexpected_error), errorCode, description, failingUrl);
+            String errMsg = String.format(res.getString(R.string.notify_unexpected_error), errorCode, description, failingUrl);
             view.showErrorMessage(errMsg);
         }
     }
@@ -121,7 +121,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onClickedCurrent() {
         if(!view.isOnline()){
-            view.showMessage(res.get(R.string.notify_no_network));
+            view.showMessage(res.getString(R.string.notify_no_network));
             return;
         }
         view.setControlsEnabled(false);
@@ -131,7 +131,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onClickedPrevious() {
         if(!view.isOnline()){
-            view.showMessage(res.get(R.string.notify_no_network));
+            view.showMessage(res.getString(R.string.notify_no_network));
             return;
         }
         view.setControlsEnabled(false);
@@ -160,7 +160,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onClickedNext() {
         if(!view.isOnline()){
-            view.showMessage(res.get(R.string.notify_no_network));
+            view.showMessage(res.getString(R.string.notify_no_network));
             return;
         }
         view.setControlsEnabled(false);
@@ -179,7 +179,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         String displayedWeekUrl = buildDisplayedWeekUrl();
         String loadedUrl = view.getLoadedUrl();
 
-        if(wereSettingsModified() || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl) || errorReceived){
+        if(prefs.get(R.string.key_settings_modified, false) || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl) || errorReceived){
             //not on current week's page, load it
             view.loadUrl(displayedWeekUrl);
             prefs.add(R.string.key_settings_modified, false);
@@ -237,7 +237,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         String defaultProgId = res.getUndergradProgrammeId(0);
         String defaultYearId = res.getUndergradYearId(0);
 
-        return  res.get(R.string.base_url) + res.get(R.string.schedule_url)
+        return  res.getString(R.string.base_url) + res.getString(R.string.schedule_url)
                 + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString() //date
                 + "/" + prefs.get(R.string.key_year, defaultYearId) //year
                 + "-" + prefs.get(R.string.key_programme, defaultProgId); //programme
@@ -264,9 +264,5 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
             filters[i] = filters[i].trim();
         }
         return jsUtil.highlightElementsScript(filters);
-    }
-
-    private boolean wereSettingsModified(){
-        return prefs.get(R.string.key_settings_modified, false);
     }
 }
