@@ -1,14 +1,15 @@
 package os.dtakac.feritraspored.schedule.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
@@ -29,19 +30,17 @@ import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import os.dtakac.feritraspored.BuildConfig;
-import os.dtakac.feritraspored.common.listener.DebouncedMenuItemClickListener;
-import os.dtakac.feritraspored.common.listener.DebouncedOnClickListener;
+import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListener;
+import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.common.ResourceManager;
-import os.dtakac.feritraspored.common.util.Constants;
-import os.dtakac.feritraspored.common.views.groups.AlertDialogFragment;
+import os.dtakac.feritraspored.common.Constants;
+import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
 import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
 import os.dtakac.feritraspored.schedule.presenter.SchedulePresenter;
 import os.dtakac.feritraspored.settings.activity.SettingsActivity;
-import os.dtakac.feritraspored.common.util.JavascriptUtil;
-import os.dtakac.feritraspored.common.util.NetworkUtil;
+import os.dtakac.feritraspored.common.JavascriptUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
@@ -98,8 +97,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                 this,
                 new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this), getResources()),
                 rm,
-                new JavascriptUtil(getAssets(), rm),
-                new NetworkUtil(this)
+                new JavascriptUtil(getAssets(), rm)
         );
     }
 
@@ -220,6 +218,13 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     public void showChangelog(){
         AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new)
                 .show(getSupportFragmentManager(), Constants.WHATS_NEW_KEY);
+    }
+
+    @Override
+    public boolean isOnline(){
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     private void initNavbar(){

@@ -15,9 +15,7 @@ import os.dtakac.feritraspored.BuildConfig;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.common.ResourceManager;
-import os.dtakac.feritraspored.common.util.Constants;
-import os.dtakac.feritraspored.common.util.JavascriptUtil;
-import os.dtakac.feritraspored.common.util.NetworkUtil;
+import os.dtakac.feritraspored.common.JavascriptUtil;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
@@ -25,18 +23,16 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private PrefsRepository prefs;
     private ResourceManager res;
     private JavascriptUtil jsUtil;
-    private NetworkUtil netUtil;
 
     private LocalDate currentDay, displayedDay;
     private boolean errorReceived;
     private int currentNightMode = Configuration.UI_MODE_NIGHT_NO;
 
-    public SchedulePresenter(ScheduleContract.View view, PrefsRepository prefs, ResourceManager resManager, JavascriptUtil jsUtil, NetworkUtil netUtil) {
+    public SchedulePresenter(ScheduleContract.View view, PrefsRepository prefs, ResourceManager resManager, JavascriptUtil jsUtil) {
         this.view = view;
         this.prefs = prefs;
         this.res = resManager;
         this.jsUtil = jsUtil;
-        this.netUtil = netUtil;
         this.errorReceived = false;
         evaluateCurrentDay();
     }
@@ -59,7 +55,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onRefresh() {
-        if(!netUtil.isDeviceOnline()){
+        if(!view.isOnline()){
             view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
@@ -102,7 +98,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onErrorReceived(int errorCode, String description, String failingUrl) {
-        if(!netUtil.isDeviceOnline()){
+        if(!view.isOnline()){
             view.showErrorMessage(res.get(R.string.notify_cant_load_page));
         } else {
             String errMsg = String.format(res.get(R.string.notify_unexpected_error), errorCode, description, failingUrl);
@@ -124,7 +120,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onClickedCurrent() {
-        if(!netUtil.isDeviceOnline()){
+        if(!view.isOnline()){
             view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
@@ -134,7 +130,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onClickedPrevious() {
-        if(!netUtil.isDeviceOnline()){
+        if(!view.isOnline()){
             view.showMessage(res.get(R.string.notify_no_network));
             return;
         }
@@ -163,7 +159,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onClickedNext() {
-        if(!netUtil.isDeviceOnline()){
+        if(!view.isOnline()){
             view.showMessage(res.get(R.string.notify_no_network));
             return;
         }

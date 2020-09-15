@@ -29,5 +29,6 @@ public interface ScheduleContract {
         void setWeekNumber(String script);
         void setToolbarTitle(String title);
         void showChangelog();
+        boolean isOnline();
     }
 }

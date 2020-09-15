@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.common.views.timepicker;
+package os.dtakac.feritraspored.views.timepicker;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.util.Constants;
+import os.dtakac.feritraspored.common.Constants;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
