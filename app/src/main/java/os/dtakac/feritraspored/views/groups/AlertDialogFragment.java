@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.common.views.groups;
+package os.dtakac.feritraspored.views.groups;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,8 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
-import os.dtakac.feritraspored.R;
 
 public class AlertDialogFragment extends DialogFragment {
 

@@ -17,11 +17,11 @@ import androidx.preference.PreferenceManager;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
-import os.dtakac.feritraspored.common.views.groups.AlertDialogFragment;
-import os.dtakac.feritraspored.common.views.timepicker.Time24Hour;
-import os.dtakac.feritraspored.common.views.timepicker.TimePickerFragment;
-import os.dtakac.feritraspored.common.views.timepicker.TimeSetListener;
-import os.dtakac.feritraspored.common.util.Constants;
+import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
+import os.dtakac.feritraspored.views.timepicker.Time24Hour;
+import os.dtakac.feritraspored.views.timepicker.TimePickerFragment;
+import os.dtakac.feritraspored.views.timepicker.TimeSetListener;
+import os.dtakac.feritraspored.common.Constants;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 

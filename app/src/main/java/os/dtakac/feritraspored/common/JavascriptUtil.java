@@ -1,8 +1,10 @@
-package os.dtakac.feritraspored.common.util;
+package os.dtakac.feritraspored.common;
 
 import android.content.res.AssetManager;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
 
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.ResourceManager;
@@ -23,7 +25,7 @@ public class JavascriptUtil {
     private String buildScript(String[] args, String scriptPath){
         String script = "";
         try {
-            script = FileUtil.readFile(ass.open(scriptPath));
+            script = readFile(ass.open(scriptPath));
         } catch (IOException e) {
             e.printStackTrace();
             return "";
@@ -42,8 +44,8 @@ public class JavascriptUtil {
         String pContains = "";
         String highlightScript = "";
         try {
-            pContains = FileUtil.readFile(ass.open("p-contains-script.txt"));
-            highlightScript = FileUtil.readFile(ass.open(res.get(R.string.highlight_script_path)));
+            pContains = readFile(ass.open("p-contains-script.txt"));
+            highlightScript = readFile(ass.open(res.get(R.string.highlight_script_path)));
         } catch (IOException e) {
             e.printStackTrace();
             return "";
@@ -64,7 +66,7 @@ public class JavascriptUtil {
 
     public String weekNumberScript(){
         try {
-            return FUNCTION_START + FileUtil.readFile(ass.open("week-num-script.txt")) + FUNCTION_END;
+            return FUNCTION_START + readFile(ass.open("week-num-script.txt")) + FUNCTION_END;
         } catch (IOException e) {
             e.printStackTrace();
             return "";
@@ -73,7 +75,7 @@ public class JavascriptUtil {
 
     public String hideAllButScheduleScript(){
         try{
-            return FUNCTION_START + FileUtil.readFile(ass.open("hide-all-but-schedule-script.txt")) + FUNCTION_END;
+            return FUNCTION_START + readFile(ass.open("hide-all-but-schedule-script.txt")) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
@@ -82,7 +84,7 @@ public class JavascriptUtil {
 
     public String darkThemeScript(){
         try{
-            return FUNCTION_START + FileUtil.readFile(ass.open("dark-theme-script.txt")) + FUNCTION_END;
+            return FUNCTION_START + readFile(ass.open("dark-theme-script.txt")) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
@@ -91,10 +93,20 @@ public class JavascriptUtil {
 
     public String timeOnBlocksScript(){
         try{
-            return FUNCTION_START + FileUtil.readFile(ass.open("time-on-blocks-script.txt")) + FUNCTION_END;
+            return FUNCTION_START + readFile(ass.open("time-on-blocks-script.txt")) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
         }
+    }
+
+    private String readFile(InputStream inputStream){
+        Scanner s = new Scanner(inputStream);
+        StringBuilder b = new StringBuilder();
+
+        while(s.hasNextLine()){
+            b.append(s.nextLine());
+        }
+        return b.toString();
     }
 }
