@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,10 +9,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?colorSurface"
+        android:background="@color/toolbar_color"
         app:title="@string/label_schedule"
         app:layout_constraintTop_toTopOf="parent"
-        android:elevation="4dp"/>
+        android:elevation="4dp" />
     <WebView
         android:id="@+id/wv_schedule"
         android:layout_width="match_parent"
@@ -71,11 +72,11 @@
         android:id="@+id/navbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="?colorSurface"
+        android:background="@color/navbar_color"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:elevation="4dp">
+        app:layout_constraintRight_toRightOf="parent">
         <ImageButton
             android:id="@+id/btn_navbar_previous"
             android:layout_width="0dp"

@@ -2,4 +2,6 @@
 <resources>
     <color name="gray300_to_black">@color/black</color>
     <color name="lightBlue200_to_700">#81D4FA</color>
+    <color name="toolbar_color">@color/dark_surface_4dp</color>
+    <color name="navbar_color">@color/dark_surface_8dp</color>
 </resources>
