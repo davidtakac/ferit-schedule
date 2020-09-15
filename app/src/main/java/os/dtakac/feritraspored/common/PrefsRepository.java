@@ -1,56 +1,57 @@
 package os.dtakac.feritraspored.common;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 
 public class PrefsRepository {
 
-    //todo: refactor to extract key from res!
-    private ResourceManager res;
+    private Resources res;
     private SharedPreferences prefs;
 
-    public PrefsRepository(SharedPreferences prefs){
+    public PrefsRepository(SharedPreferences prefs, Resources res){
         this.prefs = prefs;
+        this.res = res;
     }
 
-    public void add(String key, String value) {
+    public void add(int keyId, String value) {
         SharedPreferences.Editor e = prefs.edit();
-        e.putString(key,value);
+        e.putString(res.getString(keyId), value);
         e.apply();
     }
 
-    public void add(String key, int value) {
+    public void add(int keyId, int value) {
         SharedPreferences.Editor e = prefs.edit();
-        e.putInt(key,value);
+        e.putInt(res.getString(keyId), value);
         e.apply();
     }
 
-    public void add(String key, boolean value) {
+    public void add(int keyId, boolean value) {
         SharedPreferences.Editor e = prefs.edit();
-        e.putBoolean(key,value);
+        e.putBoolean(res.getString(keyId), value);
         e.apply();
     }
 
-    public String get(String key, String defaultValue) {
+    public String get(int keyId, String defaultValue) {
         try {
-            return prefs.getString(key, defaultValue);
+            return prefs.getString(res.getString(keyId), defaultValue);
         } catch (Exception e) {
             e.printStackTrace();
             return defaultValue;
         }
     }
 
-    public int get(String key, int defaultValue) {
+    public int get(int keyId, int defaultValue) {
         try {
-            return prefs.getInt(key, defaultValue);
+            return prefs.getInt(res.getString(keyId), defaultValue);
         } catch (Exception e) {
             e.printStackTrace();
             return defaultValue;
         }
     }
 
-    public boolean get(String key, boolean defaultValue) {
+    public boolean get(int keyId, boolean defaultValue) {
         try {
-            return prefs.getBoolean(key, defaultValue);
+            return prefs.getBoolean(res.getString(keyId), defaultValue);
         } catch (Exception e) {
             e.printStackTrace();
             return defaultValue;

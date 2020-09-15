@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -60,9 +61,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     MenuItem btnRefresh;
 
     private ScheduleContract.Presenter presenter;
-    private ResourceManager rm;
-
-    //in millis
     private long debounceThreshold = 300;
 
     @Override
@@ -95,10 +93,10 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void initPresenter(){
-        rm = new ResourceManager(getResources());
+        ResourceManager rm = new ResourceManager(getResources());
         presenter = new SchedulePresenter(
                 this,
-                new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this)),
+                new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this), getResources()),
                 rm,
                 new JavascriptUtil(getAssets(), rm),
                 new NetworkUtil(this)
@@ -190,7 +188,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     private void openUrlInCustomTabs(String url){
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setToolbarColor(rm.getColor(R.color.gray900));
+        builder.setToolbarColor(getResources().getColor(R.color.gray900));
 
         //launches url in custom tab
         CustomTabsIntent customTabsIntent = builder.build();
@@ -209,12 +207,13 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void sendBugReport(String content){
+        Resources r = getResources();
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL, rm.getArray(R.array.email_addresses));
-        intent.putExtra(Intent.EXTRA_SUBJECT, rm.get(R.string.subject_bug_report));
-        intent.putExtra(Intent.EXTRA_TEXT, String.format(rm.get(R.string.template_bug_report), content));
-        startActivity(Intent.createChooser(intent, rm.get(R.string.label_email_via)));
+        intent.putExtra(Intent.EXTRA_EMAIL, r.getStringArray(R.array.email_addresses));
+        intent.putExtra(Intent.EXTRA_SUBJECT, r.getString(R.string.subject_bug_report));
+        intent.putExtra(Intent.EXTRA_TEXT, String.format(r.getString(R.string.template_bug_report), content));
+        startActivity(Intent.createChooser(intent, r.getString(R.string.label_email_via)));
     }
 
     @Override

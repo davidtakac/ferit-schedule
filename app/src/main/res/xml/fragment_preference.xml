@@ -4,51 +4,51 @@
     <PreferenceCategory
         android:title="@string/title_category_display_options">
         <SwitchPreference
-            android:key="@string/prefkey_load_on_resume"
+            android:key="@string/key_load_on_resume"
             android:title="@string/title_load_on_resume"
             android:summary="@string/summary_load_on_resume"
             android:defaultValue="true" />
         <SwitchPreference
-            android:key="@string/prefkey_skip_saturday"
+            android:key="@string/key_skip_sat"
             android:title="@string/title_skip_sat"
             android:summary="@string/summary_skip_sat" />
         <SwitchPreference
-            android:key="@string/prefkey_skip_day"
+            android:key="@string/key_skip_day"
             android:title="@string/title_skip_day"
             android:summary="@string/summary_skip_day" />
         <Preference
-            android:key="@string/prefkey_time"
+            android:key="@string/key_time"
             android:title="@string/title_timepicker" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_category_group_highlight">
         <SwitchPreference
-            android:key="@string/prefkey_groups_toggle"
+            android:key="@string/key_groups_toggle"
             android:title="@string/title_group_toggle"
             android:summary="@string/summary_group_toggle" />
         <EditTextPreference
-            android:key="@string/prefkey_groups"
+            android:key="@string/key_groups"
             android:title="@string/title_group_highlight"
             android:negativeButtonText="@string/label_back"
             android:positiveButtonText="@string/label_save" />
         <Preference
-            android:key="@string/prefkey_groups_help"
+            android:key="@string/key_groups_help"
             android:title="@string/title_groups_help" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_category_programme_and_year">
         <ListPreference
-            android:key="@string/prefkey_programme_type"
+            android:key="@string/key_programme_type"
             android:title="@string/title_programme_type"
             android:summary="%s"
             android:negativeButtonText="@string/label_back" />
         <ListPreference
-            android:key="@string/prefkey_programme"
+            android:key="@string/key_programme"
             android:title="@string/title_programme"
             android:summary="%s"
             android:negativeButtonText="@string/label_back" />
         <ListPreference
-            android:key="@string/prefkey_year"
+            android:key="@string/key_year"
             android:title="@string/title_year"
             android:summary="%s"
             android:negativeButtonText="@string/label_back" />
@@ -56,7 +56,7 @@
     <PreferenceCategory
         android:title="@string/title_appearance">
         <ListPreference
-            android:key="@string/prefkey_theme"
+            android:key="@string/key_theme"
             android:title="@string/title_theme"
             android:summary="%s"
             android:negativeButtonText="@string/label_back"
@@ -66,11 +66,11 @@
     <PreferenceCategory
         android:title="@string/title_other">
         <Preference
-            android:key="@string/prefkey_report_bug"
+            android:key="@string/key_report_bug"
             android:title="@string/title_bug_report"
             android:summary="@string/summary_bug_report"/>
         <Preference
-            android:key="@string/prefkey_changelog"
+            android:key="@string/key_changelog"
             android:title="@string/title_whats_new"
             android:summary="@string/summary_whats_new"/>
     </PreferenceCategory>

@@ -5,23 +5,24 @@
     <string name="schedule_url">studenti/raspored-nastave-i-ispita/</string>
 
     <!--Preference key strings-->
-    <string name="prefkey_skip_saturday">skip_saturday_key</string>
-    <string name="prefkey_skip_day">skip_day_key</string>
-    <string name="prefkey_groups">group_highlight_key</string>
-    <string name="prefkey_programme_type">prog_type_key</string>
-    <string name="prefkey_programme">programme_key</string>
-    <string name="prefkey_year">year_key</string>
-    <string name="prefkey_time">timepicker_key</string>
-    <string name="prefkey_time_hour">hour_key</string>
-    <string name="prefkey_time_minute">minute_key</string>
-    <string name="prefkey_settings_modified">settings_modified</string>
-    <string name="prefkey_load_on_resume">load_on_resume_key</string>
-    <string name="prefkey_previously_displayed_week">prev_displayed_week_key</string>
-    <string name="prefkey_groups_toggle">group_toggle_key</string>
-    <string name="prefkey_groups_help">group_help_key</string>
-    <string name="prefkey_theme">prefkey_theme</string>
-    <string name="prefkey_changelog">changelog_key</string>
-    <string name="prefkey_report_bug">bug_report_key</string>
+    <string name="key_skip_sat">skip_saturday_key</string>
+    <string name="key_skip_day">skip_day_key</string>
+    <string name="key_groups">group_highlight_key</string>
+    <string name="key_programme_type">prog_type_key</string>
+    <string name="key_programme">programme_key</string>
+    <string name="key_year">year_key</string>
+    <string name="key_time">timepicker_key</string>
+    <string name="key_time_hour">hour_key</string>
+    <string name="key_time_minute">minute_key</string>
+    <string name="key_settings_modified">settings_modified</string>
+    <string name="key_load_on_resume">load_on_resume_key</string>
+    <string name="key_prev_week">prev_displayed_week_key</string>
+    <string name="key_groups_toggle">group_toggle_key</string>
+    <string name="key_groups_help">group_help_key</string>
+    <string name="key_theme">prefkey_theme</string>
+    <string name="key_changelog">changelog_key</string>
+    <string name="key_report_bug">bug_report_key</string>
+    <string name="key_version">version_key</string>
 
     <!--User interface strings-->
     <string name="app_name">Ferit Raspored</string>

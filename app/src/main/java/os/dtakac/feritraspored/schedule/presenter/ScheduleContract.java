@@ -22,7 +22,7 @@ public interface ScheduleContract {
         String getLoadedUrl();
         void refreshUi();
         void reloadCurrentPage();
-        void showErrorMessage(String errMsg);
+        void showErrorMessage(String errMessage);
         void setLoading(boolean isLoading);
         void showMessage(String message);
         void setControlsEnabled(boolean enabled);
