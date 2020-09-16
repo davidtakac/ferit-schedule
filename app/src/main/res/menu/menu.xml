@@ -6,7 +6,7 @@
         android:title="@string/label_refresh"
         app:showAsAction="always"
         android:icon="@drawable/ic_baseline_refresh_24px"
-        app:iconTint="?colorOnSurface" />
+        app:iconTint="?attr/colorControlNormal"/>
     <item android:id="@+id/item_menu_settings"
         android:title="@string/label_settings"/>
     <item android:id="@+id/item_menu_openinbrowser"
