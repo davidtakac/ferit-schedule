@@ -44,7 +44,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="0.4"/>
         <TextView
             android:id="@+id/tv_schedule_status"
             android:layout_width="match_parent"
@@ -83,7 +84,6 @@
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_baseline_navigate_before_24px_"
             android:background="?android:selectableItemBackgroundBorderless"
-            android:tint="?colorOnSurface"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -94,7 +94,6 @@
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_baseline_today_24px"
             android:background="?android:selectableItemBackgroundBorderless"
-            android:tint="?colorOnSurface"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/btn_navbar_previous"
@@ -105,7 +104,6 @@
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_baseline_navigate_next_24px"
             android:background="?android:selectableItemBackgroundBorderless"
-            android:tint="?colorOnSurface"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/btn_navbar_current"
