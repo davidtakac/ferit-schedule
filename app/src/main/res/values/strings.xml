@@ -69,15 +69,11 @@
     <string name="label_groups_help_confirm">U redu</string>
     <string name="title_appearance">Izgled aplikacije</string>
     <string name="title_theme">Tema</string>
-    <string name="title_whats_new">[2.2.0] Fixevi</string>
+    <string name="title_whats_new">[2.2.1] Nova akademska godina</string>
     <string name="content_whats_new">
-        &#8226; Dodan DA na engleskom.\n\n
-        &#8226; Uklonjen accessibility button jer ne funkcionira s aplikacijom (i jer je naporan).\n\n
-        &#8226; Dodana podrška za novi sivi blok u kojem se prikazuju usmeni i sl.\n\n
-        &#8226; Dolaze izmjene nekih studijskih programa u ak. godini 20/21. Ako primijetite probleme,
-        molim vas prijavite ih pomoću \"Prijavi problem\" u postavkama.
+        &#8226; Dodani smjerovi Računarstvo PI i RI.\n\n&#8226; Estetske izmjene (boje, većinom)
     </string>
-    <string name="dismiss_whats_new">sicc&#128166;</string>
+    <string name="dismiss_whats_new">nice</string>
     <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
     <string name="label_email_via">Pošalji e-mail pomoću…</string>
     <string name="title_other">Ostalo</string>
@@ -125,12 +121,16 @@
 
     <!--Undergrad programme names and IDs-->
     <string-array name="names_undergrad">
-        <item>Računarstvo</item>
+        <item>Računarstvo (staro)</item>
+        <item>Računarstvo PI</item>
+        <item>Računarstvo RI</item>
         <item>Elektrotehnika ili elektroenergetika</item>
         <item>Komunikacije i informatika</item>
     </string-array>
     <string-array name="values_undergrad">
         <item>2</item>
+        <item>59</item>
+        <item>60</item>
         <item>1</item>
         <item>21</item>
     </string-array>
