@@ -6,7 +6,7 @@ android {
         applicationId "os.dtakac.feritraspored"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 11
+        versionCode 12
         versionName "2.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

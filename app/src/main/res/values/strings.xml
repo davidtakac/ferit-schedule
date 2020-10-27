@@ -69,11 +69,11 @@
     <string name="label_groups_help_confirm">U redu</string>
     <string name="title_appearance">Izgled aplikacije</string>
     <string name="title_theme">Tema</string>
-    <string name="title_whats_new">[2.2.1] Nova akademska godina</string>
+    <string name="title_whats_new">[2.2.1] Fix</string>
     <string name="content_whats_new">
-        &#8226; Dodani smjerovi Računarstvo PI i RI.\n\n&#8226; Estetske izmjene (boje, većinom)
+        &#8226; Dodana treća godina stručnog studija računarstva.
     </string>
-    <string name="dismiss_whats_new">nice</string>
+    <string name="dismiss_whats_new">mda</string>
     <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
     <string name="label_email_via">Pošalji e-mail pomoću…</string>
     <string name="title_other">Ostalo</string>
