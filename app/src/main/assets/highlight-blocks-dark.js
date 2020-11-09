@@ -1,3 +1,3 @@
-var p = $("%s");
-p.css("border-style","solid").css("border-color","#FF1744").css("border-width","2px");
-p.parent().css("z-index","1");
+var blocks = $(".blokovi:contains('%s')");
+blocks.find("p").css("border-style","solid").css("border-color","#FF1744").css("border-width","2px");
+blocks.parent().css("z-index","1");

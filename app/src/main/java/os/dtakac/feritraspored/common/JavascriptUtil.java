@@ -40,23 +40,18 @@ public class JavascriptUtil {
     }
 
     public String highlightElementsScript(String[] filters){
-        String elementsThatContainFilter = "";
         String highlightScript = "";
         try {
-            elementsThatContainFilter = readFile(ass.open("contains.js"));
             highlightScript = readFile(ass.open(res.getString(R.string.highlight_script_path)));
         } catch (IOException e) {
             e.printStackTrace();
             return "";
         }
-
         StringBuilder b = new StringBuilder();
         for(String filter: filters){
-            b.append(String.format(elementsThatContainFilter, filter)).append(",");
+            b.append(String.format(highlightScript, filter));
         }
-        b.deleteCharAt(b.length() - 1);
-
-        return String.format(highlightScript, b.toString());
+        return b.toString();
     }
 
     public String scrollIntoViewScript(String elementName){
