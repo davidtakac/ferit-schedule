@@ -83,7 +83,7 @@
     <string name="template_bug_report">Poruka greške: %s\nDodatni opis: </string>
 
     <!--Path names-->
-    <string name="highlight_script_path">highlight-paragraphs-script.txt</string>
+    <string name="highlight_script_path">highlight-blocks.js</string>
 
     <!--E-mail addresses that will receive bug reports-->
     <string-array name="email_addresses">
