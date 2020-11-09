@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "os.dtakac.feritraspored"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 12
-        versionName "2.2.1"
+        targetSdkVersion 30
+        versionCode 13
+        versionName "2.2.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

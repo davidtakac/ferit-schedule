@@ -1,4 +1,4 @@
-let observer = new MutationObserver(function(mutations) {
+var observer = new MutationObserver(function(mutations) {
     if ($(".uwy").length) {
         /*userway shit was added*/
         $(".uwy").remove();
