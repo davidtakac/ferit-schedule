@@ -1,0 +1,1 @@
+$(".blokovi:contains('%s')").find("p")

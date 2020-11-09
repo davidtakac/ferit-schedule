@@ -1,1 +1,0 @@
-$("div.thumbnail:contains('%s')").find("p")

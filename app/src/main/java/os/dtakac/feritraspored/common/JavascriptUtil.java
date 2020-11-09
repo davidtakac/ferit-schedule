@@ -40,10 +40,10 @@ public class JavascriptUtil {
     }
 
     public String highlightElementsScript(String[] filters){
-        String pContains = "";
+        String elementsThatContainFilter = "";
         String highlightScript = "";
         try {
-            pContains = readFile(ass.open("p-contains-script.txt"));
+            elementsThatContainFilter = readFile(ass.open("contains.js"));
             highlightScript = readFile(ass.open(res.getString(R.string.highlight_script_path)));
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class JavascriptUtil {
 
         StringBuilder b = new StringBuilder();
         for(String filter: filters){
-            b.append(String.format(pContains, filter)).append(",");
+            b.append(String.format(elementsThatContainFilter, filter)).append(",");
         }
         b.deleteCharAt(b.length() - 1);
 
@@ -60,12 +60,12 @@ public class JavascriptUtil {
     }
 
     public String scrollIntoViewScript(String elementName){
-        return buildScript(new String[]{elementName}, "scroll-into-view-script.txt");
+        return buildScript(new String[]{elementName}, "scroll-into-view.js");
     }
 
     public String weekNumberScript(){
         try {
-            return FUNCTION_START + readFile(ass.open("week-num-script.txt")) + FUNCTION_END;
+            return FUNCTION_START + readFile(ass.open("get-week-number.js")) + FUNCTION_END;
         } catch (IOException e) {
             e.printStackTrace();
             return "";
@@ -74,7 +74,7 @@ public class JavascriptUtil {
 
     public String hideAllButScheduleScript(){
         try{
-            return FUNCTION_START + readFile(ass.open("hide-all-but-schedule-script.txt")) + FUNCTION_END;
+            return FUNCTION_START + readFile(ass.open("hide-junk.js")) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
@@ -83,7 +83,7 @@ public class JavascriptUtil {
 
     public String darkThemeScript(){
         try{
-            return FUNCTION_START + readFile(ass.open("dark-theme-script.txt")) + FUNCTION_END;
+            return FUNCTION_START + readFile(ass.open("dark-theme.js")) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
@@ -92,7 +92,7 @@ public class JavascriptUtil {
 
     public String timeOnBlocksScript(){
         try{
-            return FUNCTION_START + readFile(ass.open("time-on-blocks-script.txt")) + FUNCTION_END;
+            return FUNCTION_START + readFile(ass.open("time-on-blocks.js")) + FUNCTION_END;
         } catch (IOException e){
             e.printStackTrace();
             return "";
