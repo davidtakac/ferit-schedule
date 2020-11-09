@@ -1,1 +1,1 @@
-p:contains(\"%s\")
+$("div.thumbnail:contains('%s')").find("p")
