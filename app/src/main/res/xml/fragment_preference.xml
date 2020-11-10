@@ -37,21 +37,14 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_category_programme_and_year">
-        <ListPreference
-            android:key="@string/key_programme_type"
-            android:title="@string/title_programme_type"
-            android:summary="%s"
-            android:negativeButtonText="@string/label_back" />
-        <ListPreference
-            android:key="@string/key_programme"
-            android:title="@string/title_programme"
-            android:summary="%s"
-            android:negativeButtonText="@string/label_back" />
-        <ListPreference
-            android:key="@string/key_year"
-            android:title="@string/title_year"
-            android:summary="%s"
-            android:negativeButtonText="@string/label_back" />
+        <EditTextPreference
+            android:key="@string/key_course_identifier"
+            android:title="@string/title_course_identifier"
+            android:negativeButtonText="@string/label_back"
+            android:positiveButtonText="@string/label_save" />
+        <Preference
+            android:key="@string/key_course_identifier_help"
+            android:title="@string/title_course_identifier_help" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_appearance">

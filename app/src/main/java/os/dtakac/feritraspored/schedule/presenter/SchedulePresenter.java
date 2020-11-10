@@ -234,13 +234,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildDisplayedWeekUrl() {
-        String defaultProgId = res.getUndergradProgrammeId(0);
-        String defaultYearId = res.getUndergradYearId(0);
-
         return  res.getString(R.string.base_url) + res.getString(R.string.schedule_url)
-                + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString() //date
-                + "/" + prefs.get(R.string.key_year, defaultYearId) //year
-                + "-" + prefs.get(R.string.key_programme, defaultProgId); //programme
+                + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString()
+                + "/" + prefs.get(R.string.key_course_identifier, "");
     }
 
     private String buildScrollToCurrentDayScript() {

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -25,15 +26,18 @@ import os.dtakac.feritraspored.common.Constants;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
-    private ListPreference progTypeList, programmeList, yearList, themeList;
-    private EditTextPreference groupsPref;
-    private Preference groupsHelpPref, timePickerPref, changelogPref, bugReportPref;
+    private ListPreference themeList;
+    private EditTextPreference filters,
+            courseIdentifier;
+    private Preference filtersHelp,
+            timePicker,
+            changelog,
+            bugReport,
+            courseIdentifierHelp;
 
     private PrefsRepository prefs;
     private SharedPreferences defaultSharedPreferences;
 
-    private boolean wasProgrammeInitialized = false;
-    private boolean wasYearInitialized = false;
     private boolean werePrefsModified = false;
 
     @Override
@@ -46,13 +50,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         setPreferencesFromResource(R.xml.fragment_preference, s);
-
-        initPrefReferences();
+        initPreferences();
         initPreferenceLists();
-        initTimePickerPref();
-        initGroupsPref();
-        initChangelogPref();
-        initBugReportPref();
+        initTimePicker();
+        initFilters();
+        initChangelog();
+        initBugReport();
+        initCourseIdentifier();
+        initCourseIdentifierHelp();
     }
 
     @Override
@@ -81,13 +86,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             werePrefsModified = true;
         }
 
-        if(key.equals(getString(R.string.key_programme_type))){
-            setUpProgrammeList(Integer.parseInt(progTypeList.getValue()));
-            setProgrammeValue(0);
-        } else if(key.equals(getString(R.string.key_programme))){
-            setUpYearList(Integer.parseInt(progTypeList.getValue()), Integer.parseInt(programmeList.getValue()));
-            setYearValue(0);
-        } else if(key.equals(getString(R.string.key_skip_day))){
+        if(key.equals(getString(R.string.key_skip_day))){
             setTimePickerEnabled(prefs.get(R.string.key_skip_day,false));
         } else if(key.equals(getString(R.string.key_groups))){
             setGroupsSummaryFromPrefs();
@@ -95,6 +94,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             setGroupsPreferenceEnabled(prefs.get(R.string.key_groups_toggle, false));
         } else if(key.equals(getString(R.string.key_theme))){
             setTheme();
+        } else if(key.equals(getString(R.string.key_course_identifier))) {
+            setCourseIdentifierSummaryFromPrefs();
         }
     }
 
@@ -109,172 +110,81 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             showChangelog();
         } else if(key.equals(getString(R.string.key_report_bug))){
             sendBugReport();
+        } else if(key.equals(getString(R.string.key_course_identifier_help))) {
+            showCourseIdentifierHelp();
         }
         return true;
     }
 
-    private void initPrefReferences() {
+    private void initPreferences() {
         PreferenceManager m = getPreferenceManager();
-        progTypeList = m.findPreference(getString(R.string.key_programme_type));
-        programmeList = m.findPreference(getString(R.string.key_programme));
-        yearList = m.findPreference(getString(R.string.key_year));
-        timePickerPref = m.findPreference(getString(R.string.key_time));
-        groupsPref = m.findPreference(getString(R.string.key_groups));
-        groupsHelpPref = m.findPreference(getString(R.string.key_groups_help));
+        timePicker = m.findPreference(getString(R.string.key_time));
+        filters = m.findPreference(getString(R.string.key_groups));
+        filtersHelp = m.findPreference(getString(R.string.key_groups_help));
         themeList = m.findPreference(getString(R.string.key_theme));
-        changelogPref = m.findPreference(getString(R.string.key_changelog));
-        bugReportPref = m.findPreference(getString(R.string.key_report_bug));
+        changelog = m.findPreference(getString(R.string.key_changelog));
+        bugReport = m.findPreference(getString(R.string.key_report_bug));
+        courseIdentifier = m.findPreference(getString(R.string.key_course_identifier));
+        courseIdentifierHelp = m.findPreference(getString(R.string.key_course_identifier_help));
     }
 
     private void initPreferenceLists(){
-        setUpProgrammeTypeList();
-
-        int progTypeValue = Integer.parseInt(progTypeList.getValue());
-        setUpProgrammeList(progTypeValue);
-
-        int programmeValue = Integer.parseInt(programmeList.getValue());
-        setUpYearList(progTypeValue, programmeValue);
-
         setupThemeList();
     }
 
-    private void initTimePickerPref(){
-        timePickerPref.setOnPreferenceClickListener(this);
+    private void initTimePicker(){
+        timePicker.setOnPreferenceClickListener(this);
         setTimePickerSummaryFromPrefs();
         setTimePickerEnabled(prefs.get(R.string.key_skip_day, false));
     }
 
-    private void initChangelogPref(){
-        changelogPref.setOnPreferenceClickListener(this);
+    private void initChangelog(){
+        changelog.setOnPreferenceClickListener(this);
     }
 
-    private void initBugReportPref(){
-        bugReportPref.setOnPreferenceClickListener(this);
+    private void initBugReport(){
+        bugReport.setOnPreferenceClickListener(this);
     }
 
     private void setTimePickerSummaryFromPrefs(){
         int prevHour = prefs.get(R.string.key_time_hour, 20);
         int prevMinute = prefs.get(R.string.key_time_minute, 0);
-        timePickerPref.setSummary(new Time24Hour(prevHour, prevMinute).toString());
+        timePicker.setSummary(new Time24Hour(prevHour, prevMinute).toString());
     }
 
     private void setTimePickerEnabled(boolean isEnabled){
-        timePickerPref.setEnabled(isEnabled);
+        timePicker.setEnabled(isEnabled);
     }
 
     private void setGroupsPreferenceEnabled(boolean isEnabled){
-        groupsPref.setEnabled(isEnabled);
-        groupsHelpPref.setEnabled(isEnabled);
+        filters.setEnabled(isEnabled);
+        filtersHelp.setEnabled(isEnabled);
     }
 
-    private void initGroupsPref(){
-        groupsPref.setOnBindEditTextListener(editText -> editText.setHint(getString(R.string.hint_group_highlight)));
-        groupsHelpPref.setOnPreferenceClickListener(this);
+    private void initFilters(){
+        filters.setOnBindEditTextListener(editText -> editText.setHint(getString(R.string.hint_group_highlight)));
+        filtersHelp.setOnPreferenceClickListener(this);
         setGroupsSummaryFromPrefs();
         setGroupsPreferenceEnabled(prefs.get(R.string.key_groups_toggle, false));
     }
 
     private void setGroupsSummaryFromPrefs(){
-        String summary = prefs.get(R.string.key_groups, getString(R.string.placeholder_group_highlight_empty));
-        groupsPref.setSummary(summary.isEmpty() ? getString(R.string.placeholder_group_highlight_empty) : summary);
+        String summary = prefs.get(R.string.key_groups, getString(R.string.placeholder_empty));
+        filters.setSummary(summary.isEmpty() ? getString(R.string.placeholder_empty) : summary);
     }
 
-    private void setUpProgrammeTypeList(){
-        progTypeList.setEntries(getStringArray(R.array.names_programme_type));
-        progTypeList.setEntryValues(getStringArray(R.array.values_programme_type));
-        progTypeList.setValue(prefs.get(R.string.key_programme_type, "1"));
+    private void initCourseIdentifier() {
+        courseIdentifier.setOnBindEditTextListener(editText -> editText.setHint(getString(R.string.hint_course_identifier)));
+        setCourseIdentifierSummaryFromPrefs();
     }
 
-    private void setProgrammeValue(int index){
-        programmeList.setValueIndex(index);
+    private void initCourseIdentifierHelp() {
+        courseIdentifierHelp.setOnPreferenceClickListener(this);
     }
 
-    private void setYearValue(int index){
-        yearList.setValueIndex(index);
-    }
-
-    private void setUpProgrammeList(int selectedProgTypeId) {
-        int entriesId = R.array.names_undergrad;
-        int valuesId = R.array.values_undergrad;
-
-        switch (selectedProgTypeId){
-            case 2: {
-                entriesId = R.array.names_grad;
-                valuesId = R.array.values_grad;
-                break;
-            }
-            case 3: {
-                entriesId = R.array.names_professional;
-                valuesId = R.array.values_professional;
-                break;
-            }
-            case 4: {
-                entriesId = R.array.names_differential;
-                valuesId = R.array.values_differential;
-                break;
-            }
-            default: break;
-        }
-
-        programmeList.setEntries(getStringArray(entriesId));
-        programmeList.setEntryValues(getStringArray(valuesId));
-
-        if(!wasProgrammeInitialized){
-            int valueIndex = programmeList.findIndexOfValue(prefs.get(R.string.key_programme, ""));
-            setProgrammeValue(valueIndex != -1 ? valueIndex : 0);
-            wasProgrammeInitialized = true;
-        }
-    }
-
-    private void setUpYearList(int selectedProgTypeId, int selectedProgrammeId){
-        int entriesId = R.array.names_years_undergrad;
-        int valuesId = R.array.values_years_undergrad;
-
-        switch (selectedProgTypeId){
-            case 1:{
-                if(selectedProgrammeId == 21){
-                    entriesId = R.array.names_years_ETKINF;
-                    valuesId = R.array.values_years_ETKINF;
-                } else {
-                    entriesId = R.array.names_years_undergrad;
-                    valuesId = R.array.values_years_undergrad;
-                }
-                break;
-            }
-            case 2:{
-                entriesId = R.array.names_years_grad;
-                valuesId = R.array.values_years_grad;
-                break;
-            }
-            case 3:{
-                if(selectedProgrammeId == 53){
-                    entriesId = R.array.names_years_ETRAC;
-                    valuesId = R.array.values_years_ETRAC;
-                } else if(selectedProgrammeId == 7){
-                    entriesId = R.array.names_years_ETINF;
-                    valuesId = R.array.values_years_ETINF;
-                } else {
-                    entriesId = R.array.names_years_professional;
-                    valuesId = R.array.values_years_professional;
-                }
-                break;
-            }
-            case 4:{
-                entriesId = R.array.names_years_differential;
-                valuesId = R.array.values_years_differential;
-                break;
-            }
-            default: break;
-        }
-
-        yearList.setEntries(getStringArray(entriesId));
-        yearList.setEntryValues(getStringArray(valuesId));
-
-        if(!wasYearInitialized){
-            int valueIndex = yearList.findIndexOfValue(prefs.get(R.string.key_year, ""));
-            setYearValue(valueIndex != -1 ? valueIndex : 0);
-            wasYearInitialized = true;
-        }
+    private void setCourseIdentifierSummaryFromPrefs() {
+        String summary = prefs.get(R.string.key_course_identifier, getString(R.string.placeholder_empty));
+        courseIdentifier.setSummary(summary.isEmpty() ? getString(R.string.placeholder_empty) : summary);
     }
 
     private void setupThemeList(){
@@ -302,17 +212,30 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void showGroupsHelp(){
-        DialogFragment f = AlertDialogFragment.newInstance(R.string.title_groups_help, R.string.content_groups_help, R.string.label_groups_help_confirm);
-        if(getActivity() != null){
-            f.show(getActivity().getSupportFragmentManager(), Constants.GROUPS_HELP_KEY);
-        }
+        showAlertDialog(
+                R.string.title_groups_help,
+                R.string.content_groups_help,
+                R.string.okay,
+                Constants.GROUPS_HELP_KEY
+        );
+    }
+
+    private void showCourseIdentifierHelp() {
+        showAlertDialog(
+                R.string.title_course_identifier_help,
+                R.string.content_course_identifier_help,
+                R.string.okay,
+                Constants.COURSE_IDENTIFIER_HELP_KEY
+        );
     }
 
     private void showChangelog(){
-        DialogFragment f = AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new);
-        if(getActivity() != null){
-            f.show(getActivity().getSupportFragmentManager(), Constants.WHATS_NEW_KEY);
-        }
+        showAlertDialog(
+                R.string.title_whats_new,
+                R.string.content_whats_new,
+                R.string.dismiss_whats_new,
+                Constants.WHATS_NEW_KEY
+        );
     }
 
     private void sendBugReport(){
@@ -328,5 +251,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             return getActivity().getResources().getStringArray(id);
         }
         return null;
+    }
+
+    private void showAlertDialog(@StringRes int title, @StringRes int content, @StringRes int dismiss, String key) {
+        DialogFragment f = AlertDialogFragment.newInstance(title, content, dismiss);
+        if(getActivity() != null){ f.show(getActivity().getSupportFragmentManager(), key); }
     }
 }

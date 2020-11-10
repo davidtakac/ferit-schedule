@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--url strings-->
     <string name="base_url">https://www.ferit.unios.hr/</string>
@@ -23,6 +23,7 @@
     <string name="key_changelog">changelog_key</string>
     <string name="key_report_bug">bug_report_key</string>
     <string name="key_version">version_key</string>
+    <string name="key_course_identifier">course_identifier</string>
 
     <!--User interface strings-->
     <string name="app_name">Ferit Raspored</string>
@@ -41,7 +42,8 @@
     <string name="label_back">Natrag</string>
     <string name="label_save">Spremi</string>
     <string name="hint_group_highlight">LV8/16,AV1,PR-2,KV3,LV3/24,…</string>
-    <string name="placeholder_group_highlight_empty">(Nema unosa)</string>
+    <string name="hint_course_identifier" tools:ignore="TypographyDashes">1-1</string>
+    <string name="placeholder_empty">(Nema unosa)</string>
     <string name="label_schedule">Raspored nastave i ispita</string>
     <string name="label_open_in_browser">Otvori u pregledniku</string>
     <string name="title_load_on_resume">Automatski pomakni na trenutni dan</string>
@@ -64,7 +66,7 @@
         11:30 - 14:45, K2-12, AV3\n
         LV1/24, LV2/16, AV2
     </string>
-    <string name="label_groups_help_confirm">U redu</string>
+    <string name="okay">U redu</string>
     <string name="title_appearance">Izgled aplikacije</string>
     <string name="title_theme">Tema</string>
     <string name="title_whats_new">[2.2.2] Označavanje blokova</string>
@@ -79,6 +81,14 @@
     <string name="summary_bug_report">Pošalji opis problema developeru</string>
     <string name="summary_whats_new">Pogledaj što je novo</string>
     <string name="template_bug_report">Poruka greške: %s\nDodatni opis: </string>
+    <string name="title_course_identifier">Identifikator kolegija</string>
+    <string name="title_course_identifier_help">Gdje pronaći identifikator kolegija?</string>
+    <string name="key_course_identifier_help">course_identifier_help</string>
+    <string name="content_course_identifier_help">
+        1. Pomoću preglednika navigiraj do stranice rasporeda za svoj kolegij\n\n
+        2. Poveznica je ovog oblika:\n<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
+        3. Podebljani dio poveznice je identifikator kolegija
+    </string>
 
     <!--Path names-->
     <string name="highlight_script_path">highlight-blocks.js</string>
@@ -101,162 +111,5 @@
         <item>1</item>
         <!--MODE_NIGHT_YES-->
         <item>2</item>
-    </string-array>
-
-    <!--Programme type names and IDs-->
-    <string-array name="names_programme_type">
-        <item>Preddiplomski</item>
-        <item>Diplomski</item>
-        <item>Stručni</item>
-        <item>Razlikovna</item>
-    </string-array>
-    <string-array name="values_programme_type">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
-    <!--Undergrad programme names and IDs-->
-    <string-array name="names_undergrad">
-        <item>Računarstvo (staro)</item>
-        <item>Računarstvo PI</item>
-        <item>Računarstvo RI</item>
-        <item>Elektrotehnika ili elektroenergetika</item>
-        <item>Komunikacije i informatika</item>
-    </string-array>
-    <string-array name="values_undergrad">
-        <item>2</item>
-        <item>59</item>
-        <item>60</item>
-        <item>1</item>
-        <item>21</item>
-    </string-array>
-
-    <!--Graduate programme names and IDs-->
-    <string-array name="names_grad">
-        <item>DKA</item>
-        <item>DKB</item>
-        <item>DEA</item>
-        <item>DEB</item>
-        <item>DEC</item>
-        <item>DRA</item>
-        <item>DRB</item>
-        <item>DRC</item>
-        <item>DRD</item>
-        <item>DA</item>
-        <item>DA-Eng</item>
-    </string-array>
-    <string-array name="values_grad">
-        <item>34</item>
-        <item>35</item>
-        <item>31</item>
-        <item>32</item>
-        <item>33</item>
-        <item>36</item>
-        <item>54</item>
-        <item>38</item>
-        <item>39</item>
-        <item>52</item>
-        <item>58</item>
-    </string-array>
-
-    <!--Professional names and IDs-->
-    <string-array name="names_professional">
-        <item>Računarstvo</item>
-        <item>Elektrotehnika - informatika</item>
-        <item>Elektrotehnika - automatika</item>
-        <item>Elektrotehnika - elektroenergetika</item>
-    </string-array>
-    <string-array name="values_professional">
-        <item>53</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-    </string-array>
-
-    <!--Differential names and IDs-->
-    <string-array name="names_differential">
-        <item>Računarstvo blok I</item>
-        <item>Računarstvo blok A</item>
-        <item>Elektroenergetika blok E</item>
-        <item>Elektroenergetika blok A</item>
-        <item>Komunikacije i informatika blok I</item>
-        <item>Komunikacije i informatika blok A</item>
-    </string-array>
-    <string-array name="values_differential">
-        <item>42</item>
-        <item>24</item>
-        <item>41</item>
-        <item>23</item>
-        <item>40</item>
-        <item>22</item>
-    </string-array>
-
-    <!--Years and their IDs-->
-    <string-array name="names_years_undergrad">
-        <item>Prva</item>
-        <item>Druga</item>
-        <item>Treća</item>
-    </string-array>
-    <string-array name="values_years_undergrad">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="names_years_grad">
-        <item>Prva</item>
-        <item>Druga</item>
-    </string-array>
-    <string-array name="values_years_grad">
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
-    <string-array name="names_years_professional">
-        <item>Prva</item>
-        <item>Druga</item>
-        <item>Treća</item>
-    </string-array>
-    <string-array name="values_years_professional">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="names_years_differential">
-        <item>Prva</item>
-    </string-array>
-    <string-array name="values_years_differential">
-        <item>1</item>
-    </string-array>
-
-    <!-- Stručni studij računarstvo-->
-    <string-array name="names_years_ETRAC">
-        <item>Prva</item>
-        <item>Druga</item>
-        <item>Treća</item>
-    </string-array>
-    <string-array name="values_years_ETRAC">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="names_years_ETINF">
-        <item>Treća</item>
-    </string-array>
-    <string-array name="values_years_ETINF">
-        <item>3</item>
-    </string-array>
-
-    <string-array name="names_years_ETKINF">
-        <item>Druga</item>
-        <item>Treća</item>
-    </string-array>
-    <string-array name="values_years_ETKINF">
-        <item>2</item>
-        <item>3</item>
     </string-array>
 </resources>
