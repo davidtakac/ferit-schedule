@@ -57,4 +57,8 @@ public class PrefsRepository {
             return defaultValue;
         }
     }
+
+    public void delete(int keyId) {
+        prefs.edit().remove(res.getString(keyId)).apply();
+    }
 }

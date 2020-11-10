@@ -36,7 +36,7 @@ public class AlertDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    private String getStringFromArgs(String key){
-        return getResources().getString(getArguments().getInt(key));
+    private CharSequence getStringFromArgs(String key){
+        return getResources().getText(getArguments().getInt(key));
     }
 }
