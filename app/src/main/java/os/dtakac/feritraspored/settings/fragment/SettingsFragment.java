@@ -25,7 +25,6 @@ import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
 import os.dtakac.feritraspored.views.timepicker.Time24Hour;
 import os.dtakac.feritraspored.views.timepicker.TimePickerFragment;
 import os.dtakac.feritraspored.views.timepicker.TimeSetListener;
-import os.dtakac.feritraspored.common.Constants;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
@@ -72,7 +71,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onPause() {
         if(getActivity() !=null) {
-            Fragment timepicker = getActivity().getSupportFragmentManager().findFragmentByTag(Constants.TIMEPICKER_KEY);
+            Fragment timepicker = getActivity().getSupportFragmentManager().findFragmentByTag(ConstantsKt.DIALOG_TIME_PICKER);
             if (timepicker != null) {
                 DialogFragment df = (DialogFragment) timepicker;
                 df.dismiss();
@@ -224,7 +223,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         });
 
         if(getActivity() != null){
-            f.show(getActivity().getSupportFragmentManager(), Constants.TIMEPICKER_KEY);
+            f.show(getActivity().getSupportFragmentManager(), ConstantsKt.DIALOG_TIME_PICKER);
         }
     }
 
@@ -233,7 +232,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 R.string.title_groups_help,
                 R.string.content_groups_help,
                 R.string.okay,
-                Constants.GROUPS_HELP_KEY
+                ConstantsKt.DIALOG_FILTERS_HELP
         );
     }
 
@@ -242,7 +241,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 R.string.title_course_identifier_help,
                 R.string.content_course_identifier_help,
                 R.string.okay,
-                Constants.COURSE_IDENTIFIER_HELP_KEY
+                ConstantsKt.DIALOG_COURSE_IDENTIFIER_HELP
         );
     }
 
@@ -251,7 +250,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 R.string.title_whats_new,
                 R.string.content_whats_new,
                 R.string.dismiss_whats_new,
-                Constants.WHATS_NEW_KEY
+                ConstantsKt.DIALOG_WHATS_NEW
         );
     }
 

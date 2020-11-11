@@ -10,14 +10,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.Constants;
+import os.dtakac.feritraspored.common.constants.ConstantsKt;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     public static TimePickerFragment newInstance(Time24Hour initialTime, TimeSetListener listener) {
         Bundle args = new Bundle();
-        args.putSerializable(Constants.TIMEPICK_LISTENER_KEY, listener);
-        args.putSerializable(Constants.TIMEPICK_TIME_KEY, initialTime);
+        args.putSerializable(ConstantsKt.LISTENER_TIME_PICKER, listener);
+        args.putSerializable(ConstantsKt.DATA_TIME_PICKER, initialTime);
 
         TimePickerFragment fragment = new TimePickerFragment();
         fragment.setArguments(args);
@@ -33,7 +33,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         if(args == null){
             initialTime = new Time24Hour(20,0);
         } else {
-            initialTime = (Time24Hour) args.getSerializable(Constants.TIMEPICK_TIME_KEY);
+            initialTime = (Time24Hour) args.getSerializable(ConstantsKt.DATA_TIME_PICKER);
         }
 
         TimePickerDialog tpd = new TimePickerDialog(getActivity(), this, initialTime.getHour(), initialTime.getMinute(), true);
@@ -50,7 +50,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
             return;
         }
 
-        TimeSetListener l = (TimeSetListener) args.getSerializable(Constants.TIMEPICK_LISTENER_KEY);
+        TimeSetListener l = (TimeSetListener) args.getSerializable(ConstantsKt.LISTENER_TIME_PICKER);
 
         if(l != null){
             l.onTimeSet(new Time24Hour(hourOfDay, minute));
