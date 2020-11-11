@@ -3,12 +3,13 @@ package os.dtakac.feritraspored.views.debounce;
 import android.os.SystemClock;
 import android.view.View;
 
-public abstract class DebouncedOnClickListener implements View.OnClickListener {
+@Deprecated
+public abstract class DebouncedOnClickListenerOld implements View.OnClickListener {
 
     private long lastClickTime;
     private final long threshold;
 
-    public DebouncedOnClickListener(long threshold){
+    public DebouncedOnClickListenerOld(long threshold){
         this.threshold = threshold;
     }
 

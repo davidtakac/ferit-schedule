@@ -3,12 +3,13 @@ package os.dtakac.feritraspored.views.debounce;
 import android.os.SystemClock;
 import android.view.MenuItem;
 
-public abstract class DebouncedMenuItemClickListener implements MenuItem.OnMenuItemClickListener {
+@Deprecated
+public abstract class DebouncedMenuItemClickListenerOld implements MenuItem.OnMenuItemClickListener {
 
     private long lastClickTime;
     private final long threshold;
 
-    public DebouncedMenuItemClickListener(long threshold){
+    public DebouncedMenuItemClickListenerOld(long threshold){
         this.threshold = threshold;
     }
 
