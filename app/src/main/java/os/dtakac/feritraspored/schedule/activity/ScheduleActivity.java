@@ -36,7 +36,6 @@ import os.dtakac.feritraspored.common.scripts.ScriptProviderImpl;
 import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListener;
 import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.ResourceManager;
 import os.dtakac.feritraspored.common.Constants;
 import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
 import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
@@ -178,11 +177,10 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void initPresenter(){
-        ResourceManager rm = new ResourceManager(getResources());
         presenter = new SchedulePresenter(
                 this,
                 new PreferenceRepositoryImpl(new ResourceRepositoryImpl(getResources()), PreferenceManager.getDefaultSharedPreferences(this)),
-                rm,
+                new ResourceRepositoryImpl(getResources()),
                 new ScriptProviderImpl(getAssets(), new ResourceRepositoryImpl(getResources()))
         );
     }

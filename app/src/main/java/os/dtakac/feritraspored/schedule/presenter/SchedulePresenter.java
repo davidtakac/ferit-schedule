@@ -13,23 +13,23 @@ import java.util.Locale;
 
 import os.dtakac.feritraspored.BuildConfig;
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.ResourceManager;
 import os.dtakac.feritraspored.common.constants.ConstantsKt;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository;
+import os.dtakac.feritraspored.common.resources.ResourceRepository;
 import os.dtakac.feritraspored.common.scripts.ScriptProvider;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private ScheduleContract.View view;
     private PreferenceRepository prefs;
-    private ResourceManager res;
+    private ResourceRepository res;
     private ScriptProvider scriptProvider;
 
     private LocalDate currentDay, displayedDay;
     private boolean errorReceived;
     private int currentNightMode = Configuration.UI_MODE_NIGHT_NO;
 
-    public SchedulePresenter(ScheduleContract.View view, PreferenceRepository prefs, ResourceManager resManager, ScriptProvider scriptProvider) {
+    public SchedulePresenter(ScheduleContract.View view, PreferenceRepository prefs, ResourceRepository resManager, ScriptProvider scriptProvider) {
         this.view = view;
         this.prefs = prefs;
         this.res = resManager;
