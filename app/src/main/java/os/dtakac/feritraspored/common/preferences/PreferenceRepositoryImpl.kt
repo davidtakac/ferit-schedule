@@ -19,8 +19,8 @@ class PreferenceRepositoryImpl(
         set(value) = editor { putBoolean(R.string.key_skip_day, value) }
 
     override var filters: String?
-        get() = sharedPrefs.getString(R.string.key_groups, null)
-        set(value) = editor { putString(R.string.key_groups, value) }
+        get() = sharedPrefs.getString(R.string.key_filters, null)
+        set(value) = editor { putString(R.string.key_filters, value) }
 
     override var programme: String?
         get() = sharedPrefs.getString(R.string.key_programme, null)
