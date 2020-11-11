@@ -23,7 +23,7 @@ import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
 import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
 import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
 import os.dtakac.feritraspored.views.timepicker.Time24Hour;
-import os.dtakac.feritraspored.views.timepicker.TimePickerFragment;
+import os.dtakac.feritraspored.views.timepicker.TimePickerFragmentOld;
 import os.dtakac.feritraspored.views.timepicker.TimeSetListener;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
@@ -216,7 +216,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         int prevMinute = prefs.getTimeMinute();
         Time24Hour prevTime = new Time24Hour(prevHour == ConstantsKt.INVALID_HOUR ? 20 : prevHour, prevMinute == ConstantsKt.INVALID_MINUTE ? 0 : prevMinute);
 
-        DialogFragment f = TimePickerFragment.newInstance(prevTime, (TimeSetListener) setTime -> {
+        DialogFragment f = TimePickerFragmentOld.newInstance(prevTime, (TimeSetListener) setTime -> {
             prefs.setTimeHour(setTime.getHour());
             prefs.setTimeMinute(setTime.getMinute());
             setTimePickerSummaryFromPrefs();
