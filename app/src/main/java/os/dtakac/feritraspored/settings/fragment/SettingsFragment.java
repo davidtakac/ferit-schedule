@@ -21,10 +21,9 @@ import os.dtakac.feritraspored.common.constants.ConstantsKt;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
 import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
+import os.dtakac.feritraspored.common.utils.FormatterKt;
 import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
-import os.dtakac.feritraspored.views.timepicker.Time24Hour;
-import os.dtakac.feritraspored.views.timepicker.TimePickerFragmentOld;
-import os.dtakac.feritraspored.views.timepicker.TimeSetListener;
+import os.dtakac.feritraspored.views.timepicker.TimePickerDialogFragment;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
@@ -98,6 +97,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             setTheme();
         } else if(key.equals(getString(R.string.key_course_identifier))) {
             setCourseIdentifierSummaryFromPrefs();
+        } else if(key.equals(getString(R.string.key_time_hour)) || key.equals(getString(R.string.key_time_minute))) {
+            setTimePickerSummaryFromPrefs();
         }
     }
 
@@ -149,9 +150,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void setTimePickerSummaryFromPrefs(){
-        int prevHour = prefs.getTimeHour();
-        int prevMinute = prefs.getTimeMinute();
-        timePicker.setSummary(new Time24Hour(prevHour == ConstantsKt.INVALID_HOUR ? 20 : prevHour, prevMinute == ConstantsKt.INVALID_MINUTE ? 0 : prevMinute).toString());
+        timePicker.setSummary(FormatterKt.formatTime(prefs.getTimeHour(), prefs.getTimeMinute()));
     }
 
     private void setTimePickerEnabled(boolean isEnabled){
@@ -212,18 +211,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void showTimePicker(){
-        int prevHour = prefs.getTimeHour();
-        int prevMinute = prefs.getTimeMinute();
-        Time24Hour prevTime = new Time24Hour(prevHour == ConstantsKt.INVALID_HOUR ? 20 : prevHour, prevMinute == ConstantsKt.INVALID_MINUTE ? 0 : prevMinute);
-
-        DialogFragment f = TimePickerFragmentOld.newInstance(prevTime, (TimeSetListener) setTime -> {
-            prefs.setTimeHour(setTime.getHour());
-            prefs.setTimeMinute(setTime.getMinute());
-            setTimePickerSummaryFromPrefs();
-        });
-
         if(getActivity() != null){
-            f.show(getActivity().getSupportFragmentManager(), ConstantsKt.DIALOG_TIME_PICKER);
+            new TimePickerDialogFragment().show(getActivity().getSupportFragmentManager(), ConstantsKt.DIALOG_TIME_PICKER);
         }
     }
 
