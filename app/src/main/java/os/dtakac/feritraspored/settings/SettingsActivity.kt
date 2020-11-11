@@ -13,8 +13,8 @@ class SettingsActivity : AppCompatActivity() {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         initBinding()
-        initSettingsFragment()
         initToolbar()
+        initSettingsFragment()
     }
 
     private fun initBinding() {

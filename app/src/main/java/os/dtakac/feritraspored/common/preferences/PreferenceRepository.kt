@@ -19,7 +19,6 @@ interface PreferenceRepository {
     var courseIdentifier: String?
     var isFiltersEnabled: Boolean
 
-    fun getKey(@StringRes keyResId: Int): String
     fun delete(@StringRes keyResId: Int)
     fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener)
     fun unregisterListener(listener: SharedPreferences.OnSharedPreferenceChangeListener)

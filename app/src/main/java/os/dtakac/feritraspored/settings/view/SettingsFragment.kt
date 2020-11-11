@@ -3,6 +3,7 @@ package os.dtakac.feritraspored.settings.view
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -38,6 +39,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeClickListeners()
+        initializeViews()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -51,8 +53,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onPause() {
-        super.onPause()
         viewModel.onPause()
+        super.onPause()
     }
 
     private fun initializeClickListeners() {
@@ -63,8 +65,36 @@ class SettingsFragment : PreferenceFragmentCompat() {
         courseIdentifierHelp.setOnPreferenceClickListener { showCourseIdentifierHelp() }
     }
 
-    private fun initializeObservers() {
+    private fun initializeViews() {
+        filters.setOnBindEditTextListener {
+            it.hint = resources.getString(R.string.hint_group_highlight)
+        }
+        courseIdentifier.setOnBindEditTextListener {
+            it.hint = resources.getString(R.string.hint_course_identifier)
+        }
+    }
 
+    private fun initializeObservers() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        viewModel.timePickerSummary.observe(viewLifecycleOwner) {
+            timePicker.summary = it
+        }
+        viewModel.timePickerEnabled.observe(viewLifecycleOwner) {
+            timePicker.isEnabled = it
+        }
+        viewModel.filtersSummary.observe(viewLifecycleOwner) {
+            filters.summary = it
+        }
+        viewModel.filtersEnabled.observe(viewLifecycleOwner) {
+            filters.isEnabled = it
+            filtersHelp.isEnabled = it
+        }
+        viewModel.courseIdentifierSummary.observe(viewLifecycleOwner) {
+            courseIdentifier.summary = it
+        }
+        viewModel.theme.observe(viewLifecycleOwner) {
+            AppCompatDelegate.setDefaultNightMode(it)
+        }
     }
 
     private fun showTimePicker(): Boolean {
