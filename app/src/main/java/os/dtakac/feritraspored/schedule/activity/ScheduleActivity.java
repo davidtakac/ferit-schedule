@@ -30,13 +30,13 @@ import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import os.dtakac.feritraspored.common.constants.ConstantsKt;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
 import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
 import os.dtakac.feritraspored.common.scripts.ScriptProviderImpl;
 import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListener;
 import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.Constants;
 import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
 import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
 import os.dtakac.feritraspored.schedule.presenter.SchedulePresenter;
@@ -148,7 +148,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     @Override
     public void showChangelog(){
         AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new)
-                .show(getSupportFragmentManager(), Constants.WHATS_NEW_KEY);
+                .show(getSupportFragmentManager(), ConstantsKt.DIALOG_WHATS_NEW);
     }
 
     @Override
