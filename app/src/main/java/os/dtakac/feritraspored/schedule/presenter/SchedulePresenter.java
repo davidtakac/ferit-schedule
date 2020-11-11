@@ -222,8 +222,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private LocalDate addDayIfTimeGreaterThanPrefs(LocalDate date, LocalTime time){
-        int hour = prefs.getTimeHour() == ConstantsKt.INVALID_HOUR ? 20 : prefs.getTimeHour();
-        int minute = prefs.getTimeMinute() == ConstantsKt.INVALID_MINUTE ? 0 : prefs.getTimeMinute();
+        int hour = prefs.getTimeHour();
+        int minute = prefs.getTimeMinute();
 
         return date.plusDays(
                 (time.getHourOfDay() >= hour && time.getMinuteOfHour() >= minute) ? 1 : 0

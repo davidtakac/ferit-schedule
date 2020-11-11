@@ -3,9 +3,7 @@ package os.dtakac.feritraspored.common.preferences
 import android.content.SharedPreferences
 import androidx.annotation.StringRes
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.constants.INVALID_HOUR
-import os.dtakac.feritraspored.common.constants.INVALID_MINUTE
-import os.dtakac.feritraspored.common.constants.INVALID_VERSION
+import os.dtakac.feritraspored.common.constants.*
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 
 class PreferenceRepositoryImpl(
@@ -33,11 +31,11 @@ class PreferenceRepositoryImpl(
         set(value) = editor { putString(R.string.key_year, value) }
 
     override var timeHour: Int
-        get() = sharedPrefs.getInt(R.string.key_time_hour, INVALID_HOUR)
+        get() = sharedPrefs.getInt(R.string.key_time_hour, DEFAULT_HOUR)
         set(value) = editor { putInt(R.string.key_time_hour, value) }
 
     override var timeMinute: Int
-        get() = sharedPrefs.getInt(R.string.key_time_minute, INVALID_MINUTE)
+        get() = sharedPrefs.getInt(R.string.key_time_minute, DEFAULT_MINUTE)
         set(value) = editor { putInt(R.string.key_time_minute, value) }
 
     override var isSettingsModified: Boolean
