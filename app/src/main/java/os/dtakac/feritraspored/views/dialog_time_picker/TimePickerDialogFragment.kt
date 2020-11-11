@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.views.timepicker
+package os.dtakac.feritraspored.views.dialog_time_picker
 
 import android.app.Dialog
 import android.app.TimePickerDialog

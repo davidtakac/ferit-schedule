@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.settings.fragment;
+package os.dtakac.feritraspored.settings.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +22,8 @@ import os.dtakac.feritraspored.common.preferences.PreferenceRepository;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
 import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
 import os.dtakac.feritraspored.common.utils.FormatterKt;
-import os.dtakac.feritraspored.views.groups.InfoDialogFragment;
-import os.dtakac.feritraspored.views.timepicker.TimePickerDialogFragment;
+import os.dtakac.feritraspored.views.dialog_info.InfoDialogFragment;
+import os.dtakac.feritraspored.views.dialog_time_picker.TimePickerDialogFragment;
 
 public class SettingsFragmentOld extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
@@ -41,6 +41,7 @@ public class SettingsFragmentOld extends PreferenceFragmentCompat implements Sha
 
     private boolean werePrefsModified = false;
 
+    //done
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -61,12 +62,14 @@ public class SettingsFragmentOld extends PreferenceFragmentCompat implements Sha
         initCourseIdentifierHelp();
     }
 
+    //done
     @Override
     public void onResume() {
         super.onResume();
         defaultSharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
+    //done
     @Override
     public void onPause() {
         if(getActivity() !=null) {
@@ -119,6 +122,7 @@ public class SettingsFragmentOld extends PreferenceFragmentCompat implements Sha
         return true;
     }
 
+    //done with delegates
     private void initPreferences() {
         PreferenceManager m = getPreferenceManager();
         timePicker = m.findPreference(getString(R.string.key_time_picker));
