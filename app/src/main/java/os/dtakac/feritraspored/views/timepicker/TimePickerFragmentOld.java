@@ -12,14 +12,14 @@ import androidx.fragment.app.DialogFragment;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.constants.ConstantsKt;
 
-public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+public class TimePickerFragmentOld extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    public static TimePickerFragment newInstance(Time24Hour initialTime, TimeSetListener listener) {
+    public static TimePickerFragmentOld newInstance(Time24Hour initialTime, TimeSetListener listener) {
         Bundle args = new Bundle();
         args.putSerializable(ConstantsKt.LISTENER_TIME_PICKER, listener);
         args.putSerializable(ConstantsKt.DATA_TIME_PICKER, initialTime);
 
-        TimePickerFragment fragment = new TimePickerFragment();
+        TimePickerFragmentOld fragment = new TimePickerFragmentOld();
         fragment.setArguments(args);
         return fragment;
     }
