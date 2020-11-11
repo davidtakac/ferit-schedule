@@ -74,6 +74,14 @@ class PreferenceRepositoryImpl(
         editor { remove(getKey(keyResId)) }
     }
 
+    override fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
+        sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
+    }
+
+    override fun unregisterListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(listener)
+    }
+
     private fun editor(editor: SharedPreferences.Editor.() -> Unit) {
         sharedPrefs.edit().also(editor).apply()
     }

@@ -1,11 +1,10 @@
-package os.dtakac.feritraspored.settings.activity
+package os.dtakac.feritraspored.settings
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.databinding.ActivitySettingsBinding
-import os.dtakac.feritraspored.settings.fragment.SettingsFragment
-import os.dtakac.feritraspored.settings.fragment.SettingsFragmentOld
+import os.dtakac.feritraspored.settings.view.SettingsFragment
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding

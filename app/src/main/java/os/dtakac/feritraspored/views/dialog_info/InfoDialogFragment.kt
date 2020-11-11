@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.views.groups
+package os.dtakac.feritraspored.views.dialog_info
 
 import android.app.Dialog
 import android.content.DialogInterface

@@ -1,5 +1,6 @@
 package os.dtakac.feritraspored.common.preferences
 
+import android.content.SharedPreferences
 import androidx.annotation.StringRes
 
 interface PreferenceRepository {
@@ -20,4 +21,6 @@ interface PreferenceRepository {
 
     fun getKey(@StringRes keyResId: Int): String
     fun delete(@StringRes keyResId: Int)
+    fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener)
+    fun unregisterListener(listener: SharedPreferences.OnSharedPreferenceChangeListener)
 }
