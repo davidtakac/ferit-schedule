@@ -34,13 +34,13 @@ import os.dtakac.feritraspored.common.constants.ConstantsKt;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
 import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
 import os.dtakac.feritraspored.common.scripts.ScriptProviderImpl;
+import os.dtakac.feritraspored.settings.activity.SettingsActivity;
 import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListenerOld;
 import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListenerOld;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.views.groups.InfoDialogFragment;
 import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
 import os.dtakac.feritraspored.schedule.presenter.SchedulePresenter;
-import os.dtakac.feritraspored.settings.activity.SettingsActivity;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
