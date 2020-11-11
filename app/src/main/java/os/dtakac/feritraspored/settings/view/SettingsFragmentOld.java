@@ -94,10 +94,10 @@ public class SettingsFragmentOld extends PreferenceFragmentCompat implements Sha
             setTimePickerEnabled(prefs.isSkipDay());
         } else if(key.equals(getString(R.string.key_filters))){
             setGroupsSummaryFromPrefs();
-        } else if(key.equals(getString(R.string.key_groups_toggle))){
+        } else if(key.equals(getString(R.string.key_filters_toggle))){
             setGroupsPreferenceEnabled(prefs.isFiltersEnabled());
         } else if(key.equals(getString(R.string.key_theme))){
-            setTheme();
+            //setTheme();
         } else if(key.equals(getString(R.string.key_course_identifier))) {
             setCourseIdentifierSummaryFromPrefs();
         } else if(key.equals(getString(R.string.key_time_hour)) || key.equals(getString(R.string.key_time_minute))) {
@@ -136,7 +136,7 @@ public class SettingsFragmentOld extends PreferenceFragmentCompat implements Sha
     }
 
     private void initPreferenceLists(){
-        setupThemeList();
+        //setupThemeList();
     }
 
     private void initTimePicker(){
@@ -198,7 +198,7 @@ public class SettingsFragmentOld extends PreferenceFragmentCompat implements Sha
         courseIdentifier.setSummary(summary);
     }
 
-    private void setupThemeList(){
+    /*private void setupThemeList(){
         String theme = prefs.getTheme();
         if(theme == null) {
             theme = getStringArray(R.array.theme_options)[0];
@@ -212,7 +212,7 @@ public class SettingsFragmentOld extends PreferenceFragmentCompat implements Sha
             themeStr = getStringArray(R.array.theme_options)[0];
         }
         AppCompatDelegate.setDefaultNightMode(Integer.parseInt(themeStr));
-    }
+    }*/
 
     private void showTimePicker(){
         if(getActivity() != null){

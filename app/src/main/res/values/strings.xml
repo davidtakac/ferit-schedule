@@ -17,7 +17,7 @@
     <string name="key_settings_modified">settings_modified</string>
     <string name="key_load_on_resume">load_on_resume_key</string>
     <string name="key_prev_week">prev_displayed_week_key</string>
-    <string name="key_groups_toggle">group_toggle_key</string>
+    <string name="key_filters_toggle">group_toggle_key</string>
     <string name="key_filters_help">group_help_key</string>
     <string name="key_theme">prefkey_theme</string>
     <string name="key_changelog">changelog_key</string>

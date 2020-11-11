@@ -23,7 +23,7 @@
     <PreferenceCategory
         android:title="@string/title_category_group_highlight">
         <SwitchPreference
-            android:key="@string/key_groups_toggle"
+            android:key="@string/key_filters_toggle"
             android:title="@string/title_group_toggle"
             android:summary="@string/summary_group_toggle" />
         <EditTextPreference
