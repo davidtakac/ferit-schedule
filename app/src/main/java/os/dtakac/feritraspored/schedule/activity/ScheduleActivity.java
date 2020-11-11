@@ -34,8 +34,8 @@ import os.dtakac.feritraspored.common.constants.ConstantsKt;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
 import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
 import os.dtakac.feritraspored.common.scripts.ScriptProviderImpl;
-import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListener;
-import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListener;
+import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListenerOld;
+import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListenerOld;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.views.groups.InfoDialogFragment;
 import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
@@ -165,13 +165,13 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     }
 
     private void initNavbar(){
-        btnNext.setOnClickListener(new DebouncedOnClickListener(debounceThreshold) {
+        btnNext.setOnClickListener(new DebouncedOnClickListenerOld(debounceThreshold) {
             @Override public void onDebouncedClick() { presenter.onClickedNext(); }
         });
-        btnCurrent.setOnClickListener(new DebouncedOnClickListener(debounceThreshold) {
+        btnCurrent.setOnClickListener(new DebouncedOnClickListenerOld(debounceThreshold) {
             @Override public void onDebouncedClick() { presenter.onClickedCurrent(); }
         });
-        btnPrevious.setOnClickListener(new DebouncedOnClickListener(debounceThreshold) {
+        btnPrevious.setOnClickListener(new DebouncedOnClickListenerOld(debounceThreshold) {
             @Override public void onDebouncedClick() { presenter.onClickedPrevious(); }
         });
     }
@@ -188,7 +188,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
     private void initToolbar() {
         toolbar.inflateMenu(R.menu.menu);
         btnRefresh = toolbar.getMenu().findItem(R.id.item_menu_refresh);
-        btnRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListener(debounceThreshold) {
+        btnRefresh.setOnMenuItemClickListener(new DebouncedMenuItemClickListenerOld(debounceThreshold) {
             @Override
             public void onDebouncedClick() { presenter.onRefresh(); }
         });
