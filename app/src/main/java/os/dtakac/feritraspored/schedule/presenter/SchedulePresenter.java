@@ -13,14 +13,15 @@ import java.util.Locale;
 
 import os.dtakac.feritraspored.BuildConfig;
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.common.ResourceManager;
-import os.dtakac.feritraspored.common.script_provider.ScriptProvider;
+import os.dtakac.feritraspored.common.constants.ConstantsKt;
+import os.dtakac.feritraspored.common.preferences.PreferenceRepository;
+import os.dtakac.feritraspored.common.scripts.ScriptProvider;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private ScheduleContract.View view;
-    private PrefsRepository prefs;
+    private PreferenceRepository prefs;
     private ResourceManager res;
     private ScriptProvider scriptProvider;
 
@@ -28,7 +29,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private boolean errorReceived;
     private int currentNightMode = Configuration.UI_MODE_NIGHT_NO;
 
-    public SchedulePresenter(ScheduleContract.View view, PrefsRepository prefs, ResourceManager resManager, ScriptProvider scriptProvider) {
+    public SchedulePresenter(ScheduleContract.View view, PreferenceRepository prefs, ResourceManager resManager, ScriptProvider scriptProvider) {
         this.view = view;
         this.prefs = prefs;
         this.res = resManager;
@@ -40,15 +41,14 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onViewResumed(int currentNightMode) {
         this.currentNightMode = currentNightMode;
-        if(prefs.get(R.string.key_settings_modified, false)){
-            prefs.add(R.string.key_settings_modified,false);
+        if(prefs.isSettingsModified()) {
+            prefs.setSettingsModified(false);
             view.refreshUi();
         } else {
-            boolean loadOnResume = prefs.get(R.string.key_load_on_resume, false);
-            if (loadOnResume) { loadCurrentDay(); }
+            if (prefs.isLoadOnResume()) { loadCurrentDay(); }
         }
-        if(prefs.get(R.string.key_version, -1) < BuildConfig.VERSION_CODE){
-            prefs.add(R.string.key_version, BuildConfig.VERSION_CODE);
+        if(prefs.getVersion() < BuildConfig.VERSION_CODE){
+            prefs.setVersion(BuildConfig.VERSION_CODE);
             view.showChangelog();
         }
     }
@@ -76,13 +76,12 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onViewCreated() {
-        if(prefs.get(R.string.key_settings_modified, false)){
-            prefs.add(R.string.key_settings_modified, false);
+        if(prefs.isSettingsModified()){
+            prefs.setSettingsModified(false);
         }
-        boolean loadOnResume = prefs.get(R.string.key_load_on_resume, false);
-        if(loadOnResume){ return; }
+        if(prefs.isLoadOnResume()){ return; }
 
-        String prevDisplayedWeek = prefs.get(R.string.key_prev_week, null);
+        String prevDisplayedWeek = prefs.getPreviouslyDisplayedWeek();
         if(prevDisplayedWeek == null){
             loadCurrentDay();
         } else {
@@ -93,7 +92,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     @Override
     public void onViewPaused() {
-        prefs.add(R.string.key_prev_week, displayedDay.toString());
+        prefs.setPreviouslyDisplayedWeek(displayedDay.toString());
     }
 
     @Override
@@ -179,10 +178,10 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         String displayedWeekUrl = buildDisplayedWeekUrl();
         String loadedUrl = view.getLoadedUrl();
 
-        if(prefs.get(R.string.key_settings_modified, false) || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl) || errorReceived){
+        if(prefs.isSettingsModified() || loadedUrl == null || !loadedUrl.equals(displayedWeekUrl) || errorReceived){
             //not on current week's page, load it
             view.loadUrl(displayedWeekUrl);
-            prefs.add(R.string.key_settings_modified, false);
+            prefs.setSettingsModified(false);
         } else {
             //already on current week's page, just scroll to current day
             view.injectJavascript(buildScrollToCurrentDayScript());
@@ -197,7 +196,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         if(currentNightMode == Configuration.UI_MODE_NIGHT_YES){
             js += scriptProvider.darkThemeFunction();
         }
-        if(prefs.get(R.string.key_groups_toggle, false)) {
+        if(prefs.isFiltersEnabled()) {
             js += buildHighlightGroupsScript();
         }
         if(currentDay.withDayOfWeek(DateTimeConstants.MONDAY).equals(displayedDay.withDayOfWeek(DateTimeConstants.MONDAY))) {
@@ -210,23 +209,21 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         LocalDate date = new LocalDate();
         LocalTime time = new LocalTime();
 
-        boolean skipToNextDay = prefs.get(R.string.key_skip_day, false);
-        if(skipToNextDay) {
+        if(prefs.isSkipDay()) {
             date = addDayIfTimeGreaterThanPrefs(date, time);
         }
 
-        boolean skipSaturday = prefs.get(R.string.key_skip_sat, false);
         if(date.getDayOfWeek() == DateTimeConstants.SUNDAY) {
             date = date.plusDays(1);
-        } else if(skipSaturday && date.getDayOfWeek() == DateTimeConstants.SATURDAY) {
+        } else if(prefs.isSkipSaturday() && date.getDayOfWeek() == DateTimeConstants.SATURDAY) {
             date = date.plusDays(2);
         }
         currentDay = date;
     }
 
     private LocalDate addDayIfTimeGreaterThanPrefs(LocalDate date, LocalTime time){
-        int hour = prefs.get(R.string.key_time_hour, 20);
-        int minute = prefs.get(R.string.key_time_minute, 0);
+        int hour = prefs.getTimeHour() == ConstantsKt.INVALID_HOUR ? 20 : prefs.getTimeHour();
+        int minute = prefs.getTimeMinute() == ConstantsKt.INVALID_MINUTE ? 0 : prefs.getTimeMinute();
 
         return date.plusDays(
                 (time.getHourOfDay() >= hour && time.getMinuteOfHour() >= minute) ? 1 : 0
@@ -236,7 +233,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     private String buildDisplayedWeekUrl() {
         return  res.getString(R.string.base_url) + res.getString(R.string.schedule_url)
                 + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString()
-                + "/" + prefs.get(R.string.key_course_identifier, "");
+                + "/" + (prefs.getCourseIdentifier() == null ? "" : prefs.getCourseIdentifier());
     }
 
     private String buildScrollToCurrentDayScript() {
@@ -254,7 +251,8 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildHighlightGroupsScript() {
-        String[] filters = prefs.get(R.string.key_groups, "").split(",");
+        String filtersFromPrefs = prefs.getFilters() == null ? "" : prefs.getFilters();
+        String[] filters = filtersFromPrefs.split(",");
         //remove trailing and leading whitespaces
         for(int i = 0; i < filters.length; i++){
             filters[i] = filters[i].trim();

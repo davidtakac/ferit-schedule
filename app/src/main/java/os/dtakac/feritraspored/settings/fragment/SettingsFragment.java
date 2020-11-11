@@ -17,7 +17,10 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.PrefsRepository;
+import os.dtakac.feritraspored.common.constants.ConstantsKt;
+import os.dtakac.feritraspored.common.preferences.PreferenceRepository;
+import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
+import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
 import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
 import os.dtakac.feritraspored.views.timepicker.Time24Hour;
 import os.dtakac.feritraspored.views.timepicker.TimePickerFragment;
@@ -35,7 +38,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             bugReport,
             courseIdentifierHelp;
 
-    private PrefsRepository prefs;
+    private PreferenceRepository prefs;
     private SharedPreferences defaultSharedPreferences;
 
     private boolean werePrefsModified = false;
@@ -44,7 +47,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onAttach(Context context) {
         super.onAttach(context);
         defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs = new PrefsRepository(defaultSharedPreferences, getResources());
+        prefs = new PreferenceRepositoryImpl(new ResourceRepositoryImpl(getResources()), defaultSharedPreferences);
     }
 
     @Override
@@ -75,7 +78,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 df.dismiss();
             }
         }
-        prefs.add(R.string.key_settings_modified, werePrefsModified);
+        prefs.setSettingsModified(werePrefsModified);
         defaultSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
@@ -87,11 +90,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         }
 
         if(key.equals(getString(R.string.key_skip_day))){
-            setTimePickerEnabled(prefs.get(R.string.key_skip_day,false));
+            setTimePickerEnabled(prefs.isSkipDay());
         } else if(key.equals(getString(R.string.key_groups))){
             setGroupsSummaryFromPrefs();
         } else if(key.equals(getString(R.string.key_groups_toggle))){
-            setGroupsPreferenceEnabled(prefs.get(R.string.key_groups_toggle, false));
+            setGroupsPreferenceEnabled(prefs.isFiltersEnabled());
         } else if(key.equals(getString(R.string.key_theme))){
             setTheme();
         } else if(key.equals(getString(R.string.key_course_identifier))) {
@@ -135,7 +138,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     private void initTimePicker(){
         timePicker.setOnPreferenceClickListener(this);
         setTimePickerSummaryFromPrefs();
-        setTimePickerEnabled(prefs.get(R.string.key_skip_day, false));
+        setTimePickerEnabled(prefs.isSkipDay());
     }
 
     private void initChangelog(){
@@ -147,9 +150,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void setTimePickerSummaryFromPrefs(){
-        int prevHour = prefs.get(R.string.key_time_hour, 20);
-        int prevMinute = prefs.get(R.string.key_time_minute, 0);
-        timePicker.setSummary(new Time24Hour(prevHour, prevMinute).toString());
+        int prevHour = prefs.getTimeHour();
+        int prevMinute = prefs.getTimeMinute();
+        timePicker.setSummary(new Time24Hour(prevHour == ConstantsKt.INVALID_HOUR ? 20 : prevHour, prevMinute == ConstantsKt.INVALID_MINUTE ? 0 : prevMinute).toString());
     }
 
     private void setTimePickerEnabled(boolean isEnabled){
@@ -165,12 +168,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         filters.setOnBindEditTextListener(editText -> editText.setHint(getString(R.string.hint_group_highlight)));
         filtersHelp.setOnPreferenceClickListener(this);
         setGroupsSummaryFromPrefs();
-        setGroupsPreferenceEnabled(prefs.get(R.string.key_groups_toggle, false));
+        setGroupsPreferenceEnabled(prefs.isFiltersEnabled());
     }
 
     private void setGroupsSummaryFromPrefs(){
-        String summary = prefs.get(R.string.key_groups, getString(R.string.placeholder_empty));
-        filters.setSummary(summary.isEmpty() ? getString(R.string.placeholder_empty) : summary);
+        String summary = prefs.getFilters();
+        if(summary == null || summary.isEmpty()) {
+            summary = getString(R.string.placeholder_empty);
+        }
+        filters.setSummary(summary);
     }
 
     private void initCourseIdentifier() {
@@ -183,26 +189,37 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void setCourseIdentifierSummaryFromPrefs() {
-        String summary = prefs.get(R.string.key_course_identifier, getString(R.string.placeholder_empty));
-        courseIdentifier.setSummary(summary.isEmpty() ? getString(R.string.placeholder_empty) : summary);
+        String summary = prefs.getCourseIdentifier();
+        if(summary == null || summary.isEmpty()) {
+            summary = getString(R.string.placeholder_empty);
+        }
+        courseIdentifier.setSummary(summary);
     }
 
     private void setupThemeList(){
-        String theme = prefs.get(R.string.key_theme, getStringArray(R.array.theme_options)[0]);
+        String theme = prefs.getTheme();
+        if(theme == null) {
+            theme = getStringArray(R.array.theme_options)[0];
+        }
         themeList.setValue(theme);
     }
 
     private void setTheme(){
-        String themeStr = prefs.get(R.string.key_theme, getStringArray(R.array.theme_options)[0]);
+        String themeStr = prefs.getTheme();
+        if (themeStr == null) {
+            themeStr = getStringArray(R.array.theme_options)[0];
+        }
         AppCompatDelegate.setDefaultNightMode(Integer.parseInt(themeStr));
     }
 
     private void showTimePicker(){
-        Time24Hour prevTime = new Time24Hour(prefs.get(R.string.key_time_hour, 20), prefs.get(R.string.key_time_minute, 0));
+        int prevHour = prefs.getTimeHour();
+        int prevMinute = prefs.getTimeMinute();
+        Time24Hour prevTime = new Time24Hour(prevHour == ConstantsKt.INVALID_HOUR ? 20 : prevHour, prevMinute == ConstantsKt.INVALID_MINUTE ? 0 : prevMinute);
 
         DialogFragment f = TimePickerFragment.newInstance(prevTime, (TimeSetListener) setTime -> {
-            prefs.add(R.string.key_time_hour, setTime.getHour());
-            prefs.add(R.string.key_time_minute, setTime.getMinute());
+            prefs.setTimeHour(setTime.getHour());
+            prefs.setTimeMinute(setTime.getMinute());
             setTimePickerSummaryFromPrefs();
         });
 

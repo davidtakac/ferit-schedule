@@ -1,16 +1,16 @@
-package os.dtakac.feritraspored.common.script_provider
+package os.dtakac.feritraspored.common.scripts
 
 import android.content.res.AssetManager
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.FUNCTION_END
 import os.dtakac.feritraspored.common.constants.FUNCTION_START
-import os.dtakac.feritraspored.common.resource_repository.ResourceRepository
+import os.dtakac.feritraspored.common.resources.ResourceRepository
 import java.lang.StringBuilder
 import java.util.*
 
 class ScriptProviderImpl(
-    private val assetManager: AssetManager,
-    private val resourceRepository: ResourceRepository
+        private val assetManager: AssetManager,
+        private val resourceRepository: ResourceRepository
 ): ScriptProvider {
     override fun highlightBlocksFunction(filters: Array<String>): String {
         val stringBuilder = StringBuilder()

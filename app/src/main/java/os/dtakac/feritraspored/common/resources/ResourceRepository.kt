@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.common.resource_repository
+package os.dtakac.feritraspored.common.resources
 
 import androidx.annotation.StringRes
 
