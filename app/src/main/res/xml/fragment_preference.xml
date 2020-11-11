@@ -17,7 +17,7 @@
             android:title="@string/title_skip_day"
             android:summary="@string/summary_skip_day" />
         <Preference
-            android:key="@string/key_time"
+            android:key="@string/key_time_picker"
             android:title="@string/title_timepicker" />
     </PreferenceCategory>
     <PreferenceCategory
@@ -27,12 +27,12 @@
             android:title="@string/title_group_toggle"
             android:summary="@string/summary_group_toggle" />
         <EditTextPreference
-            android:key="@string/key_groups"
+            android:key="@string/key_filters"
             android:title="@string/title_group_highlight"
             android:negativeButtonText="@string/label_back"
             android:positiveButtonText="@string/label_save" />
         <Preference
-            android:key="@string/key_groups_help"
+            android:key="@string/key_filters_help"
             android:title="@string/title_groups_help" />
     </PreferenceCategory>
     <PreferenceCategory

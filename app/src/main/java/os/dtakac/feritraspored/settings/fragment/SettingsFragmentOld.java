@@ -25,7 +25,7 @@ import os.dtakac.feritraspored.common.utils.FormatterKt;
 import os.dtakac.feritraspored.views.groups.InfoDialogFragment;
 import os.dtakac.feritraspored.views.timepicker.TimePickerDialogFragment;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
+public class SettingsFragmentOld extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
     private ListPreference themeList;
     private EditTextPreference filters,
@@ -89,7 +89,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
         if(key.equals(getString(R.string.key_skip_day))){
             setTimePickerEnabled(prefs.isSkipDay());
-        } else if(key.equals(getString(R.string.key_groups))){
+        } else if(key.equals(getString(R.string.key_filters))){
             setGroupsSummaryFromPrefs();
         } else if(key.equals(getString(R.string.key_groups_toggle))){
             setGroupsPreferenceEnabled(prefs.isFiltersEnabled());
@@ -105,9 +105,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public boolean onPreferenceClick(Preference preference) {
         String key = preference.getKey();
-        if(key.equals(getString(R.string.key_time))){
+        if(key.equals(getString(R.string.key_time_picker))){
             showTimePicker();
-        } else if(key.equals(getString(R.string.key_groups_help))){
+        } else if(key.equals(getString(R.string.key_filters_help))){
             showGroupsHelp();
         } else if(key.equals(getString(R.string.key_changelog))){
             showChangelog();
@@ -121,9 +121,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     private void initPreferences() {
         PreferenceManager m = getPreferenceManager();
-        timePicker = m.findPreference(getString(R.string.key_time));
-        filters = m.findPreference(getString(R.string.key_groups));
-        filtersHelp = m.findPreference(getString(R.string.key_groups_help));
+        timePicker = m.findPreference(getString(R.string.key_time_picker));
+        filters = m.findPreference(getString(R.string.key_filters));
+        filtersHelp = m.findPreference(getString(R.string.key_filters_help));
         themeList = m.findPreference(getString(R.string.key_theme));
         changelog = m.findPreference(getString(R.string.key_changelog));
         bugReport = m.findPreference(getString(R.string.key_report_bug));
