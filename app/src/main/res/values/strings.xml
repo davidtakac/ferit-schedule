@@ -91,7 +91,7 @@
     </string>
 
     <!--Path names-->
-    <string name="highlight_script_path">highlight-blocks.js</string>
+    <string name="highlight_blocks_path">highlight-blocks.js</string>
 
     <!--E-mail addresses that will receive bug reports-->
     <string-array name="email_addresses">

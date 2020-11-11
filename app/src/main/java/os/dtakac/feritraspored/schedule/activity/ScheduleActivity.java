@@ -30,6 +30,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import os.dtakac.feritraspored.common.resource_repository.ResourceRepositoryImpl;
+import os.dtakac.feritraspored.common.script_provider.ScriptProviderImpl;
 import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListener;
 import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
@@ -40,7 +42,6 @@ import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
 import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
 import os.dtakac.feritraspored.schedule.presenter.SchedulePresenter;
 import os.dtakac.feritraspored.settings.activity.SettingsActivity;
-import os.dtakac.feritraspored.common.JavascriptUtil;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
 
@@ -182,7 +183,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                 this,
                 new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this), getResources()),
                 rm,
-                new JavascriptUtil(getAssets(), rm)
+                new ScriptProviderImpl(getAssets(), new ResourceRepositoryImpl(getResources()))
         );
     }
 
