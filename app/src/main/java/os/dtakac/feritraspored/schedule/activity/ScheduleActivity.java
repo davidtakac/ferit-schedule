@@ -30,12 +30,12 @@ import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import os.dtakac.feritraspored.common.resource_repository.ResourceRepositoryImpl;
-import os.dtakac.feritraspored.common.script_provider.ScriptProviderImpl;
+import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
+import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
+import os.dtakac.feritraspored.common.scripts.ScriptProviderImpl;
 import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListener;
 import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.common.ResourceManager;
 import os.dtakac.feritraspored.common.Constants;
 import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
@@ -181,7 +181,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         ResourceManager rm = new ResourceManager(getResources());
         presenter = new SchedulePresenter(
                 this,
-                new PrefsRepository(PreferenceManager.getDefaultSharedPreferences(this), getResources()),
+                new PreferenceRepositoryImpl(new ResourceRepositoryImpl(getResources()), PreferenceManager.getDefaultSharedPreferences(this)),
                 rm,
                 new ScriptProviderImpl(getAssets(), new ResourceRepositoryImpl(getResources()))
         );

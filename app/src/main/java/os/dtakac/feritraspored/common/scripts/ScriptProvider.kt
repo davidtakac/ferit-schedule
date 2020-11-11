@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.common.script_provider
+package os.dtakac.feritraspored.common.scripts
 
 interface ScriptProvider {
     fun highlightBlocksFunction(filters: Array<String>): String
