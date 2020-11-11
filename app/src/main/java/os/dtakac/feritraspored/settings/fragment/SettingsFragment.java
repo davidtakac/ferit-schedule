@@ -22,7 +22,7 @@ import os.dtakac.feritraspored.common.preferences.PreferenceRepository;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
 import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
 import os.dtakac.feritraspored.common.utils.FormatterKt;
-import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
+import os.dtakac.feritraspored.views.groups.InfoDialogFragment;
 import os.dtakac.feritraspored.views.timepicker.TimePickerDialogFragment;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
@@ -259,7 +259,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     private void showAlertDialog(@StringRes int title, @StringRes int content, @StringRes int dismiss, String key) {
-        DialogFragment f = AlertDialogFragment.newInstance(title, content, dismiss);
+        DialogFragment f = InfoDialogFragment.Companion.newInstance(title, content, dismiss);
         if(getActivity() != null){ f.show(getActivity().getSupportFragmentManager(), key); }
     }
 }
