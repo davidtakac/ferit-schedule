@@ -15,24 +15,24 @@ import os.dtakac.feritraspored.BuildConfig;
 import os.dtakac.feritraspored.R;
 import os.dtakac.feritraspored.common.PrefsRepository;
 import os.dtakac.feritraspored.common.ResourceManager;
-import os.dtakac.feritraspored.common.JavascriptUtil;
+import os.dtakac.feritraspored.common.script_provider.ScriptProvider;
 
 public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private ScheduleContract.View view;
     private PrefsRepository prefs;
     private ResourceManager res;
-    private JavascriptUtil jsUtil;
+    private ScriptProvider scriptProvider;
 
     private LocalDate currentDay, displayedDay;
     private boolean errorReceived;
     private int currentNightMode = Configuration.UI_MODE_NIGHT_NO;
 
-    public SchedulePresenter(ScheduleContract.View view, PrefsRepository prefs, ResourceManager resManager, JavascriptUtil jsUtil) {
+    public SchedulePresenter(ScheduleContract.View view, PrefsRepository prefs, ResourceManager resManager, ScriptProvider scriptProvider) {
         this.view = view;
         this.prefs = prefs;
         this.res = resManager;
-        this.jsUtil = jsUtil;
+        this.scriptProvider = scriptProvider;
         this.errorReceived = false;
         evaluateCurrentDay();
     }
@@ -191,11 +191,11 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private void applyJavascript() {
         if(errorReceived){ return; }
-        view.setWeekNumber(jsUtil.weekNumberScript());
+        view.setWeekNumber(scriptProvider.getWeekNumberFunction());
 
-        String js = jsUtil.hideAllButScheduleScript() + jsUtil.timeOnBlocksScript();
+        String js = scriptProvider.hideJunkFunction() + scriptProvider.timeOnBlocksFunction();
         if(currentNightMode == Configuration.UI_MODE_NIGHT_YES){
-            js += jsUtil.darkThemeScript();
+            js += scriptProvider.darkThemeFunction();
         }
         if(prefs.get(R.string.key_groups_toggle, false)) {
             js += buildHighlightGroupsScript();
@@ -250,7 +250,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         dayCroatian = firstLetter + dayCroatian.substring(1);
 
         // scroll schedule to display current day
-        return jsUtil.scrollIntoViewScript(dayCroatian);
+        return scriptProvider.scrollIntoViewFunction(dayCroatian);
     }
 
     private String buildHighlightGroupsScript() {
@@ -259,6 +259,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         for(int i = 0; i < filters.length; i++){
             filters[i] = filters[i].trim();
         }
-        return jsUtil.highlightElementsScript(filters);
+        return scriptProvider.highlightBlocksFunction(filters);
     }
 }
