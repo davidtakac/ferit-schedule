@@ -37,7 +37,7 @@ import os.dtakac.feritraspored.common.scripts.ScriptProviderImpl;
 import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListener;
 import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListener;
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.views.groups.AlertDialogFragment;
+import os.dtakac.feritraspored.views.groups.InfoDialogFragment;
 import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
 import os.dtakac.feritraspored.schedule.presenter.SchedulePresenter;
 import os.dtakac.feritraspored.settings.activity.SettingsActivity;
@@ -147,7 +147,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
 
     @Override
     public void showChangelog(){
-        AlertDialogFragment.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new)
+        InfoDialogFragment.Companion.newInstance(R.string.title_whats_new, R.string.content_whats_new, R.string.dismiss_whats_new)
                 .show(getSupportFragmentManager(), ConstantsKt.DIALOG_WHATS_NEW);
     }
 
