@@ -12,7 +12,7 @@ class ScriptProviderImpl(
         private val assetManager: AssetManager,
         private val resourceRepository: ResourceRepository
 ): ScriptProvider {
-    override fun highlightBlocksFunction(filters: Array<String>): String {
+    override fun highlightBlocksFunction(filters: List<String>): String {
         val stringBuilder = StringBuilder()
         filters.forEach {
             //varies for dark and light mode
