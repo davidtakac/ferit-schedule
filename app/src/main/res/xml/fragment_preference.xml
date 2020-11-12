@@ -51,7 +51,6 @@
         <ListPreference
             android:key="@string/key_theme"
             android:title="@string/title_theme"
-            android:summary="%s"
             android:negativeButtonText="@string/label_back"
             android:entries="@array/theme_options_human"
             android:entryValues="@array/theme_options" />

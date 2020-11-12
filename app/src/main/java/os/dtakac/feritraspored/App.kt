@@ -29,10 +29,7 @@ class App: Application() {
     }
 
     private fun initTheme() {
-        val theme = prefs.theme?.toInt() ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM.also {
-            prefs.theme = it.toString()
-        }
-        AppCompatDelegate.setDefaultNightMode(theme)
+        AppCompatDelegate.setDefaultNightMode(prefs.theme)
     }
 
     private fun migrateToCourseIdentifierPreference() {
