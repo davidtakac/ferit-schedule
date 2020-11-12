@@ -1,3 +1,4 @@
+/*
 package os.dtakac.feritraspored.schedule.activity;
 
 import android.annotation.SuppressLint;
@@ -42,9 +43,9 @@ import os.dtakac.feritraspored.views.dialog_info.InfoDialogFragment;
 import os.dtakac.feritraspored.schedule.presenter.ScheduleContract;
 import os.dtakac.feritraspored.schedule.presenter.SchedulePresenter;
 
-public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View {
+public class ScheduleActivityOld extends AppCompatActivity implements ScheduleContract.View {
 
-    @BindView(R.id.wv_schedule) WebView wvSchedule;
+    @BindView(R.id.wvSchedule) WebView wvSchedule;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.btn_navbar_current) ImageButton btnCurrent;
     @BindView(R.id.btn_navbar_next) ImageButton btnNext;
@@ -193,7 +194,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
             public void onDebouncedClick() { presenter.onRefresh(); }
         });
         toolbar.getMenu().findItem(R.id.item_menu_settings).setOnMenuItemClickListener(item -> {
-            startActivity(new Intent(ScheduleActivity.this, SettingsActivity.class));
+            startActivity(new Intent(ScheduleActivityOld.this, SettingsActivity.class));
             return true;
         });
         toolbar.getMenu().findItem(R.id.item_menu_openinbrowser).setOnMenuItemClickListener(item -> {
@@ -221,7 +222,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         builder.setToolbarColor(getResources().getColor(R.color.gray900));
         //launches url in custom tab
         CustomTabsIntent customTabsIntent = builder.build();
-        customTabsIntent.launchUrl(ScheduleActivity.this, Uri.parse(url));
+        customTabsIntent.launchUrl(ScheduleActivityOld.this, Uri.parse(url));
     }
 
     private class ScheduleClient extends WebViewClient {
@@ -251,3 +252,4 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         }
     }
 }
+*/

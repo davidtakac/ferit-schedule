@@ -14,99 +14,14 @@
         app:layout_constraintTop_toTopOf="parent"
         android:elevation="4dp" />
     <WebView
-        android:id="@+id/wv_schedule"
+        android:id="@+id/wvSchedule"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toTopOf="@id/navbar"/>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_schedule_status"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="?colorSurface"
-        app:layout_constraintTop_toTopOf="@id/wv_schedule"
-        app:layout_constraintBottom_toBottomOf="@id/wv_schedule">
-        <ImageView
-            android:id="@+id/iv_schedule_error_status"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:visibility="gone"
-            android:tint="@color/errorRed"
-            app:srcCompat="@drawable/ic_baseline_error_outline_24px"
-            app:layout_constraintTop_toTopOf="@id/pbar_schedule_status"
-            app:layout_constraintBottom_toBottomOf="@id/pbar_schedule_status"
-            app:layout_constraintLeft_toLeftOf="@id/pbar_schedule_status"
-            app:layout_constraintRight_toRightOf="@id/pbar_schedule_status" />
-        <ProgressBar
-            android:id="@+id/pbar_schedule_status"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintVertical_bias="0.4"/>
-        <TextView
-            android:id="@+id/tv_schedule_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            app:layout_constraintTop_toBottomOf="@id/pbar_schedule_status"
-            app:layout_constraintLeft_toLeftOf="@id/pbar_schedule_status"
-            app:layout_constraintRight_toRightOf="@id/pbar_schedule_status"
-            android:layout_marginTop="10dp"
-            android:gravity="center" />
-        <Button
-            android:id="@+id/btn_schedule_bug_report"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="@string/title_bug_report"
-            android:layout_marginBottom="36dp"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/navbar"
-        android:layout_width="match_parent"
+        app:layout_constraintBottom_toTopOf="@id/navBar"/>
+    <include layout="@layout/view_nav_bar"
+        android:id="@+id/navBar"
         android:layout_height="56dp"
-        android:background="@color/navbar_color"
-        android:elevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-        <ImageButton
-            android:id="@+id/btn_navbar_previous"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_baseline_navigate_before_24px_"
-            android:background="?android:selectableItemBackgroundBorderless"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/btn_navbar_current" />
-        <ImageButton
-            android:id="@+id/btn_navbar_current"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_baseline_today_24px"
-            android:background="?android:selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/btn_navbar_previous"
-            app:layout_constraintRight_toLeftOf="@id/btn_navbar_next" />
-        <ImageButton
-            android:id="@+id/btn_navbar_next"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_baseline_navigate_next_24px"
-            android:background="?android:selectableItemBackgroundBorderless"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/btn_navbar_current"
-            app:layout_constraintRight_toRightOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
