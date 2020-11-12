@@ -82,23 +82,23 @@ class SettingsViewModel(
     }
 
     fun onTimePickerClicked() {
-        showTimePicker.postEvent(Unit)
+        showTimePicker.postEvent()
     }
 
     fun onChangelogClicked() {
-        showChangelog.postEvent(Unit)
+        showChangelog.postEvent()
     }
 
     fun onFiltersHelpClicked() {
-        showFiltersHelp.postEvent(Unit)
+        showFiltersHelp.postEvent()
     }
 
     fun onCourseIdentifierHelpClicked() {
-        showCourseIdentifierHelp.postEvent(Unit)
+        showCourseIdentifierHelp.postEvent()
     }
 
     fun onBugReportClicked() {
-        showBugReport.postEvent(Unit)
+        showBugReport.postEvent()
     }
 
     fun setTimePickerEnabled() {

@@ -36,3 +36,7 @@ fun <T> LiveData<Event<T>>.observeEvent(lifecycleOwner: LifecycleOwner, observer
 fun <T> MutableLiveData<Event<T>>.postEvent(value: T) {
     postValue(Event(value))
 }
+
+fun MutableLiveData<Event<Unit>>.postEvent() {
+    postEvent(Unit)
+}
