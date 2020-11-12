@@ -1,1 +1,1 @@
-document.getElementsByName("%s")[0].scrollIntoView();
+$(".naziv-dan:contains('%s')").get(0).scrollIntoView()

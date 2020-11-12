@@ -17,6 +17,9 @@ const val DIALOG_COURSE_IDENTIFIER_HELP = "course_identifier_help"
 const val DEFAULT_HOUR = 20
 const val DEFAULT_MINUTE = 0
 
+//debounce
+const val DEBOUNCE_INTERVAL = 300L //ms
+
 //todo: remove when refactored time picker
 @Deprecated("Don't put listener in args")
 const val LISTENER_TIME_PICKER = "listener_time_picker"
