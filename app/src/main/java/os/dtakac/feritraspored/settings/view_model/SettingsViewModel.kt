@@ -91,7 +91,7 @@ class SettingsViewModel(
     }
 
     private fun setTheme() {
-        theme.postValue(prefs.theme!!.toInt())
+        theme.postValue(prefs.theme)
     }
 
     private fun setCourseIdentifierSummary() {

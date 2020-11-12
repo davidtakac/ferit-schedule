@@ -2,6 +2,7 @@ package os.dtakac.feritraspored.common.preferences
 
 import android.content.SharedPreferences
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.*
 import os.dtakac.feritraspored.common.resources.ResourceRepository
@@ -50,9 +51,12 @@ class PreferenceRepositoryImpl(
         get() = prefs.getString(R.string.key_prev_week, null)
         set(value) = editor { putString(R.string.key_prev_week, value) }
 
-    override var theme: String?
-        get() = prefs.getString(R.string.key_theme, null)
-        set(value) = editor { putString(R.string.key_theme, value) }
+    override var theme: Int
+        get() {
+            val defaultTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            return prefs.getString(R.string.key_theme, null)?.toInt() ?: defaultTheme.also { theme = it }
+        }
+        set(value) = editor { putString(R.string.key_theme, value.toString()) }
 
     override var version: Int
         get() = prefs.getInt(R.string.key_version, INVALID_VERSION)

@@ -14,7 +14,7 @@ interface PreferenceRepository {
     var isSettingsModified: Boolean
     var isLoadOnResume: Boolean
     var previouslyDisplayedWeek: String?
-    var theme: String?
+    var theme: Int
     var version: Int
     var courseIdentifier: String?
     var isFiltersEnabled: Boolean

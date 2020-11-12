@@ -72,10 +72,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         courseIdentifier.setOnBindEditTextListener {
             it.hint = resources.getString(R.string.hint_course_identifier)
         }
+        themes.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
     }
 
     private fun initializeObservers() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         viewModel.timePickerSummary.observe(viewLifecycleOwner) {
             timePicker.summary = it
         }
