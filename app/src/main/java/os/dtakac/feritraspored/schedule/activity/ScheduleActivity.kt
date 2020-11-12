@@ -30,6 +30,9 @@ class ScheduleActivity: AppCompatActivity() {
         viewModel.url.observe(this) {
             binding.wvSchedule.loadUrl(it)
         }
+        viewModel.javascript.observe(this) {
+            binding.wvSchedule.evaluateJavascript(it) { viewModel.onJavascriptFinished() }
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
