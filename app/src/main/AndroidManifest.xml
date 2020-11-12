@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".settings.container.SettingsActivity"
             android:label="@string/label_settings" />
     </application>
 

@@ -35,7 +35,7 @@ import os.dtakac.feritraspored.common.constants.ConstantsKt;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl;
 import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl;
 import os.dtakac.feritraspored.common.scripts.ScriptProviderImpl;
-import os.dtakac.feritraspored.settings.SettingsActivity;
+import os.dtakac.feritraspored.settings.container.SettingsActivity;
 import os.dtakac.feritraspored.views.debounce.DebouncedMenuItemClickListenerOld;
 import os.dtakac.feritraspored.views.debounce.DebouncedOnClickListenerOld;
 import os.dtakac.feritraspored.R;

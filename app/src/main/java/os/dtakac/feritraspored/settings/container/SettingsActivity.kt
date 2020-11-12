@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.settings
+package os.dtakac.feritraspored.settings.container
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
