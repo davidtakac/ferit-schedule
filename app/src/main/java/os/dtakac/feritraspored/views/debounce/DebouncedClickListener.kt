@@ -19,6 +19,6 @@ class DebouncedClickListener(
     }
 }
 
-fun View.setOnClickListener(debounceInterval: Long, listener: () -> Unit) {
+fun View.onDebouncedClick(debounceInterval: Long, listener: () -> Unit) {
     setOnClickListener(DebouncedClickListener(debounceInterval, listener))
 }

@@ -256,6 +256,6 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
         for(int i = 0; i < filters.length; i++){
             filters[i] = filters[i].trim();
         }
-        return scriptProvider.highlightBlocksFunction(filters);
+        return "ass";//scriptProvider.highlightBlocksFunction();
     }
 }

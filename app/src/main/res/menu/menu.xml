@@ -9,6 +9,6 @@
         app:iconTint="?attr/colorControlNormal"/>
     <item android:id="@+id/item_menu_settings"
         android:title="@string/label_settings"/>
-    <item android:id="@+id/item_menu_openinbrowser"
+    <item android:id="@+id/item_menu_browser"
         android:title="@string/label_open_in_browser"/>
 </menu>

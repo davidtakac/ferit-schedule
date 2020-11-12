@@ -52,6 +52,8 @@ dependencies {
     implementation "org.koin:koin-android-viewmodel:$koin_version"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.0"
+
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 }
 repositories {
     mavenCentral()
