@@ -19,6 +19,8 @@ android {
         }
     }
     compileOptions {
+        //for java 8 time and other desugared libs
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -48,6 +50,8 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-android-scope:$koin_version"
     implementation "org.koin:koin-android-viewmodel:$koin_version"
+
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.0"
 }
 repositories {
     mavenCentral()

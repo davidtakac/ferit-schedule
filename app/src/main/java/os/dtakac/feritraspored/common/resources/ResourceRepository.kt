@@ -7,4 +7,5 @@ interface ResourceRepository {
     fun getString(@StringRes resId: Int): String
     fun getStringArray(@ArrayRes resId: Int): Array<String>
     fun getIntArray(@ArrayRes resId: Int): Array<Int>
+    fun isNightMode(): Boolean
 }

@@ -13,7 +13,6 @@ import java.util.Locale;
 
 import os.dtakac.feritraspored.BuildConfig;
 import os.dtakac.feritraspored.R;
-import os.dtakac.feritraspored.common.constants.ConstantsKt;
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository;
 import os.dtakac.feritraspored.common.resources.ResourceRepository;
 import os.dtakac.feritraspored.common.scripts.ScriptProvider;
@@ -231,7 +230,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildDisplayedWeekUrl() {
-        return  res.getString(R.string.base_url) + res.getString(R.string.schedule_url)
+        return  res.getString(R.string.base_url) + res.getString(R.string.template_schedule)
                 + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString()
                 + "/" + (prefs.getCourseIdentifier() == null ? "" : prefs.getCourseIdentifier());
     }
