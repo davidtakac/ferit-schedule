@@ -2,9 +2,7 @@ package os.dtakac.feritraspored.schedule.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
-import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
@@ -13,7 +11,7 @@ import os.dtakac.feritraspored.common.utils.openInExternalBrowserIntent
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
-import os.dtakac.feritraspored.settings.SettingsActivity
+import os.dtakac.feritraspored.settings.container.SettingsActivity
 import os.dtakac.feritraspored.views.debounce.onDebouncedClick
 
 class ScheduleActivity: AppCompatActivity() {

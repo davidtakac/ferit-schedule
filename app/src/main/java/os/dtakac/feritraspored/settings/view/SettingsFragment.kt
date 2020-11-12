@@ -14,6 +14,7 @@ import os.dtakac.feritraspored.common.constants.DIALOG_COURSE_IDENTIFIER_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_FILTERS_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_TIME_PICKER
 import os.dtakac.feritraspored.common.constants.DIALOG_WHATS_NEW
+import os.dtakac.feritraspored.common.event.observeEvent
 import os.dtakac.feritraspored.common.utils.bugReportIntent
 import os.dtakac.feritraspored.common.utils.preference
 import os.dtakac.feritraspored.settings.view_model.SettingsViewModel
@@ -58,11 +59,21 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun initializeClickListeners() {
-        timePicker.setOnPreferenceClickListener { showTimePicker() }
-        changelog.setOnPreferenceClickListener { showChangelog() }
-        bugReport.setOnPreferenceClickListener { showBugReport() }
-        filtersHelp.setOnPreferenceClickListener { showFiltersHelp() }
-        courseIdentifierHelp.setOnPreferenceClickListener { showCourseIdentifierHelp() }
+        timePicker.setOnPreferenceClickListener {
+            viewModel.onTimePickerClicked(); true
+        }
+        changelog.setOnPreferenceClickListener {
+            viewModel.onChangelogClicked(); true
+        }
+        bugReport.setOnPreferenceClickListener {
+            viewModel.onBugReportClicked(); true
+        }
+        filtersHelp.setOnPreferenceClickListener {
+            viewModel.onFiltersHelpClicked(); true
+        }
+        courseIdentifierHelp.setOnPreferenceClickListener {
+            viewModel.onCourseIdentifierHelpClicked(); true
+        }
     }
 
     private fun initializeViews() {
@@ -95,44 +106,34 @@ class SettingsFragment : PreferenceFragmentCompat() {
         viewModel.theme.observe(viewLifecycleOwner) {
             AppCompatDelegate.setDefaultNightMode(it)
         }
-    }
-
-    private fun showTimePicker(): Boolean {
-        TimePickerDialogFragment().show(childFragmentManager, DIALOG_TIME_PICKER)
-        return true
-    }
-
-    private fun showChangelog(): Boolean {
-        showInfoDialog(
-                titleResId = R.string.title_whats_new,
-                contentResId = R.string.content_whats_new,
-                dismissResId = R.string.dismiss_whats_new,
-                key = DIALOG_WHATS_NEW
-        )
-        return true
-    }
-
-    private fun showBugReport(): Boolean {
-        startActivity(bugReportIntent(resources))
-        return true
-    }
-
-    private fun showFiltersHelp(): Boolean {
-        showInfoDialog(
-                titleResId = R.string.title_groups_help,
-                contentResId = R.string.content_groups_help,
-                key = DIALOG_FILTERS_HELP
-        )
-        return true
-    }
-
-    private fun showCourseIdentifierHelp(): Boolean {
-        showInfoDialog(
-                titleResId = R.string.title_course_identifier_help,
-                contentResId = R.string.content_course_identifier_help,
-                key = DIALOG_COURSE_IDENTIFIER_HELP
-        )
-        return true
+        viewModel.showTimePicker.observeEvent(viewLifecycleOwner) {
+            TimePickerDialogFragment().show(childFragmentManager, DIALOG_TIME_PICKER)
+        }
+        viewModel.showChangelog.observeEvent(viewLifecycleOwner) {
+            showInfoDialog(
+                    titleResId = R.string.title_whats_new,
+                    contentResId = R.string.content_whats_new,
+                    dismissResId = R.string.dismiss_whats_new,
+                    key = DIALOG_WHATS_NEW
+            )
+        }
+        viewModel.showFiltersHelp.observeEvent(viewLifecycleOwner) {
+            showInfoDialog(
+                    titleResId = R.string.title_groups_help,
+                    contentResId = R.string.content_groups_help,
+                    key = DIALOG_FILTERS_HELP
+            )
+        }
+        viewModel.showCourseIdentifierHelp.observeEvent(viewLifecycleOwner) {
+            showInfoDialog(
+                    titleResId = R.string.title_course_identifier_help,
+                    contentResId = R.string.content_course_identifier_help,
+                    key = DIALOG_COURSE_IDENTIFIER_HELP
+            )
+        }
+        viewModel.showBugReport.observeEvent(viewLifecycleOwner) {
+            startActivity(bugReportIntent(resources))
+        }
     }
 
     private fun showInfoDialog(

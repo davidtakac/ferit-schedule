@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import os.dtakac.feritraspored.R
+import os.dtakac.feritraspored.common.event.Event
+import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.utils.formatTime
@@ -19,6 +21,12 @@ class SettingsViewModel(
     val filtersEnabled = MutableLiveData<Boolean>()
     val courseIdentifierSummary = MutableLiveData<String>()
     val theme = MutableLiveData<Int>()
+
+    val showTimePicker = MutableLiveData<Event<Unit>>()
+    val showChangelog = MutableLiveData<Event<Unit>>()
+    val showFiltersHelp = MutableLiveData<Event<Unit>>()
+    val showCourseIdentifierHelp = MutableLiveData<Event<Unit>>()
+    val showBugReport = MutableLiveData<Event<Unit>>()
 
     init {
         setTimePickerSummary()
@@ -73,7 +81,27 @@ class SettingsViewModel(
         setTimePickerSummary()
     }
 
-    private fun setTimePickerEnabled() {
+    fun onTimePickerClicked() {
+        showTimePicker.postEvent(Unit)
+    }
+
+    fun onChangelogClicked() {
+        showChangelog.postEvent(Unit)
+    }
+
+    fun onFiltersHelpClicked() {
+        showFiltersHelp.postEvent(Unit)
+    }
+
+    fun onCourseIdentifierHelpClicked() {
+        showCourseIdentifierHelp.postEvent(Unit)
+    }
+
+    fun onBugReportClicked() {
+        showBugReport.postEvent(Unit)
+    }
+
+    fun setTimePickerEnabled() {
         timePickerEnabled.postValue(prefs.isSkipDay)
     }
 
