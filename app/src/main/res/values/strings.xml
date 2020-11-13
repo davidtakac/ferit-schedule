@@ -55,7 +55,6 @@
     <string name="summary_group_toggle">Uokviri blokove koji sadrže jedan od aktivnih filtera crvenom bojom</string>
     <string name="label_refresh">Osvježi</string>
     <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
-    <string name="notify_cant_load_page">Stranica se ne može učitati. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_unexpected_error">Došlo je do neočekivane pogreške.\n [Kod]: %d [Opis]: %s [URL]: %s</string>
     <string name="title_groups_help">Upute za unos filtera</string>
     <string name="content_groups_help">

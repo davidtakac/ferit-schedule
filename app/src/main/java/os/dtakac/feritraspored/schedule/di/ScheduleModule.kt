@@ -5,5 +5,5 @@ import org.koin.dsl.module
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
 
 val scheduleModule = module {
-    viewModel { ScheduleViewModel(get(), get(), get()) }
+    viewModel { ScheduleViewModel(get(), get(), get(), get()) }
 }

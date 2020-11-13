@@ -32,11 +32,11 @@ class PreferenceRepositoryImpl(
         set(value) = editor { putString(R.string.key_year, value) }
 
     override var timeHour: Int
-        get() = prefs.getInt(R.string.key_time_hour, DEFAULT_HOUR)
+        get() = prefs.getInt(R.string.key_time_hour, 20)
         set(value) = editor { putInt(R.string.key_time_hour, value) }
 
     override var timeMinute: Int
-        get() = prefs.getInt(R.string.key_time_minute, DEFAULT_MINUTE)
+        get() = prefs.getInt(R.string.key_time_minute, 0)
         set(value) = editor { putInt(R.string.key_time_minute, value) }
 
     override var isSettingsModified: Boolean

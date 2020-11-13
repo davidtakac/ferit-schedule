@@ -18,9 +18,3 @@ fun bugReportIntent(resources: Resources): Intent {
 fun openInExternalBrowserIntent(url: String): Intent {
     return Intent(Intent.ACTION_VIEW, Uri.parse(url))
 }
-
-fun openInCustomTabsIntent(url: String, @ColorInt toolbarColor: Int): CustomTabsIntent {
-    return CustomTabsIntent.Builder()
-            .setToolbarColor(toolbarColor)
-            .build()
-}
