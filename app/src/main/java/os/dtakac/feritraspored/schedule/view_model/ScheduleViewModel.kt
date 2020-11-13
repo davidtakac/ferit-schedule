@@ -39,14 +39,12 @@ class ScheduleViewModel(
     private var selectedDate: LocalDate = nowDate
     private val nowDate: LocalDate
         get() = LocalDate.now()
-    private val nowTime: LocalTime
-        get() = LocalTime.now()
 
     private var isNightMode: Boolean = false
 
     //region Lifecycle
     fun onResume(configuration: Configuration) {
-        if(prefs.isSettingsModified || prefs.isLoadOnResume) {
+        if(prefs.isSettingsModified || prefs.isLoadOnResume || url.value == null) {
             url.postEvent(buildUrl())
         }
         isNightMode = configuration.isNightMode()
@@ -116,8 +114,7 @@ class ScheduleViewModel(
         if(selectedDate.isSameWeek(nowDate)) {
             val anchor = if(
                     prefs.isSkipDay &&
-                    nowTime.hour >= prefs.timeHour &&
-                    nowTime.minute >= prefs.timeMinute
+                    LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)
             ) {
                 nowDate.plusDays(1)
             } else {

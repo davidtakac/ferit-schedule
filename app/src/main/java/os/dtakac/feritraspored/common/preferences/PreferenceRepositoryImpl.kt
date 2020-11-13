@@ -40,7 +40,13 @@ class PreferenceRepositoryImpl(
         set(value) = editor { putInt(R.string.key_time_minute, value) }
 
     override var isSettingsModified: Boolean
-        get() = prefs.getBoolean(R.string.key_settings_modified, false)
+        get() {
+            val wereSettingsModified = prefs.getBoolean(R.string.key_settings_modified, false)
+            if(wereSettingsModified) {
+                isSettingsModified = false
+            }
+            return wereSettingsModified
+        }
         set(value) = editor { putBoolean(R.string.key_settings_modified, value) }
 
     override var isLoadOnResume: Boolean
