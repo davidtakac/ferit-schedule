@@ -65,7 +65,7 @@ class PreferenceRepositoryImpl(
         set(value) = editor { putString(R.string.key_theme, value.toString()) }
 
     override var version: Int
-        get() = prefs.getInt(R.string.key_version, INVALID_VERSION)
+        get() = prefs.getInt(R.string.key_version, -1)
         set(value) = editor { putInt(R.string.key_version, value) }
 
     override var courseIdentifier: String?

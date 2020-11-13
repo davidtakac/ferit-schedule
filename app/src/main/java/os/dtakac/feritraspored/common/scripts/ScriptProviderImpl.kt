@@ -2,8 +2,6 @@ package os.dtakac.feritraspored.common.scripts
 
 import android.content.res.AssetManager
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.constants.FUNCTION_END
-import os.dtakac.feritraspored.common.constants.FUNCTION_START
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import java.lang.StringBuilder
 import java.util.*
@@ -20,27 +18,27 @@ class ScriptProviderImpl(
             val script = getScript(scriptPath).format(it)
             stringBuilder.append(script)
         }
-        return "$FUNCTION_START${stringBuilder}$FUNCTION_END"
+        return "(function(){$stringBuilder}());"
     }
 
     override fun scrollIntoViewFunction(elementName: String): String {
-        return "$FUNCTION_START${getScript("scroll-into-view.js").format(elementName)}$FUNCTION_END"
+        return getScript("scroll-into-view.js").format(elementName)
     }
 
     override fun getWeekNumberFunction(): String {
-        return "$FUNCTION_START${getScript("get-week-number.js")}$FUNCTION_END"
+        return getScript("get-week-number.js")
     }
 
     override fun hideJunkFunction(): String {
-        return "$FUNCTION_START${getScript("hide-junk.js")}$FUNCTION_END"
+        return getScript("hide-junk.js")
     }
 
     override fun darkThemeFunction(): String {
-        return "$FUNCTION_START${getScript("dark-theme.js")}$FUNCTION_END"
+        return getScript("dark-theme.js")
     }
 
     override fun timeOnBlocksFunction(): String {
-        return "$FUNCTION_START${getScript("time-on-blocks.js")}$FUNCTION_END"
+        return getScript("time-on-blocks.js")
     }
 
     private fun getScript(fileName: String): String {
