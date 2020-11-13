@@ -97,7 +97,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     @Override
     public void onErrorReceived(int errorCode, String description, String failingUrl) {
         if(!view.isOnline()){
-            view.showErrorMessage(res.getString(R.string.notify_cant_load_page));
+            //view.showErrorMessage(res.getString(R.string.notify_cant_load_page));
         } else {
             String errMsg = String.format(res.getString(R.string.notify_unexpected_error), errorCode, description, failingUrl);
             view.showErrorMessage(errMsg);

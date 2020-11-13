@@ -2,10 +2,13 @@ package os.dtakac.feritraspored.schedule.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
+import os.dtakac.feritraspored.common.constants.DEBOUNCE_INTERVAL
 import os.dtakac.feritraspored.common.event.observeEvent
 import os.dtakac.feritraspored.common.utils.openInExternalBrowserIntent
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
@@ -47,8 +50,25 @@ class ScheduleActivity: AppCompatActivity() {
         viewModel.openInExternalBrowser.observeEvent(this) {
             openInExternalBrowser(it)
         }
+        viewModel.openInCustomTabs.observeEvent(this) {
+            openInCustomTabs(it)
+        }
         viewModel.loaderVisibility.observeEvent(this) {
             binding.loader.root.visibility = it
+        }
+        viewModel.errorMessage.observeEvent(this) {
+            binding.error.tvError.text = it
+        }
+        viewModel.errorVisibility.observeEvent(this) {
+            binding.error.root.visibility = it
+        }
+        viewModel.controlsEnabled.observeEvent(this) {
+            binding.navBar.apply {
+                btnPrevious.isEnabled = it
+                btnCurrent.isEnabled = it
+                btnNext.isEnabled = it
+            }
+            binding.toolbar.menu.findItem(R.id.item_menu_refresh).isEnabled = it
         }
     }
 
@@ -68,6 +88,17 @@ class ScheduleActivity: AppCompatActivity() {
             }
             menu.findItem(R.id.item_menu_browser).onDebouncedClick {
                 viewModel.onOpenInExternalBrowserClicked()
+            }
+        }
+        binding.navBar.apply {
+            btnPrevious.onDebouncedClick(DEBOUNCE_INTERVAL) {
+                viewModel.onPreviousWeekClicked()
+            }
+            btnCurrent.onDebouncedClick(DEBOUNCE_INTERVAL) {
+                viewModel.onCurrentWeekClicked()
+            }
+            btnNext.onDebouncedClick(DEBOUNCE_INTERVAL) {
+                viewModel.onNextWeekClicked()
             }
         }
     }
@@ -93,6 +124,13 @@ class ScheduleActivity: AppCompatActivity() {
 
     private fun openInExternalBrowser(url: String) {
         startActivity(openInExternalBrowserIntent(url))
+    }
+
+    private fun openInCustomTabs(url: String) {
+        CustomTabsIntent.Builder()
+                .setToolbarColor(resources.getColor(R.color.gray900))
+                .build()
+                .launchUrl(this, Uri.parse(url))
     }
     //endregion
 }

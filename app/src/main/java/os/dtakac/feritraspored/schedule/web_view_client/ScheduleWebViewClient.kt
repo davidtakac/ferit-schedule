@@ -13,8 +13,9 @@ class ScheduleWebViewClient(
         fun onOverrideUrlLoading(request: WebResourceRequest?)
         fun onPageStarted()
         fun onErrorReceived(
-                request: WebResourceRequest?,
-                error: WebResourceError?
+                code: Int,
+                description: String?,
+                url: String?
         )
         fun onPageFinished(isError: Boolean)
     }
@@ -30,10 +31,9 @@ class ScheduleWebViewClient(
         listener.onPageStarted()
     }
 
-    override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-        isError = true
-        listener.onErrorReceived(request, error)
-        super.onReceivedError(view, request, error)
+    override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
+        listener.onErrorReceived(errorCode, description, failingUrl)
+        super.onReceivedError(view, errorCode, description, failingUrl)
     }
 
     override fun onPageFinished(view: WebView?, url: String?) {

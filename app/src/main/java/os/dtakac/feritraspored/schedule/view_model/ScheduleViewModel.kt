@@ -1,19 +1,16 @@
 package os.dtakac.feritraspored.schedule.view_model
 
 import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.Event
 import os.dtakac.feritraspored.common.event.postEvent
+import os.dtakac.feritraspored.common.network.NetworkUtil
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.scripts.ScriptProvider
@@ -27,7 +24,8 @@ import java.time.format.DateTimeFormatter
 class ScheduleViewModel(
         private val prefs: PreferenceRepository,
         private val res: ResourceRepository,
-        private val scriptProvider: ScriptProvider
+        private val scriptProvider: ScriptProvider,
+        private val network: NetworkUtil
 ): ViewModel(), ScheduleWebViewClient.Listener {
     val url = MutableLiveData<Event<String>>()
     val javascript = MutableLiveData<Event<String>>()
@@ -35,8 +33,19 @@ class ScheduleViewModel(
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
     val openInCustomTabs = MutableLiveData<Event<String>>()
+    val errorMessage = MutableLiveData<Event<String?>>().apply { postEvent(null) }
+    val errorVisibility: LiveData<Event<Int>> = Transformations.map(errorMessage) {
+        Event(if(it.peekContent() == null) View.GONE else View.VISIBLE)
+    }
+    val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(loaderVisibility) {
+        Event(it.peekContent() == View.GONE)
+    }
 
     private var selectedDate: LocalDate = nowDate
+        set(value) {
+            field = value
+            url.postEvent(buildUrl())
+        }
     private val nowDate: LocalDate
         get() = LocalDate.now()
 
@@ -51,7 +60,7 @@ class ScheduleViewModel(
     }
     //endregion
 
-    //region ScheduleWebViewClient.Listener
+    //region WebView
     override fun onOverrideUrlLoading(request: WebResourceRequest?) {
         val urlToOpen = request?.url?.toString() ?: return
         openInCustomTabs.postEvent(urlToOpen)
@@ -61,8 +70,16 @@ class ScheduleViewModel(
         loaderVisibility.postEvent(View.VISIBLE)
     }
 
-    override fun onErrorReceived(request: WebResourceRequest?, error: WebResourceError?) {
-        //todo: implement showing error message and hide the loader
+    override fun onErrorReceived(code: Int, description: String?, url: String?) {
+        val error = if(network.isOnline()) {
+            res.getString(R.string.notify_no_network)
+        } else {
+            res.getString(R.string.notify_unexpected_error).format(
+                code, description, url
+            )
+        }
+        errorMessage.postEvent(error)
+        loaderVisibility.postEvent(View.GONE)
     }
 
     override fun onPageFinished(isError: Boolean) {
@@ -70,7 +87,6 @@ class ScheduleViewModel(
             javascript.postEvent(buildJavascript())
         }
     }
-    //endregion
 
     fun onJavascriptFinished() {
         viewModelScope.launch {
@@ -92,6 +108,18 @@ class ScheduleViewModel(
     fun onOpenInExternalBrowserClicked() {
         val urlToOpen = url.value?.peekContent() ?: return
         openInExternalBrowser.postEvent(urlToOpen)
+    }
+
+    fun onPreviousWeekClicked() {
+        selectedDate = selectedDate.minusWeeks(1)
+    }
+
+    fun onCurrentWeekClicked() {
+        selectedDate = nowDate
+    }
+
+    fun onNextWeekClicked() {
+        selectedDate = selectedDate.plusWeeks(1)
     }
     //endregion
 

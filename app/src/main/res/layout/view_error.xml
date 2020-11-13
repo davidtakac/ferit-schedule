@@ -10,7 +10,6 @@
         android:id="@+id/ivError"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:visibility="gone"
         app:tint="@color/errorRed"
         app:srcCompat="@drawable/ic_baseline_error_outline_24px"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +28,7 @@
         app:layout_constraintRight_toRightOf="@id/ivError"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        tools:text="OOf dogodila se greska"/>
+        tools:text="Došlo je do neočekivane pogreške"/>
     <Button
         android:id="@+id/btnBugReport"
         android:layout_width="wrap_content"
