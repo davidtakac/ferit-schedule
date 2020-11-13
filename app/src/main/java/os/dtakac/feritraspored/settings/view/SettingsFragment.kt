@@ -17,6 +17,8 @@ import os.dtakac.feritraspored.common.constants.DIALOG_WHATS_NEW
 import os.dtakac.feritraspored.common.event.observeEvent
 import os.dtakac.feritraspored.common.utils.bugReportIntent
 import os.dtakac.feritraspored.common.utils.preference
+import os.dtakac.feritraspored.common.utils.showChangelog
+import os.dtakac.feritraspored.common.utils.showInfoDialog
 import os.dtakac.feritraspored.settings.view_model.SettingsViewModel
 import os.dtakac.feritraspored.views.dialog_info.InfoDialogFragment
 import os.dtakac.feritraspored.views.dialog_time_picker.TimePickerDialogFragment
@@ -110,22 +112,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
             TimePickerDialogFragment().show(childFragmentManager, DIALOG_TIME_PICKER)
         }
         viewModel.showChangelog.observeEvent(viewLifecycleOwner) {
-            showInfoDialog(
-                    titleResId = R.string.title_whats_new,
-                    contentResId = R.string.content_whats_new,
-                    dismissResId = R.string.dismiss_whats_new,
-                    key = DIALOG_WHATS_NEW
-            )
+            childFragmentManager.showChangelog()
         }
         viewModel.showFiltersHelp.observeEvent(viewLifecycleOwner) {
-            showInfoDialog(
+            childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_groups_help,
                     contentResId = R.string.content_groups_help,
                     key = DIALOG_FILTERS_HELP
             )
         }
         viewModel.showCourseIdentifierHelp.observeEvent(viewLifecycleOwner) {
-            showInfoDialog(
+            childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_course_identifier_help,
                     contentResId = R.string.content_course_identifier_help,
                     key = DIALOG_COURSE_IDENTIFIER_HELP
@@ -134,15 +131,5 @@ class SettingsFragment : PreferenceFragmentCompat() {
         viewModel.showBugReport.observeEvent(viewLifecycleOwner) {
             startActivity(bugReportIntent(resources))
         }
-    }
-
-    private fun showInfoDialog(
-            @StringRes titleResId: Int,
-            @StringRes contentResId: Int,
-            @StringRes dismissResId: Int = R.string.okay,
-            key: String
-    ) {
-        val infoDialog = InfoDialogFragment.newInstance(titleResId, contentResId, dismissResId)
-        infoDialog.show(childFragmentManager, key)
     }
 }

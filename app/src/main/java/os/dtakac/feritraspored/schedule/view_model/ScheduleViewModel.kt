@@ -7,6 +7,7 @@ import android.webkit.WebResourceRequest
 import androidx.lifecycle.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.Event
 import os.dtakac.feritraspored.common.event.postEvent
@@ -33,6 +34,7 @@ class ScheduleViewModel(
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
     val openInCustomTabs = MutableLiveData<Event<String>>()
+    val showChangelog = MutableLiveData<Event<Unit>>()
     val errorMessage = MutableLiveData<Event<String?>>().apply { postEvent(null) }
     val errorVisibility: LiveData<Event<Int>> = Transformations.map(errorMessage) {
         Event(if(it.peekContent() == null) View.GONE else View.VISIBLE)
@@ -53,10 +55,14 @@ class ScheduleViewModel(
 
     //region Lifecycle
     fun onResume(configuration: Configuration) {
+        isNightMode = configuration.isNightMode()
+        if(prefs.version < BuildConfig.VERSION_CODE) {
+            showChangelog.postEvent()
+            prefs.version = BuildConfig.VERSION_CODE
+        }
         if(prefs.isSettingsModified || prefs.isLoadOnResume || url.value == null) {
             url.postEvent(buildUrl())
         }
-        isNightMode = configuration.isNightMode()
     }
     //endregion
 
@@ -67,6 +73,7 @@ class ScheduleViewModel(
     }
 
     override fun onPageStarted() {
+        errorMessage.postEvent(null)
         loaderVisibility.postEvent(View.VISIBLE)
     }
 

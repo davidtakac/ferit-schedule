@@ -11,6 +11,7 @@ import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.DEBOUNCE_INTERVAL
 import os.dtakac.feritraspored.common.event.observeEvent
 import os.dtakac.feritraspored.common.utils.openInExternalBrowserIntent
+import os.dtakac.feritraspored.common.utils.showChangelog
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
@@ -53,6 +54,9 @@ class ScheduleActivity: AppCompatActivity() {
         viewModel.openInCustomTabs.observeEvent(this) {
             openInCustomTabs(it)
         }
+        viewModel.showChangelog.observeEvent(this) {
+            supportFragmentManager.showChangelog()
+        }
         viewModel.loaderVisibility.observeEvent(this) {
             binding.loader.root.visibility = it
         }
@@ -91,13 +95,13 @@ class ScheduleActivity: AppCompatActivity() {
             }
         }
         binding.navBar.apply {
-            btnPrevious.onDebouncedClick(DEBOUNCE_INTERVAL) {
+            btnPrevious.onDebouncedClick {
                 viewModel.onPreviousWeekClicked()
             }
-            btnCurrent.onDebouncedClick(DEBOUNCE_INTERVAL) {
+            btnCurrent.onDebouncedClick {
                 viewModel.onCurrentWeekClicked()
             }
-            btnNext.onDebouncedClick(DEBOUNCE_INTERVAL) {
+            btnNext.onDebouncedClick {
                 viewModel.onNextWeekClicked()
             }
         }
