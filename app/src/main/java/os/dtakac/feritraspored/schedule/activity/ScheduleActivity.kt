@@ -8,9 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.constants.DEBOUNCE_INTERVAL
 import os.dtakac.feritraspored.common.event.observeEvent
-import os.dtakac.feritraspored.common.utils.openInExternalBrowserIntent
+import os.dtakac.feritraspored.common.utils.openBugReport
 import os.dtakac.feritraspored.common.utils.showChangelog
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
@@ -46,16 +45,22 @@ class ScheduleActivity: AppCompatActivity() {
             injectJavascript(it)
         }
         viewModel.openSettings.observeEvent(this) {
-            goToSettings()
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
         viewModel.openInExternalBrowser.observeEvent(this) {
-            openInExternalBrowser(it)
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
         }
         viewModel.openInCustomTabs.observeEvent(this) {
-            openInCustomTabs(it)
+            CustomTabsIntent.Builder()
+                    .setToolbarColor(resources.getColor(R.color.gray900))
+                    .build()
+                    .launchUrl(this, Uri.parse(it))
         }
         viewModel.showChangelog.observeEvent(this) {
             supportFragmentManager.showChangelog()
+        }
+        viewModel.openBugReport.observeEvent(this) {
+            openBugReport(content = it)
         }
         viewModel.loaderVisibility.observeEvent(this) {
             binding.loader.root.visibility = it
@@ -105,6 +110,9 @@ class ScheduleActivity: AppCompatActivity() {
                 viewModel.onNextWeekClicked()
             }
         }
+        binding.error.btnBugReport.setOnClickListener {
+            viewModel.onBugReportClicked()
+        }
     }
 
     private fun initBinding() {
@@ -118,23 +126,6 @@ class ScheduleActivity: AppCompatActivity() {
         binding.wvSchedule.evaluateJavascript(script) {
             viewModel.onJavascriptFinished()
         }
-    }
-    //endregion
-
-    //region Navigation
-    private fun goToSettings() {
-        startActivity(Intent(this, SettingsActivity::class.java))
-    }
-
-    private fun openInExternalBrowser(url: String) {
-        startActivity(openInExternalBrowserIntent(url))
-    }
-
-    private fun openInCustomTabs(url: String) {
-        CustomTabsIntent.Builder()
-                .setToolbarColor(resources.getColor(R.color.gray900))
-                .build()
-                .launchUrl(this, Uri.parse(url))
     }
     //endregion
 }

@@ -2,7 +2,6 @@ package os.dtakac.feritraspored.settings.view
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -13,14 +12,12 @@ import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.DIALOG_COURSE_IDENTIFIER_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_FILTERS_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_TIME_PICKER
-import os.dtakac.feritraspored.common.constants.DIALOG_WHATS_NEW
 import os.dtakac.feritraspored.common.event.observeEvent
-import os.dtakac.feritraspored.common.utils.bugReportIntent
+import os.dtakac.feritraspored.common.utils.openBugReport
 import os.dtakac.feritraspored.common.utils.preference
 import os.dtakac.feritraspored.common.utils.showChangelog
 import os.dtakac.feritraspored.common.utils.showInfoDialog
 import os.dtakac.feritraspored.settings.view_model.SettingsViewModel
-import os.dtakac.feritraspored.views.dialog_info.InfoDialogFragment
 import os.dtakac.feritraspored.views.dialog_time_picker.TimePickerDialogFragment
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -129,7 +126,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             )
         }
         viewModel.showBugReport.observeEvent(viewLifecycleOwner) {
-            startActivity(bugReportIntent(resources))
+            context?.openBugReport()
         }
     }
 }

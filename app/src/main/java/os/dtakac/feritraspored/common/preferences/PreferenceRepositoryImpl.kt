@@ -3,6 +3,7 @@ package os.dtakac.feritraspored.common.preferences
 import android.content.SharedPreferences
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
+import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.*
 import os.dtakac.feritraspored.common.resources.ResourceRepository
@@ -69,7 +70,13 @@ class PreferenceRepositoryImpl(
         set(value) = editor { putString(R.string.key_theme, value.toString()) }
 
     override var version: Int
-        get() = prefs.getInt(R.string.key_version, -1)
+        get() {
+            val versionValue = prefs.getInt(R.string.key_version, -1)
+            if(versionValue < BuildConfig.VERSION_CODE) {
+                version = BuildConfig.VERSION_CODE
+            }
+            return versionValue
+        }
         set(value) = editor { putInt(R.string.key_version, value) }
 
     override var courseIdentifier: String?
