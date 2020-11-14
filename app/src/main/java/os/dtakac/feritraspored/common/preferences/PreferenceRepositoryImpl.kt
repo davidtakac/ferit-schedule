@@ -11,6 +11,10 @@ class PreferenceRepositoryImpl(
         private val res: ResourceRepository,
         private val prefs: SharedPreferences
 ): PreferenceRepository {
+    init {
+        migrateToCourseIdentifierPreference()
+    }
+
     override var isSkipSaturday: Boolean
         get() = prefs.getBoolean(R.string.key_skip_sat, false)
         set(value) = editor { putBoolean(R.string.key_skip_sat, value) }
@@ -118,5 +122,14 @@ class PreferenceRepositoryImpl(
 
     private fun SharedPreferences.Editor.putInt(@StringRes keyResId: Int, value: Int) {
         putInt(getKey(keyResId), value)
+    }
+
+    private fun migrateToCourseIdentifierPreference() {
+        if(courseIdentifier == null) {
+            if(year == null || programme == null) return
+            courseIdentifier = "${year}-${programme}"
+            delete(R.string.key_year)
+            delete(R.string.key_programme)
+        }
     }
 }
