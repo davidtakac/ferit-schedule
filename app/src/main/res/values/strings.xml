@@ -1,9 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--url strings-->
-    <string name="base_url">https://www.ferit.unios.hr/</string> <!--todo: remove when done-->
     <string name="template_schedule" formatted="false">
-        https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s
+        https://wwwb.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s
     </string>
 
     <!--Preference key strings-->

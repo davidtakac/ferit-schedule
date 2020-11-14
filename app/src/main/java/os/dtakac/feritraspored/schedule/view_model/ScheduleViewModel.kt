@@ -2,7 +2,6 @@ package os.dtakac.feritraspored.schedule.view_model
 
 import android.content.res.Configuration
 import android.view.View
-import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import androidx.lifecycle.*
 import kotlinx.coroutines.delay
@@ -18,6 +17,7 @@ import os.dtakac.feritraspored.common.scripts.ScriptProvider
 import os.dtakac.feritraspored.common.utils.isNightMode
 import os.dtakac.feritraspored.common.utils.isSameWeek
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -34,6 +34,7 @@ class ScheduleViewModel(
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
     val openInCustomTabs = MutableLiveData<Event<String>>()
+    val openBugReport = MutableLiveData<Event<String>>()
     val showChangelog = MutableLiveData<Event<Unit>>()
     val errorMessage = MutableLiveData<Event<String?>>().apply { postEvent(null) }
     val errorVisibility: LiveData<Event<Int>> = Transformations.map(errorMessage) {
@@ -43,13 +44,11 @@ class ScheduleViewModel(
         Event(it.peekContent() == View.GONE)
     }
 
-    private var selectedDate: LocalDate = nowDate
+    private var selectedDate = LocalDate.now()
         set(value) {
             field = value
-            url.postEvent(buildUrl())
+            postNewUrl()
         }
-    private val nowDate: LocalDate
-        get() = LocalDate.now()
 
     private var isNightMode: Boolean = false
 
@@ -58,10 +57,9 @@ class ScheduleViewModel(
         isNightMode = configuration.isNightMode()
         if(prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.postEvent()
-            prefs.version = BuildConfig.VERSION_CODE
         }
         if(prefs.isSettingsModified || prefs.isLoadOnResume || url.value == null) {
-            url.postEvent(buildUrl())
+            onCurrentWeekClicked()
         }
     }
     //endregion
@@ -78,7 +76,7 @@ class ScheduleViewModel(
     }
 
     override fun onErrorReceived(code: Int, description: String?, url: String?) {
-        val error = if(network.isOnline()) {
+        val error = if(!network.isOnline()) {
             res.getString(R.string.notify_no_network)
         } else {
             res.getString(R.string.notify_unexpected_error).format(
@@ -105,7 +103,7 @@ class ScheduleViewModel(
 
     //region Click handling
     fun onRefreshClicked() {
-        url.postEvent(buildUrl())
+        postNewUrl()
     }
 
     fun onSettingsClicked() {
@@ -122,13 +120,31 @@ class ScheduleViewModel(
     }
 
     fun onCurrentWeekClicked() {
-        selectedDate = nowDate
+        var newSelectedDate = LocalDate.now()
+        if(prefs.isSkipDay && LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)) {
+            newSelectedDate = newSelectedDate.plusDays(1)
+        }
+        if(newSelectedDate.dayOfWeek == DayOfWeek.SATURDAY && prefs.isSkipSaturday) {
+            newSelectedDate = newSelectedDate.plusDays(1)
+        }
+        if(newSelectedDate.dayOfWeek == DayOfWeek.SUNDAY) {
+            newSelectedDate = newSelectedDate.plusDays(1)
+        }
+        selectedDate = newSelectedDate
     }
 
     fun onNextWeekClicked() {
         selectedDate = selectedDate.plusWeeks(1)
     }
+
+    fun onBugReportClicked() {
+        openBugReport.postEvent(errorMessage.value?.peekContent() ?: "")
+    }
     //endregion
+
+    private fun postNewUrl() {
+        url.postEvent(buildUrl())
+    }
 
     private fun buildUrl(): String {
         return res.getString(R.string.template_schedule).format(
@@ -146,17 +162,9 @@ class ScheduleViewModel(
             val filtersTrimmed = prefs.filters?.split(",")?.map { it.trim() } ?: listOf()
             js += scriptProvider.highlightBlocksFunction(filtersTrimmed)
         }
-        if(selectedDate.isSameWeek(nowDate)) {
-            val anchor = if(
-                    prefs.isSkipDay &&
-                    LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)
-            ) {
-                nowDate.plusDays(1)
-            } else {
-                nowDate
-            }
+        if(selectedDate.isSameWeek(LocalDate.now())) {
             js += scriptProvider.scrollIntoViewFunction(
-                    anchor.format(DateTimeFormatter.ofPattern("dd.MM.yyyy."))
+                    selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy."))
             )
         }
         return js

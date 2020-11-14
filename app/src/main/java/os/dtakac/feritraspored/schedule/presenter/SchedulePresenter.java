@@ -230,9 +230,9 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
     }
 
     private String buildDisplayedWeekUrl() {
-        return  res.getString(R.string.base_url) + res.getString(R.string.template_schedule)
+        return  "ass";/*res.getString(R.string.base_url) + res.getString(R.string.template_schedule)
                 + displayedDay.withDayOfWeek(DateTimeConstants.MONDAY).toString()
-                + "/" + (prefs.getCourseIdentifier() == null ? "" : prefs.getCourseIdentifier());
+                + "/" + (prefs.getCourseIdentifier() == null ? "" : prefs.getCourseIdentifier());*/
     }
 
     private String buildScrollToCurrentDayScript() {
