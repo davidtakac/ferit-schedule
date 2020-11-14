@@ -18,7 +18,6 @@ class App: Application() {
         super.onCreate()
         initKoin()
         initTheme()
-        migrateToCourseIdentifierPreference()
     }
 
     private fun initKoin() {
@@ -31,15 +30,5 @@ class App: Application() {
 
     private fun initTheme() {
         AppCompatDelegate.setDefaultNightMode(prefs.theme)
-    }
-
-    private fun migrateToCourseIdentifierPreference() {
-        if(prefs.courseIdentifier == null) {
-            val year = prefs.year ?: return
-            val programme = prefs.programme ?: return
-            prefs.courseIdentifier = "${year}-${programme}"
-            prefs.delete(R.string.key_year)
-            prefs.delete(R.string.key_programme)
-        }
     }
 }
