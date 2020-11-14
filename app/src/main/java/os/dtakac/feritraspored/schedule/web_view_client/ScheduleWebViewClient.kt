@@ -10,7 +10,7 @@ class ScheduleWebViewClient(
         private val listener: Listener
 ): WebViewClient() {
     interface Listener {
-        fun onOverrideUrlLoading(request: WebResourceRequest?)
+        fun onOverrideUrlLoading(url: String)
         fun onPageStarted()
         fun onErrorReceived(
                 code: Int,
@@ -22,8 +22,8 @@ class ScheduleWebViewClient(
 
     private var isError: Boolean = false
 
-    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        listener.onOverrideUrlLoading(request)
+    override fun shouldOverrideUrlLoading(view: WebView?, url: String): Boolean {
+        listener.onOverrideUrlLoading(url)
         return true
     }
 
@@ -39,6 +39,5 @@ class ScheduleWebViewClient(
     override fun onPageFinished(view: WebView?, url: String?) {
         listener.onPageFinished(isError)
         isError = false
-        super.onPageFinished(view, url)
     }
 }

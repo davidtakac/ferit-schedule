@@ -2,7 +2,7 @@
 
     <!--url strings-->
     <string name="template_schedule" formatted="false">
-        https://wwwb.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s
+        https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s
     </string>
 
     <!--Preference key strings-->

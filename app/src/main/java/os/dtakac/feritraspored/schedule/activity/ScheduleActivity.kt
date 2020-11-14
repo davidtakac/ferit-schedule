@@ -9,6 +9,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.observeEvent
+import os.dtakac.feritraspored.common.utils.isNightMode
 import os.dtakac.feritraspored.common.utils.openBugReport
 import os.dtakac.feritraspored.common.utils.showChangelog
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
@@ -32,7 +33,7 @@ class ScheduleActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.onResume(resources.configuration)
+        viewModel.onResume(resources.configuration.isNightMode())
     }
     //endregion
 
@@ -41,8 +42,14 @@ class ScheduleActivity: AppCompatActivity() {
         viewModel.url.observeEvent(this) {
             binding.wvSchedule.loadUrl(it)
         }
-        viewModel.javascript.observeEvent(this) {
-            injectJavascript(it)
+        viewModel.title.observe(this) {
+            binding.toolbar.title = it
+        }
+        viewModel.pageModificationJavascript.observeEvent(this) {
+            injectPageModificationJavascript(it)
+        }
+        viewModel.weekNumberJavascript.observeEvent(this) {
+            injectWeekNumberJavascript(it)
         }
         viewModel.openSettings.observeEvent(this) {
             startActivity(Intent(this, SettingsActivity::class.java))
@@ -122,9 +129,15 @@ class ScheduleActivity: AppCompatActivity() {
     //endregion
 
     //region WebView
-    private fun injectJavascript(script: String) {
+    private fun injectPageModificationJavascript(script: String) {
         binding.wvSchedule.evaluateJavascript(script) {
-            viewModel.onJavascriptFinished()
+            viewModel.onPageModificationJavascriptFinished()
+        }
+    }
+
+    private fun injectWeekNumberJavascript(script: String) {
+        binding.wvSchedule.evaluateJavascript(script) {
+            viewModel.onWeekNumberJavascriptFinished(it)
         }
     }
     //endregion

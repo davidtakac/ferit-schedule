@@ -1,8 +1,6 @@
 package os.dtakac.feritraspored.schedule.view_model
 
-import android.content.res.Configuration
 import android.view.View
-import android.webkit.WebResourceRequest
 import androidx.lifecycle.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -14,7 +12,6 @@ import os.dtakac.feritraspored.common.network.NetworkUtil
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.scripts.ScriptProvider
-import os.dtakac.feritraspored.common.utils.isNightMode
 import os.dtakac.feritraspored.common.utils.isSameWeek
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
 import java.time.DayOfWeek
@@ -26,17 +23,19 @@ class ScheduleViewModel(
         private val prefs: PreferenceRepository,
         private val res: ResourceRepository,
         private val scriptProvider: ScriptProvider,
-        private val network: NetworkUtil
+        private val networkUtil: NetworkUtil
 ): ViewModel(), ScheduleWebViewClient.Listener {
     val url = MutableLiveData<Event<String>>()
-    val javascript = MutableLiveData<Event<String>>()
+    val title = MutableLiveData(res.getString(R.string.label_schedule))
+    val pageModificationJavascript = MutableLiveData<Event<String>>()
+    val weekNumberJavascript = MutableLiveData<Event<String>>()
     val loaderVisibility = MutableLiveData<Event<Int>>()
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
     val openInCustomTabs = MutableLiveData<Event<String>>()
     val openBugReport = MutableLiveData<Event<String>>()
     val showChangelog = MutableLiveData<Event<Unit>>()
-    val errorMessage = MutableLiveData<Event<String?>>().apply { postEvent(null) }
+    val errorMessage = MutableLiveData<Event<String?>>()
     val errorVisibility: LiveData<Event<Int>> = Transformations.map(errorMessage) {
         Event(if(it.peekContent() == null) View.GONE else View.VISIBLE)
     }
@@ -53,30 +52,33 @@ class ScheduleViewModel(
     private var isNightMode: Boolean = false
 
     //region Lifecycle
-    fun onResume(configuration: Configuration) {
-        isNightMode = configuration.isNightMode()
+    fun onResume(currentNightMode: Boolean) {
         if(prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.postEvent()
         }
-        if(prefs.isSettingsModified || prefs.isLoadOnResume || url.value == null) {
+        if( isNightMode != currentNightMode ||
+            prefs.isSettingsModified ||
+            prefs.isLoadOnResume ||
+            url.value == null
+        ) {
+            isNightMode = currentNightMode
             onCurrentWeekClicked()
         }
     }
     //endregion
 
     //region WebView
-    override fun onOverrideUrlLoading(request: WebResourceRequest?) {
-        val urlToOpen = request?.url?.toString() ?: return
-        openInCustomTabs.postEvent(urlToOpen)
+    override fun onOverrideUrlLoading(url: String) {
+        openInCustomTabs.postEvent(url)
     }
 
     override fun onPageStarted() {
-        errorMessage.postEvent(null)
-        loaderVisibility.postEvent(View.VISIBLE)
+        /*errorMessage.postEvent(null)
+        loaderVisibility.postEvent(View.VISIBLE)*/
     }
 
     override fun onErrorReceived(code: Int, description: String?, url: String?) {
-        val error = if(!network.isOnline()) {
+        val error = if(!networkUtil.isOnline()) {
             res.getString(R.string.notify_no_network)
         } else {
             res.getString(R.string.notify_unexpected_error).format(
@@ -89,15 +91,29 @@ class ScheduleViewModel(
 
     override fun onPageFinished(isError: Boolean) {
         if(!isError) {
-            javascript.postEvent(buildJavascript())
+            weekNumberJavascript.postEvent(scriptProvider.weekNumberFunction())
+            pageModificationJavascript.postEvent(buildPageModificationJavascript())
         }
     }
 
-    fun onJavascriptFinished() {
+    fun onPageModificationJavascriptFinished() {
         viewModelScope.launch {
-            delay(200) //gives javascript time to apply itself
+            delay(250) //gives javascript time to apply itself
             loaderVisibility.postEvent(View.GONE)
         }
+    }
+
+    fun onWeekNumberJavascriptFinished(returnedWeekNumber: String) {
+        title.postValue(
+            if( returnedWeekNumber == "null" ||
+                returnedWeekNumber.isEmpty() ||
+                returnedWeekNumber.isBlank()
+            ) {
+                res.getString(R.string.label_schedule)
+            } else {
+                returnedWeekNumber.removeSurrounding("\"")
+            }
+        )
     }
     //endregion
 
@@ -111,8 +127,8 @@ class ScheduleViewModel(
     }
 
     fun onOpenInExternalBrowserClicked() {
-        val urlToOpen = url.value?.peekContent() ?: return
-        openInExternalBrowser.postEvent(urlToOpen)
+        val urlToOpen = url.value?: return
+        openInExternalBrowser.postEvent(urlToOpen.peekContent())
     }
 
     fun onPreviousWeekClicked() {
@@ -143,6 +159,8 @@ class ScheduleViewModel(
     //endregion
 
     private fun postNewUrl() {
+        errorMessage.postEvent(null)
+        loaderVisibility.postEvent(View.VISIBLE)
         url.postEvent(buildUrl())
     }
 
@@ -153,7 +171,7 @@ class ScheduleViewModel(
         )
     }
 
-    private fun buildJavascript(): String {
+    private fun buildPageModificationJavascript(): String {
         var js = scriptProvider.hideJunkFunction() + scriptProvider.timeOnBlocksFunction()
         if(isNightMode) {
             js += scriptProvider.darkThemeFunction()

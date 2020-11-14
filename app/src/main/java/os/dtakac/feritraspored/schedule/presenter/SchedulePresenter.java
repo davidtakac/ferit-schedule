@@ -189,7 +189,7 @@ public class SchedulePresenter implements ScheduleContract.Presenter {
 
     private void applyJavascript() {
         if(errorReceived){ return; }
-        view.setWeekNumber(scriptProvider.getWeekNumberFunction());
+        view.setWeekNumber(scriptProvider.weekNumberFunction());
 
         String js = scriptProvider.hideJunkFunction() + scriptProvider.timeOnBlocksFunction();
         if(currentNightMode == Configuration.UI_MODE_NIGHT_YES){

@@ -25,7 +25,7 @@ class ScriptProviderImpl(
         return getScript("scroll-into-view.js").format(elementName)
     }
 
-    override fun getWeekNumberFunction(): String {
+    override fun weekNumberFunction(): String {
         return getScript("get-week-number.js")
     }
 
