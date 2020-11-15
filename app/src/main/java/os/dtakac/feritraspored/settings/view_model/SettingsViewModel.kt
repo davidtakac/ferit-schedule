@@ -14,14 +14,12 @@ class SettingsViewModel(
         private val prefs: PreferenceRepository,
         private val res: ResourceRepository
 ): ViewModel(), SharedPreferences.OnSharedPreferenceChangeListener {
-
     val timePickerSummary = MutableLiveData<String>()
     val timePickerEnabled = MutableLiveData<Boolean>()
     val filtersSummary = MutableLiveData<String>()
     val filtersEnabled = MutableLiveData<Boolean>()
     val courseIdentifierSummary = MutableLiveData<String>()
     val theme = MutableLiveData<Int>()
-
     val showTimePicker = MutableLiveData<Event<Unit>>()
     val showChangelog = MutableLiveData<Event<Unit>>()
     val showFiltersHelp = MutableLiveData<Event<Unit>>()
