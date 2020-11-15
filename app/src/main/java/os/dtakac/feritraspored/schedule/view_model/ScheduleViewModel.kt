@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.Event
+import os.dtakac.feritraspored.common.event.peekContent
 import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.network.NetworkUtil
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
@@ -39,6 +40,7 @@ class ScheduleViewModel(
     val errorVisibility: LiveData<Event<Int>> = Transformations.map(errorMessage) {
         Event(if(it.peekContent() == null) View.GONE else View.VISIBLE)
     }
+    val snackBarMessage = MutableLiveData<Event<String>>()
     val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(loaderVisibility) {
         Event(it.peekContent() == View.GONE)
     }
@@ -46,7 +48,7 @@ class ScheduleViewModel(
     private var selectedDate = LocalDate.now()
         set(value) {
             field = value
-            postNewUrl()
+            buildAndPostUrl()
         }
 
     private var isNightMode: Boolean = false
@@ -72,20 +74,17 @@ class ScheduleViewModel(
         openInCustomTabs.postEvent(url)
     }
 
-    override fun onPageStarted() {
-        /*errorMessage.postEvent(null)
-        loaderVisibility.postEvent(View.VISIBLE)*/
-    }
+    override fun onPageStarted() { /*loaders are handled in [buildAndPostUrl]*/ }
 
     override fun onErrorReceived(code: Int, description: String?, url: String?) {
-        val error = if(!networkUtil.isOnline()) {
+        val errorMessage = if(!networkUtil.isOnline()) {
             res.getString(R.string.notify_no_network)
         } else {
-            res.getString(R.string.notify_unexpected_error).format(
+            res.getString(R.string.template_error_unexpected).format(
                 code, description, url
             )
         }
-        errorMessage.postEvent(error)
+        this.errorMessage.postEvent(errorMessage)
         loaderVisibility.postEvent(View.GONE)
     }
 
@@ -105,9 +104,10 @@ class ScheduleViewModel(
 
     fun onWeekNumberJavascriptFinished(returnedWeekNumber: String) {
         title.postValue(
-            if( returnedWeekNumber == "null" ||
-                returnedWeekNumber.isEmpty() ||
-                returnedWeekNumber.isBlank()
+            if( returnedWeekNumber.isEmpty() ||
+                returnedWeekNumber.isBlank() ||
+                returnedWeekNumber == "null" ||
+                returnedWeekNumber == "undefined"
             ) {
                 res.getString(R.string.label_schedule)
             } else {
@@ -119,7 +119,7 @@ class ScheduleViewModel(
 
     //region Click handling
     fun onRefreshClicked() {
-        postNewUrl()
+        buildAndPostUrl()
     }
 
     fun onSettingsClicked() {
@@ -127,8 +127,8 @@ class ScheduleViewModel(
     }
 
     fun onOpenInExternalBrowserClicked() {
-        val urlToOpen = url.value?: return
-        openInExternalBrowser.postEvent(urlToOpen.peekContent())
+        val urlToOpen = url.peekContent() ?: return
+        openInExternalBrowser.postEvent(urlToOpen)
     }
 
     fun onPreviousWeekClicked() {
@@ -154,14 +154,22 @@ class ScheduleViewModel(
     }
 
     fun onBugReportClicked() {
-        openBugReport.postEvent(errorMessage.value?.peekContent() ?: "")
+        openBugReport.postEvent(
+                res.getString(R.string.template_bug_report).format(
+                        errorMessage.peekContent() ?: ""
+                )
+        )
     }
     //endregion
 
-    private fun postNewUrl() {
-        errorMessage.postEvent(null)
-        loaderVisibility.postEvent(View.VISIBLE)
-        url.postEvent(buildUrl())
+    private fun buildAndPostUrl() {
+        if(networkUtil.isOnline()) {
+            errorMessage.postEvent(null)
+            loaderVisibility.postEvent(View.VISIBLE)
+            url.postEvent(buildUrl())
+        } else {
+            snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
+        }
     }
 
     private fun buildUrl(): String {

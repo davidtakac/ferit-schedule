@@ -10,7 +10,7 @@
             android:defaultValue="true" />
         <SwitchPreference
             android:key="@string/key_skip_sat"
-            android:title="@string/title_skip_sat"
+            android:title="@string/title_skip_saturday"
             android:summary="@string/summary_skip_sat" />
         <SwitchPreference
             android:key="@string/key_skip_day"

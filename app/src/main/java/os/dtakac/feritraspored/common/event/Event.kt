@@ -5,9 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 open class Event<out T>(private val content: T) {
-
     var hasBeenHandled = false
-        private set // Allow external read but not write
+        private set
 
     /**
      * Returns the content and prevents its use again.
@@ -39,4 +38,8 @@ fun <T> MutableLiveData<Event<T>>.postEvent(value: T) {
 
 fun MutableLiveData<Event<Unit>>.postEvent() {
     postEvent(Unit)
+}
+
+fun <T> LiveData<Event<T>>.peekContent(): T? {
+    return value?.peekContent()
 }
