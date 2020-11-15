@@ -47,9 +47,9 @@
     <string name="placeholder_empty">(Nema unosa)</string>
     <string name="label_schedule">Raspored nastave i ispita</string>
     <string name="label_open_in_browser">Otvori u pregledniku</string>
-    <string name="title_load_on_resume">Automatski pomakni na trenutni dan</string>
-    <string name="summary_load_on_resume">Učitaj trenutni dan svakim ulaskom u aplikaciju</string>
-    <string name="summary_skip_sat">Učitaj sljedeći ponedjeljak umjesto pomicanja na subotu</string>
+    <string name="title_load_on_resume">Automatski učitaj trenutni tjedan</string>
+    <string name="summary_load_on_resume">Učitaj trenutni tjedan svakim ulaskom u aplikaciju</string>
+    <string name="summary_skip_sat">Učitaj sljedeći tjedan umjesto pomicanja na subotu</string>
     <string name="title_group_toggle">Primijeni filtere</string>
     <string name="summary_group_toggle">Uokviri blokove koji sadrže jedan od aktivnih filtera crvenom bojom</string>
     <string name="label_refresh">Osvježi</string>
