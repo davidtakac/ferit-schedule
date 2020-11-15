@@ -50,7 +50,6 @@ class ScheduleViewModel(
             field = value
             buildAndPostUrl()
         }
-
     private var isNightMode: Boolean = false
 
     //region Lifecycle
