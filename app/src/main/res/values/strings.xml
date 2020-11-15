@@ -38,7 +38,7 @@
     <string name="title_timepicker">Vrijeme</string>
     <string name="title_skip_day">Preskakanje dana</string>
     <string name="summary_skip_day">Pomiči na sljedeći dan poslije dolje definiranog vremena</string>
-    <string name="title_skip_sat">Preskoči subotu</string>
+    <string name="title_skip_saturday">Preskoči subotu</string>
     <string name="title_category_display_options">Prikaz rasporeda</string>
     <string name="label_back">Natrag</string>
     <string name="label_save">Spremi</string>
@@ -53,8 +53,9 @@
     <string name="title_group_toggle">Primijeni filtere</string>
     <string name="summary_group_toggle">Uokviri blokove koji sadrže jedan od aktivnih filtera crvenom bojom</string>
     <string name="label_refresh">Osvježi</string>
+    <string name="error_no_network">Došlo je do pogreške pri učitavanju stranice. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
     <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
-    <string name="notify_unexpected_error">Došlo je do neočekivane pogreške.\n [Kod]: %d [Opis]: %s [URL]: %s</string>
+    <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n [Kod]: %d [Opis]: %s [URL]: %s</string>
     <string name="title_groups_help">Upute za unos filtera</string>
     <string name="content_groups_help">
         &#8226; Svaki blok koji u svom naslovu ili oblačiću sadrži uneseni filter bit će označen\n\n
@@ -80,7 +81,7 @@
     <string name="title_bug_report">Prijavi problem</string>
     <string name="summary_bug_report">Pošalji opis problema developeru</string>
     <string name="summary_whats_new">Pogledaj što je novo</string>
-    <string name="template_bug_report">Poruka greške: %s\nDodatni opis: </string>
+    <string name="template_bug_report">Poruka greške: %s\n\nDodatni opis: </string>
     <string name="title_course_identifier">Identifikator kolegija</string>
     <string name="title_course_identifier_help">Gdje pronaći identifikator kolegija?</string>
     <string name="key_course_identifier_help">course_identifier_help</string>

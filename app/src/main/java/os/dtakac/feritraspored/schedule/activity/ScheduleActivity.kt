@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.observeEvent
@@ -65,6 +66,9 @@ class ScheduleActivity: AppCompatActivity() {
         }
         viewModel.showChangelog.observeEvent(this) {
             supportFragmentManager.showChangelog()
+        }
+        viewModel.snackBarMessage.observeEvent(this) {
+            Snackbar.make(findViewById(android.R.id.content), it, Snackbar.LENGTH_SHORT).show()
         }
         viewModel.openBugReport.observeEvent(this) {
             openBugReport(content = it)
