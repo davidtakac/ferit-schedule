@@ -21,6 +21,7 @@ class ScheduleWebViewClient(
     }
 
     private var isError: Boolean = false
+    private var wasStarted: Boolean = false
 
     override fun shouldOverrideUrlLoading(view: WebView?, url: String): Boolean {
         listener.onOverrideUrlLoading(url)
@@ -28,16 +29,19 @@ class ScheduleWebViewClient(
     }
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+        super.onPageStarted(view, url, favicon)
+        wasStarted = true
         listener.onPageStarted()
     }
 
     override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
-        listener.onErrorReceived(errorCode, description, failingUrl)
         super.onReceivedError(view, errorCode, description, failingUrl)
+        listener.onErrorReceived(errorCode, description, failingUrl)
     }
 
     override fun onPageFinished(view: WebView?, url: String?) {
-        listener.onPageFinished(isError)
+        super.onPageFinished(view, url)
+        if(wasStarted) listener.onPageFinished(isError)
         isError = false
     }
 }
