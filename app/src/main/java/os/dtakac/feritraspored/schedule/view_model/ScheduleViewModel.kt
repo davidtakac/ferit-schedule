@@ -14,6 +14,8 @@ import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.scripts.ScriptProvider
 import os.dtakac.feritraspored.common.utils.isSameWeek
+import os.dtakac.feritraspored.common.utils.scrollFormat
+import os.dtakac.feritraspored.common.utils.urlFormat
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -45,10 +47,17 @@ class ScheduleViewModel(
         Event(it.peekContent() == View.GONE)
     }
 
-    private var selectedDate = LocalDate.now()
+    private var selectedDate = LocalDate.MIN
         set(value) {
+            val shouldLoadNewUrl = !value.isSameWeek(field)
             field = value
-            buildAndPostUrl()
+            if(shouldLoadNewUrl) {
+                buildAndPostUrl()
+            } else {
+                pageModificationJavascript.postEvent(
+                        scriptProvider.scrollIntoViewFunction(field.scrollFormat())
+                )
+            }
         }
     private var isNightMode: Boolean = false
 
@@ -173,7 +182,7 @@ class ScheduleViewModel(
 
     private fun buildUrl(): String {
         return res.getString(R.string.template_schedule).format(
-                selectedDate.toString(),
+                selectedDate.urlFormat(),
                 prefs.courseIdentifier
         )
     }
@@ -188,9 +197,7 @@ class ScheduleViewModel(
             js += scriptProvider.highlightBlocksFunction(filtersTrimmed)
         }
         if(selectedDate.isSameWeek(LocalDate.now())) {
-            js += scriptProvider.scrollIntoViewFunction(
-                    selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy."))
-            )
+            js += scriptProvider.scrollIntoViewFunction(selectedDate.scrollFormat())
         }
         return js
     }
