@@ -108,7 +108,8 @@ class SettingsViewModel(
         filtersSummary.postValue(
                 if(filters.isNullOrEmpty())
                     res.getString(R.string.placeholder_empty)
-                else filters
+                else
+                    filters
         )
     }
 

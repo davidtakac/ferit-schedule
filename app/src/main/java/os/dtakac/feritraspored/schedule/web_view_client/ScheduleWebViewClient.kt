@@ -21,6 +21,9 @@ class ScheduleWebViewClient(
     }
 
     private var isError: Boolean = false
+    /*Handles calling [listener#onPageFinished] only if page was actually started before.
+    * This fixes the odd problem where upon configuration change onPageFinished gets called without
+    * onPageStarted being called first.*/
     private var wasStarted: Boolean = false
 
     override fun shouldOverrideUrlLoading(view: WebView?, url: String): Boolean {

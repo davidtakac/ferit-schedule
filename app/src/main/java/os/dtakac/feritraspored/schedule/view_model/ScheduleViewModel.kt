@@ -14,13 +14,13 @@ import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.scripts.ScriptProvider
 import os.dtakac.feritraspored.common.utils.isSameWeek
+import os.dtakac.feritraspored.common.utils.isWeekNumberInvalid
 import os.dtakac.feritraspored.common.utils.scrollFormat
 import os.dtakac.feritraspored.common.utils.urlFormat
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 class ScheduleViewModel(
         private val prefs: PreferenceRepository,
@@ -54,9 +54,7 @@ class ScheduleViewModel(
             if(shouldLoadNewUrl) {
                 buildAndPostUrl()
             } else {
-                pageModificationJavascript.postEvent(
-                        scriptProvider.scrollIntoViewFunction(field.scrollFormat())
-                )
+                pageModificationJavascript.postEvent(buildScrollIntoViewJavascript())
             }
         }
     private var isNightMode: Boolean = false
@@ -112,11 +110,7 @@ class ScheduleViewModel(
 
     fun onWeekNumberJavascriptFinished(returnedWeekNumber: String) {
         title.postValue(
-            if( returnedWeekNumber.isEmpty() ||
-                returnedWeekNumber.isBlank() ||
-                returnedWeekNumber == "null" ||
-                returnedWeekNumber == "undefined"
-            ) {
+            if(returnedWeekNumber.isWeekNumberInvalid()) {
                 res.getString(R.string.label_schedule)
             } else {
                 returnedWeekNumber.removeSurrounding("\"")
@@ -162,14 +156,13 @@ class ScheduleViewModel(
     }
 
     fun onBugReportClicked() {
-        openBugReport.postEvent(
-                res.getString(R.string.template_bug_report).format(
-                        errorMessage.peekContent() ?: ""
-                )
-        )
+        openBugReport.postEvent(res.getString(R.string.template_bug_report).format(
+                errorMessage.peekContent() ?: ""
+        ))
     }
     //endregion
 
+    //region Private helper methods
     private fun buildAndPostUrl() {
         if(networkUtil.isOnline()) {
             errorMessage.postEvent(null)
@@ -201,4 +194,9 @@ class ScheduleViewModel(
         }
         return js
     }
+
+    private fun buildScrollIntoViewJavascript(): String {
+        return scriptProvider.scrollIntoViewFunction(selectedDate.scrollFormat())
+    }
+    //endregion
 }

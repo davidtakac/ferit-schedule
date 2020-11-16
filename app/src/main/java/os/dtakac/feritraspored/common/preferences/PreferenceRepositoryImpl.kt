@@ -5,7 +5,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.constants.*
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 
 class PreferenceRepositoryImpl(
@@ -87,12 +86,8 @@ class PreferenceRepositoryImpl(
         get() = prefs.getBoolean(R.string.key_filters_toggle, false)
         set(value) = editor { putBoolean(R.string.key_filters_toggle, value) }
 
-    private fun getKey(@StringRes keyResId: Int): String {
-        return res.getString(keyResId)
-    }
-
     override fun delete(@StringRes keyResId: Int) {
-        editor { remove(getKey(keyResId)) }
+        editor { remove(res.getString(keyResId)) }
     }
 
     override fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
@@ -108,27 +103,27 @@ class PreferenceRepositoryImpl(
     }
 
     private fun SharedPreferences.getBoolean(@StringRes keyResId: Int, defaultValue: Boolean): Boolean {
-        return getBoolean(getKey(keyResId), defaultValue)
+        return getBoolean(res.getString(keyResId), defaultValue)
     }
 
     private fun SharedPreferences.Editor.putBoolean(@StringRes keyResId: Int, value: Boolean) {
-        putBoolean(getKey(keyResId), value)
+        putBoolean(res.getString(keyResId), value)
     }
 
     private fun SharedPreferences.getString(@StringRes keyResId: Int, defaultValue: String?): String? {
-        return getString(getKey(keyResId), defaultValue)
+        return getString(res.getString(keyResId), defaultValue)
     }
 
     private fun SharedPreferences.Editor.putString(@StringRes keyResId: Int, value: String?) {
-        putString(getKey(keyResId), value)
+        putString(res.getString(keyResId), value)
     }
 
     private fun SharedPreferences.getInt(@StringRes keyResId: Int, defaultValue: Int): Int {
-        return getInt(getKey(keyResId), defaultValue)
+        return getInt(res.getString(keyResId), defaultValue)
     }
 
     private fun SharedPreferences.Editor.putInt(@StringRes keyResId: Int, value: Int) {
-        putInt(getKey(keyResId), value)
+        putInt(res.getString(keyResId), value)
     }
 
     private fun migrateToCourseIdentifierPreference() {
