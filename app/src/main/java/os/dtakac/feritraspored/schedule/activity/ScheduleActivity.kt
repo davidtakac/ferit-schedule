@@ -34,7 +34,10 @@ class ScheduleActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.onResume(resources.configuration.isNightMode())
+        viewModel.onResume(
+                binding.wvSchedule.url,
+                resources.configuration.isNightMode()
+        )
     }
     //endregion
 
