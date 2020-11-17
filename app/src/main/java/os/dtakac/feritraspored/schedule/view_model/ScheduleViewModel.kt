@@ -28,6 +28,7 @@ class ScheduleViewModel(
         private val scriptProvider: ScriptProvider,
         private val networkUtil: NetworkUtil
 ): ViewModel(), ScheduleWebViewClient.Listener {
+    //region Live data
     val url = MutableLiveData<Event<String>>()
     val title = MutableLiveData(res.getString(R.string.label_schedule))
     val pageModificationJavascript = MutableLiveData<Event<String>>()
@@ -46,13 +47,16 @@ class ScheduleViewModel(
     val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(loaderVisibility) {
         Event(it.peekContent() == View.GONE)
     }
+    //endregion
 
+    //region Private variables
     private var isNightMode: Boolean = false
     private var selectedDate = LocalDate.MIN
         set(value) {
             field = value
             startUrl()
         }
+    //endregion
 
     //region Lifecycle
     fun onResume(
@@ -74,7 +78,7 @@ class ScheduleViewModel(
     }
     //endregion
 
-    //region WebView
+    //region WebView events
     override fun onOverrideUrlLoading(url: String) {
         openInCustomTabs.postEvent(url)
     }
