@@ -47,17 +47,12 @@ class ScheduleViewModel(
         Event(it.peekContent() == View.GONE)
     }
 
+    private var isNightMode: Boolean = false
     private var selectedDate = LocalDate.MIN
         set(value) {
-            val shouldLoadNewUrl = !value.isSameWeek(field)
             field = value
-            if(shouldLoadNewUrl) {
-                buildAndPostUrl()
-            } else {
-                pageModificationJavascript.postEvent(buildScrollIntoViewJavascript())
-            }
+            startUrl()
         }
-    private var isNightMode: Boolean = false
 
     //region Lifecycle
     fun onResume(currentNightMode: Boolean) {
@@ -66,10 +61,11 @@ class ScheduleViewModel(
         }
         if( isNightMode != currentNightMode ||
             prefs.isSettingsModified ||
-            prefs.isLoadOnResume ||
             url.value == null
         ) {
             isNightMode = currentNightMode
+            selectedDate = buildCurrentWeek()
+        } else if(prefs.isLoadOnResume) {
             onCurrentWeekClicked()
         }
     }
@@ -83,14 +79,14 @@ class ScheduleViewModel(
     override fun onPageStarted() { /*loaders are handled in [buildAndPostUrl]*/ }
 
     override fun onErrorReceived(code: Int, description: String?, url: String?) {
-        val errorMessage = if(!networkUtil.isOnline()) {
+        val message = if(!networkUtil.isOnline()) {
             res.getString(R.string.notify_no_network)
         } else {
             res.getString(R.string.template_error_unexpected).format(
                 code, description, url
             )
         }
-        this.errorMessage.postEvent(errorMessage)
+        errorMessage.postEvent(message)
         loaderVisibility.postEvent(View.GONE)
     }
 
@@ -121,16 +117,16 @@ class ScheduleViewModel(
 
     //region Click handling
     fun onRefreshClicked() {
-        buildAndPostUrl()
+        startUrl()
     }
 
     fun onSettingsClicked() {
-        openSettings.postValue(Event(Unit))
+        openSettings.postEvent()
     }
 
     fun onOpenInExternalBrowserClicked() {
-        val urlToOpen = url.peekContent() ?: return
-        openInExternalBrowser.postEvent(urlToOpen)
+        val url = url.peekContent() ?: return
+        openInExternalBrowser.postEvent(url)
     }
 
     fun onPreviousWeekClicked() {
@@ -138,17 +134,12 @@ class ScheduleViewModel(
     }
 
     fun onCurrentWeekClicked() {
-        var newSelectedDate = LocalDate.now()
-        if(prefs.isSkipDay && LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)) {
-            newSelectedDate = newSelectedDate.plusDays(1)
+        val currentWeek = buildCurrentWeek()
+        if(currentWeek.isSameWeek(selectedDate)) {
+            pageModificationJavascript.postEvent(buildScrollIntoViewJavascript())
+        } else {
+            selectedDate = currentWeek
         }
-        if(newSelectedDate.dayOfWeek == DayOfWeek.SATURDAY && prefs.isSkipSaturday) {
-            newSelectedDate = newSelectedDate.plusDays(1)
-        }
-        if(newSelectedDate.dayOfWeek == DayOfWeek.SUNDAY) {
-            newSelectedDate = newSelectedDate.plusDays(1)
-        }
-        selectedDate = newSelectedDate
     }
 
     fun onNextWeekClicked() {
@@ -163,21 +154,18 @@ class ScheduleViewModel(
     //endregion
 
     //region Private helper methods
-    private fun buildAndPostUrl() {
-        if(networkUtil.isOnline()) {
-            errorMessage.postEvent(null)
-            loaderVisibility.postEvent(View.VISIBLE)
-            url.postEvent(buildUrl())
-        } else {
-            snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
-        }
-    }
-
-    private fun buildUrl(): String {
-        return res.getString(R.string.template_schedule).format(
+    private fun startUrl() {
+        val url = res.getString(R.string.template_schedule).format(
                 selectedDate.urlFormat(),
                 prefs.courseIdentifier
         )
+        if(networkUtil.isOnline()) {
+            errorMessage.postEvent(null)
+            loaderVisibility.postEvent(View.VISIBLE)
+            this.url.postEvent(url)
+        } else {
+            snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
+        }
     }
 
     private fun buildPageModificationJavascript(): String {
@@ -190,13 +178,27 @@ class ScheduleViewModel(
             js += scriptProvider.highlightBlocksFunction(filtersTrimmed)
         }
         if(selectedDate.isSameWeek(LocalDate.now())) {
-            js += scriptProvider.scrollIntoViewFunction(selectedDate.scrollFormat())
+            js += buildScrollIntoViewJavascript()
         }
         return js
     }
 
     private fun buildScrollIntoViewJavascript(): String {
         return scriptProvider.scrollIntoViewFunction(selectedDate.scrollFormat())
+    }
+
+    private fun buildCurrentWeek(): LocalDate {
+        var newSelectedDate = LocalDate.now()
+        if(prefs.isSkipDay && LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)) {
+            newSelectedDate = newSelectedDate.plusDays(1)
+        }
+        if(newSelectedDate.dayOfWeek == DayOfWeek.SATURDAY && prefs.isSkipSaturday) {
+            newSelectedDate = newSelectedDate.plusDays(1)
+        }
+        if(newSelectedDate.dayOfWeek == DayOfWeek.SUNDAY) {
+            newSelectedDate = newSelectedDate.plusDays(1)
+        }
+        return newSelectedDate
     }
     //endregion
 }
