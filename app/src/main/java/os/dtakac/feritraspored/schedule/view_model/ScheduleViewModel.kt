@@ -55,13 +55,16 @@ class ScheduleViewModel(
         }
 
     //region Lifecycle
-    fun onResume(currentNightMode: Boolean) {
+    fun onResume(
+            loadedUrl: String?,
+            currentNightMode: Boolean
+    ) {
         if(prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.postEvent()
         }
         if( isNightMode != currentNightMode ||
             prefs.isSettingsModified ||
-            url.value == null
+            loadedUrl == null
         ) {
             isNightMode = currentNightMode
             selectedDate = buildCurrentWeek()
