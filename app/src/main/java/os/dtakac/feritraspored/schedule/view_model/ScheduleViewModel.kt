@@ -18,6 +18,7 @@ import os.dtakac.feritraspored.common.utils.isWeekNumberInvalid
 import os.dtakac.feritraspored.common.utils.scrollFormat
 import os.dtakac.feritraspored.common.utils.urlFormat
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
+import os.dtakac.feritraspored.views.observable_web_view.ObservableWebView
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
@@ -47,6 +48,8 @@ class ScheduleViewModel(
     val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(loaderVisibility) {
         Event(it.peekContent() == View.GONE)
     }
+    val showControls = MutableLiveData<Unit>()
+    val hideControls = MutableLiveData<Event<Unit>>()
     //endregion
 
     //region Private variables
@@ -208,4 +211,18 @@ class ScheduleViewModel(
         return newSelectedDate
     }
     //endregion
+
+    val webViewScrollListener = object : ObservableWebView.ScrollListener {
+        override fun onScroll(scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+
+        }
+
+        override fun onScrollDown() {
+            if(hideControls.value?.hasBeenHandled != true) hideControls.postEvent()
+        }
+
+        override fun onScrollUp() {
+            showControls.postValue(Unit)
+        }
+    }
 }

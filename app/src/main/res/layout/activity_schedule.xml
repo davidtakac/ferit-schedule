@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         app:title="@string/label_schedule"
         app:layout_constraintTop_toTopOf="parent"
         android:elevation="4dp" />
-    <WebView
+    <os.dtakac.feritraspored.views.observable_web_view.ObservableWebView
         android:id="@+id/wvSchedule"
         android:layout_width="match_parent"
         android:layout_height="0dp"

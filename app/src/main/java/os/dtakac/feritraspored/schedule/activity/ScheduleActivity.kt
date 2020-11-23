@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.observeEvent
-import os.dtakac.feritraspored.common.utils.isNightMode
-import os.dtakac.feritraspored.common.utils.openBugReport
-import os.dtakac.feritraspored.common.utils.showChangelog
+import os.dtakac.feritraspored.common.utils.*
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
@@ -93,6 +93,12 @@ class ScheduleActivity: AppCompatActivity() {
             }
             binding.toolbar.menu.findItem(R.id.item_menu_refresh).isEnabled = it
         }
+        viewModel.hideControls.observeEvent(this) {
+            binding.toolbar.slide(Gravity.TOP, false)
+        }
+        viewModel.showControls.observe(this) {
+            binding.toolbar.slide(Gravity.TOP, true)
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -100,6 +106,7 @@ class ScheduleActivity: AppCompatActivity() {
         binding.wvSchedule.apply {
             webViewClient = ScheduleWebViewClient(viewModel)
             settings.javaScriptEnabled = true
+            scrollListener = viewModel.webViewScrollListener
         }
         binding.toolbar.apply {
             inflateMenu(R.menu.menu)
