@@ -46,7 +46,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat_v"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_v"
     implementation "com.google.android.material:material:$material_v"
-    implementation "androidx.preference:preference:$preference_v"
+    implementation "androidx.preference:preference-ktx:$preference_v"
     implementation "androidx.browser:browser:$browser_v"
     implementation "androidx.core:core-ktx:$core_ktx_v"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
