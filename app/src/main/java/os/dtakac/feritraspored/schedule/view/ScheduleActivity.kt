@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.schedule.activity
+package os.dtakac.feritraspored.schedule.view
 
 import android.annotation.SuppressLint
 import android.content.Intent

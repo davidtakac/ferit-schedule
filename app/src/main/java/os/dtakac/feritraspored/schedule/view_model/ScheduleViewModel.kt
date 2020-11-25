@@ -14,7 +14,6 @@ import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.scripts.ScriptProvider
 import os.dtakac.feritraspored.common.utils.isSameWeek
-import os.dtakac.feritraspored.common.utils.isWeekNumberInvalid
 import os.dtakac.feritraspored.common.utils.scrollFormat
 import os.dtakac.feritraspored.common.utils.urlFormat
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
@@ -206,6 +205,10 @@ class ScheduleViewModel(
             newSelectedDate = newSelectedDate.plusDays(1)
         }
         return newSelectedDate
+    }
+
+    private fun String.isWeekNumberInvalid(): Boolean {
+        return isBlank() || isEmpty() || this == "null" || this == "undefined"
     }
     //endregion
 }
