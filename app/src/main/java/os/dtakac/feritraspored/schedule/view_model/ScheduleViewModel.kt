@@ -142,7 +142,7 @@ class ScheduleViewModel(
     fun onCurrentWeekClicked() {
         val currentWeek = buildCurrentWeek()
         if(currentWeek.isSameWeek(selectedDate)) {
-            pageModificationJavascript.postEvent(buildScrollIntoViewJavascript())
+            pageModificationJavascript.postEvent(scrollToCurrentDayFunction())
         } else {
             selectedDate = currentWeek
         }
@@ -175,21 +175,24 @@ class ScheduleViewModel(
     }
 
     private fun buildPageModificationJavascript(): String {
-        var js = scriptProvider.hideJunkFunction() + scriptProvider.timeOnBlocksFunction()
+        var js = scriptProvider.hideJunkFunction()
         if(isNightMode) {
             js += scriptProvider.darkThemeFunction()
+        }
+        if(prefs.isShowTimeOnBlocks) {
+            js += scriptProvider.timeOnBlocksFunction()
         }
         if(prefs.isFiltersEnabled) {
             val filtersTrimmed = prefs.filters?.split(",")?.map { it.trim() } ?: listOf()
             js += scriptProvider.highlightBlocksFunction(filtersTrimmed)
         }
         if(selectedDate.isSameWeek(LocalDate.now())) {
-            js += buildScrollIntoViewJavascript()
+            js += scrollToCurrentDayFunction()
         }
         return js
     }
 
-    private fun buildScrollIntoViewJavascript(): String {
+    private fun scrollToCurrentDayFunction(): String {
         return scriptProvider.scrollIntoViewFunction(selectedDate.scrollFormat())
     }
 
