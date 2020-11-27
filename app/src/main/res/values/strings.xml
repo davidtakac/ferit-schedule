@@ -25,6 +25,8 @@
     <string name="key_report_bug">bug_report_key</string>
     <string name="key_version">version_key</string>
     <string name="key_course_identifier">course_identifier</string>
+    <string name="key_time_on_blocks">key_time_on_blocks</string>
+    <string name="key_course_identifier_help">course_identifier_help</string>
 
     <!--User interface strings-->
     <string name="app_name">Ferit Raspored</string>
@@ -34,7 +36,7 @@
     <string name="title_year">Godina</string>
     <string name="title_category_programme_and_year">Studij i godina</string>
     <string name="title_group_highlight">Aktivni filteri</string>
-    <string name="title_category_group_highlight">Označavanje blokova</string>
+    <string name="title_category_group_highlight">Nastavni blokovi</string>
     <string name="title_timepicker">Vrijeme</string>
     <string name="title_skip_day">Preskakanje dana</string>
     <string name="summary_skip_day">Pomiči na sljedeći dan poslije dolje definiranog vremena</string>
@@ -82,12 +84,13 @@
     <string name="label_email_via">Pošalji e-mail pomoću…</string>
     <string name="title_other">Ostalo</string>
     <string name="title_bug_report">Prijavi problem</string>
-    <string name="summary_bug_report">Pošalji opis problema developeru</string>
+    <string name="summary_bug_report">Pošalji opis problema razvojnom programeru</string>
     <string name="summary_whats_new">Pogledaj što je novo</string>
     <string name="template_bug_report">Poruka greške: %s\n\nDodatni opis: </string>
     <string name="title_course_identifier">Identifikator kolegija</string>
     <string name="title_course_identifier_help">Gdje pronaći identifikator kolegija?</string>
-    <string name="key_course_identifier_help">course_identifier_help</string>
+    <string name="title_time_on_blocks">Vrijeme izvođenja na blokovima</string>
+    <string name="summary_time_on_blocks">Tekstu bloka dodaj liniju s pripadajućim vremenom izvođenja</string>
     <string name="content_course_identifier_help">
         1. Pomoću preglednika navigiraj do stranice rasporeda za svoj kolegij\n\n
         2. Poveznica je ovog oblika:\n<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>

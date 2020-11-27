@@ -86,6 +86,10 @@ class PreferenceRepositoryImpl(
         get() = prefs.getBoolean(R.string.key_filters_toggle, false)
         set(value) = editor { putBoolean(R.string.key_filters_toggle, value) }
 
+    override var isShowTimeOnBlocks: Boolean
+        get() = prefs.getBoolean(R.string.key_time_on_blocks, false)
+        set(value) = editor { putBoolean(R.string.key_time_on_blocks, value) }
+
     override fun delete(@StringRes keyResId: Int) {
         editor { remove(res.getString(keyResId)) }
     }

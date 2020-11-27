@@ -23,6 +23,10 @@
     <PreferenceCategory
         android:title="@string/title_category_group_highlight">
         <SwitchPreference
+            android:key="@string/key_time_on_blocks"
+            android:title="@string/title_time_on_blocks"
+            android:summary="@string/summary_time_on_blocks" />
+        <SwitchPreference
             android:key="@string/key_filters_toggle"
             android:title="@string/title_group_toggle"
             android:summary="@string/summary_group_toggle" />
