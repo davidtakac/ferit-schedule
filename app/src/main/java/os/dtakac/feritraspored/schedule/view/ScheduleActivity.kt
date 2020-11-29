@@ -10,9 +10,9 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.observeEvent
-import os.dtakac.feritraspored.common.utils.isNightMode
-import os.dtakac.feritraspored.common.utils.openBugReport
-import os.dtakac.feritraspored.common.utils.showChangelog
+import os.dtakac.feritraspored.common.extensions.isNightMode
+import os.dtakac.feritraspored.common.extensions.openBugReport
+import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
@@ -43,8 +43,11 @@ class ScheduleActivity: AppCompatActivity() {
 
     //region Initialization
     private fun initObservers() {
+        viewModel.scheduleData.observeEvent(this) {
+            binding.wvSchedule.loadDataWithBaseURL(it.baseUrl,  it.html, it.mimeType, it.encoding, null)
+        }
         viewModel.url.observeEvent(this) {
-            binding.wvSchedule.loadUrl(it)
+            //binding.wvSchedule.loadUrl(it)
         }
         viewModel.title.observe(this) {
             binding.toolbar.title = it

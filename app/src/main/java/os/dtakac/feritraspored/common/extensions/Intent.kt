@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.common.utils
+package os.dtakac.feritraspored.common.extensions
 
 import android.content.Context
 import android.content.Intent

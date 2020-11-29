@@ -14,4 +14,12 @@
     <color name="gray300_to_black">@color/gray300</color>
     <color name="toolbar_color">@color/white</color>
     <color name="navbar_color">@color/white</color>
+
+    <color name="darkElementTextColor">#BDBDBD</color>
+    <color name="darkBlocksTextColor">#EEEEEE</color>
+    <color name="darkPrBlock">#517652</color>
+    <color name="darkAvBlock">#7174A4</color>
+    <color name="darkLvBlock">#9D6F5B</color>
+    <color name="darkIsBlock">#A7843D</color>
+    <color name="darkKvBlock">#A29343</color>
 </resources>

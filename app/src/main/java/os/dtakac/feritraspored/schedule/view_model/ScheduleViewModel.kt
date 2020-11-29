@@ -2,8 +2,10 @@ package os.dtakac.feritraspored.schedule.view_model
 
 import android.view.View
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.Event
@@ -13,9 +15,11 @@ import os.dtakac.feritraspored.common.network.NetworkUtil
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.scripts.ScriptProvider
-import os.dtakac.feritraspored.common.utils.isSameWeek
-import os.dtakac.feritraspored.common.utils.scrollFormat
-import os.dtakac.feritraspored.common.utils.urlFormat
+import os.dtakac.feritraspored.common.extensions.isSameWeek
+import os.dtakac.feritraspored.common.extensions.scrollFormat
+import os.dtakac.feritraspored.common.extensions.urlFormat
+import os.dtakac.feritraspored.schedule.data.ScheduleData
+import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
 import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -25,7 +29,8 @@ class ScheduleViewModel(
         private val prefs: PreferenceRepository,
         private val res: ResourceRepository,
         private val scriptProvider: ScriptProvider,
-        private val networkUtil: NetworkUtil
+        private val networkUtil: NetworkUtil,
+        private val scheduleRepository: ScheduleRepository
 ): ViewModel(), ScheduleWebViewClient.Listener {
     //region Live data
     val url = MutableLiveData<Event<String>>()
@@ -46,6 +51,8 @@ class ScheduleViewModel(
     val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(loaderVisibility) {
         Event(it.peekContent() == View.GONE)
     }
+
+    val scheduleData = MutableLiveData<Event<ScheduleData>>()
     //endregion
 
     //region Private variables
@@ -97,6 +104,7 @@ class ScheduleViewModel(
     }
 
     override fun onPageFinished(isError: Boolean) {
+        return
         if(!isError) {
             weekNumberJavascript.postEvent(scriptProvider.weekNumberFunction())
             pageModificationJavascript.postEvent(buildPageModificationJavascript())
@@ -161,6 +169,12 @@ class ScheduleViewModel(
 
     //region Private helper methods
     private fun startUrl() {
+        viewModelScope.launch {
+            val data = scheduleRepository.getScheduleData(selectedDate)
+            withContext(Dispatchers.Main) { scheduleData.postEvent(data) }
+        }
+        return
+
         val url = res.getString(R.string.template_schedule).format(
                 selectedDate.urlFormat(),
                 prefs.courseIdentifier
