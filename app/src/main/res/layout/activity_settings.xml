@@ -8,7 +8,7 @@
         android:id="@+id/toolbarSettings"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/toolbar_color"
+        android:background="@color/colorStatusBar"
         app:title="@string/label_settings"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"

@@ -67,7 +67,7 @@ class ScheduleRepositoryImpl(
         filters.forEach { filter ->
             val blocks = select("div.blokovi:contains($filter)")
             blocks.forEach {
-                it.addToStyle("border-style: solid; border-color: ${res.getColorHex(R.color.highlightColor)}; border-width: 2px; ")
+                it.addToStyle("border-style: solid; border-color: ${res.getColorHex(R.color.colorHighlightBlock)}; border-width: 2px; ")
             }
         }
     }

@@ -10,7 +10,7 @@
         android:id="@+id/ivError"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:tint="@color/errorRed"
+        app:tint="@color/redError"
         app:srcCompat="@drawable/ic_baseline_error_outline_24px"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
