@@ -22,4 +22,6 @@
     <color name="darkLvBlock">#9D6F5B</color>
     <color name="darkIsBlock">#A7843D</color>
     <color name="darkKvBlock">#A29343</color>
+
+    <color name="highlightColor">#E53935</color>
 </resources>

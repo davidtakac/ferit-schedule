@@ -8,4 +8,5 @@ interface ResourceRepository {
     fun getString(@StringRes resId: Int): String
     fun getStringArray(@ArrayRes resId: Int): Array<String>
     fun getColorHex(@ColorRes resId: Int): String
+    fun isOnline(): Boolean
 }

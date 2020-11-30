@@ -4,5 +4,6 @@ data class ScheduleData(
         val baseUrl: String,
         val html: String,
         val encoding: String,
-        val mimeType: String
+        val mimeType: String,
+        val title: String
 )

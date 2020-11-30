@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import com.google.android.material.snackbar.Snackbar
@@ -15,7 +16,6 @@ import os.dtakac.feritraspored.common.extensions.openBugReport
 import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
-import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
 import os.dtakac.feritraspored.settings.container.SettingsActivity
 import os.dtakac.feritraspored.views.debounce.onDebouncedClick
 
@@ -45,18 +45,13 @@ class ScheduleActivity: AppCompatActivity() {
     private fun initObservers() {
         viewModel.scheduleData.observeEvent(this) {
             binding.wvSchedule.loadDataWithBaseURL(it.baseUrl,  it.html, it.mimeType, it.encoding, null)
-        }
-        viewModel.url.observeEvent(this) {
-            //binding.wvSchedule.loadUrl(it)
+            binding.toolbar.title = it.title
         }
         viewModel.title.observe(this) {
             binding.toolbar.title = it
         }
         viewModel.pageModificationJavascript.observeEvent(this) {
-            injectPageModificationJavascript(it)
-        }
-        viewModel.weekNumberJavascript.observeEvent(this) {
-            injectWeekNumberJavascript(it)
+            binding.wvSchedule.evaluateJavascript(it, null)
         }
         viewModel.openSettings.observeEvent(this) {
             startActivity(Intent(this, SettingsActivity::class.java))
@@ -80,7 +75,7 @@ class ScheduleActivity: AppCompatActivity() {
             openBugReport(content = it)
         }
         viewModel.loaderVisibility.observeEvent(this) {
-            binding.loader.root.visibility = it
+            binding.loader.visibility = it
         }
         viewModel.errorMessage.observeEvent(this) {
             binding.error.tvError.text = it
@@ -101,7 +96,7 @@ class ScheduleActivity: AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun initViews() {
         binding.wvSchedule.apply {
-            webViewClient = ScheduleWebViewClient(viewModel)
+            webViewClient = WebViewClient()
             settings.javaScriptEnabled = true
         }
         binding.toolbar.apply {
@@ -135,20 +130,6 @@ class ScheduleActivity: AppCompatActivity() {
     private fun initBinding() {
         binding = ActivityScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
-    }
-    //endregion
-
-    //region WebView
-    private fun injectPageModificationJavascript(script: String) {
-        binding.wvSchedule.evaluateJavascript(script) {
-            viewModel.onPageModificationJavascriptFinished()
-        }
-    }
-
-    private fun injectWeekNumberJavascript(script: String) {
-        binding.wvSchedule.evaluateJavascript(script) {
-            viewModel.onWeekNumberJavascriptFinished(it)
-        }
     }
     //endregion
 }

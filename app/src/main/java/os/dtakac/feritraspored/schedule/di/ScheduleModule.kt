@@ -7,6 +7,6 @@ import os.dtakac.feritraspored.schedule.repository.ScheduleRepositoryImpl
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
 
 val scheduleModule = module {
-    factory<ScheduleRepository> { ScheduleRepositoryImpl(get(), get()) }
-    viewModel { ScheduleViewModel(get(), get(), get(), get(), get()) }
+    factory<ScheduleRepository> { ScheduleRepositoryImpl(get()) }
+    viewModel { ScheduleViewModel(get(), get(), get()) }
 }

@@ -4,4 +4,5 @@
     <color name="lightBlue200_to_700">#81D4FA</color>
     <color name="toolbar_color">@color/dark_surface_4dp</color>
     <color name="navbar_color">@color/dark_surface_8dp</color>
+    <color name="highlightColor">#FF1744</color>
 </resources>
