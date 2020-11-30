@@ -2,18 +2,18 @@
 <resources>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="lightBlue200">#0288D1</color>
-    <color name="lightBlue500">#03A9F4</color>
-    <color name="lightBlue700">#81D4FA</color>
-    <color name="gray300">#E0E0E0</color>
     <color name="gray900">#212121</color>
-    <color name="redError">#B00020</color>
-    <color name="almostBlack">#121212</color>
+    <color name="darkSurface">#121212</color>
     <color name="darkSurface4dp">#272727</color>
     <color name="darkSurface8dp">#2E2E2E</color>
+    <color name="errorRed">#B00020</color>
+    <color name="feritRed">#ac000a</color>
+    <color name="feritRedLight">#E88873</color>
+    <color name="feritBlue">#507daa</color>
+    <color name="feritBlueLight">#81D4FA</color>
 
-    <color name="colorPrimary">@color/lightBlue200</color>
-    <color name="colorAccent">@color/lightBlue500</color>
+    <color name="colorPrimary">@color/feritRed</color>
+    <color name="colorAccent">@color/feritBlue</color>
     <color name="colorStatusBar">@color/white</color>
     <color name="colorNavigationBar">@color/white</color>
     <color name="colorHighlightBlock">#E53935</color>

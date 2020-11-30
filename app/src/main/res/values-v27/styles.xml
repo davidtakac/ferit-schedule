@@ -8,11 +8,10 @@
         <item name="android:windowLightNavigationBar">@bool/isLightSystemBar</item>
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
-    <!--As to not blind the user on startup-->
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/ic_splash</item>
-        <item name="android:statusBarColor">@color/almostBlack</item>
-        <item name="android:navigationBarColor">@color/almostBlack</item>
+        <item name="android:statusBarColor">@color/darkSurface</item>
+        <item name="android:navigationBarColor">@color/darkSurface</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
     </style>
