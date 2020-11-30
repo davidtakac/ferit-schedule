@@ -27,7 +27,7 @@ class ScheduleViewModel(
     //region Live data
     val scheduleData = MutableLiveData<Event<ScheduleData>>()
     val title = MutableLiveData(res.getString(R.string.label_schedule))
-    val pageModificationJavascript = MutableLiveData<Event<String>>()
+    val javascript = MutableLiveData<Event<String>>()
     val loaderVisibility = MutableLiveData<Event<Int>>()
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
@@ -73,7 +73,18 @@ class ScheduleViewModel(
     }
     //endregion
 
-    //region Click handling
+    //region Event handling
+    fun onPageFinished() {
+        if(buildCurrentWeek().isSameWeek(selectedDate)) {
+            scrollSelectedDateIntoView()
+        }
+    }
+
+    fun onUrlClicked(url: String?) {
+        if(url == null) return
+        openInCustomTabs.postEvent(url)
+    }
+
     fun onRefreshClicked() {
         startUrl()
     }
@@ -133,9 +144,8 @@ class ScheduleViewModel(
     }
 
     private fun scrollSelectedDateIntoView() {
-        pageModificationJavascript.postEvent(
-                res.getString(R.string.template_scroll_into_view_function)
-                        .format(selectedDate.scrollFormat())
+        javascript.postEvent(
+                res.readFromAssets("template_scroll_into_view.js").format(selectedDate.scrollFormat())
         )
     }
 

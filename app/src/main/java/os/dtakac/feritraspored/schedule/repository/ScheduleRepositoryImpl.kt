@@ -21,14 +21,15 @@ class ScheduleRepositoryImpl(
             filters: List<String>,
             applyDarkTheme: Boolean
     ): ScheduleData {
-        val baseUrl = res.getString(R.string.template_schedule).format(withDate.urlFormat(), courseIdentifier)
+        val baseUrl = res.getString(R.string.template_schedule)
+                .format(withDate.urlFormat(), courseIdentifier)
         val document = withContext(Dispatchers.IO) { Jsoup.connect(baseUrl).get() }
         val title = withContext(Dispatchers.IO) { document.getTitle() }
         //apply transformations to document
         withContext(Dispatchers.IO) {
             document.hideJunk()
-            if(applyDarkTheme) document.applyDarkTheme()
             if(showTimeOnBlocks) document.showTimeOnBlocks()
+            if(applyDarkTheme) document.applyDarkTheme()
             if(filters.isNotEmpty()) document.highlightBlocks(filters)
         }
         return ScheduleData(
@@ -52,7 +53,7 @@ class ScheduleRepositoryImpl(
     }
 
     private fun Document.applyDarkTheme() {
-        head().append("<style>${res.getString(R.string.dark_theme_css)}</style>")
+        head().append("<style>${res.readFromAssets("dark_theme.css")}</style>")
     }
 
     private fun Document.showTimeOnBlocks() {
@@ -63,10 +64,11 @@ class ScheduleRepositoryImpl(
     }
 
     private fun Document.highlightBlocks(filters: List<String>) {
-        filters.forEach {
-            val blocks = select(".blokovi:contains($it)")
-            blocks.select("p").addToStyle("border-style: solid; border-color: ${res.getColorHex(R.color.highlightColor)}; border-width: 2px;")
-            blocks.select(".thumbnail").addToStyle("z-index: 1")
+        filters.forEach { filter ->
+            val blocks = select("div.blokovi:contains($filter)")
+            blocks.forEach {
+                it.addToStyle("border-style: solid; border-color: ${res.getColorHex(R.color.highlightColor)}; border-width: 2px; ")
+            }
         }
     }
 

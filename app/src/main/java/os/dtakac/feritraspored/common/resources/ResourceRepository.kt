@@ -9,4 +9,5 @@ interface ResourceRepository {
     fun getStringArray(@ArrayRes resId: Int): Array<String>
     fun getColorHex(@ColorRes resId: Int): String
     fun isOnline(): Boolean
+    fun readFromAssets(fileName: String): String
 }

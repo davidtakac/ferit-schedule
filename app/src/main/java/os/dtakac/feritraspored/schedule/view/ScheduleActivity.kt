@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
@@ -11,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.observeEvent
+import os.dtakac.feritraspored.common.extensions.getColorCompat
 import os.dtakac.feritraspored.common.extensions.isNightMode
 import os.dtakac.feritraspored.common.extensions.openBugReport
 import os.dtakac.feritraspored.common.extensions.showChangelog
@@ -44,13 +46,19 @@ class ScheduleActivity: AppCompatActivity() {
     //region Initialization
     private fun initObservers() {
         viewModel.scheduleData.observeEvent(this) {
-            binding.wvSchedule.loadDataWithBaseURL(it.baseUrl,  it.html, it.mimeType, it.encoding, null)
+            binding.wvSchedule.loadDataWithBaseURL(
+                    it.baseUrl,
+                    it.html,
+                    it.mimeType,
+                    it.encoding,
+                    null
+            )
             binding.toolbar.title = it.title
         }
         viewModel.title.observe(this) {
             binding.toolbar.title = it
         }
-        viewModel.pageModificationJavascript.observeEvent(this) {
+        viewModel.javascript.observeEvent(this) {
             binding.wvSchedule.evaluateJavascript(it, null)
         }
         viewModel.openSettings.observeEvent(this) {
@@ -61,7 +69,7 @@ class ScheduleActivity: AppCompatActivity() {
         }
         viewModel.openInCustomTabs.observeEvent(this) {
             CustomTabsIntent.Builder()
-                    .setToolbarColor(resources.getColor(R.color.gray900))
+                    .setToolbarColor(getColorCompat(R.color.gray900))
                     .build()
                     .launchUrl(this, Uri.parse(it))
         }
@@ -96,7 +104,8 @@ class ScheduleActivity: AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun initViews() {
         binding.wvSchedule.apply {
-            webViewClient = WebViewClient()
+            setBackgroundColor(getColorCompat(android.R.color.transparent))
+            webViewClient = scheduleWebViewClient
             settings.javaScriptEnabled = true
         }
         binding.toolbar.apply {
@@ -130,6 +139,19 @@ class ScheduleActivity: AppCompatActivity() {
     private fun initBinding() {
         binding = ActivityScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+    //endregion
+
+    //region WebViewClient
+    private val scheduleWebViewClient = object : WebViewClient() {
+        override fun onPageFinished(view: WebView?, url: String?) {
+            viewModel.onPageFinished()
+        }
+
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            viewModel.onUrlClicked(url)
+            return true
+        }
     }
     //endregion
 }

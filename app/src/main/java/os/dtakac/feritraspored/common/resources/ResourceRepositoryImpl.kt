@@ -2,7 +2,8 @@ package os.dtakac.feritraspored.common.resources
 
 import android.content.Context
 import android.net.ConnectivityManager
-import androidx.core.content.ContextCompat
+import os.dtakac.feritraspored.common.extensions.getColorCompat
+import java.util.*
 
 class ResourceRepositoryImpl(
         private val context: Context
@@ -16,7 +17,7 @@ class ResourceRepositoryImpl(
     }
 
     override fun getColorHex(resId: Int): String {
-        return "#${Integer.toHexString(ContextCompat.getColor(context, resId) and 0x00ffffff)}"
+        return "#${Integer.toHexString(context.getColorCompat(resId) and 0x00ffffff)}"
     }
 
     override fun isOnline(): Boolean {
@@ -24,5 +25,14 @@ class ResourceRepositoryImpl(
                 as? ConnectivityManager
         //yes, its deprecated, but for our use case its good enough
         return connectivityManager?.activeNetworkInfo?.isConnectedOrConnecting == true
+    }
+
+    override fun readFromAssets(fileName: String): String {
+        val scanner = Scanner(context.assets.open(fileName))
+        val stringBuilder = StringBuilder()
+        while(scanner.hasNextLine()) {
+            stringBuilder.append(scanner.nextLine())
+        }
+        return stringBuilder.toString()
     }
 }
