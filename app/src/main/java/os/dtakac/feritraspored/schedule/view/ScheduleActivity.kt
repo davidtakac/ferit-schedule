@@ -1,5 +1,6 @@
 package os.dtakac.feritraspored.schedule.view
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
@@ -12,10 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.observeEvent
-import os.dtakac.feritraspored.common.extensions.getColorCompat
-import os.dtakac.feritraspored.common.extensions.isNightMode
-import os.dtakac.feritraspored.common.extensions.openBugReport
-import os.dtakac.feritraspored.common.extensions.showChangelog
+import os.dtakac.feritraspored.common.extensions.*
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
 import os.dtakac.feritraspored.settings.container.SettingsActivity
@@ -58,8 +56,17 @@ class ScheduleActivity: AppCompatActivity() {
         viewModel.title.observe(this) {
             binding.toolbar.title = it
         }
-        viewModel.javascript.observeEvent(this) {
-            binding.wvSchedule.evaluateJavascript(it, null)
+        viewModel.javascript.observeEvent(this) { data ->
+            binding.wvSchedule.evaluateJavascript(data.javascript) {
+                data.valueListener.invoke(it)
+            }
+        }
+        viewModel.scrollToPositionOffset.observeEvent(this) {
+            binding.wvSchedule.apply {
+                ObjectAnimator.ofInt(this, "scrollY", scrollY, it)
+                        .setDuration(250)
+                        .start()
+            }
         }
         viewModel.openSettings.observeEvent(this) {
             startActivity(Intent(this, SettingsActivity::class.java))

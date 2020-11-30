@@ -1,1 +1,1 @@
-(function(){$(".naziv-dan:contains('%s')").get(0).scrollIntoView({ behavior: "smooth" });}());
+(function(){return $(".naziv-dan:contains('%s')").offset().top;}());

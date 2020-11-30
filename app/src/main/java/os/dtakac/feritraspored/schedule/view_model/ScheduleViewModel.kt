@@ -11,13 +11,16 @@ import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.extensions.isSameWeek
+import os.dtakac.feritraspored.common.extensions.px
 import os.dtakac.feritraspored.common.extensions.scrollFormat
+import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
 import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
 import java.io.IOException
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
+import kotlin.math.roundToInt
 
 class ScheduleViewModel(
         private val prefs: PreferenceRepository,
@@ -27,7 +30,7 @@ class ScheduleViewModel(
     //region Live data
     val scheduleData = MutableLiveData<Event<ScheduleData>>()
     val title = MutableLiveData(res.getString(R.string.label_schedule))
-    val javascript = MutableLiveData<Event<String>>()
+    val javascript = MutableLiveData<Event<JavascriptData>>()
     val loaderVisibility = MutableLiveData<Event<Int>>()
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
@@ -42,6 +45,7 @@ class ScheduleViewModel(
     val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(loaderVisibility) {
         Event(it.peekContent() == View.GONE)
     }
+    val scrollToPositionOffset = MutableLiveData<Event<Int>>()
     //endregion
 
     //region Private variables
@@ -146,10 +150,18 @@ class ScheduleViewModel(
     }
 
     private fun scrollSelectedDateIntoView() {
-        javascript.postEvent(
-                res.readFromAssets("template_scroll_into_view.js")
-                        .format(selectedDate.scrollFormat())
-        )
+        val scrollJs = res.readFromAssets("template_scroll_into_view.js")
+                .format(selectedDate.scrollFormat())
+
+        javascript.postEvent(JavascriptData(
+                javascript = scrollJs,
+                valueListener = {
+                    val elementPositionDp = it.toDoubleOrNull()?.roundToInt()?.px
+                    if(elementPositionDp != null) {
+                        scrollToPositionOffset.postEvent(elementPositionDp)
+                    }
+                }
+        ))
     }
 
     private fun buildCurrentWeek(): LocalDate {

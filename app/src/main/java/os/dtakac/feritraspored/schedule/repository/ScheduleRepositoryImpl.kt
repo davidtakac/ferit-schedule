@@ -51,6 +51,7 @@ class ScheduleRepositoryImpl(
         selectFirst("#izbor-studija").remove()
         select(".naziv-dan a").removeAttr("href")
         select("script[src=https://cdn.userway.org/widget.js]").remove()
+        select("script:containsData(var blinker;)").remove()
     }
 
     private fun Document.applyDarkTheme() {
