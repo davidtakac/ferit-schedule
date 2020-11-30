@@ -45,7 +45,8 @@ class ScheduleRepositoryImpl(
         selectFirst("#pagewrap").children().not(".narrow-down").remove()
         selectFirst(".narrow-down").children().not("#content-contain").remove()
         selectFirst("#content").children().not("#raspored").remove()
-        selectFirst("#raspored").children().not(".vrijeme, .vrijeme-mobitel, .dan, .odabir").remove()
+        selectFirst("#raspored").children()
+                .not(".vrijeme, .vrijeme-mobitel, .dan, .odabir").remove()
         selectFirst("#raspored .odabir").remove()
         selectFirst("#izbor-studija").remove()
         select(".naziv-dan a").removeAttr("href")
@@ -58,7 +59,10 @@ class ScheduleRepositoryImpl(
 
     private fun Document.showTimeOnBlocks() {
         select(".blokovi").forEach {
-            val time = it.selectFirst("span.hide").textNodes().getOrNull(3)?.text() ?: ""
+            val time = it.selectFirst("span.hide")
+                    .textNodes()
+                    .getOrNull(3)
+                    ?.text() ?: ""
             it.selectFirst(".thumbnail p").append("<br/>$time")
         }
     }
@@ -67,7 +71,10 @@ class ScheduleRepositoryImpl(
         filters.forEach { filter ->
             val blocks = select("div.blokovi:contains($filter)")
             blocks.forEach {
-                it.addToStyle("border-style: solid; border-color: ${res.getColorHex(R.color.colorHighlightBlock)}; border-width: 2px; ")
+                it.addToStyle("border-style: solid; " +
+                        "border-color: ${res.getColorHex(R.color.colorHighlightBlock)}; " +
+                        "border-width: 2px; "
+                )
             }
         }
     }

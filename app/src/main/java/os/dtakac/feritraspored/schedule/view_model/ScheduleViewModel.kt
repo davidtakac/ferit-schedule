@@ -134,7 +134,9 @@ class ScheduleViewModel(
             val data = try {
                 getScheduleData()
             } catch (e: IOException) {
-                errorMessage.postEvent(res.getString(R.string.template_error_unexpected).format(e.message))
+                errorMessage.postEvent(
+                        res.getString(R.string.template_error_unexpected).format(e.message)
+                )
                 loaderVisibility.postEvent(View.GONE)
                 return@launch
             }
@@ -145,7 +147,8 @@ class ScheduleViewModel(
 
     private fun scrollSelectedDateIntoView() {
         javascript.postEvent(
-                res.readFromAssets("template_scroll_into_view.js").format(selectedDate.scrollFormat())
+                res.readFromAssets("template_scroll_into_view.js")
+                        .format(selectedDate.scrollFormat())
         )
     }
 
