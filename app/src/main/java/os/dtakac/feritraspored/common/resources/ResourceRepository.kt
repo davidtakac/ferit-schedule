@@ -10,4 +10,5 @@ interface ResourceRepository {
     fun getColorHex(@ColorRes resId: Int): String
     fun isOnline(): Boolean
     fun readFromAssets(fileName: String): String
+    fun toPx(dp: Float): Float
 }

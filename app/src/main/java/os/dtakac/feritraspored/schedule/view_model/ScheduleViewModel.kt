@@ -11,7 +11,6 @@ import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.extensions.isSameWeek
-import os.dtakac.feritraspored.common.extensions.px
 import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
@@ -156,9 +155,10 @@ class ScheduleViewModel(
         javascript.postEvent(JavascriptData(
                 javascript = scrollJs,
                 valueListener = {
-                    val elementPositionDp = it.toDoubleOrNull()?.roundToInt()?.px
-                    if(elementPositionDp != null) {
-                        scrollToPositionOffset.postEvent(elementPositionDp)
+                    val dp = it.toFloatOrNull()
+                    if(dp != null) {
+                        val px = res.toPx(dp).roundToInt()
+                        scrollToPositionOffset.postEvent(px)
                     }
                 }
         ))

@@ -2,6 +2,7 @@ package os.dtakac.feritraspored.common.resources
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.util.TypedValue
 import os.dtakac.feritraspored.common.extensions.getColorCompat
 import java.util.*
 
@@ -34,5 +35,13 @@ class ResourceRepositoryImpl(
             stringBuilder.append(scanner.nextLine())
         }
         return stringBuilder.toString()
+    }
+
+    override fun toPx(dp: Float): Float {
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                context.resources.displayMetrics
+        )
     }
 }
