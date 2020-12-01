@@ -13,10 +13,10 @@ import os.dtakac.feritraspored.common.constants.DIALOG_COURSE_IDENTIFIER_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_FILTERS_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_TIME_PICKER
 import os.dtakac.feritraspored.common.event.observeEvent
-import os.dtakac.feritraspored.common.utils.openBugReport
-import os.dtakac.feritraspored.common.utils.preference
-import os.dtakac.feritraspored.common.utils.showChangelog
-import os.dtakac.feritraspored.common.utils.showInfoDialog
+import os.dtakac.feritraspored.common.extensions.openBugReport
+import os.dtakac.feritraspored.common.extensions.preference
+import os.dtakac.feritraspored.common.extensions.showChangelog
+import os.dtakac.feritraspored.common.extensions.showInfoDialog
 import os.dtakac.feritraspored.settings.view_model.SettingsViewModel
 import os.dtakac.feritraspored.views.dialog_time_picker.TimePickerDialogFragment
 

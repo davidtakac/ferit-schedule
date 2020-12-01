@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.common.utils
+package os.dtakac.feritraspored.common.extensions
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

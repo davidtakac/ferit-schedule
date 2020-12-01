@@ -1,3 +1,3 @@
 <resources>
-    <bool name="window_light_to_dark">false</bool>
+    <bool name="isLightSystemBar">false</bool>
 </resources>

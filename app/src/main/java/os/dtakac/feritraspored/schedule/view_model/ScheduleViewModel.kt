@@ -2,36 +2,34 @@ package os.dtakac.feritraspored.schedule.view_model
 
 import android.view.View
 import androidx.lifecycle.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.BuildConfig
+import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.Event
 import os.dtakac.feritraspored.common.event.peekContent
 import os.dtakac.feritraspored.common.event.postEvent
-import os.dtakac.feritraspored.common.network.NetworkUtil
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
-import os.dtakac.feritraspored.common.scripts.ScriptProvider
-import os.dtakac.feritraspored.common.utils.isSameWeek
-import os.dtakac.feritraspored.common.utils.scrollFormat
-import os.dtakac.feritraspored.common.utils.urlFormat
-import os.dtakac.feritraspored.schedule.web_view_client.ScheduleWebViewClient
+import os.dtakac.feritraspored.common.extensions.isSameWeek
+import os.dtakac.feritraspored.common.extensions.scrollFormat
+import os.dtakac.feritraspored.schedule.data.JavascriptData
+import os.dtakac.feritraspored.schedule.data.ScheduleData
+import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
+import java.io.IOException
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
+import kotlin.math.roundToInt
 
 class ScheduleViewModel(
         private val prefs: PreferenceRepository,
         private val res: ResourceRepository,
-        private val scriptProvider: ScriptProvider,
-        private val networkUtil: NetworkUtil
-): ViewModel(), ScheduleWebViewClient.Listener {
+        private val scheduleRepository: ScheduleRepository
+): ViewModel() {
     //region Live data
-    val url = MutableLiveData<Event<String>>()
+    val scheduleData = MutableLiveData<Event<ScheduleData>>()
     val title = MutableLiveData(res.getString(R.string.label_schedule))
-    val pageModificationJavascript = MutableLiveData<Event<String>>()
-    val weekNumberJavascript = MutableLiveData<Event<String>>()
+    val javascript = MutableLiveData<Event<JavascriptData>>()
     val loaderVisibility = MutableLiveData<Event<Int>>()
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
@@ -46,6 +44,7 @@ class ScheduleViewModel(
     val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(loaderVisibility) {
         Event(it.peekContent() == View.GONE)
     }
+    val scrollToPositionOffset = MutableLiveData<Event<Int>>()
     //endregion
 
     //region Private variables
@@ -77,51 +76,18 @@ class ScheduleViewModel(
     }
     //endregion
 
-    //region WebView events
-    override fun onOverrideUrlLoading(url: String) {
+    //region Event handling
+    fun onPageFinished() {
+        if(buildCurrentWeek().isSameWeek(selectedDate)) {
+            scrollSelectedDateIntoView()
+        }
+    }
+
+    fun onUrlClicked(url: String?) {
+        if(url == null) return
         openInCustomTabs.postEvent(url)
     }
 
-    override fun onPageStarted() { /*loaders are handled in [buildAndPostUrl]*/ }
-
-    override fun onErrorReceived(code: Int, description: String?, url: String?) {
-        val message = if(!networkUtil.isOnline()) {
-            res.getString(R.string.notify_no_network)
-        } else {
-            res.getString(R.string.template_error_unexpected).format(
-                code, description, url
-            )
-        }
-        errorMessage.postEvent(message)
-        loaderVisibility.postEvent(View.GONE)
-    }
-
-    override fun onPageFinished(isError: Boolean) {
-        if(!isError) {
-            weekNumberJavascript.postEvent(scriptProvider.weekNumberFunction())
-            pageModificationJavascript.postEvent(buildPageModificationJavascript())
-        }
-    }
-
-    fun onPageModificationJavascriptFinished() {
-        viewModelScope.launch {
-            delay(250) //gives javascript time to apply itself
-            loaderVisibility.postEvent(View.GONE)
-        }
-    }
-
-    fun onWeekNumberJavascriptFinished(returnedWeekNumber: String) {
-        title.postValue(
-            if(returnedWeekNumber.isWeekNumberInvalid()) {
-                res.getString(R.string.label_schedule)
-            } else {
-                returnedWeekNumber.removeSurrounding("\"")
-            }
-        )
-    }
-    //endregion
-
-    //region Click handling
     fun onRefreshClicked() {
         startUrl()
     }
@@ -131,8 +97,8 @@ class ScheduleViewModel(
     }
 
     fun onOpenInExternalBrowserClicked() {
-        val url = url.peekContent() ?: return
-        openInExternalBrowser.postEvent(url)
+        val data = scheduleData.peekContent() ?: return
+        openInExternalBrowser.postEvent(data.baseUrl)
     }
 
     fun onPreviousWeekClicked() {
@@ -142,7 +108,7 @@ class ScheduleViewModel(
     fun onCurrentWeekClicked() {
         val currentWeek = buildCurrentWeek()
         if(currentWeek.isSameWeek(selectedDate)) {
-            pageModificationJavascript.postEvent(scrollToCurrentDayFunction())
+            scrollSelectedDateIntoView()
         } else {
             selectedDate = currentWeek
         }
@@ -161,39 +127,41 @@ class ScheduleViewModel(
 
     //region Private helper methods
     private fun startUrl() {
-        val url = res.getString(R.string.template_schedule).format(
-                selectedDate.urlFormat(),
-                prefs.courseIdentifier
-        )
-        if(networkUtil.isOnline()) {
+        viewModelScope.launch {
+            if(!res.isOnline()) {
+                snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
+                return@launch
+            }
             errorMessage.postEvent(null)
             loaderVisibility.postEvent(View.VISIBLE)
-            this.url.postEvent(url)
-        } else {
-            snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
+            val data = try {
+                getScheduleData()
+            } catch (e: IOException) {
+                errorMessage.postEvent(
+                        res.getString(R.string.template_error_unexpected).format(e.message)
+                )
+                loaderVisibility.postEvent(View.GONE)
+                return@launch
+            }
+            scheduleData.postEvent(data)
+            loaderVisibility.postEvent(View.GONE)
         }
     }
 
-    private fun buildPageModificationJavascript(): String {
-        var js = scriptProvider.hideJunkFunction()
-        if(isNightMode) {
-            js += scriptProvider.darkThemeFunction()
-        }
-        if(prefs.isShowTimeOnBlocks) {
-            js += scriptProvider.timeOnBlocksFunction()
-        }
-        if(prefs.isFiltersEnabled) {
-            val filtersTrimmed = prefs.filters?.split(",")?.map { it.trim() } ?: listOf()
-            js += scriptProvider.highlightBlocksFunction(filtersTrimmed)
-        }
-        if(selectedDate.isSameWeek(LocalDate.now())) {
-            js += scrollToCurrentDayFunction()
-        }
-        return js
-    }
+    private fun scrollSelectedDateIntoView() {
+        val scrollJs = res.readFromAssets("template_scroll_into_view.js")
+                .format(selectedDate.scrollFormat())
 
-    private fun scrollToCurrentDayFunction(): String {
-        return scriptProvider.scrollIntoViewFunction(selectedDate.scrollFormat())
+        javascript.postEvent(JavascriptData(
+                javascript = scrollJs,
+                valueListener = {
+                    val dp = it.toFloatOrNull()
+                    if(dp != null) {
+                        val px = res.toPx(dp).roundToInt()
+                        scrollToPositionOffset.postEvent(px)
+                    }
+                }
+        ))
     }
 
     private fun buildCurrentWeek(): LocalDate {
@@ -210,8 +178,16 @@ class ScheduleViewModel(
         return newSelectedDate
     }
 
-    private fun String.isWeekNumberInvalid(): Boolean {
-        return isBlank() || isEmpty() || this == "null" || this == "undefined"
-    }
+    private suspend fun getScheduleData(): ScheduleData = scheduleRepository.getScheduleData(
+                withDate = selectedDate,
+                courseIdentifier = prefs.courseIdentifier ?: "",
+                showTimeOnBlocks = prefs.isShowTimeOnBlocks,
+                filters = if (!prefs.isFiltersEnabled) {
+                    listOf()
+                } else {
+                    prefs.filters?.split(",")?.map { it.trim() } ?: listOf()
+                },
+                applyDarkTheme = isNightMode
+        )
     //endregion
 }

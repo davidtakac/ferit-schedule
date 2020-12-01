@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.common.utils
+package os.dtakac.feritraspored.common.extensions
 
 fun formatTime(hour: Int, minute: Int): String {
     val hourStr = (if (hour < 10) "0" else "") + hour

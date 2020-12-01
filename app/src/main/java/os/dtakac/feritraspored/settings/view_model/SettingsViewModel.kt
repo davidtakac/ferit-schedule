@@ -8,7 +8,7 @@ import os.dtakac.feritraspored.common.event.Event
 import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
-import os.dtakac.feritraspored.common.utils.formatTime
+import os.dtakac.feritraspored.common.extensions.formatTime
 
 class SettingsViewModel(
         private val prefs: PreferenceRepository,

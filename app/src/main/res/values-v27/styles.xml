@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
      <style name="AppTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:navigationBarColor">@color/navbar_color</item>
-        <item name="android:statusBarColor">@color/toolbar_color</item>
-        <item name="colorAccent">@color/lightBlue500</item>
-         <item name="android:windowLightStatusBar">@bool/window_light_to_dark</item>
-         <item name="android:windowLightNavigationBar">@bool/window_light_to_dark</item>
-         <item name="colorPrimary">@color/lightBlue200_to_700</item>
+        <item name="android:navigationBarColor">@color/colorNavigationBar</item>
+        <item name="android:statusBarColor">@color/colorStatusBar</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">@bool/isLightSystemBar</item>
+        <item name="android:windowLightNavigationBar">@bool/isLightSystemBar</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorControlNormal</item>
     </style>
-    <!--As to not blind the user on startup-->
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/ic_splash</item>
-        <item name="android:statusBarColor">@color/almostBlack</item>
-        <item name="android:navigationBarColor">@color/almostBlack</item>
+        <item name="android:statusBarColor">@color/darkSurface</item>
+        <item name="android:navigationBarColor">@color/darkSurface</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
     </style>

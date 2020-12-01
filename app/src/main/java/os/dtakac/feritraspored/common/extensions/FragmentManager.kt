@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.common.utils
+package os.dtakac.feritraspored.common.extensions
 
 import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentManager

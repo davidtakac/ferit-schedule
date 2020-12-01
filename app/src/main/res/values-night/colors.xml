@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="gray300_to_black">@color/black</color>
-    <color name="lightBlue200_to_700">#81D4FA</color>
-    <color name="toolbar_color">@color/dark_surface_4dp</color>
-    <color name="navbar_color">@color/dark_surface_8dp</color>
+    <color name="colorPrimary">@color/lightBlue200</color>
+    <color name="colorAccent">@color/middleRed</color>
+    <color name="colorStatusBar">@color/darkSurface4dp</color>
+    <color name="colorNavigationBar">@color/darkSurface8dp</color>
+    <color name="colorHighlightBlock">#FF1744</color>
+    <color name="colorControlNormal">@color/bdazzledBlue</color>
 </resources>
