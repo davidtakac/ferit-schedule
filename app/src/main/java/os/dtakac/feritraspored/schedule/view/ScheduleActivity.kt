@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
@@ -63,9 +64,15 @@ class ScheduleActivity: AppCompatActivity() {
         }
         viewModel.scrollToPositionOffset.observeEvent(this) {
             binding.wvSchedule.apply {
-                ObjectAnimator.ofInt(this, "scrollY", scrollY, it)
-                        .setDuration(250)
-                        .start()
+                val anim = ObjectAnimator.ofInt(
+                        this,
+                        "scrollY",
+                        scrollY,
+                        it.positionInPixels
+                )
+                anim.duration = it.getScrollDuration(scrollPosition = scrollY)
+                anim.interpolator = AccelerateDecelerateInterpolator()
+                anim.start()
             }
         }
         viewModel.openSettings.observeEvent(this) {

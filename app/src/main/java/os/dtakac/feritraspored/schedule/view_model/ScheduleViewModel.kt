@@ -14,6 +14,7 @@ import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
+import os.dtakac.feritraspored.schedule.data.ScrollData
 import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
 import java.lang.Exception
 import java.time.DayOfWeek
@@ -44,7 +45,7 @@ class ScheduleViewModel(
     val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(isLoaderVisible) {
         Event(!it.peekContent())
     }
-    val scrollToPositionOffset = MutableLiveData<Event<Int>>()
+    val scrollToPositionOffset = MutableLiveData<Event<ScrollData>>()
     //endregion
 
     //region Private variables
@@ -170,7 +171,11 @@ class ScheduleViewModel(
                     val dp = it.toFloatOrNull()
                     if(dp != null) {
                         val px = res.toPx(dp).roundToInt()
-                        scrollToPositionOffset.postEvent(px)
+                        scrollToPositionOffset.postEvent(ScrollData(
+                                //speed obtained with trial and error, it seemed the prettiest
+                                pixelsPerMillisecond = 8,
+                                positionInPixels = px
+                        ))
                     }
                 }
         ))
