@@ -7,6 +7,7 @@
         <item name="android:windowLightStatusBar">@bool/isLightSystemBar</item>
         <item name="android:windowLightNavigationBar">@bool/isLightSystemBar</item>
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorControlNormal</item>
     </style>
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/ic_splash</item>
