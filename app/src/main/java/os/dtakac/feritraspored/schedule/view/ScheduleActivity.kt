@@ -84,13 +84,15 @@ class ScheduleActivity: AppCompatActivity() {
             supportFragmentManager.showChangelog()
         }
         viewModel.snackBarMessage.observeEvent(this) {
-            Snackbar.make(findViewById(android.R.id.content), it, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(android.R.id.content), it, Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.navBar.root)
+                    .show()
         }
         viewModel.openBugReport.observeEvent(this) {
             openBugReport(content = it)
         }
-        viewModel.loaderVisibility.observeEvent(this) {
-            binding.loader.visibility = it
+        viewModel.isLoaderVisible.observeEvent(this) { shouldShow ->
+            binding.loader.apply { if(shouldShow) show() else hide() }
         }
         viewModel.errorMessage.observeEvent(this) {
             binding.error.tvError.text = it
@@ -141,6 +143,7 @@ class ScheduleActivity: AppCompatActivity() {
         binding.error.btnBugReport.setOnClickListener {
             viewModel.onBugReportClicked()
         }
+        binding.loader.hide()
     }
 
     private fun initBinding() {

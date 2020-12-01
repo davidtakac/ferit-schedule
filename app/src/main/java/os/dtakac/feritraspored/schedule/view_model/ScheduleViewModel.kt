@@ -15,7 +15,7 @@ import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
 import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
-import java.io.IOException
+import java.lang.Exception
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
@@ -30,7 +30,7 @@ class ScheduleViewModel(
     val scheduleData = MutableLiveData<Event<ScheduleData>>()
     val title = MutableLiveData(res.getString(R.string.label_schedule))
     val javascript = MutableLiveData<Event<JavascriptData>>()
-    val loaderVisibility = MutableLiveData<Event<Int>>()
+    val isLoaderVisible = MutableLiveData<Event<Boolean>>()
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
     val openInCustomTabs = MutableLiveData<Event<String>>()
@@ -41,8 +41,8 @@ class ScheduleViewModel(
         Event(if(it.peekContent() == null) View.GONE else View.VISIBLE)
     }
     val snackBarMessage = MutableLiveData<Event<String>>()
-    val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(loaderVisibility) {
-        Event(it.peekContent() == View.GONE)
+    val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(isLoaderVisible) {
+        Event(!it.peekContent())
     }
     val scrollToPositionOffset = MutableLiveData<Event<Int>>()
     //endregion
@@ -50,10 +50,6 @@ class ScheduleViewModel(
     //region Private variables
     private var isNightMode: Boolean = false
     private var selectedDate = LocalDate.MIN
-        set(value) {
-            field = value
-            startUrl()
-        }
     //endregion
 
     //region Lifecycle
@@ -69,7 +65,10 @@ class ScheduleViewModel(
             loadedUrl == null
         ) {
             isNightMode = currentNightMode
-            selectedDate = buildCurrentWeek()
+            selectedDate = buildCurrentDate()
+            if(isOnline()) {
+                loadSchedule()
+            }
         } else if(prefs.isLoadOnResume) {
             onCurrentWeekClicked()
         }
@@ -78,18 +77,24 @@ class ScheduleViewModel(
 
     //region Event handling
     fun onPageFinished() {
-        if(buildCurrentWeek().isSameWeek(selectedDate)) {
+        if(buildCurrentDate().isSameWeek(selectedDate)) {
             scrollSelectedDateIntoView()
         }
     }
 
     fun onUrlClicked(url: String?) {
-        if(url == null) return
-        openInCustomTabs.postEvent(url)
+        if(url != null) {
+            openInCustomTabs.postEvent(url)
+        }
     }
 
     fun onRefreshClicked() {
-        startUrl()
+        if(selectedDate == LocalDate.MIN) {
+            selectedDate = buildCurrentDate()
+        }
+        if(isOnline()) {
+            loadSchedule()
+        }
     }
 
     fun onSettingsClicked() {
@@ -102,20 +107,27 @@ class ScheduleViewModel(
     }
 
     fun onPreviousWeekClicked() {
-        selectedDate = selectedDate.minusWeeks(1)
+        if(isOnline() && selectedDate != LocalDate.MIN) {
+            selectedDate = selectedDate.minusWeeks(1)
+            loadSchedule()
+        }
     }
 
     fun onCurrentWeekClicked() {
-        val currentWeek = buildCurrentWeek()
-        if(currentWeek.isSameWeek(selectedDate)) {
+        val currentDate = buildCurrentDate()
+        if(currentDate.isSameWeek(selectedDate) && scheduleData.value != null) {
             scrollSelectedDateIntoView()
-        } else {
-            selectedDate = currentWeek
+        } else if(isOnline()) {
+            selectedDate = currentDate
+            loadSchedule()
         }
     }
 
     fun onNextWeekClicked() {
-        selectedDate = selectedDate.plusWeeks(1)
+        if(isOnline() && selectedDate != LocalDate.MIN) {
+            selectedDate = selectedDate.plusWeeks(1)
+            loadSchedule()
+        }
     }
 
     fun onBugReportClicked() {
@@ -126,25 +138,25 @@ class ScheduleViewModel(
     //endregion
 
     //region Private helper methods
-    private fun startUrl() {
+    private fun loadSchedule() {
         viewModelScope.launch {
-            if(!res.isOnline()) {
-                snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
-                return@launch
-            }
             errorMessage.postEvent(null)
-            loaderVisibility.postEvent(View.VISIBLE)
+            isLoaderVisible.postEvent(true)
+
+            var error: String? = null
             val data = try {
                 getScheduleData()
-            } catch (e: IOException) {
-                errorMessage.postEvent(
-                        res.getString(R.string.template_error_unexpected).format(e.message)
-                )
-                loaderVisibility.postEvent(View.GONE)
-                return@launch
+            } catch (e: Exception) {
+                error = res.getString(R.string.template_error_unexpected).format(e.message)
+                null
             }
-            scheduleData.postEvent(data)
-            loaderVisibility.postEvent(View.GONE)
+
+            if(data != null) {
+                scheduleData.postEvent(data)
+            } else {
+                errorMessage.postEvent(error)
+            }
+            isLoaderVisible.postEvent(false)
         }
     }
 
@@ -164,7 +176,7 @@ class ScheduleViewModel(
         ))
     }
 
-    private fun buildCurrentWeek(): LocalDate {
+    private fun buildCurrentDate(): LocalDate {
         var newSelectedDate = LocalDate.now()
         if(prefs.isSkipDay && LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)) {
             newSelectedDate = newSelectedDate.plusDays(1)
@@ -176,6 +188,18 @@ class ScheduleViewModel(
             newSelectedDate = newSelectedDate.plusDays(1)
         }
         return newSelectedDate
+    }
+
+    private fun isOnline(): Boolean {
+        val isOnline = res.isOnline()
+        if(!isOnline) {
+            if(scheduleData.value == null) {
+                errorMessage.postEvent(res.getString(R.string.error_no_network))
+            } else {
+                snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
+            }
+        }
+        return isOnline
     }
 
     private suspend fun getScheduleData(): ScheduleData = scheduleRepository.getScheduleData(
