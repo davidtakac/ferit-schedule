@@ -6,33 +6,33 @@
     </string>
 
     <!--Preference key strings-->
-    <string name="key_skip_sat">skip_saturday_key</string>
-    <string name="key_skip_day">skip_day_key</string>
-    <string name="key_filters">group_highlight_key</string>
-    <string name="key_programme_type">prog_type_key</string>
-    <string name="key_programme">programme_key</string>
-    <string name="key_year">year_key</string>
-    <string name="key_time_picker">timepicker_key</string>
-    <string name="key_time_hour">hour_key</string>
-    <string name="key_time_minute">minute_key</string>
-    <string name="key_settings_modified">settings_modified</string>
-    <string name="key_load_on_resume">load_on_resume_key</string>
-    <string name="key_prev_week">prev_displayed_week_key</string>
-    <string name="key_filters_toggle">group_toggle_key</string>
-    <string name="key_filters_help">group_help_key</string>
-    <string name="key_theme">prefkey_theme</string>
-    <string name="key_changelog">changelog_key</string>
-    <string name="key_report_bug">bug_report_key</string>
-    <string name="key_version">version_key</string>
-    <string name="key_course_identifier">course_identifier</string>
-    <string name="key_time_on_blocks">key_time_on_blocks</string>
-    <string name="key_course_identifier_help">course_identifier_help</string>
+    <string name="key_skip_sat" translatable="false">skip_saturday_key</string>
+    <string name="key_skip_day" translatable="false">skip_day_key</string>
+    <string name="key_filters" translatable="false">group_highlight_key</string>
+    <string name="key_programme_type" translatable="false">prog_type_key</string>
+    <string name="key_programme" translatable="false">programme_key</string>
+    <string name="key_year" translatable="false">year_key</string>
+    <string name="key_time_picker" translatable="false">timepicker_key</string>
+    <string name="key_time_hour" translatable="false">hour_key</string>
+    <string name="key_time_minute" translatable="false">minute_key</string>
+    <string name="key_settings_modified" translatable="false">settings_modified</string>
+    <string name="key_load_on_resume" translatable="false">load_on_resume_key</string>
+    <string name="key_prev_week" translatable="false">prev_displayed_week_key</string>
+    <string name="key_filters_toggle" translatable="false">group_toggle_key</string>
+    <string name="key_filters_help" translatable="false">group_help_key</string>
+    <string name="key_theme" translatable="false">prefkey_theme</string>
+    <string name="key_changelog" translatable="false">changelog_key</string>
+    <string name="key_report_bug" translatable="false">bug_report_key</string>
+    <string name="key_version" translatable="false">version_key</string>
+    <string name="key_course_identifier" translatable="false">course_identifier</string>
+    <string name="key_time_on_blocks" translatable="false">key_time_on_blocks</string>
+    <string name="key_course_identifier_help" translatable="false">course_identifier_help</string>
 
     <!--Path names-->
-    <string name="highlight_blocks_path">highlight-blocks.js</string>
+    <string name="highlight_blocks_path" translatable="false">highlight-blocks.js</string>
 
     <!--E-mail addresses that will receive bug reports-->
-    <string-array name="email_addresses">
+    <string-array name="email_addresses" translatable="false">
         <item>developer.takac@gmail.com</item>
     </string-array>
 
@@ -42,8 +42,8 @@
         <item>Tamna</item>
     </string-array>
 
-    <string-array name="theme_options">
-        <!--MODE_NIGHT_SYSTEM_DEFAUlT-->
+    <string-array name="theme_options" translatable="false">
+        <!--MODE_NIGHT_SYSTEM_DEFAULT-->
         <item>-1</item>
         <!--MODE_NIGHT_NO-->
         <item>1</item>
