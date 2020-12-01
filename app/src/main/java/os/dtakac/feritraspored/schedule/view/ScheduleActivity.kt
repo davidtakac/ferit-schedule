@@ -62,15 +62,15 @@ class ScheduleActivity: AppCompatActivity() {
                 data.valueListener.invoke(it)
             }
         }
-        viewModel.scrollToPositionOffset.observeEvent(this) {
+        viewModel.scroll.observeEvent(this) {
             binding.wvSchedule.apply {
                 val anim = ObjectAnimator.ofInt(
                         this,
                         "scrollY",
                         scrollY,
-                        it.positionInPixels
+                        it.verticalPosition
                 )
-                anim.duration = it.getScrollDuration(scrollPosition = scrollY)
+                anim.duration = it.getScrollDuration(currentVerticalPosition = scrollY)
                 anim.interpolator = AccelerateDecelerateInterpolator()
                 anim.start()
             }

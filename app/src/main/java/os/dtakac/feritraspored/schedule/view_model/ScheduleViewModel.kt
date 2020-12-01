@@ -45,12 +45,13 @@ class ScheduleViewModel(
     val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(isLoaderVisible) {
         Event(!it.peekContent())
     }
-    val scrollToPositionOffset = MutableLiveData<Event<ScrollData>>()
+    val scroll = MutableLiveData<Event<ScrollData>>()
     //endregion
 
     //region Private variables
     private var isNightMode: Boolean = false
     private var selectedDate = LocalDate.MIN
+    private val scrollSpeedPx by lazy { res.toPx(2.5f).toDouble() }
     //endregion
 
     //region Lifecycle
@@ -163,7 +164,7 @@ class ScheduleViewModel(
 
     private fun scrollSelectedDateIntoView() {
         val scrollJs = res.readFromAssets("template_scroll_into_view.js")
-                .format(selectedDate.scrollFormat())
+                .format(selectedDate.plusDays(4).scrollFormat())
 
         javascript.postEvent(JavascriptData(
                 javascript = scrollJs,
@@ -171,11 +172,7 @@ class ScheduleViewModel(
                     val dp = it.toFloatOrNull()
                     if(dp != null) {
                         val px = res.toPx(dp).roundToInt()
-                        scrollToPositionOffset.postEvent(ScrollData(
-                                //speed obtained with trial and error, it seemed the prettiest
-                                pixelsPerMillisecond = 8,
-                                positionInPixels = px
-                        ))
+                        scroll.postEvent(ScrollData(speed = scrollSpeedPx, verticalPosition = px))
                     }
                 }
         ))
