@@ -49,21 +49,23 @@ class ScheduleViewModel(
 
     private var isNightMode: Boolean = false
     private var selectedDate = LocalDate.MIN
+    private var wasRestoredInstanceState: Boolean = false
     private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.8f).toDouble() }
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
+    fun onCreate(isRestoredInstanceState: Boolean) {
+        wasRestoredInstanceState = isRestoredInstanceState
+    }
+
     fun onResume(
             loadedUrl: String?,
-            currentNightMode: Boolean
+            isNightMode: Boolean
     ) {
         if(prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.postEvent()
         }
-        if( isNightMode != currentNightMode ||
-            prefs.isSettingsModified ||
-            loadedUrl == null
-        ) {
-            isNightMode = currentNightMode
+        if(shouldReloadSchedule(loadedUrl, isNightMode)) {
+            this.isNightMode = isNightMode
             selectedDate = buildCurrentDate()
             if(isOnline()) {
                 loadSchedule()
@@ -71,6 +73,7 @@ class ScheduleViewModel(
         } else if(prefs.isLoadOnResume) {
             onCurrentWeekClicked()
         }
+        wasRestoredInstanceState = false
     }
 
     //region Event handling
@@ -214,5 +217,12 @@ class ScheduleViewModel(
                 },
                 applyDarkTheme = isNightMode
         )
+
+    private fun shouldReloadSchedule(loadedUrl: String?, isCurrentlyNightMode: Boolean): Boolean {
+        /* Handles case when user changes theme, the activity gets recreated in the background and
+           onResume gets called twice. */
+        return !wasRestoredInstanceState &&
+                (isNightMode != isCurrentlyNightMode || prefs.isSettingsModified || loadedUrl == null)
+    }
     //endregion
 }

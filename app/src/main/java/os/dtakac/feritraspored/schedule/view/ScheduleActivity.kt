@@ -30,6 +30,7 @@ class ScheduleActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+        viewModel.onCreate(isRestoredInstanceState = savedInstanceState != null)
         initBinding()
         initViews()
         initObservers()
