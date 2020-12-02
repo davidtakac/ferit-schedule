@@ -6,10 +6,6 @@ const val DIALOG_FILTERS_HELP = "filters_help"
 const val DIALOG_COURSE_IDENTIFIER_HELP = "course_identifier_help"
 
 /**
- * Default button debounce interval in ms.
+ * Default click debounce interval in ms.
  */
 const val DEBOUNCE_INTERVAL = 300L
-/**
- * Schedule automatic scroll speed in dp/ms
- */
-const val SCROLL_SPEED_DP = 3.0

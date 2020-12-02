@@ -1,10 +1,12 @@
 package os.dtakac.feritraspored.schedule.view_model
 
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import androidx.lifecycle.*
 import os.dtakac.feritraspored.BuildConfig
 import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.R
+import os.dtakac.feritraspored.common.data.EmailEditorData
 import os.dtakac.feritraspored.common.event.Event
 import os.dtakac.feritraspored.common.event.peekContent
 import os.dtakac.feritraspored.common.event.postEvent
@@ -27,7 +29,6 @@ class ScheduleViewModel(
         private val res: ResourceRepository,
         private val scheduleRepository: ScheduleRepository
 ): ViewModel() {
-    //region Live data
     val scheduleData = MutableLiveData<Event<ScheduleData>>()
     val title = MutableLiveData(res.getString(R.string.label_schedule))
     val javascript = MutableLiveData<Event<JavascriptData>>()
@@ -35,26 +36,23 @@ class ScheduleViewModel(
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
     val openInCustomTabs = MutableLiveData<Event<String>>()
-    val openBugReport = MutableLiveData<Event<String>>()
+    val openEmailEditor = MutableLiveData<Event<EmailEditorData>>()
     val showChangelog = MutableLiveData<Event<Unit>>()
     val errorMessage = MutableLiveData<Event<String?>>()
+    val snackBarMessage = MutableLiveData<Event<String>>()
+    val webViewScroll = MutableLiveData<Event<ScrollData>>()
     val errorVisibility: LiveData<Event<Int>> = Transformations.map(errorMessage) {
         Event(if(it.peekContent() == null) View.GONE else View.VISIBLE)
     }
-    val snackBarMessage = MutableLiveData<Event<String>>()
     val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(isLoaderVisible) {
         Event(!it.peekContent())
     }
-    val scroll = MutableLiveData<Event<ScrollData>>()
-    //endregion
 
-    //region Private variables
     private var isNightMode: Boolean = false
     private var selectedDate = LocalDate.MIN
-    private val scrollSpeedPx by lazy { res.toPx(2.5f).toDouble() }
-    //endregion
+    private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.8f).toDouble() }
+    private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
-    //region Lifecycle
     fun onResume(
             loadedUrl: String?,
             currentNightMode: Boolean
@@ -75,7 +73,6 @@ class ScheduleViewModel(
             onCurrentWeekClicked()
         }
     }
-    //endregion
 
     //region Event handling
     fun onPageFinished() {
@@ -133,13 +130,15 @@ class ScheduleViewModel(
     }
 
     fun onBugReportClicked() {
-        openBugReport.postEvent(res.getString(R.string.template_bug_report).format(
-                errorMessage.peekContent() ?: ""
-        ))
+        val subject = res.getString(R.string.subject_bug_report)
+        val content = res
+                .getString(R.string.template_bug_report)
+                .format(errorMessage.peekContent() ?: "")
+        openEmailEditor.postEvent(EmailEditorData(subject, content))
     }
     //endregion
 
-    //region Private helper methods
+    //region Helper methods
     private fun loadSchedule() {
         viewModelScope.launch {
             errorMessage.postEvent(null)
@@ -163,19 +162,21 @@ class ScheduleViewModel(
     }
 
     private fun scrollSelectedDateIntoView() {
-        val scrollJs = res.readFromAssets("template_scroll_into_view.js")
-                .format(selectedDate.plusDays(4).scrollFormat())
+        val scrollJs = res
+                .readFromAssets("template_scroll_into_view.js")
+                .format(selectedDate.scrollFormat())
+        javascript.postEvent(JavascriptData(js = scrollJs, callback = { postScrollEvent(it) }))
+    }
 
-        javascript.postEvent(JavascriptData(
-                javascript = scrollJs,
-                valueListener = {
-                    val dp = it.toFloatOrNull()
-                    if(dp != null) {
-                        val px = res.toPx(dp).roundToInt()
-                        scroll.postEvent(ScrollData(speed = scrollSpeedPx, verticalPosition = px))
-                    }
-                }
-        ))
+    private fun postScrollEvent(elementPosition: String) {
+        val elementPositionDp = elementPosition.toFloatOrNull()
+        if(elementPositionDp != null) {
+            webViewScroll.postEvent(ScrollData(
+                    speed = scrollPixelsPerMs,
+                    verticalPosition = res.toPx(elementPositionDp).roundToInt(),
+                    interpolator = scrollInterpolator
+            ))
+        }
     }
 
     private fun buildCurrentDate(): LocalDate {
@@ -196,7 +197,13 @@ class ScheduleViewModel(
         val isOnline = res.isOnline()
         if(!isOnline) {
             if(scheduleData.value == null) {
-                errorMessage.postEvent(res.getString(R.string.error_no_network))
+                if(errorMessage.peekContent() == null) {
+                    errorMessage.postEvent(res.getString(R.string.error_no_network))
+                } else {
+                    /* If the user is persistent in spamming the controls even when the error
+                       screen is showing, notify him of his ignorance. */
+                    snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
+                }
             } else {
                 snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
             }
@@ -204,7 +211,7 @@ class ScheduleViewModel(
         return isOnline
     }
 
-    private suspend fun getScheduleData(): ScheduleData = scheduleRepository.getScheduleData(
+    private suspend fun getScheduleData() = scheduleRepository.getScheduleData(
                 withDate = selectedDate,
                 courseIdentifier = prefs.courseIdentifier ?: "",
                 showTimeOnBlocks = prefs.isShowTimeOnBlocks,

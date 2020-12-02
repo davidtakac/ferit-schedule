@@ -21,24 +21,37 @@ class ScheduleRepositoryImpl(
             filters: List<String>,
             applyDarkTheme: Boolean
     ): ScheduleData {
-        val baseUrl = res.getString(R.string.template_schedule)
-                .format(withDate.urlFormat(), courseIdentifier)
-        val document = withContext(Dispatchers.IO) { Jsoup.connect(baseUrl).get() }
-        val title = withContext(Dispatchers.IO) { document.getTitle() }
-        //apply transformations to document
-        withContext(Dispatchers.IO) {
-            document.hideJunk()
-            if(showTimeOnBlocks) document.showTimeOnBlocks()
-            if(applyDarkTheme) document.applyDarkTheme()
-            if(filters.isNotEmpty()) document.highlightBlocks(filters)
-        }
+        val scheduleUrl = getScheduleUrl(withDate, courseIdentifier)
+        val document = getDocument(scheduleUrl)
+        val title = document.getTitle()
+        document.applyTransformations(showTimeOnBlocks, applyDarkTheme, filters)
         return ScheduleData(
-                baseUrl = baseUrl,
+                baseUrl = scheduleUrl,
                 html = document.toString(),
                 encoding = "UTF-8",
                 mimeType = "text/html",
                 title = title ?: res.getString(R.string.label_schedule)
         )
+    }
+
+    @Suppress("BlockingMethodInNonBlockingContext")
+    private suspend fun getDocument(url: String): Document = withContext(Dispatchers.IO) {
+        Jsoup.connect(url).get()
+    }
+
+    private fun getScheduleUrl(withDate: LocalDate, courseIdentifier: String) = res
+            .getString(R.string.template_schedule)
+            .format(withDate.urlFormat(), courseIdentifier)
+
+    private suspend fun Document.applyTransformations(
+            showTimeOnBlocks: Boolean,
+            applyDarkTheme: Boolean,
+            filters: List<String>
+    ) = withContext(Dispatchers.IO) {
+        hideJunk()
+        if(showTimeOnBlocks) showTimeOnBlocks()
+        if(applyDarkTheme) applyDarkTheme()
+        if(filters.isNotEmpty()) highlightBlocks(filters)
     }
 
     private fun Document.hideJunk() {
@@ -69,8 +82,11 @@ class ScheduleRepositoryImpl(
             val time = it.selectFirst("span.hide")
                     .textNodes()
                     .getOrNull(3)
-                    ?.text() ?: ""
-            it.selectFirst(".thumbnail p").append("<br/>$time")
+                    ?.text()
+                    ?.trim()
+            if(time != null) {
+                it.selectFirst(".thumbnail p").append("<br/>$time")
+            }
         }
     }
 
@@ -86,12 +102,12 @@ class ScheduleRepositoryImpl(
         }
     }
 
-    private fun Document.getTitle(): String? {
+    private suspend fun Document.getTitle(): String? = withContext(Dispatchers.IO) {
         val title = select("h3.odabir p a")
                 .getOrNull(1)?.text()
                 ?.removeSurrounding("\"")
 
-        return when {
+        when {
             title == null
             || title.isBlank()
             || title.isEmpty()

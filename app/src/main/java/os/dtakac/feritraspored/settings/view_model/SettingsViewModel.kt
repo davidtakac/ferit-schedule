@@ -4,11 +4,11 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import os.dtakac.feritraspored.R
+import os.dtakac.feritraspored.common.data.EmailEditorData
 import os.dtakac.feritraspored.common.event.Event
 import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
-import os.dtakac.feritraspored.common.extensions.formatTime
 
 class SettingsViewModel(
         private val prefs: PreferenceRepository,
@@ -24,7 +24,7 @@ class SettingsViewModel(
     val showChangelog = MutableLiveData<Event<Unit>>()
     val showFiltersHelp = MutableLiveData<Event<Unit>>()
     val showCourseIdentifierHelp = MutableLiveData<Event<Unit>>()
-    val showBugReport = MutableLiveData<Event<Unit>>()
+    val openEmailEditor = MutableLiveData<Event<EmailEditorData>>()
 
     init {
         setTimePickerSummary()
@@ -95,21 +95,23 @@ class SettingsViewModel(
         showCourseIdentifierHelp.postEvent()
     }
 
-    fun onBugReportClicked() {
-        showBugReport.postEvent()
+    fun onMessageToDeveloperClicked() {
+        val subject = res.getString(R.string.subject_message_to_developer)
+        openEmailEditor.postEvent(EmailEditorData(subject = subject))
     }
 
-    fun setTimePickerEnabled() {
+    private fun setTimePickerEnabled() {
         timePickerEnabled.postValue(prefs.isSkipDay)
     }
 
     private fun setFiltersSummary() {
         val filters = prefs.filters
         filtersSummary.postValue(
-                if(filters.isNullOrEmpty())
+                if(filters.isNullOrEmpty()) {
                     res.getString(R.string.placeholder_empty)
-                else
+                } else {
                     filters
+                }
         )
     }
 
@@ -124,13 +126,21 @@ class SettingsViewModel(
     private fun setCourseIdentifierSummary() {
         val courseIdentifier = prefs.courseIdentifier
         courseIdentifierSummary.postValue(
-                if(courseIdentifier.isNullOrEmpty())
+                if(courseIdentifier.isNullOrEmpty()) {
                     res.getString(R.string.placeholder_empty)
-                else courseIdentifier
+                } else {
+                    courseIdentifier
+                }
         )
     }
 
     private fun setTimePickerSummary() {
         timePickerSummary.postValue(formatTime(prefs.timeHour, prefs.timeMinute))
+    }
+
+    private fun formatTime(hour: Int, minute: Int): String {
+        val hourStr = (if (hour < 10) "0" else "") + hour
+        val minStr = (if (minute < 10) "0" else "") + minute
+        return "$hourStr:$minStr"
     }
 }

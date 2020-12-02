@@ -1,5 +1,8 @@
 /*I know !important is a BIG no-no, but no other CSS will get injected into these elements
 so it doesn\'t matter. */
+body {
+    background-color: #121212 !important;
+}
 #raspored {
     background-color: #121212 !important;
 }

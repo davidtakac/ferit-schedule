@@ -24,7 +24,7 @@ class ResourceRepositoryImpl(
     override fun isOnline(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
                 as? ConnectivityManager
-        //yes, its deprecated, but for our use case its good enough
+        @Suppress("DEPRECATION")
         return connectivityManager?.activeNetworkInfo?.isConnectedOrConnecting == true
     }
 

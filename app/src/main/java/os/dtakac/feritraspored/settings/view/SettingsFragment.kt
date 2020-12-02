@@ -13,7 +13,7 @@ import os.dtakac.feritraspored.common.constants.DIALOG_COURSE_IDENTIFIER_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_FILTERS_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_TIME_PICKER
 import os.dtakac.feritraspored.common.event.observeEvent
-import os.dtakac.feritraspored.common.extensions.openBugReport
+import os.dtakac.feritraspored.common.extensions.openEmailEditor
 import os.dtakac.feritraspored.common.extensions.preference
 import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.common.extensions.showInfoDialog
@@ -27,7 +27,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val filtersHelp: Preference by preference(R.string.key_filters_help)
     private val timePicker: Preference by preference(R.string.key_time_picker)
     private val changelog: Preference by preference(R.string.key_changelog)
-    private val bugReport: Preference by preference(R.string.key_report_bug)
+    private val messageToDeveloper: Preference by preference(R.string.key_developer_message)
     private val courseIdentifierHelp: Preference by preference(R.string.key_course_identifier_help)
 
     private val viewModel: SettingsViewModel by viewModel()
@@ -64,8 +64,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         changelog.setOnPreferenceClickListener {
             viewModel.onChangelogClicked(); true
         }
-        bugReport.setOnPreferenceClickListener {
-            viewModel.onBugReportClicked(); true
+        messageToDeveloper.setOnPreferenceClickListener {
+            viewModel.onMessageToDeveloperClicked(); true
         }
         filtersHelp.setOnPreferenceClickListener {
             viewModel.onFiltersHelpClicked(); true
@@ -125,8 +125,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     key = DIALOG_COURSE_IDENTIFIER_HELP
             )
         }
-        viewModel.showBugReport.observeEvent(viewLifecycleOwner) {
-            context?.openBugReport()
+        viewModel.openEmailEditor.observeEvent(viewLifecycleOwner) {
+            context?.openEmailEditor(it)
         }
     }
 }

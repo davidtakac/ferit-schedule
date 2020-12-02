@@ -62,9 +62,9 @@
     <PreferenceCategory
         android:title="@string/title_other">
         <Preference
-            android:key="@string/key_report_bug"
-            android:title="@string/title_bug_report"
-            android:summary="@string/summary_bug_report"/>
+            android:key="@string/key_developer_message"
+            android:title="@string/title_message_developer"
+            android:summary="@string/summary_message_developer"/>
         <Preference
             android:key="@string/key_changelog"
             android:title="@string/title_whats_new"

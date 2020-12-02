@@ -22,7 +22,7 @@
     <string name="key_filters_help" translatable="false">group_help_key</string>
     <string name="key_theme" translatable="false">prefkey_theme</string>
     <string name="key_changelog" translatable="false">changelog_key</string>
-    <string name="key_report_bug" translatable="false">bug_report_key</string>
+    <string name="key_developer_message" translatable="false">dev_msg_key</string>
     <string name="key_version" translatable="false">version_key</string>
     <string name="key_course_identifier" translatable="false">course_identifier</string>
     <string name="key_time_on_blocks" translatable="false">key_time_on_blocks</string>
@@ -78,8 +78,8 @@
     <string name="title_group_toggle">Primijeni filtere</string>
     <string name="summary_group_toggle">Uokviri blokove koji sadrže jedan od aktivnih filtera crvenom bojom</string>
     <string name="label_refresh">Osvježi</string>
-    <string name="error_no_network">Došlo je do pogreške pri učitavanju stranice. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
-    <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
+    <string name="error_no_network">Došlo je do pogreške pri učitavanju stranice, a izgleda da ne postoji internetska veza. Provjeri internetsku vezu i probaj opet.</string>
+    <string name="notify_no_network">Nemoguće učitati stranicu. Provjeri internetsku vezu i probaj opet.</string>
     <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n Poruka: %s</string>
     <string name="title_groups_help">Upute za unos filtera</string>
     <string name="content_groups_help">
@@ -104,12 +104,14 @@
     </string>
     <string name="dismiss_whats_new">okej</string>
     <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
+    <string name="subject_message_to_developer">[Ferit Raspored] Poruka</string>
     <string name="label_email_via">Pošalji e-mail pomoću…</string>
     <string name="title_other">Ostalo</string>
-    <string name="title_bug_report">Prijavi problem</string>
-    <string name="summary_bug_report">Pošalji opis problema razvojnom programeru</string>
+    <string name="report_bug">Prijavi problem</string>
+    <string name="title_message_developer">Kontakt</string>
+    <string name="summary_message_developer">Pošalji poruku razvojnom programeru (problem, prijedlog itd.)</string>
     <string name="summary_whats_new">Pogledaj što je novo</string>
-    <string name="template_bug_report">Poruka greške: %s\n\nDodatni opis: </string>
+    <string name="template_bug_report">Greška: %s\n\nMolim te opiši kako je došlo do problema: </string>
     <string name="title_course_identifier">Identifikator kolegija</string>
     <string name="title_course_identifier_help">Gdje pronaći identifikator kolegija?</string>
     <string name="title_time_on_blocks">Vrijeme izvođenja na blokovima</string>

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +23,6 @@ class ScheduleActivity: AppCompatActivity() {
     private lateinit var binding: ActivityScheduleBinding
     private val viewModel: ScheduleViewModel by viewModel()
 
-    //region Lifecycle
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
@@ -40,9 +38,7 @@ class ScheduleActivity: AppCompatActivity() {
                 resources.configuration.isNightMode()
         )
     }
-    //endregion
 
-    //region Initialization
     private fun initObservers() {
         viewModel.scheduleData.observeEvent(this) {
             binding.wvSchedule.loadDataWithBaseURL(
@@ -58,11 +54,11 @@ class ScheduleActivity: AppCompatActivity() {
             binding.toolbar.title = it
         }
         viewModel.javascript.observeEvent(this) { data ->
-            binding.wvSchedule.evaluateJavascript(data.javascript) {
-                data.valueListener.invoke(it)
+            binding.wvSchedule.evaluateJavascript(data.js) {
+                data.callback.invoke(it)
             }
         }
-        viewModel.scroll.observeEvent(this) {
+        viewModel.webViewScroll.observeEvent(this) {
             binding.wvSchedule.apply {
                 val anim = ObjectAnimator.ofInt(
                         this,
@@ -71,7 +67,7 @@ class ScheduleActivity: AppCompatActivity() {
                         it.verticalPosition
                 )
                 anim.duration = it.getScrollDuration(currentVerticalPosition = scrollY)
-                anim.interpolator = AccelerateDecelerateInterpolator()
+                anim.interpolator = it.interpolator
                 anim.start()
             }
         }
@@ -95,8 +91,8 @@ class ScheduleActivity: AppCompatActivity() {
                     .setAnchorView(binding.navBar.root)
                     .show()
         }
-        viewModel.openBugReport.observeEvent(this) {
-            openBugReport(content = it)
+        viewModel.openEmailEditor.observeEvent(this) {
+            openEmailEditor(it)
         }
         viewModel.isLoaderVisible.observeEvent(this) { shouldShow ->
             binding.loader.apply { if(shouldShow) show() else hide() }
@@ -157,9 +153,7 @@ class ScheduleActivity: AppCompatActivity() {
         binding = ActivityScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
-    //endregion
 
-    //region WebViewClient
     private val scheduleWebViewClient = object : WebViewClient() {
         override fun onPageFinished(view: WebView?, url: String?) {
             viewModel.onPageFinished()
@@ -170,5 +164,4 @@ class ScheduleActivity: AppCompatActivity() {
             return true
         }
     }
-    //endregion
 }
