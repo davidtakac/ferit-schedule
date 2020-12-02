@@ -195,17 +195,10 @@ class ScheduleViewModel(
     private fun isOnline(): Boolean {
         val isOnline = res.isOnline()
         if(!isOnline) {
-            if(scheduleData.value == null) {
-                if(errorMessage.peekContent() == null) {
-                    errorMessage.postEvent(res.getString(R.string.error_no_network))
-                } else {
-                    /* If the user is persistent in spamming the controls even when the error
-                       screen is showing, notify him of his ignorance. */
-                    snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
-                }
-            } else {
-                snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
+            if(scheduleData.peekContent() == null) {
+                errorMessage.postEvent(res.getString(R.string.error_no_network))
             }
+            snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
         }
         return isOnline
     }

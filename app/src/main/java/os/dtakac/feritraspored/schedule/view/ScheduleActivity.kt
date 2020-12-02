@@ -9,11 +9,15 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.view.isGone
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.event.observeEvent
-import os.dtakac.feritraspored.common.extensions.*
+import os.dtakac.feritraspored.common.extensions.getColorCompat
+import os.dtakac.feritraspored.common.extensions.isNightMode
+import os.dtakac.feritraspored.common.extensions.openEmailEditor
+import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
 import os.dtakac.feritraspored.settings.container.SettingsActivity
