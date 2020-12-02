@@ -57,10 +57,7 @@ class ScheduleViewModel(
         wasRestoredInstanceState = isRestoredInstanceState
     }
 
-    fun onResume(
-            loadedUrl: String?,
-            isNightMode: Boolean
-    ) {
+    fun onResume(loadedUrl: String?, isNightMode: Boolean) {
         if(prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.postEvent()
         }
