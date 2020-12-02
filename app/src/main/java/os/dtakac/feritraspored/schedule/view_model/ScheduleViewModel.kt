@@ -41,10 +41,10 @@ class ScheduleViewModel(
     val errorMessage = MutableLiveData<Event<String?>>()
     val snackBarMessage = MutableLiveData<Event<String>>()
     val webViewScroll = MutableLiveData<Event<ScrollData>>()
-    val errorVisibility: LiveData<Event<Int>> = Transformations.map(errorMessage) {
-        Event(if(it.peekContent() == null) View.GONE else View.VISIBLE)
+    val isErrorGone: LiveData<Event<Boolean>> = Transformations.map(errorMessage) {
+        Event(it.peekContent() == null)
     }
-    val controlsEnabled: LiveData<Event<Boolean>> = Transformations.map(isLoaderVisible) {
+    val areControlsEnabled: LiveData<Event<Boolean>> = Transformations.map(isLoaderVisible) {
         Event(!it.peekContent())
     }
 

@@ -100,10 +100,10 @@ class ScheduleActivity: AppCompatActivity() {
         viewModel.errorMessage.observeEvent(this) {
             binding.error.tvError.text = it
         }
-        viewModel.errorVisibility.observeEvent(this) {
-            binding.error.root.visibility = it
+        viewModel.isErrorGone.observeEvent(this) {
+            binding.error.root.isGone = it
         }
-        viewModel.controlsEnabled.observeEvent(this) {
+        viewModel.areControlsEnabled.observeEvent(this) {
             binding.navBar.apply {
                 btnPrevious.isEnabled = it
                 btnCurrent.isEnabled = it
