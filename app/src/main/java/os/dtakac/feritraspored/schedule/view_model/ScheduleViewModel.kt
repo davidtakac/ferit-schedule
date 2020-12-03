@@ -54,10 +54,16 @@ class ScheduleViewModel(
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
     fun onResume(loadedUrl: String?, isNightMode: Boolean) {
-        if(shouldShowChangelog()) {
+        if( res.getBoolean(R.bool.showChangelog) &&
+            prefs.version < BuildConfig.VERSION_CODE
+        ) {
             showChangelog.postEvent()
         }
-        if(shouldReloadSchedule(loadedUrl, isNightMode)) {
+
+        if( this.isNightMode != isNightMode ||
+            prefs.isSettingsModified ||
+            loadedUrl == null
+        ) {
             this.isNightMode = isNightMode
             selectedDate = buildCurrentDate()
             if(isOnline()) {
@@ -210,13 +216,5 @@ class ScheduleViewModel(
                 },
                 applyDarkTheme = isNightMode
         )
-
-    private fun shouldReloadSchedule(loadedUrl: String?, isCurrentlyNightMode: Boolean): Boolean {
-        return isNightMode != isCurrentlyNightMode || prefs.isSettingsModified || loadedUrl == null
-    }
-
-    private fun shouldShowChangelog(): Boolean {
-        return res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE
-    }
     //endregion
 }
