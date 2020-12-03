@@ -36,14 +36,12 @@ class ScheduleActivity: AppCompatActivity() {
         initBinding()
         initViews()
         initObservers()
+        viewModel.onCreate(resources.configuration.isNightMode())
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.onResume(
-                binding.wvSchedule.url,
-                resources.configuration.isNightMode()
-        )
+        viewModel.onResume()
     }
 
     private fun initObservers() {

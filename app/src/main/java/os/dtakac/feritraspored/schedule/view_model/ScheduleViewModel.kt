@@ -48,27 +48,37 @@ class ScheduleViewModel(
         Event(!it.peekContent())
     }
 
-    private var isNightMode: Boolean = false
+    private var wasOnCreateCalled: Boolean = false
+    private var isNightModeActive: Boolean = false
     private var selectedDate = LocalDate.MIN
     private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.2f).toDouble() }
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
-    fun onResume(loadedUrl: String?, isNightMode: Boolean) {
-        if( res.getBoolean(R.bool.showChangelog) &&
-            prefs.version < BuildConfig.VERSION_CODE
-        ) {
-            showChangelog.postEvent()
+    fun onCreate(isNightMode: Boolean) {
+        isNightModeActive = isNightMode
+        wasOnCreateCalled = true
+
+        if(selectedDate == LocalDate.MIN) {
+            selectedDate = buildCurrentDate()
         }
 
-        if( this.isNightMode != isNightMode ||
-            prefs.isSettingsModified ||
-            loadedUrl == null
-        ) {
-            this.isNightMode = isNightMode
-            selectedDate = buildCurrentDate()
-            if(isOnline()) {
-                loadSchedule()
-            }
+        if(isOnline() && scheduleData.value == null) {
+            loadSchedule()
+        }
+
+        if(res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE) {
+            showChangelog.postEvent()
+        }
+    }
+
+    fun onResume() {
+        if(wasOnCreateCalled) {
+            wasOnCreateCalled = false
+            return
+        }
+
+        if(prefs.isSettingsModified) {
+            onRefreshClicked()
         } else if(prefs.isLoadOnResume) {
             onCurrentWeekClicked()
         }
@@ -88,9 +98,6 @@ class ScheduleViewModel(
     }
 
     fun onRefreshClicked() {
-        if(selectedDate == LocalDate.MIN) {
-            selectedDate = buildCurrentDate()
-        }
         if(isOnline()) {
             loadSchedule()
         }
@@ -106,7 +113,7 @@ class ScheduleViewModel(
     }
 
     fun onPreviousWeekClicked() {
-        if(isOnline() && selectedDate != LocalDate.MIN) {
+        if(isOnline()) {
             selectedDate = selectedDate.minusWeeks(1)
             loadSchedule()
         }
@@ -123,7 +130,7 @@ class ScheduleViewModel(
     }
 
     fun onNextWeekClicked() {
-        if(isOnline() && selectedDate != LocalDate.MIN) {
+        if(isOnline()) {
             selectedDate = selectedDate.plusWeeks(1)
             loadSchedule()
         }
@@ -197,7 +204,7 @@ class ScheduleViewModel(
     private fun isOnline(): Boolean {
         val isOnline = res.isOnline()
         if(!isOnline) {
-            if(scheduleData.peekContent() == null) {
+            if(scheduleData.value == null) {
                 if(errorMessage.peekContent() == null) {
                     errorMessage.postEvent(res.getString(R.string.error_no_network))
                 } else {
@@ -221,7 +228,7 @@ class ScheduleViewModel(
                 } else {
                     prefs.filters?.split(",")?.map { it.trim() } ?: listOf()
                 },
-                applyDarkTheme = isNightMode
+                applyDarkTheme = isNightModeActive
         )
     //endregion
 }
