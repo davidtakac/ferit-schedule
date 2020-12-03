@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isGone
 import com.google.android.material.snackbar.Snackbar
@@ -32,7 +33,6 @@ class ScheduleActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        viewModel.onCreate(isRestoredInstanceState = savedInstanceState != null)
         initBinding()
         initViews()
         initObservers()
@@ -79,8 +79,11 @@ class ScheduleActivity: AppCompatActivity() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
         }
         viewModel.openInCustomTabs.observeEvent(this) {
+            val colorParams = CustomTabColorSchemeParams.Builder()
+                    .setToolbarColor(getColorCompat(R.color.colorStatusBar))
+                    .build()
             CustomTabsIntent.Builder()
-                    .setToolbarColor(getColorCompat(R.color.gray900))
+                    .setDefaultColorSchemeParams(colorParams)
                     .build()
                     .launchUrl(this, Uri.parse(it))
         }
