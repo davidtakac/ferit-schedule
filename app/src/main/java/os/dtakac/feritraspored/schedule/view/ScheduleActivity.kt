@@ -19,6 +19,7 @@ import os.dtakac.feritraspored.common.extensions.isNightMode
 import os.dtakac.feritraspored.common.extensions.openEmailEditor
 import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
+import os.dtakac.feritraspored.schedule.data.ScrollData
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
 import os.dtakac.feritraspored.settings.container.SettingsActivity
 import os.dtakac.feritraspored.views.debounce.onDebouncedClick
@@ -26,6 +27,7 @@ import os.dtakac.feritraspored.views.debounce.onDebouncedClick
 class ScheduleActivity: AppCompatActivity() {
     private lateinit var binding: ActivityScheduleBinding
     private val viewModel: ScheduleViewModel by viewModel()
+    private var scrollAnimator: ObjectAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -64,17 +66,11 @@ class ScheduleActivity: AppCompatActivity() {
             }
         }
         viewModel.webViewScroll.observeEvent(this) {
-            binding.wvSchedule.apply {
-                val anim = ObjectAnimator.ofInt(
-                        this,
-                        "scrollY",
-                        scrollY,
-                        it.verticalPosition
-                )
-                anim.duration = it.getScrollDuration(currentVerticalPosition = scrollY)
-                anim.interpolator = it.interpolator
-                anim.start()
-            }
+            scrollWebView(it)
+        }
+        viewModel.cancelWebViewScroll.observeEvent(this) {
+            scrollAnimator?.cancel()
+            scrollAnimator = null
         }
         viewModel.openSettings.observeEvent(this) {
             startActivity(Intent(this, SettingsActivity::class.java))
@@ -157,6 +153,23 @@ class ScheduleActivity: AppCompatActivity() {
     private fun initBinding() {
         binding = ActivityScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+    private fun scrollWebView(data: ScrollData) {
+        if(scrollAnimator?.isRunning == true) return
+
+        val currentVerticalPosition = binding.wvSchedule.scrollY
+        val anim = ObjectAnimator.ofInt(
+                binding.wvSchedule,
+                "scrollY",
+                currentVerticalPosition,
+                data.verticalPosition
+        )
+        anim.duration = data.getScrollDuration(currentVerticalPosition)
+        anim.interpolator = data.interpolator
+
+        scrollAnimator = anim
+        scrollAnimator?.start()
     }
 
     private val scheduleWebViewClient = object : WebViewClient() {

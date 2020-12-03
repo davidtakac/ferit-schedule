@@ -1,3 +1,4 @@
 <resources>
     <bool name="isLightSystemBar">true</bool>
+    <bool name="showChangelog">false</bool>
 </resources>

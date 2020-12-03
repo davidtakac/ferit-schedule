@@ -2,8 +2,8 @@ package os.dtakac.feritraspored.schedule.view_model
 
 import android.view.animation.DecelerateInterpolator
 import androidx.lifecycle.*
-import os.dtakac.feritraspored.BuildConfig
 import kotlinx.coroutines.launch
+import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.data.EmailEditorData
 import os.dtakac.feritraspored.common.event.Event
@@ -40,6 +40,7 @@ class ScheduleViewModel(
     val errorMessage = MutableLiveData<Event<String?>>()
     val snackBarMessage = MutableLiveData<Event<String>>()
     val webViewScroll = MutableLiveData<Event<ScrollData>>()
+    val cancelWebViewScroll = MutableLiveData<Event<Unit>>()
     val isErrorGone: LiveData<Event<Boolean>> = Transformations.map(errorMessage) {
         Event(it.peekContent() == null)
     }
@@ -50,7 +51,7 @@ class ScheduleViewModel(
     private var isNightMode: Boolean = false
     private var selectedDate = LocalDate.MIN
     private var wasRestoredInstanceState: Boolean = false
-    private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.8f).toDouble() }
+    private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.2f).toDouble() }
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
     fun onCreate(isRestoredInstanceState: Boolean) {
@@ -58,7 +59,7 @@ class ScheduleViewModel(
     }
 
     fun onResume(loadedUrl: String?, isNightMode: Boolean) {
-        if(prefs.version < BuildConfig.VERSION_CODE) {
+        if(shouldShowChangelog()) {
             showChangelog.postEvent()
         }
         if(shouldReloadSchedule(loadedUrl, isNightMode)) {
@@ -140,6 +141,7 @@ class ScheduleViewModel(
     //region Helper methods
     private fun loadSchedule() {
         viewModelScope.launch {
+            cancelWebViewScroll.postEvent()
             errorMessage.postEvent(null)
             isLoaderVisible.postEvent(true)
 
@@ -220,6 +222,10 @@ class ScheduleViewModel(
            onResume gets called twice. */
         return !wasRestoredInstanceState &&
                 (isNightMode != isCurrentlyNightMode || prefs.isSettingsModified || loadedUrl == null)
+    }
+
+    private fun shouldShowChangelog(): Boolean {
+        return res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE
     }
     //endregion
 }

@@ -44,4 +44,8 @@ class ResourceRepositoryImpl(
                 context.resources.displayMetrics
         )
     }
+
+    override fun getBoolean(resId: Int): Boolean {
+        return context.resources.getBoolean(resId)
+    }
 }
