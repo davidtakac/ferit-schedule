@@ -7,7 +7,6 @@ import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.data.EmailEditorData
 import os.dtakac.feritraspored.common.event.Event
-import os.dtakac.feritraspored.common.event.peekContent
 import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
@@ -28,63 +27,52 @@ class ScheduleViewModel(
         private val res: ResourceRepository,
         private val scheduleRepository: ScheduleRepository
 ): ViewModel() {
-    val scheduleData = MutableLiveData<Event<ScheduleData>>()
-    val title = MutableLiveData(res.getString(R.string.label_schedule))
+    //normal live data
+    val scheduleData = MutableLiveData<ScheduleData?>()
+    val isLoaderVisible = MutableLiveData<Boolean>()
+    val errorMessage = MutableLiveData<String?>()
+    val isErrorGone: LiveData<Boolean> = Transformations.map(errorMessage) { it == null }
+    val areControlsEnabled: LiveData<Boolean> = Transformations.map(isLoaderVisible) { !it }
+    //event live data
     val javascript = MutableLiveData<Event<JavascriptData>>()
-    val isLoaderVisible = MutableLiveData<Event<Boolean>>()
     val openSettings = MutableLiveData<Event<Unit>>()
     val openInExternalBrowser = MutableLiveData<Event<String>>()
     val openInCustomTabs = MutableLiveData<Event<String>>()
     val openEmailEditor = MutableLiveData<Event<EmailEditorData>>()
     val showChangelog = MutableLiveData<Event<Unit>>()
-    val errorMessage = MutableLiveData<Event<String?>>()
     val snackBarMessage = MutableLiveData<Event<String>>()
     val webViewScroll = MutableLiveData<Event<ScrollData>>()
-    val cancelWebViewScroll = MutableLiveData<Event<Unit>>()
-    val isErrorGone: LiveData<Event<Boolean>> = Transformations.map(errorMessage) {
-        Event(it.peekContent() == null)
-    }
-    val areControlsEnabled: LiveData<Event<Boolean>> = Transformations.map(isLoaderVisible) {
-        Event(!it.peekContent())
-    }
+    val clearWebViewScroll = MutableLiveData<Event<Unit>>()
 
     private var wasOnCreateCalled: Boolean = false
     private var isNightModeActive: Boolean = false
-    private var selectedDate = LocalDate.MIN
+    private var selectedDate = buildCurrentDate()
     private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.2f).toDouble() }
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
     fun onCreate(isNightMode: Boolean) {
-        isNightModeActive = isNightMode
         wasOnCreateCalled = true
-
-        if(selectedDate == LocalDate.MIN) {
-            selectedDate = buildCurrentDate()
+        if(scheduleData.value == null || isNightModeActive != isNightMode) {
+            isNightModeActive = isNightMode
+            scheduleData.postValue(null)
+            reloadSchedule()
         }
-
-        if(isOnline() && scheduleData.value == null) {
-            loadSchedule()
-        }
-
         if(res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.postEvent()
         }
     }
 
     fun onResume() {
-        if(wasOnCreateCalled) {
-            wasOnCreateCalled = false
-            return
+        if(!wasOnCreateCalled) {
+            if(prefs.isSettingsModified) {
+                reloadSchedule()
+            } else if(prefs.isLoadOnResume) {
+                loadCurrentWeek()
+            }
         }
-
-        if(prefs.isSettingsModified) {
-            onRefreshClicked()
-        } else if(prefs.isLoadOnResume) {
-            onCurrentWeekClicked()
-        }
+        wasOnCreateCalled = false
     }
 
-    //region Event handling
     fun onPageFinished() {
         if(buildCurrentDate().isSameWeek(selectedDate)) {
             scrollSelectedDateIntoView()
@@ -98,9 +86,7 @@ class ScheduleViewModel(
     }
 
     fun onRefreshClicked() {
-        if(isOnline()) {
-            loadSchedule()
-        }
+        reloadSchedule()
     }
 
     fun onSettingsClicked() {
@@ -108,7 +94,7 @@ class ScheduleViewModel(
     }
 
     fun onOpenInExternalBrowserClicked() {
-        val data = scheduleData.peekContent() ?: return
+        val data = scheduleData.value ?: return
         openInExternalBrowser.postEvent(data.baseUrl)
     }
 
@@ -120,13 +106,7 @@ class ScheduleViewModel(
     }
 
     fun onCurrentWeekClicked() {
-        val currentDate = buildCurrentDate()
-        if(currentDate.isSameWeek(selectedDate) && scheduleData.value != null) {
-            scrollSelectedDateIntoView()
-        } else if(isOnline()) {
-            selectedDate = currentDate
-            loadSchedule()
-        }
+        loadCurrentWeek()
     }
 
     fun onNextWeekClicked() {
@@ -140,17 +120,15 @@ class ScheduleViewModel(
         val subject = res.getString(R.string.subject_bug_report)
         val content = res
                 .getString(R.string.template_bug_report)
-                .format(errorMessage.peekContent() ?: "")
+                .format(errorMessage.value ?: "")
         openEmailEditor.postEvent(EmailEditorData(subject, content))
     }
-    //endregion
 
-    //region Helper methods
     private fun loadSchedule() {
         viewModelScope.launch {
-            cancelWebViewScroll.postEvent()
-            errorMessage.postEvent(null)
-            isLoaderVisible.postEvent(true)
+            clearWebViewScroll.postEvent()
+            errorMessage.postValue(null)
+            isLoaderVisible.postValue(true)
 
             var error: String? = null
             val data = try {
@@ -161,11 +139,11 @@ class ScheduleViewModel(
             }
 
             if(data != null) {
-                scheduleData.postEvent(data)
+                scheduleData.postValue(data)
             } else {
-                errorMessage.postEvent(error)
+                errorMessage.postValue(error)
             }
-            isLoaderVisible.postEvent(false)
+            isLoaderVisible.postValue(false)
         }
     }
 
@@ -205,8 +183,8 @@ class ScheduleViewModel(
         val isOnline = res.isOnline()
         if(!isOnline) {
             if(scheduleData.value == null) {
-                if(errorMessage.peekContent() == null) {
-                    errorMessage.postEvent(res.getString(R.string.error_no_network))
+                if(errorMessage.value == null) {
+                    errorMessage.postValue(res.getString(R.string.error_no_network))
                 } else {
                     /* If the user is persistent in spamming the controls even when the error
                        screen is showing, notify him of his ignorance. */
@@ -230,5 +208,20 @@ class ScheduleViewModel(
                 },
                 applyDarkTheme = isNightModeActive
         )
-    //endregion
+
+    private fun reloadSchedule() {
+        if(isOnline()) {
+            loadSchedule()
+        }
+    }
+
+    private fun loadCurrentWeek() {
+        val currentDate = buildCurrentDate()
+        if(currentDate.isSameWeek(selectedDate) && scheduleData.value != null) {
+            scrollSelectedDateIntoView()
+        } else if(isOnline()) {
+            selectedDate = currentDate
+            loadSchedule()
+        }
+    }
 }

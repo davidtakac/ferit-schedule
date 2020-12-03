@@ -45,18 +45,19 @@ class ScheduleActivity: AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.scheduleData.observeEvent(this) {
-            binding.wvSchedule.loadDataWithBaseURL(
-                    it.baseUrl,
-                    it.html,
-                    it.mimeType,
-                    it.encoding,
-                    null
-            )
-            binding.toolbar.title = it.title
-        }
-        viewModel.title.observe(this) {
-            binding.toolbar.title = it
+        viewModel.scheduleData.observe(this) {
+            if(it == null) {
+                binding.wvSchedule.loadUrl("about:blank")
+            } else {
+                binding.wvSchedule.loadDataWithBaseURL(
+                        it.baseUrl,
+                        it.html,
+                        it.mimeType,
+                        it.encoding,
+                        null
+                )
+                binding.toolbar.title = it.title
+            }
         }
         viewModel.javascript.observeEvent(this) { data ->
             binding.wvSchedule.evaluateJavascript(data.js) {
@@ -66,9 +67,8 @@ class ScheduleActivity: AppCompatActivity() {
         viewModel.webViewScroll.observeEvent(this) {
             scrollWebView(it)
         }
-        viewModel.cancelWebViewScroll.observeEvent(this) {
+        viewModel.clearWebViewScroll.observeEvent(this) {
             scrollAnimator?.cancel()
-            scrollAnimator = null
         }
         viewModel.openSettings.observeEvent(this) {
             startActivity(Intent(this, SettingsActivity::class.java))
@@ -96,16 +96,16 @@ class ScheduleActivity: AppCompatActivity() {
         viewModel.openEmailEditor.observeEvent(this) {
             openEmailEditor(it)
         }
-        viewModel.isLoaderVisible.observeEvent(this) { shouldShow ->
+        viewModel.isLoaderVisible.observe(this) { shouldShow ->
             binding.loader.apply { if(shouldShow) show() else hide() }
         }
-        viewModel.errorMessage.observeEvent(this) {
+        viewModel.errorMessage.observe(this) {
             binding.error.tvError.text = it
         }
-        viewModel.isErrorGone.observeEvent(this) {
+        viewModel.isErrorGone.observe(this) {
             binding.error.root.isGone = it
         }
-        viewModel.areControlsEnabled.observeEvent(this) {
+        viewModel.areControlsEnabled.observe(this) {
             binding.navBar.apply {
                 btnPrevious.isEnabled = it
                 btnCurrent.isEnabled = it
@@ -157,20 +157,19 @@ class ScheduleActivity: AppCompatActivity() {
     }
 
     private fun scrollWebView(data: ScrollData) {
-        if(scrollAnimator?.isRunning == true) return
-
-        val currentVerticalPosition = binding.wvSchedule.scrollY
-        val anim = ObjectAnimator.ofInt(
-                binding.wvSchedule,
-                "scrollY",
-                currentVerticalPosition,
-                data.verticalPosition
-        )
-        anim.duration = data.getScrollDuration(currentVerticalPosition)
-        anim.interpolator = data.interpolator
-
-        scrollAnimator = anim
-        scrollAnimator?.start()
+        if(scrollAnimator?.isStarted != true) {
+            val currentVerticalPosition = binding.wvSchedule.scrollY
+            val anim = ObjectAnimator.ofInt(
+                    binding.wvSchedule,
+                    "scrollY",
+                    currentVerticalPosition,
+                    data.verticalPosition
+            )
+            anim.duration = data.getScrollDuration(currentVerticalPosition)
+            anim.interpolator = data.interpolator
+            scrollAnimator = anim
+            scrollAnimator?.start()
+        }
     }
 
     private val scheduleWebViewClient = object : WebViewClient() {
