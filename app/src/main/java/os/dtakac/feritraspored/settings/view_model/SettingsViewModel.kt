@@ -34,8 +34,10 @@ class SettingsViewModel(
         setCourseIdentifierSummary()
     }
 
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
-        this.prefs.isSettingsModified = true
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if(key != res.getString(R.string.key_theme)) {
+            prefs.shouldReloadScheduleToApplySettings = true
+        }
         when(key) {
             res.getString(R.string.key_skip_day) -> onSkipDayChanged()
             res.getString(R.string.key_filters) -> onFiltersChanged()
@@ -116,7 +118,7 @@ class SettingsViewModel(
     }
 
     private fun setFiltersEnabled() {
-        filtersEnabled.postValue(prefs.isFiltersEnabled)
+        filtersEnabled.postValue(prefs.areFiltersEnabled)
     }
 
     private fun setTheme() {

@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isGone
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
@@ -33,10 +36,11 @@ class ScheduleActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+        initLifecycleObserver()
         initBinding()
         initViews()
         initObservers()
-        viewModel.onCreate(resources.configuration.isNightMode())
+        viewModel.onCreate()
     }
 
     override fun onResume() {
@@ -46,18 +50,14 @@ class ScheduleActivity: AppCompatActivity() {
 
     private fun initObservers() {
         viewModel.scheduleData.observe(this) {
-            if(it == null) {
-                binding.wvSchedule.loadUrl("about:blank")
-            } else {
-                binding.wvSchedule.loadDataWithBaseURL(
-                        it.baseUrl,
-                        it.html,
-                        it.mimeType,
-                        it.encoding,
-                        null
-                )
-                binding.toolbar.title = it.title
-            }
+            binding.wvSchedule.loadDataWithBaseURL(
+                    it.baseUrl,
+                    if(resources.configuration.isNightMode()) it.htmlDark else it.html,
+                    it.mimeType,
+                    it.encoding,
+                    null
+            )
+            binding.toolbar.title = it.title
         }
         viewModel.javascript.observeEvent(this) { data ->
             binding.wvSchedule.evaluateJavascript(data.js) {
@@ -156,6 +156,10 @@ class ScheduleActivity: AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    private fun initLifecycleObserver() {
+        lifecycle.addObserver(lifecycleObserver)
+    }
+
     private fun scrollWebView(data: ScrollData) {
         if(scrollAnimator?.isStarted != true) {
             val currentVerticalPosition = binding.wvSchedule.scrollY
@@ -174,12 +178,28 @@ class ScheduleActivity: AppCompatActivity() {
 
     private val scheduleWebViewClient = object : WebViewClient() {
         override fun onPageFinished(view: WebView?, url: String?) {
-            viewModel.onPageFinished()
+            if(lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                viewModel.onPageDrawn()
+            } else {
+                lifecycleObserver.dispatchPageDrawn = true
+            }
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             viewModel.onUrlClicked(url)
             return true
+        }
+    }
+
+    private val lifecycleObserver = object : LifecycleObserver {
+        var dispatchPageDrawn = false
+
+        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        private fun dispatchPageDrawn() {
+            if(dispatchPageDrawn) {
+                viewModel.onPageDrawn()
+            }
+            dispatchPageDrawn = false
         }
     }
 }

@@ -28,7 +28,7 @@ class ScheduleViewModel(
         private val scheduleRepository: ScheduleRepository
 ): ViewModel() {
     //normal live data
-    val scheduleData = MutableLiveData<ScheduleData?>()
+    val scheduleData = MutableLiveData<ScheduleData>()
     val isLoaderVisible = MutableLiveData<Boolean>()
     val errorMessage = MutableLiveData<String?>()
     val isErrorGone: LiveData<Boolean> = Transformations.map(errorMessage) { it == null }
@@ -45,16 +45,13 @@ class ScheduleViewModel(
     val clearWebViewScroll = MutableLiveData<Event<Unit>>()
 
     private var wasOnCreateCalled: Boolean = false
-    private var isNightModeActive: Boolean = false
     private var selectedDate = buildCurrentDate()
     private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.2f).toDouble() }
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
-    fun onCreate(isNightMode: Boolean) {
+    fun onCreate() {
         wasOnCreateCalled = true
-        if(scheduleData.value == null || isNightModeActive != isNightMode) {
-            isNightModeActive = isNightMode
-            scheduleData.postValue(null)
+        if(scheduleData.value == null) {
             reloadSchedule()
         }
         if(res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE) {
@@ -64,7 +61,7 @@ class ScheduleViewModel(
 
     fun onResume() {
         if(!wasOnCreateCalled) {
-            if(prefs.isSettingsModified) {
+            if(prefs.shouldReloadScheduleToApplySettings) {
                 reloadSchedule()
             } else if(prefs.isLoadOnResume) {
                 loadCurrentWeek()
@@ -73,7 +70,7 @@ class ScheduleViewModel(
         wasOnCreateCalled = false
     }
 
-    fun onPageFinished() {
+    fun onPageDrawn() {
         if(buildCurrentDate().isSameWeek(selectedDate)) {
             scrollSelectedDateIntoView()
         }
@@ -186,8 +183,6 @@ class ScheduleViewModel(
                 if(errorMessage.value == null) {
                     errorMessage.postValue(res.getString(R.string.error_no_network))
                 } else {
-                    /* If the user is persistent in spamming the controls even when the error
-                       screen is showing, notify him of his ignorance. */
                     snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
                 }
             } else {
@@ -201,12 +196,11 @@ class ScheduleViewModel(
                 withDate = selectedDate,
                 courseIdentifier = prefs.courseIdentifier ?: "",
                 showTimeOnBlocks = prefs.isShowTimeOnBlocks,
-                filters = if (!prefs.isFiltersEnabled) {
+                filters = if (!prefs.areFiltersEnabled) {
                     listOf()
                 } else {
                     prefs.filters?.split(",")?.map { it.trim() } ?: listOf()
-                },
-                applyDarkTheme = isNightModeActive
+                }
         )
 
     private fun reloadSchedule() {

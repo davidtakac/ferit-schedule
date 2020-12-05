@@ -8,7 +8,6 @@ interface ScheduleRepository {
             withDate: LocalDate,
             courseIdentifier: String,
             showTimeOnBlocks: Boolean,
-            filters: List<String>,
-            applyDarkTheme: Boolean
+            filters: List<String>
     ): ScheduleData
 }

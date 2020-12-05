@@ -43,11 +43,11 @@ class PreferenceRepositoryImpl(
         get() = prefs.getInt(R.string.key_time_minute, 0)
         set(value) = editor { putInt(R.string.key_time_minute, value) }
 
-    override var isSettingsModified: Boolean
+    override var shouldReloadScheduleToApplySettings: Boolean
         get() {
             val wereSettingsModified = prefs.getBoolean(R.string.key_settings_modified, false)
             if(wereSettingsModified) {
-                isSettingsModified = false
+                shouldReloadScheduleToApplySettings = false
             }
             return wereSettingsModified
         }
@@ -56,10 +56,6 @@ class PreferenceRepositoryImpl(
     override var isLoadOnResume: Boolean
         get() = prefs.getBoolean(R.string.key_load_on_resume, false)
         set(value) = editor { putBoolean(R.string.key_load_on_resume, value) }
-
-    override var previouslyDisplayedWeek: String?
-        get() = prefs.getString(R.string.key_prev_week, null)
-        set(value) = editor { putString(R.string.key_prev_week, value) }
 
     override var theme: Int
         get() {
@@ -82,7 +78,7 @@ class PreferenceRepositoryImpl(
         get() = prefs.getString(R.string.key_course_identifier, null)
         set(value) = editor { putString(R.string.key_course_identifier, value) }
 
-    override var isFiltersEnabled: Boolean
+    override var areFiltersEnabled: Boolean
         get() = prefs.getBoolean(R.string.key_filters_toggle, false)
         set(value) = editor { putBoolean(R.string.key_filters_toggle, value) }
 

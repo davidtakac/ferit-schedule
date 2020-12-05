@@ -17,7 +17,6 @@
     <string name="key_time_minute" translatable="false">minute_key</string>
     <string name="key_settings_modified" translatable="false">settings_modified</string>
     <string name="key_load_on_resume" translatable="false">load_on_resume_key</string>
-    <string name="key_prev_week" translatable="false">prev_displayed_week_key</string>
     <string name="key_filters_toggle" translatable="false">group_toggle_key</string>
     <string name="key_filters_help" translatable="false">group_help_key</string>
     <string name="key_theme" translatable="false">prefkey_theme</string>
