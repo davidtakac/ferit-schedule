@@ -193,7 +193,7 @@ class ScheduleActivity: AppCompatActivity() {
      * the page isn't drawn yet, which causes the scroll distance to be measured incorrectly.
      */
     private val pageDrawnLifecycleObserver = object : LifecycleObserver {
-        var wasPageDrawn = false
+        private var wasPageDrawn = false
 
         fun postPageDrawn() {
             wasPageDrawn = true
