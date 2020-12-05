@@ -157,7 +157,7 @@ class ScheduleActivity: AppCompatActivity() {
     }
 
     private fun initLifecycleObserver() {
-        lifecycle.addObserver(lifecycleObserver)
+        lifecycle.addObserver(pageDrawnLifecycleObserver)
     }
 
     private fun scrollWebView(data: ScrollData) {
@@ -178,11 +178,7 @@ class ScheduleActivity: AppCompatActivity() {
 
     private val scheduleWebViewClient = object : WebViewClient() {
         override fun onPageFinished(view: WebView?, url: String?) {
-            if(lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                viewModel.onPageDrawn()
-            } else {
-                lifecycleObserver.dispatchPageDrawn = true
-            }
+            pageDrawnLifecycleObserver.postPageDrawn()
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
@@ -191,15 +187,27 @@ class ScheduleActivity: AppCompatActivity() {
         }
     }
 
-    private val lifecycleObserver = object : LifecycleObserver {
-        var dispatchPageDrawn = false
+    /**
+     * Dispatches [ScheduleViewModel.onPageDrawn] only when the [androidx.lifecycle.LifecycleOwner]
+     * is [Lifecycle.State.RESUMED]. This makes sure that it doesn't get called when
+     * the page isn't drawn yet, which causes the scroll distance to be measured incorrectly.
+     */
+    private val pageDrawnLifecycleObserver = object : LifecycleObserver {
+        var wasPageDrawn = false
+
+        fun postPageDrawn() {
+            wasPageDrawn = true
+            if(lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                dispatchPageDrawn()
+            }
+        }
 
         @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
         private fun dispatchPageDrawn() {
-            if(dispatchPageDrawn) {
+            if(wasPageDrawn) {
                 viewModel.onPageDrawn()
             }
-            dispatchPageDrawn = false
+            wasPageDrawn = false
         }
     }
 }
