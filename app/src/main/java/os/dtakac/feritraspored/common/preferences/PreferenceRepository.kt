@@ -11,7 +11,7 @@ interface PreferenceRepository {
     var year: String?
     var timeHour: Int
     var timeMinute: Int
-    var shouldReloadScheduleToApplySettings: Boolean
+    var isReloadToApplySettings: Boolean
     var isLoadOnResume: Boolean
     var theme: Int
     var version: Int

@@ -53,7 +53,7 @@ class ScheduleFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initObservers()
-        viewModel.onCreate()
+        viewModel.onViewCreated()
     }
 
     override fun onResume() {

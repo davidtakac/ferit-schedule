@@ -44,30 +44,32 @@ class ScheduleViewModel(
     val webViewScroll = MutableLiveData<Event<ScrollData>>()
     val clearWebViewScroll = MutableLiveData<Event<Unit>>()
 
+    private var wasLoadedInOnCreate = false
     private var selectedDate = buildCurrentDate()
     private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.2f).toDouble() }
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
-    fun onCreate() {
+    fun onViewCreated() {
+        if(isOnline() && (scheduleData.value == null || prefs.isReloadToApplySettings)) {
+            wasLoadedInOnCreate = true
+            selectedDate = buildCurrentDate()
+            loadSchedule()
+        }
         if(res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.postEvent()
         }
     }
 
     fun onResume() {
-        if(scheduleData.value == null ||
-            prefs.shouldReloadScheduleToApplySettings ||
-            prefs.isLoadOnResume
-        ) {
+        if(!wasLoadedInOnCreate && prefs.isLoadOnResume) {
             loadCurrentWeek()
         }
+        wasLoadedInOnCreate = false
     }
 
     fun onPageDrawn() {
-        isLoaderVisible.postValue(false)
-        val currentDate = buildCurrentDate()
         if(buildCurrentDate().isSameWeek(selectedDate)) {
-            scrollDateIntoView(currentDate)
+            scrollSelectedDateIntoView()
         }
     }
 
@@ -78,7 +80,9 @@ class ScheduleViewModel(
     }
 
     fun onRefreshClicked() {
-        reloadSchedule()
+        if(isOnline()) {
+            loadSchedule()
+        }
     }
 
     fun onSettingsClicked() {
@@ -133,16 +137,16 @@ class ScheduleViewModel(
             if(data != null) {
                 scheduleData.postValue(data)
             } else {
-                isLoaderVisible.postValue(false)
                 errorMessage.postValue(error)
             }
+            isLoaderVisible.postValue(false)
         }
     }
 
-    private fun scrollDateIntoView(date: LocalDate) {
+    private fun scrollSelectedDateIntoView() {
         val scrollJs = res
                 .readFromAssets("template_scroll_into_view.js")
-                .format(date.scrollFormat())
+                .format(selectedDate.scrollFormat())
         javascript.postEvent(JavascriptData(js = scrollJs, callback = { postScrollEvent(it) }))
     }
 
@@ -198,16 +202,10 @@ class ScheduleViewModel(
                 }
         )
 
-    private fun reloadSchedule() {
-        if(isOnline()) {
-            loadSchedule()
-        }
-    }
-
     private fun loadCurrentWeek() {
         val currentDate = buildCurrentDate()
         if(currentDate.isSameWeek(selectedDate) && scheduleData.value != null) {
-            scrollDateIntoView(currentDate)
+            scrollSelectedDateIntoView()
         } else if(isOnline()) {
             selectedDate = currentDate
             loadSchedule()

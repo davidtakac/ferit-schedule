@@ -36,7 +36,7 @@ class PreferenceViewModel(
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if(key != res.getString(R.string.key_theme) && key != res.getString(R.string.key_settings_modified)) {
-            prefs.shouldReloadScheduleToApplySettings = true
+            prefs.isReloadToApplySettings = true
         }
         when(key) {
             res.getString(R.string.key_skip_day) -> onSkipDayChanged()

@@ -43,11 +43,11 @@ class PreferenceRepositoryImpl(
         get() = prefs.getInt(R.string.key_time_minute, 0)
         set(value) = editor { putInt(R.string.key_time_minute, value) }
 
-    override var shouldReloadScheduleToApplySettings: Boolean
+    override var isReloadToApplySettings: Boolean
         get() {
             val wereSettingsModified = prefs.getBoolean(R.string.key_settings_modified, false)
             if(wereSettingsModified) {
-                shouldReloadScheduleToApplySettings = false
+                isReloadToApplySettings = false
             }
             return wereSettingsModified
         }
