@@ -35,7 +35,7 @@ class PreferenceViewModel(
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if(key != res.getString(R.string.key_theme)) {
+        if(key != res.getString(R.string.key_theme) && key != res.getString(R.string.key_settings_modified)) {
             prefs.shouldReloadScheduleToApplySettings = true
         }
         when(key) {

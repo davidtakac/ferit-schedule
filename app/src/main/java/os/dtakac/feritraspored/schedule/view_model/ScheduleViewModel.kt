@@ -44,30 +44,22 @@ class ScheduleViewModel(
     val webViewScroll = MutableLiveData<Event<ScrollData>>()
     val clearWebViewScroll = MutableLiveData<Event<Unit>>()
 
-    private var wasOnCreateCalled: Boolean = false
     private var selectedDate = buildCurrentDate()
     private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.2f).toDouble() }
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
     fun onCreate() {
-        wasOnCreateCalled = true
-        if(scheduleData.value == null) {
-            reloadSchedule()
-        }
         if(res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.postEvent()
         }
     }
 
     fun onResume() {
-        if(!wasOnCreateCalled) {
-            if(prefs.shouldReloadScheduleToApplySettings) {
-                reloadSchedule()
-            } else if(prefs.isLoadOnResume) {
-                loadCurrentWeek()
-            }
+        if(scheduleData.value == null || prefs.shouldReloadScheduleToApplySettings) {
+            reloadSchedule()
+        } else if(prefs.isLoadOnResume) {
+            loadCurrentWeek()
         }
-        wasOnCreateCalled = false
     }
 
     fun onPageDrawn() {
