@@ -10,7 +10,7 @@ import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 
-class SettingsViewModel(
+class PreferenceViewModel(
         private val prefs: PreferenceRepository,
         private val res: ResourceRepository
 ): ViewModel(), SharedPreferences.OnSharedPreferenceChangeListener {

@@ -13,16 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme.Launcher">
         <activity
-            android:name=".schedule.view.ScheduleActivity"
+            android:name=".main.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".settings.container.SettingsActivity"
-            android:label="@string/label_settings" />
     </application>
 
 </manifest>

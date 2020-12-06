@@ -5,15 +5,16 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isGone
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
@@ -22,22 +23,34 @@ import os.dtakac.feritraspored.common.extensions.getColorCompat
 import os.dtakac.feritraspored.common.extensions.isNightMode
 import os.dtakac.feritraspored.common.extensions.openEmailEditor
 import os.dtakac.feritraspored.common.extensions.showChangelog
-import os.dtakac.feritraspored.databinding.ActivityScheduleBinding
+import os.dtakac.feritraspored.databinding.FragmentScheduleBinding
 import os.dtakac.feritraspored.schedule.data.ScrollData
 import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
-import os.dtakac.feritraspored.settings.container.SettingsActivity
 import os.dtakac.feritraspored.views.debounce.onDebouncedClick
 
-class ScheduleActivity: AppCompatActivity() {
-    private lateinit var binding: ActivityScheduleBinding
+class ScheduleFragment: Fragment() {
+    private var _binding: FragmentScheduleBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: ScheduleViewModel by viewModel()
     private var scrollAnimator: ObjectAnimator? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
-        super.onCreate(savedInstanceState)
-        initLifecycleObserver()
-        initBinding()
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentScheduleBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initViews()
         initObservers()
         viewModel.onCreate()
@@ -49,7 +62,7 @@ class ScheduleActivity: AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.scheduleData.observe(this) {
+        viewModel.scheduleData.observe(viewLifecycleOwner) {
             binding.wvSchedule.loadDataWithBaseURL(
                     it.baseUrl,
                     if(resources.configuration.isNightMode()) it.htmlDark else it.html,
@@ -59,53 +72,54 @@ class ScheduleActivity: AppCompatActivity() {
             )
             binding.toolbar.title = it.title
         }
-        viewModel.javascript.observeEvent(this) { data ->
+        viewModel.javascript.observeEvent(viewLifecycleOwner) { data ->
             binding.wvSchedule.evaluateJavascript(data.js) {
                 data.callback.invoke(it)
             }
         }
-        viewModel.webViewScroll.observeEvent(this) {
+        viewModel.webViewScroll.observeEvent(viewLifecycleOwner) {
             scrollWebView(it)
         }
-        viewModel.clearWebViewScroll.observeEvent(this) {
+        viewModel.clearWebViewScroll.observeEvent(viewLifecycleOwner) {
             scrollAnimator?.cancel()
         }
-        viewModel.openSettings.observeEvent(this) {
-            startActivity(Intent(this, SettingsActivity::class.java))
+        viewModel.openSettings.observeEvent(viewLifecycleOwner) {
+            findNavController().navigate(R.id.actionSettings)
+            //startActivity(Intent(requireContext(), SettingsActivity::class.java))
         }
-        viewModel.openInExternalBrowser.observeEvent(this) {
+        viewModel.openInExternalBrowser.observeEvent(viewLifecycleOwner) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
         }
-        viewModel.openInCustomTabs.observeEvent(this) {
+        viewModel.openInCustomTabs.observeEvent(viewLifecycleOwner) {
             val colorParams = CustomTabColorSchemeParams.Builder()
-                    .setToolbarColor(getColorCompat(R.color.colorStatusBar))
+                    .setToolbarColor(requireContext().getColorCompat(R.color.colorStatusBar))
                     .build()
             CustomTabsIntent.Builder()
                     .setDefaultColorSchemeParams(colorParams)
                     .build()
-                    .launchUrl(this, Uri.parse(it))
+                    .launchUrl(requireContext(), Uri.parse(it))
         }
-        viewModel.showChangelog.observeEvent(this) {
-            supportFragmentManager.showChangelog()
+        viewModel.showChangelog.observeEvent(viewLifecycleOwner) {
+            childFragmentManager.showChangelog()
         }
-        viewModel.snackBarMessage.observeEvent(this) {
-            Snackbar.make(findViewById(android.R.id.content), it, Snackbar.LENGTH_SHORT)
+        viewModel.snackBarMessage.observeEvent(viewLifecycleOwner) {
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                     .setAnchorView(binding.navBar.root)
                     .show()
         }
-        viewModel.openEmailEditor.observeEvent(this) {
-            openEmailEditor(it)
+        viewModel.openEmailEditor.observeEvent(viewLifecycleOwner) {
+            context?.openEmailEditor(it)
         }
-        viewModel.isLoaderVisible.observe(this) { shouldShow ->
+        viewModel.isLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
             binding.loader.apply { if(shouldShow) show() else hide() }
         }
-        viewModel.errorMessage.observe(this) {
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
             binding.error.tvError.text = it
         }
-        viewModel.isErrorGone.observe(this) {
+        viewModel.isErrorGone.observe(viewLifecycleOwner) {
             binding.error.root.isGone = it
         }
-        viewModel.areControlsEnabled.observe(this) {
+        viewModel.areControlsEnabled.observe(viewLifecycleOwner) {
             binding.navBar.apply {
                 btnPrevious.isEnabled = it
                 btnCurrent.isEnabled = it
@@ -118,7 +132,7 @@ class ScheduleActivity: AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun initViews() {
         binding.wvSchedule.apply {
-            setBackgroundColor(getColorCompat(android.R.color.transparent))
+            setBackgroundColor(context.getColorCompat(android.R.color.transparent))
             webViewClient = scheduleWebViewClient
             settings.javaScriptEnabled = true
         }
@@ -151,15 +165,6 @@ class ScheduleActivity: AppCompatActivity() {
         binding.loader.hide()
     }
 
-    private fun initBinding() {
-        binding = ActivityScheduleBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-    }
-
-    private fun initLifecycleObserver() {
-        lifecycle.addObserver(pageDrawnLifecycleObserver)
-    }
-
     private fun scrollWebView(data: ScrollData) {
         if(scrollAnimator?.isStarted != true) {
             val currentVerticalPosition = binding.wvSchedule.scrollY
@@ -178,36 +183,12 @@ class ScheduleActivity: AppCompatActivity() {
 
     private val scheduleWebViewClient = object : WebViewClient() {
         override fun onPageFinished(view: WebView?, url: String?) {
-            pageDrawnLifecycleObserver.postPageDrawn()
+            viewModel.onPageDrawn()
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             viewModel.onUrlClicked(url)
             return true
-        }
-    }
-
-    /**
-     * Dispatches [ScheduleViewModel.onPageDrawn] only when the [androidx.lifecycle.LifecycleOwner]
-     * is [Lifecycle.State.RESUMED]. This makes sure that it doesn't get called when
-     * the page isn't drawn yet, which causes the scroll distance to be measured incorrectly.
-     */
-    private val pageDrawnLifecycleObserver = object : LifecycleObserver {
-        private var wasPageDrawn = false
-
-        fun postPageDrawn() {
-            wasPageDrawn = true
-            if(lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                dispatchPageDrawn()
-            }
-        }
-
-        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        private fun dispatchPageDrawn() {
-            if(wasPageDrawn) {
-                viewModel.onPageDrawn()
-            }
-            wasPageDrawn = false
         }
     }
 }
