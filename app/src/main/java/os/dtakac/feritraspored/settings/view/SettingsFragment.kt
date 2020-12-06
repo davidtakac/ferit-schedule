@@ -17,9 +17,10 @@ import os.dtakac.feritraspored.common.extensions.openEmailEditor
 import os.dtakac.feritraspored.common.extensions.preference
 import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.common.extensions.showInfoDialog
-import os.dtakac.feritraspored.settings.view_model.SettingsViewModel
+import os.dtakac.feritraspored.settings.view_model.PreferenceViewModel
 import os.dtakac.feritraspored.views.dialog_time_picker.TimePickerDialogFragment
 
+@Suppress("unused")
 class SettingsFragment : PreferenceFragmentCompat() {
     private val themes: ListPreference by preference(R.string.key_theme)
     private val filters: EditTextPreference by preference(R.string.key_filters)
@@ -30,7 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val messageToDeveloper: Preference by preference(R.string.key_developer_message)
     private val courseIdentifierHelp: Preference by preference(R.string.key_course_identifier_help)
 
-    private val viewModel: SettingsViewModel by viewModel()
+    private val viewModel: PreferenceViewModel by viewModel()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.fragment_preference, rootKey)
@@ -40,10 +41,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onViewCreated(view, savedInstanceState)
         initializeClickListeners()
         initializeViews()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         initializeObservers()
     }
 

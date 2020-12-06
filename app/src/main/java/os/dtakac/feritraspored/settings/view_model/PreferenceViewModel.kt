@@ -10,7 +10,7 @@ import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 
-class SettingsViewModel(
+class PreferenceViewModel(
         private val prefs: PreferenceRepository,
         private val res: ResourceRepository
 ): ViewModel(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -34,8 +34,10 @@ class SettingsViewModel(
         setCourseIdentifierSummary()
     }
 
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
-        this.prefs.isSettingsModified = true
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if(key != res.getString(R.string.key_theme) && key != res.getString(R.string.key_settings_modified)) {
+            prefs.isReloadToApplySettings = true
+        }
         when(key) {
             res.getString(R.string.key_skip_day) -> onSkipDayChanged()
             res.getString(R.string.key_filters) -> onFiltersChanged()
@@ -116,7 +118,7 @@ class SettingsViewModel(
     }
 
     private fun setFiltersEnabled() {
-        filtersEnabled.postValue(prefs.isFiltersEnabled)
+        filtersEnabled.postValue(prefs.areFiltersEnabled)
     }
 
     private fun setTheme() {

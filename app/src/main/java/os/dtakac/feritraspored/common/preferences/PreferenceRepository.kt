@@ -11,13 +11,12 @@ interface PreferenceRepository {
     var year: String?
     var timeHour: Int
     var timeMinute: Int
-    var isSettingsModified: Boolean
+    var isReloadToApplySettings: Boolean
     var isLoadOnResume: Boolean
-    var previouslyDisplayedWeek: String?
     var theme: Int
     var version: Int
     var courseIdentifier: String?
-    var isFiltersEnabled: Boolean
+    var areFiltersEnabled: Boolean
     var isShowTimeOnBlocks: Boolean
 
     fun delete(@StringRes keyResId: Int)

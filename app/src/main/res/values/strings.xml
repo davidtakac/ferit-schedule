@@ -17,7 +17,6 @@
     <string name="key_time_minute" translatable="false">minute_key</string>
     <string name="key_settings_modified" translatable="false">settings_modified</string>
     <string name="key_load_on_resume" translatable="false">load_on_resume_key</string>
-    <string name="key_prev_week" translatable="false">prev_displayed_week_key</string>
     <string name="key_filters_toggle" translatable="false">group_toggle_key</string>
     <string name="key_filters_help" translatable="false">group_help_key</string>
     <string name="key_theme" translatable="false">prefkey_theme</string>
@@ -83,24 +82,20 @@
     <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n Poruka: %s</string>
     <string name="title_groups_help">Upute za unos filtera</string>
     <string name="content_groups_help">
-        &#8226; Svaki blok koji u svom naslovu ili oblačiću sadrži uneseni filter bit će označen\n\n
+        &#8226; Svaki blok koji u svom naslovu ili oblačiću sadrži uneseni filter bit će označen\n
         &#8226; Filteri se odvajaju jednostrukim zarezom\n
-        &#8226; Filteri su osjetljivi na mala i velika slova\n
+        &#8226; Filteri su osjetljivi na mala i velika slova\n\n
         &#8226; Primjeri ispravnih unosa:\n
-        Osnove elektrotehnike, LV2/16, IVIĆ\n
-        Programiranje I, PR-2, PR-P\n
-        11:30 - 14:45, K2-12, AV3\n
-        LV1/24, LV2/16, AV2
+        <i>Osnove elektrotehnike, LV2/16, IVIĆ</i>\n
+        <i>Programiranje I, PR-2, PR-P</i>\n
+        <i>11:30 - 14:45, K2-12, AV3</i>\n
+        <i>LV1/24, LV2/16, AV2</i>
     </string>
     <string name="okay">U redu</string>
     <string name="title_appearance">Izgled aplikacije</string>
     <string name="title_theme">Tema</string>
-    <string name="title_whats_new">[2.3.0] I am speed</string>
-    <string name="content_whats_new">
-        &#8226; Ubrzano prikazivanje stranice rasporeda\n
-        &#8226; Razne estetske promjene i poboljšanja\n
-        &#8226; Ako naletite na problem, javite se putem postavki ili direktno na developer.takac@gmail.com
-    </string>
+    <string name="title_whats_new">[2.3.0] Brzi update</string>
+    <string name="content_whats_new">Brža navigacija i razne estetske promjene i poboljšanja</string>
     <string name="dismiss_whats_new">kul!</string>
     <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
     <string name="subject_message_to_developer">[Ferit Raspored] Poruka</string>
@@ -117,7 +112,7 @@
     <string name="summary_time_on_blocks">Tekstu bloka dodaj liniju s pripadajućim vremenom izvođenja</string>
     <string name="content_course_identifier_help">
         1. Pomoću preglednika navigiraj do stranice rasporeda za svoj kolegij\n\n
-        2. Poveznica je ovog oblika:\n<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
+        2. Poveznica je ovog oblika:<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
         3. Podebljani dio poveznice je identifikator kolegija
     </string>
 </resources>

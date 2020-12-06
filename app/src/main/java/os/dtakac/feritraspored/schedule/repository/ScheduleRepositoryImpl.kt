@@ -18,16 +18,16 @@ class ScheduleRepositoryImpl(
             withDate: LocalDate,
             courseIdentifier: String,
             showTimeOnBlocks: Boolean,
-            filters: List<String>,
-            applyDarkTheme: Boolean
+            filters: List<String>
     ): ScheduleData {
         val scheduleUrl = getScheduleUrl(withDate, courseIdentifier)
         val document = getDocument(scheduleUrl)
         val title = document.getTitle()
-        document.applyTransformations(showTimeOnBlocks, applyDarkTheme, filters)
+        document.applyTransformations(showTimeOnBlocks, filters)
         return ScheduleData(
                 baseUrl = scheduleUrl,
                 html = document.toString(),
+                htmlDark = document.applyDarkTheme().toString(),
                 encoding = "UTF-8",
                 mimeType = "text/html",
                 title = title ?: res.getString(R.string.label_schedule)
@@ -45,16 +45,14 @@ class ScheduleRepositoryImpl(
 
     private suspend fun Document.applyTransformations(
             showTimeOnBlocks: Boolean,
-            applyDarkTheme: Boolean,
             filters: List<String>
     ) = withContext(Dispatchers.IO) {
         hideJunk()
         if(showTimeOnBlocks) showTimeOnBlocks()
-        if(applyDarkTheme) applyDarkTheme()
         if(filters.isNotEmpty()) highlightBlocks(filters)
     }
 
-    private fun Document.hideJunk() {
+    private fun Document.hideJunk(): Document {
         selectFirst("#pagewrap").children().not(".narrow-down").remove()
         selectFirst(".narrow-down").children().not("#content-contain").remove()
         selectFirst("#content").children().not("#raspored").remove()
@@ -71,13 +69,15 @@ class ScheduleRepositoryImpl(
         select("script[src*=FileSaver]").remove()
         select("script[src*=highslide]").remove()
         select("script[src*=responsiveslides]").remove()
+        return this
     }
 
-    private fun Document.applyDarkTheme() {
+    private fun Document.applyDarkTheme(): Document {
         head().append("<style>${res.readFromAssets("dark_theme.css")}</style>")
+        return this
     }
 
-    private fun Document.showTimeOnBlocks() {
+    private fun Document.showTimeOnBlocks(): Document {
         select(".blokovi").forEach {
             val time = it.selectFirst("span.hide")
                     .textNodes()
@@ -88,9 +88,10 @@ class ScheduleRepositoryImpl(
                 it.selectFirst(".thumbnail p").append("<br/>$time")
             }
         }
+        return this
     }
 
-    private fun Document.highlightBlocks(filters: List<String>) {
+    private fun Document.highlightBlocks(filters: List<String>): Document {
         filters.forEach { filter ->
             val blocks = select("div.blokovi:contains($filter)")
             blocks.forEach {
@@ -100,6 +101,7 @@ class ScheduleRepositoryImpl(
                 )
             }
         }
+        return this
     }
 
     private suspend fun Document.getTitle(): String? = withContext(Dispatchers.IO) {

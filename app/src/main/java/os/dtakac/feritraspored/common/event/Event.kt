@@ -39,7 +39,3 @@ fun <T> MutableLiveData<Event<T>>.postEvent(value: T) {
 fun MutableLiveData<Event<Unit>>.postEvent() {
     postEvent(Unit)
 }
-
-fun <T> LiveData<Event<T>>.peekContent(): T? {
-    return value?.peekContent()
-}
