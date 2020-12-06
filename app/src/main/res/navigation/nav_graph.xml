@@ -11,7 +11,7 @@
         tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/actionSettings"
-            app:destination="@id/settingsFragment"/>
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

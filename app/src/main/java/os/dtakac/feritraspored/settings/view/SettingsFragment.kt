@@ -20,6 +20,7 @@ import os.dtakac.feritraspored.common.extensions.showInfoDialog
 import os.dtakac.feritraspored.settings.view_model.PreferenceViewModel
 import os.dtakac.feritraspored.views.dialog_time_picker.TimePickerDialogFragment
 
+@Suppress("unused")
 class SettingsFragment : PreferenceFragmentCompat() {
     private val themes: ListPreference by preference(R.string.key_theme)
     private val filters: EditTextPreference by preference(R.string.key_filters)

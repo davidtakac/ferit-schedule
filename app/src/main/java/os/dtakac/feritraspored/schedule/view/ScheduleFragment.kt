@@ -85,7 +85,6 @@ class ScheduleFragment: Fragment() {
         }
         viewModel.openSettings.observeEvent(viewLifecycleOwner) {
             findNavController().navigate(R.id.actionSettings)
-            //startActivity(Intent(requireContext(), SettingsActivity::class.java))
         }
         viewModel.openInExternalBrowser.observeEvent(viewLifecycleOwner) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
