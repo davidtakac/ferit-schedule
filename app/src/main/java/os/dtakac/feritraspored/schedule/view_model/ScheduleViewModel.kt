@@ -55,16 +55,19 @@ class ScheduleViewModel(
     }
 
     fun onResume() {
-        if(scheduleData.value == null || prefs.shouldReloadScheduleToApplySettings) {
-            reloadSchedule()
-        } else if(prefs.isLoadOnResume) {
+        if(scheduleData.value == null ||
+            prefs.shouldReloadScheduleToApplySettings ||
+            prefs.isLoadOnResume
+        ) {
             loadCurrentWeek()
         }
     }
 
     fun onPageDrawn() {
+        isLoaderVisible.postValue(false)
+        val currentDate = buildCurrentDate()
         if(buildCurrentDate().isSameWeek(selectedDate)) {
-            scrollSelectedDateIntoView()
+            scrollDateIntoView(currentDate)
         }
     }
 
@@ -130,16 +133,16 @@ class ScheduleViewModel(
             if(data != null) {
                 scheduleData.postValue(data)
             } else {
+                isLoaderVisible.postValue(false)
                 errorMessage.postValue(error)
             }
-            isLoaderVisible.postValue(false)
         }
     }
 
-    private fun scrollSelectedDateIntoView() {
+    private fun scrollDateIntoView(date: LocalDate) {
         val scrollJs = res
                 .readFromAssets("template_scroll_into_view.js")
-                .format(selectedDate.scrollFormat())
+                .format(date.scrollFormat())
         javascript.postEvent(JavascriptData(js = scrollJs, callback = { postScrollEvent(it) }))
     }
 
@@ -156,13 +159,13 @@ class ScheduleViewModel(
 
     private fun buildCurrentDate(): LocalDate {
         var newSelectedDate = LocalDate.now()
-        if(prefs.isSkipDay && LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)) {
-            newSelectedDate = newSelectedDate.plusDays(1)
-        }
         if(newSelectedDate.dayOfWeek == DayOfWeek.SATURDAY && prefs.isSkipSaturday) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
         if(newSelectedDate.dayOfWeek == DayOfWeek.SUNDAY) {
+            newSelectedDate = newSelectedDate.plusDays(1)
+        }
+        if(prefs.isSkipDay && LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
         return newSelectedDate
@@ -204,7 +207,7 @@ class ScheduleViewModel(
     private fun loadCurrentWeek() {
         val currentDate = buildCurrentDate()
         if(currentDate.isSameWeek(selectedDate) && scheduleData.value != null) {
-            scrollSelectedDateIntoView()
+            scrollDateIntoView(currentDate)
         } else if(isOnline()) {
             selectedDate = currentDate
             loadSchedule()
