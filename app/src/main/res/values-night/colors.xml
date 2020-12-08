@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">@color/lightBlue200</color>
-    <color name="colorAccent">@color/middleRed</color>
+    <color name="colorAccent">@color/fireOpal</color>
     <color name="colorStatusBar">@color/darkSurface4dp</color>
     <color name="colorNavigationBar">@color/darkSurface8dp</color>
     <color name="colorHighlightBlock">#FF1744</color>
