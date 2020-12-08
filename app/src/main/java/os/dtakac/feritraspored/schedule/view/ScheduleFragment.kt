@@ -18,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.event.observeEvent
 import os.dtakac.feritraspored.common.extensions.getColorCompat
 import os.dtakac.feritraspored.common.extensions.isNightMode
 import os.dtakac.feritraspored.common.extensions.openEmailEditor
@@ -72,24 +71,24 @@ class ScheduleFragment: Fragment() {
             )
             binding.toolbar.title = it.title
         }
-        viewModel.javascript.observeEvent(viewLifecycleOwner) { data ->
+        viewModel.javascript.observe(viewLifecycleOwner) { data ->
             binding.wvSchedule.evaluateJavascript(data.js) {
                 data.callback.invoke(it)
             }
         }
-        viewModel.webViewScroll.observeEvent(viewLifecycleOwner) {
+        viewModel.webViewScroll.observe(viewLifecycleOwner) {
             scrollWebView(it)
         }
-        viewModel.clearWebViewScroll.observeEvent(viewLifecycleOwner) {
+        viewModel.clearWebViewScroll.observe(viewLifecycleOwner) {
             scrollAnimator?.cancel()
         }
-        viewModel.openSettings.observeEvent(viewLifecycleOwner) {
+        viewModel.openSettings.observe(viewLifecycleOwner) {
             findNavController().navigate(R.id.actionSettings)
         }
-        viewModel.openInExternalBrowser.observeEvent(viewLifecycleOwner) {
+        viewModel.openInExternalBrowser.observe(viewLifecycleOwner) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
         }
-        viewModel.openInCustomTabs.observeEvent(viewLifecycleOwner) {
+        viewModel.openInCustomTabs.observe(viewLifecycleOwner) {
             val colorParams = CustomTabColorSchemeParams.Builder()
                     .setToolbarColor(requireContext().getColorCompat(R.color.colorStatusBar))
                     .build()
@@ -98,15 +97,15 @@ class ScheduleFragment: Fragment() {
                     .build()
                     .launchUrl(requireContext(), Uri.parse(it))
         }
-        viewModel.showChangelog.observeEvent(viewLifecycleOwner) {
+        viewModel.showChangelog.observe(viewLifecycleOwner) {
             childFragmentManager.showChangelog()
         }
-        viewModel.snackBarMessage.observeEvent(viewLifecycleOwner) {
+        viewModel.snackBarMessage.observe(viewLifecycleOwner) {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
                     .setAnchorView(binding.navBar.root)
                     .show()
         }
-        viewModel.openEmailEditor.observeEvent(viewLifecycleOwner) {
+        viewModel.openEmailEditor.observe(viewLifecycleOwner) {
             context?.openEmailEditor(it)
         }
         viewModel.isLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->

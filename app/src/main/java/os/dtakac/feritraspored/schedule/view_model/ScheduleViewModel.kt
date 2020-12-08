@@ -6,12 +6,11 @@ import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.data.EmailEditorData
-import os.dtakac.feritraspored.common.event.Event
-import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
+import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
 import os.dtakac.feritraspored.schedule.data.ScrollData
@@ -34,15 +33,15 @@ class ScheduleViewModel(
     val isErrorGone: LiveData<Boolean> = Transformations.map(errorMessage) { it == null }
     val areControlsEnabled: LiveData<Boolean> = Transformations.map(isLoaderVisible) { !it }
     //event live data
-    val javascript = MutableLiveData<Event<JavascriptData>>()
-    val openSettings = MutableLiveData<Event<Unit>>()
-    val openInExternalBrowser = MutableLiveData<Event<String>>()
-    val openInCustomTabs = MutableLiveData<Event<String>>()
-    val openEmailEditor = MutableLiveData<Event<EmailEditorData>>()
-    val showChangelog = MutableLiveData<Event<Unit>>()
-    val snackBarMessage = MutableLiveData<Event<String>>()
-    val webViewScroll = MutableLiveData<Event<ScrollData>>()
-    val clearWebViewScroll = MutableLiveData<Event<Unit>>()
+    val javascript = SingleLiveEvent<JavascriptData>()
+    val openSettings = SingleLiveEvent<Unit>()
+    val openInExternalBrowser = SingleLiveEvent<String>()
+    val openInCustomTabs = SingleLiveEvent<String>()
+    val openEmailEditor = SingleLiveEvent<EmailEditorData>()
+    val showChangelog = SingleLiveEvent<Unit>()
+    val snackBarMessage = SingleLiveEvent<String>()
+    val webViewScroll = SingleLiveEvent<ScrollData>()
+    val clearWebViewScroll = SingleLiveEvent<Unit>()
 
     private var wasLoadedInOnCreate = false
     private var selectedDate = buildCurrentDate()
@@ -56,7 +55,7 @@ class ScheduleViewModel(
             loadSchedule()
         }
         if(res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE) {
-            showChangelog.postEvent()
+            showChangelog.call()
         }
     }
 
@@ -75,7 +74,7 @@ class ScheduleViewModel(
 
     fun onUrlClicked(url: String?) {
         if(url != null) {
-            openInCustomTabs.postEvent(url)
+            openInCustomTabs.value = url
         }
     }
 
@@ -86,12 +85,12 @@ class ScheduleViewModel(
     }
 
     fun onSettingsClicked() {
-        openSettings.postEvent()
+        openSettings.call()
     }
 
     fun onOpenInExternalBrowserClicked() {
         val data = scheduleData.value ?: return
-        openInExternalBrowser.postEvent(data.baseUrl)
+        openInExternalBrowser.value = data.baseUrl
     }
 
     fun onPreviousWeekClicked() {
@@ -117,14 +116,14 @@ class ScheduleViewModel(
         val content = res
                 .getString(R.string.template_bug_report)
                 .format(errorMessage.value ?: "")
-        openEmailEditor.postEvent(EmailEditorData(subject, content))
+        openEmailEditor.value = EmailEditorData(subject, content)
     }
 
     private fun loadSchedule() {
         viewModelScope.launch {
-            clearWebViewScroll.postEvent()
-            errorMessage.postValue(null)
-            isLoaderVisible.postValue(true)
+            clearWebViewScroll.call()
+            errorMessage.value = null
+            isLoaderVisible.value = true
 
             var error: String? = null
             val data = try {
@@ -135,11 +134,11 @@ class ScheduleViewModel(
             }
 
             if(data != null) {
-                scheduleData.postValue(data)
+                scheduleData.value = data
             } else {
-                errorMessage.postValue(error)
+                errorMessage.value = error
             }
-            isLoaderVisible.postValue(false)
+            isLoaderVisible.value = false
         }
     }
 
@@ -147,17 +146,17 @@ class ScheduleViewModel(
         val scrollJs = res
                 .readFromAssets("template_scroll_into_view.js")
                 .format(selectedDate.scrollFormat())
-        javascript.postEvent(JavascriptData(js = scrollJs, callback = { postScrollEvent(it) }))
+        javascript.value = JavascriptData(js = scrollJs, callback = { postScrollEvent(it) })
     }
 
     private fun postScrollEvent(elementPosition: String) {
         val elementPositionDp = elementPosition.toFloatOrNull()
         if(elementPositionDp != null) {
-            webViewScroll.postEvent(ScrollData(
+            webViewScroll.value = ScrollData(
                     speed = scrollPixelsPerMs,
                     verticalPosition = res.toPx(elementPositionDp).roundToInt(),
                     interpolator = scrollInterpolator
-            ))
+            )
         }
     }
 
@@ -180,12 +179,12 @@ class ScheduleViewModel(
         if(!isOnline) {
             if(scheduleData.value == null) {
                 if(errorMessage.value == null) {
-                    errorMessage.postValue(res.getString(R.string.error_no_network))
+                    errorMessage.value = res.getString(R.string.error_no_network)
                 } else {
-                    snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
+                    snackBarMessage.value = res.getString(R.string.notify_no_network)
                 }
             } else {
-                snackBarMessage.postEvent(res.getString(R.string.notify_no_network))
+                snackBarMessage.value = res.getString(R.string.notify_no_network)
             }
         }
         return isOnline

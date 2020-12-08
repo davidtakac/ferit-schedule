@@ -12,7 +12,6 @@ import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.DIALOG_COURSE_IDENTIFIER_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_FILTERS_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_TIME_PICKER
-import os.dtakac.feritraspored.common.event.observeEvent
 import os.dtakac.feritraspored.common.extensions.openEmailEditor
 import os.dtakac.feritraspored.common.extensions.preference
 import os.dtakac.feritraspored.common.extensions.showChangelog
@@ -102,27 +101,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
         viewModel.theme.observe(viewLifecycleOwner) {
             AppCompatDelegate.setDefaultNightMode(it)
         }
-        viewModel.showTimePicker.observeEvent(viewLifecycleOwner) {
+        viewModel.showTimePicker.observe(viewLifecycleOwner) {
             TimePickerDialogFragment().show(childFragmentManager, DIALOG_TIME_PICKER)
         }
-        viewModel.showChangelog.observeEvent(viewLifecycleOwner) {
+        viewModel.showChangelog.observe(viewLifecycleOwner) {
             childFragmentManager.showChangelog()
         }
-        viewModel.showFiltersHelp.observeEvent(viewLifecycleOwner) {
+        viewModel.showFiltersHelp.observe(viewLifecycleOwner) {
             childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_groups_help,
                     contentResId = R.string.content_groups_help,
                     key = DIALOG_FILTERS_HELP
             )
         }
-        viewModel.showCourseIdentifierHelp.observeEvent(viewLifecycleOwner) {
+        viewModel.showCourseIdentifierHelp.observe(viewLifecycleOwner) {
             childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_course_identifier_help,
                     contentResId = R.string.content_course_identifier_help,
                     key = DIALOG_COURSE_IDENTIFIER_HELP
             )
         }
-        viewModel.openEmailEditor.observeEvent(viewLifecycleOwner) {
+        viewModel.openEmailEditor.observe(viewLifecycleOwner) {
             context?.openEmailEditor(it)
         }
     }
