@@ -17,6 +17,12 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [ appLabel: "@string/app_name"]
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            manifestPlaceholders = [ appLabel: "@string/app_name_debug"]
         }
     }
     compileOptions {
