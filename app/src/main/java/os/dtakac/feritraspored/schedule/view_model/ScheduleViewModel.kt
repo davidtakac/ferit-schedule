@@ -67,6 +67,7 @@ class ScheduleViewModel(
     }
 
     fun onPageDrawn() {
+        isLoaderVisible.value = false
         if(buildCurrentDate().isSameWeek(selectedDate)) {
             scrollSelectedDateIntoView()
         }
@@ -137,8 +138,8 @@ class ScheduleViewModel(
                 scheduleData.value = data
             } else {
                 errorMessage.value = error
+                isLoaderVisible.value = false
             }
-            isLoaderVisible.value = false
         }
     }
 
