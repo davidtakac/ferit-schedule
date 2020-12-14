@@ -1,0 +1,1 @@
+(function(){return $(".naziv-dan:contains('%s')").offset().top;}());

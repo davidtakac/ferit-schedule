@@ -2,16 +2,19 @@
 <resources>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="lightBlue500">#03A9F4</color>
-    <color name="gray300">#E0E0E0</color>
-    <color name="gray900">#212121</color>
+    <color name="darkSurface">#121212</color>
+    <color name="darkSurface4dp">#272727</color>
+    <color name="darkSurface8dp">#2E2E2E</color>
     <color name="errorRed">#B00020</color>
-    <color name="almostBlack">#121212</color>
-    <color name="dark_surface_4dp">#272727</color>
-    <color name="dark_surface_8dp">#2e2e2e</color>
+    <color name="indianRed">#D56062</color>
+    <color name="steelBlue">#507daa</color>
+    <color name="lightBlue200">#81D4FA</color>
+    <color name="aliceBlue">#D6E1EB</color>
+    <color name="bdazzledBlue">#2F4A60</color>
 
-    <color name="lightBlue200_to_700">#0288D1</color>
-    <color name="gray300_to_black">@color/gray300</color>
-    <color name="toolbar_color">@color/white</color>
-    <color name="navbar_color">@color/white</color>
+    <color name="colorPrimary">@color/steelBlue</color>
+    <color name="colorAccent">@color/indianRed</color>
+    <color name="colorStatusBar">@color/white</color>
+    <color name="colorNavigationBar">@color/white</color>
+    <color name="colorControlNormal">@color/aliceBlue</color>
 </resources>

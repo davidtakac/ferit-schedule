@@ -12,14 +12,14 @@ import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.DIALOG_COURSE_IDENTIFIER_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_FILTERS_HELP
 import os.dtakac.feritraspored.common.constants.DIALOG_TIME_PICKER
-import os.dtakac.feritraspored.common.event.observeEvent
-import os.dtakac.feritraspored.common.utils.openBugReport
-import os.dtakac.feritraspored.common.utils.preference
-import os.dtakac.feritraspored.common.utils.showChangelog
-import os.dtakac.feritraspored.common.utils.showInfoDialog
-import os.dtakac.feritraspored.settings.view_model.SettingsViewModel
-import os.dtakac.feritraspored.views.dialog_time_picker.TimePickerDialogFragment
+import os.dtakac.feritraspored.common.extensions.openEmailEditor
+import os.dtakac.feritraspored.common.extensions.preference
+import os.dtakac.feritraspored.common.extensions.showChangelog
+import os.dtakac.feritraspored.common.extensions.showInfoDialog
+import os.dtakac.feritraspored.settings.viewmodel.PreferenceViewModel
+import os.dtakac.feritraspored.common.view.dialog_time_picker.TimePickerDialogFragment
 
+@Suppress("unused")
 class SettingsFragment : PreferenceFragmentCompat() {
     private val themes: ListPreference by preference(R.string.key_theme)
     private val filters: EditTextPreference by preference(R.string.key_filters)
@@ -27,10 +27,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val filtersHelp: Preference by preference(R.string.key_filters_help)
     private val timePicker: Preference by preference(R.string.key_time_picker)
     private val changelog: Preference by preference(R.string.key_changelog)
-    private val bugReport: Preference by preference(R.string.key_report_bug)
+    private val messageToDeveloper: Preference by preference(R.string.key_developer_message)
     private val courseIdentifierHelp: Preference by preference(R.string.key_course_identifier_help)
 
-    private val viewModel: SettingsViewModel by viewModel()
+    private val viewModel: PreferenceViewModel by viewModel()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.fragment_preference, rootKey)
@@ -40,10 +40,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onViewCreated(view, savedInstanceState)
         initializeClickListeners()
         initializeViews()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         initializeObservers()
     }
 
@@ -64,8 +60,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         changelog.setOnPreferenceClickListener {
             viewModel.onChangelogClicked(); true
         }
-        bugReport.setOnPreferenceClickListener {
-            viewModel.onBugReportClicked(); true
+        messageToDeveloper.setOnPreferenceClickListener {
+            viewModel.onMessageToDeveloperClicked(); true
         }
         filtersHelp.setOnPreferenceClickListener {
             viewModel.onFiltersHelpClicked(); true
@@ -105,28 +101,28 @@ class SettingsFragment : PreferenceFragmentCompat() {
         viewModel.theme.observe(viewLifecycleOwner) {
             AppCompatDelegate.setDefaultNightMode(it)
         }
-        viewModel.showTimePicker.observeEvent(viewLifecycleOwner) {
+        viewModel.showTimePicker.observe(viewLifecycleOwner) {
             TimePickerDialogFragment().show(childFragmentManager, DIALOG_TIME_PICKER)
         }
-        viewModel.showChangelog.observeEvent(viewLifecycleOwner) {
+        viewModel.showChangelog.observe(viewLifecycleOwner) {
             childFragmentManager.showChangelog()
         }
-        viewModel.showFiltersHelp.observeEvent(viewLifecycleOwner) {
+        viewModel.showFiltersHelp.observe(viewLifecycleOwner) {
             childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_groups_help,
                     contentResId = R.string.content_groups_help,
                     key = DIALOG_FILTERS_HELP
             )
         }
-        viewModel.showCourseIdentifierHelp.observeEvent(viewLifecycleOwner) {
+        viewModel.showCourseIdentifierHelp.observe(viewLifecycleOwner) {
             childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_course_identifier_help,
                     contentResId = R.string.content_course_identifier_help,
                     key = DIALOG_COURSE_IDENTIFIER_HELP
             )
         }
-        viewModel.showBugReport.observeEvent(viewLifecycleOwner) {
-            context?.openBugReport()
+        viewModel.openEmailEditor.observe(viewLifecycleOwner) {
+            context?.openEmailEditor(it)
         }
     }
 }

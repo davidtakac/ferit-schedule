@@ -1,0 +1,57 @@
+/*I know !important is a BIG no-no, but no other CSS will get injected into these elements
+so it doesn\'t matter. */
+body {
+    background-color: #121212 !important;
+}
+#raspored {
+    background-color: #121212 !important;
+}
+#content-contain {
+    background-color: #121212 !important;
+}
+.vrijeme-mobitel .tok {
+    border-right: 1px solid transparent !important;
+}
+.raspored div.dan div.tok {
+    background-image: url('data:image/png !important;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAABRCAIAAABt8gCkAAADKnpUWHRSYXcgcHJvZmlsZSB0eXBlIGV4aWYAAHja5ZZbluQmDIbfWUWWYEkIieVwPSc7yPLzg6nqrupJpifJW8yxoYQshD4hVxh//D7Db7iIlUNU85RTunDFHDMXDPy6r7yfdMX9vK9xenqVB30oMESCXu6fVo5+gVw/XnisQfVVHvzMsB9DH4b3JWvlNe6fnYScbznFYygfV1N2++xqPYbaUdyunDs+3bq79Tu8CAxR6oqFhHkIybWf8fZA7rvgzniS6NJDW2MJ6KI89oqAvGzv0V/X5wC9BJnb2dp79J+jt+BzOXJ5i2V6GEo/niB9k8tzGf68sJxRgPhlooznK1+CPGf3Oce9uxITIppORu1g08MMFCtCLvu1hGa4FWPbLaP5Va4G5P1qV0VrlIlBZQaK1KnQpLH7Rg0uRh5s6Jkby5a5GGduIAaKq9FkA70uDm6NRxCBmJ++0F437/UaOVbuBFUmGKMN+y9a+LvJX2lhzpUIRJffcUJewC9eeQ03Frn1hBaA0DzcdAf40Q7+61P+IFVBUHeYHRssV71N1Pts37klm7NAT9HfR4iC9WMAIcLaCmdIQOBKOAOU6DJmI0IcHYAKPGeJXEGAVLnDSY4iiYOx81ob7xhtXVSpxEuM2rSOjyQxsMH5AqwYFflj0ZFDRUWjqiY19aBZS5IUk6aULK0iV0wsmloyM7dsxcWjqyc3d89eMmdBDdScsmXPOZfCoWChAlsF+gWSylVqrFpTteo119KQPi02balZ85Zb6dylo0z01K17z70MCgOVYsShIw0bPvIoE7k2ZcapM02bPvMsT2p0ju17+wVqdKjxJrX07EkN0mD2MEGrnOhiBmIcCcRtEUBC82J2OcXIi9xidmXGoVCGk7rYhE6LGBDGga/KpCe7D3Lf4hbUv8WNf0YuLHT/BbkAdF+5/YBaX9+5fQ7PKVwxvQSnD+Eo7AE3yiL7v+3/b4Z42EyqYyKUba6qhiSYjprRsxqSXZqtOdT5OfB1BYkR8A5gIRUxUUeDcqo1r195esbkrPhmk/zMdPhq+5+ZDt9x+zumA2zjixN1/c/R7/XYGTL5T9B6TgjFl7mhAAABhGlDQ1BJQ0MgcHJvZmlsZQAAeJx9kT1Iw0AcxV9TpSotHcwg4pChdbIgKuKoVShChVArtOpgPvoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxcnRSdJES/5cUWsR4cNyPd/ced+8ArllVNKtnHNB028ykkkIuvyqEXtGPKHhEEJcUy5gTxTR8x9c9Amy9S7As/3N/johasBQgIBDPKoZpE28QT2/aBuN9Yl4pSyrxOfGYSRckfmS67PEb45LLHMvkzWxmnpgnFkpdLHexUjY14inimKrplM/lPFYZbzHWqnWlfU/2wnBBX1lmOs0RpLCIJYgQIKOOCqqwkaBVJ8VChvaTPv5h1y+SSyZXBQo5FlCDBsn1g/3B726t4uSElxROAr0vjvMRB0K7QKvhON/HjtM6AYLPwJXe8deawMwn6Y2OFjsCotvAxXVHk/eAyx1g6MmQTMmVgjS5YhF4P6NvygODt8DAmtdbex+nD0CWukrfAAeHwGiJstd93t3X3du/Z9r9/QBVEXKbuRPoygAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+QJDxQNLmYl+T0AAAAzSURBVEjH7dYxEQAwDMSwpFcEQRL+6Erh98qzALhnprJOxaEoiqIoiqIoenc3pG3Lv6cP4noBnzf+AA0AAAAASUVORK5CYII=') !important;
+}
+.vrijeme-mobitel .tok .satnica {
+    border-top: 1px solid transparent !important;
+    border-bottom: 1px solid transparent !important;
+}
+.satnica {
+    background-color: #212121 !important;
+}
+.naziv-dan {
+    background-color: #212121 !important;
+}
+.naziv-dan a {
+    background-color: #212121 !important;
+    color: #BDBDBD !important;
+}
+.vrijeme-mobitel .satnica {
+    color: #BDBDBD !important;
+}
+.blokovi:not(.Ne) p {
+    color: #EEEEEE !important;
+}
+.PR {
+    background-color: #517652 !important;
+}
+.AV {
+    background-color: #717FA4 !important;
+}
+.LV {
+    background-color: #9d6f5b !important;
+}
+.IS {
+    background-color: #a7843d !important;
+}
+.KV {
+    background-color: #a29343 !important;
+}
+.android_app_selected {
+    border-style: solid !important;
+    border-color: #FF312E !important;
+    border-width: 2px !important;
+}

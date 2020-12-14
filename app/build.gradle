@@ -9,14 +9,20 @@ android {
         applicationId "os.dtakac.feritraspored"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 14
-        versionName "2.2.3"
+        versionCode 16
+        versionName "2.3.0"
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [ appLabel: "@string/app_name"]
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            manifestPlaceholders = [ appLabel: "@string/app_name_debug"]
         }
     }
     compileOptions {
@@ -25,6 +31,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
     buildFeatures {
         viewBinding true
     }
@@ -32,18 +41,21 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:$appcompat_v"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_v"
-    implementation "com.google.android.material:material:$material_v"
-    implementation "androidx.preference:preference-ktx:$preference_v"
-    implementation "androidx.browser:browser:$browser_v"
-    implementation "androidx.core:core-ktx:$core_ktx_v"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraint_layout}"
+    implementation "com.google.android.material:material:${versions.material}"
+    implementation "androidx.preference:preference-ktx:${versions.preference}"
+    implementation "androidx.browser:browser:${versions.browser}"
+    implementation "androidx.core:core-ktx:${versions.core_ktx}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_v"
-    implementation "org.koin:koin-android:$koin_v"
-    implementation "org.koin:koin-android-scope:$koin_v"
-    implementation "org.koin:koin-android-viewmodel:$koin_v"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_v"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_v"
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_v"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    implementation "org.koin:koin-android:${versions.koin}"
+    implementation "org.koin:koin-android-scope:${versions.koin}"
+    implementation "org.koin:koin-android-viewmodel:${versions.koin}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${versions.nav}"
+    implementation "androidx.navigation:navigation-ui-ktx:${versions.nav}"
+    implementation "org.jsoup:jsoup:${versions.jsoup}"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:${versions.desugar_jdk}"
 }

@@ -1,40 +1,57 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!--url strings-->
     <string name="template_schedule" formatted="false">
         https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s
     </string>
 
     <!--Preference key strings-->
-    <string name="key_skip_sat">skip_saturday_key</string>
-    <string name="key_skip_day">skip_day_key</string>
-    <string name="key_filters">group_highlight_key</string>
-    <string name="key_programme_type">prog_type_key</string>
-    <string name="key_programme">programme_key</string>
-    <string name="key_year">year_key</string>
-    <string name="key_time_picker">timepicker_key</string>
-    <string name="key_time_hour">hour_key</string>
-    <string name="key_time_minute">minute_key</string>
-    <string name="key_settings_modified">settings_modified</string>
-    <string name="key_load_on_resume">load_on_resume_key</string>
-    <string name="key_prev_week">prev_displayed_week_key</string>
-    <string name="key_filters_toggle">group_toggle_key</string>
-    <string name="key_filters_help">group_help_key</string>
-    <string name="key_theme">prefkey_theme</string>
-    <string name="key_changelog">changelog_key</string>
-    <string name="key_report_bug">bug_report_key</string>
-    <string name="key_version">version_key</string>
-    <string name="key_course_identifier">course_identifier</string>
+    <string name="key_skip_sat" translatable="false">skip_saturday_key</string>
+    <string name="key_skip_day" translatable="false">skip_day_key</string>
+    <string name="key_filters" translatable="false">group_highlight_key</string>
+    <string name="key_programme" translatable="false">programme_key</string>
+    <string name="key_year" translatable="false">year_key</string>
+    <string name="key_time_picker" translatable="false">timepicker_key</string>
+    <string name="key_time_hour" translatable="false">hour_key</string>
+    <string name="key_time_minute" translatable="false">minute_key</string>
+    <string name="key_settings_modified" translatable="false">settings_modified</string>
+    <string name="key_load_on_resume" translatable="false">load_on_resume_key</string>
+    <string name="key_filters_toggle" translatable="false">group_toggle_key</string>
+    <string name="key_filters_help" translatable="false">group_help_key</string>
+    <string name="key_theme" translatable="false">prefkey_theme</string>
+    <string name="key_changelog" translatable="false">changelog_key</string>
+    <string name="key_developer_message" translatable="false">dev_msg_key</string>
+    <string name="key_version" translatable="false">version_key</string>
+    <string name="key_course_identifier" translatable="false">course_identifier</string>
+    <string name="key_time_on_blocks" translatable="false">key_time_on_blocks</string>
+    <string name="key_course_identifier_help" translatable="false">course_identifier_help</string>
+
+    <!--E-mail addresses that will receive bug reports-->
+    <string-array name="email_addresses" translatable="false">
+        <item>developer.takac@gmail.com</item>
+    </string-array>
+
+    <string-array name="theme_options_human">
+        <item>Prati sistemske postavke</item>
+        <item>Svijetla</item>
+        <item>Tamna</item>
+    </string-array>
+
+    <string-array name="theme_options" translatable="false">
+        <!--MODE_NIGHT_SYSTEM_DEFAULT-->
+        <item>-1</item>
+        <!--MODE_NIGHT_NO-->
+        <item>1</item>
+        <!--MODE_NIGHT_YES-->
+        <item>2</item>
+    </string-array>
 
     <!--User interface strings-->
     <string name="app_name">Ferit Raspored</string>
+    <string name="app_name_debug">Ferit Raspored Debug</string>
     <string name="label_settings">Postavke</string>
-    <string name="title_programme_type">Tip studija</string>
-    <string name="title_programme">Studijski program</string>
-    <string name="title_year">Godina</string>
-    <string name="title_category_programme_and_year">Studij i godina</string>
+    <string name="title_category_programme_and_year">Smjer i godina</string>
     <string name="title_group_highlight">Aktivni filteri</string>
-    <string name="title_category_group_highlight">Označavanje blokova</string>
+    <string name="title_category_group_highlight">Nastavni blokovi</string>
     <string name="title_timepicker">Vrijeme</string>
     <string name="title_skip_day">Preskakanje dana</string>
     <string name="summary_skip_day">Pomiči na sljedeći dan poslije dolje definiranog vremena</string>
@@ -53,67 +70,42 @@
     <string name="title_group_toggle">Primijeni filtere</string>
     <string name="summary_group_toggle">Uokviri blokove koji sadrže jedan od aktivnih filtera crvenom bojom</string>
     <string name="label_refresh">Osvježi</string>
-    <string name="error_no_network">Došlo je do pogreške pri učitavanju stranice. Provjerite jeste li spojeni na mrežu i probajte opet.</string>
-    <string name="notify_no_network">Provjerite jeste li spojeni na mrežu i probajte opet.</string>
-    <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n [Kod]: %d [Opis]: %s [URL]: %s</string>
+    <string name="error_no_network">Došlo je do pogreške pri učitavanju stranice, a izgleda da ne postoji internetska veza. Provjeri internetsku vezu i probaj opet.</string>
+    <string name="notify_no_network">Nemoguće učitati stranicu. Provjeri internetsku vezu i probaj opet.</string>
+    <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n Poruka: %s</string>
     <string name="title_groups_help">Upute za unos filtera</string>
     <string name="content_groups_help">
-        &#8226; Svaki blok koji u svom naslovu ili oblačiću sadrži uneseni filter bit će označen\n\n
+        &#8226; Svaki blok koji u svom naslovu ili oblačiću sadrži uneseni filter bit će označen\n
         &#8226; Filteri se odvajaju jednostrukim zarezom\n
-        &#8226; Filteri su osjetljivi na mala i velika slova\n
+        &#8226; Filteri su osjetljivi na mala i velika slova\n\n
         &#8226; Primjeri ispravnih unosa:\n
-        Osnove elektrotehnike, LV2/16, IVIĆ\n
-        Programiranje I, PR-2, PR-P\n
-        11:30 - 14:45, K2-12, AV3\n
-        LV1/24, LV2/16, AV2
+        <i>Osnove elektrotehnike, LV2/16, IVIĆ</i>\n
+        <i>Programiranje I, PR-2, PR-P</i>\n
+        <i>11:30 - 14:45, K2-12, AV3</i>\n
+        <i>LV1/24, LV2/16, AV2</i>
     </string>
     <string name="okay">U redu</string>
     <string name="title_appearance">Izgled aplikacije</string>
     <string name="title_theme">Tema</string>
-    <string name="title_whats_new">[2.2.3] Identifikator kolegija</string>
-    <string name="content_whats_new">
-        &#8226; Migracija s odabira studija i godine na identifikator kolegija.
-        Ovo je napravljeno kako ne bih morao svake godine ručno mijenjati ponuđene opcije.
-        Migracija bi <i>trebala</i> biti automatska, ali svejedno provjerite je li sve u redu. \n\n
-        &#8226; Potpuna migracija programskog koda na Kotlin.
-    </string>
-    <string name="dismiss_whats_new">okej</string>
+    <string name="title_whats_new">[2.3.0] Brzi update</string>
+    <string name="content_whats_new">Brža navigacija i razne estetske promjene i poboljšanja</string>
+    <string name="dismiss_whats_new">kul!</string>
     <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
+    <string name="subject_message_to_developer">[Ferit Raspored] Poruka</string>
     <string name="label_email_via">Pošalji e-mail pomoću…</string>
     <string name="title_other">Ostalo</string>
-    <string name="title_bug_report">Prijavi problem</string>
-    <string name="summary_bug_report">Pošalji opis problema developeru</string>
+    <string name="report_bug">Prijavi problem</string>
+    <string name="title_message_developer">Kontakt</string>
+    <string name="summary_message_developer">Pošalji poruku razvojnom programeru (problem, prijedlog itd.)</string>
     <string name="summary_whats_new">Pogledaj što je novo</string>
-    <string name="template_bug_report">Poruka greške: %s\n\nDodatni opis: </string>
-    <string name="title_course_identifier">Identifikator kolegija</string>
-    <string name="title_course_identifier_help">Gdje pronaći identifikator kolegija?</string>
-    <string name="key_course_identifier_help">course_identifier_help</string>
+    <string name="template_bug_report">Greška: %s\n\nMolim te opiši kako je došlo do problema: </string>
+    <string name="title_course_identifier">Identifikator smjera i godine</string>
+    <string name="title_course_identifier_help">Gdje pronaći identifikator?</string>
+    <string name="title_time_on_blocks">Vrijeme izvođenja na blokovima</string>
+    <string name="summary_time_on_blocks">Tekstu bloka dodaj liniju s pripadajućim vremenom izvođenja</string>
     <string name="content_course_identifier_help">
-        1. Pomoću preglednika navigiraj do stranice rasporeda za svoj kolegij\n\n
+        1. Pomoću preglednika navigiraj do stranice rasporeda za svoj smjer i godinu\n\n
         2. Poveznica je ovog oblika:\n<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
-        3. Podebljani dio poveznice je identifikator kolegija
+        3. Podebljani dio poveznice je tvoj identifikator smjera i godine
     </string>
-
-    <!--Path names-->
-    <string name="highlight_blocks_path">highlight-blocks.js</string>
-
-    <!--E-mail addresses that will receive bug reports-->
-    <string-array name="email_addresses">
-        <item>developer.takac@gmail.com</item>
-    </string-array>
-
-    <string-array name="theme_options_human">
-        <item>Prati sistemske postavke</item>
-        <item>Svijetla</item>
-        <item>Tamna</item>
-    </string-array>
-
-    <string-array name="theme_options">
-        <!--MODE_NIGHT_SYSTEM_DEFAUlT-->
-        <item>-1</item>
-        <!--MODE_NIGHT_NO-->
-        <item>1</item>
-        <!--MODE_NIGHT_YES-->
-        <item>2</item>
-    </string-array>
 </resources>

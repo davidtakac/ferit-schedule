@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorStatusBar"
+        app:title="@string/label_schedule"
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="4dp" />
+    <WebView
+        android:id="@+id/wvSchedule"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:backgroundTint="@color/darkSurface"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@id/navBar" />
+    <include layout="@layout/view_nav_bar"
+        android:id="@+id/navBar"
+        android:layout_height="56dp"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/loader"
+        app:showAnimationBehavior="outward"
+        app:hideAnimationBehavior="inward"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+    <include layout="@layout/view_error"
+        android:id="@+id/error"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@id/navBar"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
