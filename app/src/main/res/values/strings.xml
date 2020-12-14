@@ -1,6 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!--url strings-->
     <string name="template_schedule" formatted="false">
         https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s
     </string>
@@ -9,7 +8,6 @@
     <string name="key_skip_sat" translatable="false">skip_saturday_key</string>
     <string name="key_skip_day" translatable="false">skip_day_key</string>
     <string name="key_filters" translatable="false">group_highlight_key</string>
-    <string name="key_programme_type" translatable="false">prog_type_key</string>
     <string name="key_programme" translatable="false">programme_key</string>
     <string name="key_year" translatable="false">year_key</string>
     <string name="key_time_picker" translatable="false">timepicker_key</string>
@@ -26,9 +24,6 @@
     <string name="key_course_identifier" translatable="false">course_identifier</string>
     <string name="key_time_on_blocks" translatable="false">key_time_on_blocks</string>
     <string name="key_course_identifier_help" translatable="false">course_identifier_help</string>
-
-    <!--Path names-->
-    <string name="highlight_blocks_path" translatable="false">highlight-blocks.js</string>
 
     <!--E-mail addresses that will receive bug reports-->
     <string-array name="email_addresses" translatable="false">
@@ -52,11 +47,9 @@
 
     <!--User interface strings-->
     <string name="app_name">Ferit Raspored</string>
+    <string name="app_name_debug">Ferit Raspored Debug</string>
     <string name="label_settings">Postavke</string>
-    <string name="title_programme_type">Tip studija</string>
-    <string name="title_programme">Studijski program</string>
-    <string name="title_year">Godina</string>
-    <string name="title_category_programme_and_year">Studij i godina</string>
+    <string name="title_category_programme_and_year">Smjer i godina</string>
     <string name="title_group_highlight">Aktivni filteri</string>
     <string name="title_category_group_highlight">Nastavni blokovi</string>
     <string name="title_timepicker">Vrijeme</string>
@@ -106,13 +99,13 @@
     <string name="summary_message_developer">Pošalji poruku razvojnom programeru (problem, prijedlog itd.)</string>
     <string name="summary_whats_new">Pogledaj što je novo</string>
     <string name="template_bug_report">Greška: %s\n\nMolim te opiši kako je došlo do problema: </string>
-    <string name="title_course_identifier">Identifikator kolegija</string>
-    <string name="title_course_identifier_help">Gdje pronaći identifikator kolegija?</string>
+    <string name="title_course_identifier">Identifikator smjera i godine</string>
+    <string name="title_course_identifier_help">Gdje pronaći identifikator?</string>
     <string name="title_time_on_blocks">Vrijeme izvođenja na blokovima</string>
     <string name="summary_time_on_blocks">Tekstu bloka dodaj liniju s pripadajućim vremenom izvođenja</string>
     <string name="content_course_identifier_help">
-        1. Pomoću preglednika navigiraj do stranice rasporeda za svoj kolegij\n\n
+        1. Pomoću preglednika navigiraj do stranice rasporeda za svoj smjer i godinu\n\n
         2. Poveznica je ovog oblika:<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
-        3. Podebljani dio poveznice je identifikator kolegija
+        3. Podebljani dio poveznice je tvoj identifikator smjera i godine
     </string>
 </resources>

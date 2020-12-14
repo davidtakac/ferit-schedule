@@ -5,7 +5,6 @@ import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.extensions.addToStyle
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.extensions.urlFormat
 import os.dtakac.feritraspored.schedule.data.ScheduleData
@@ -26,7 +25,7 @@ class ScheduleRepositoryImpl(
         document.applyTransformations(showTimeOnBlocks, filters)
         return ScheduleData(
                 baseUrl = scheduleUrl,
-                html = document.toString(),
+                html = document.applyLightTheme().toString(),
                 htmlDark = document.applyDarkTheme().toString(),
                 encoding = "UTF-8",
                 mimeType = "text/html",
@@ -77,6 +76,11 @@ class ScheduleRepositoryImpl(
         return this
     }
 
+    private fun Document.applyLightTheme(): Document {
+        head().append("<style>${res.readFromAssets("light_theme.css")}</style>")
+        return this
+    }
+
     private fun Document.showTimeOnBlocks(): Document {
         select(".blokovi").forEach {
             val time = it.selectFirst("span.hide")
@@ -93,13 +97,7 @@ class ScheduleRepositoryImpl(
 
     private fun Document.highlightBlocks(filters: List<String>): Document {
         filters.forEach { filter ->
-            val blocks = select("div.blokovi:contains($filter)")
-            blocks.forEach {
-                it.addToStyle("border-style: solid; " +
-                        "border-color: ${res.getColorHex(R.color.colorHighlightBlock)}; " +
-                        "border-width: 2px; "
-                )
-            }
+            select("div.blokovi:contains($filter)").addClass("android_app_selected")
         }
         return this
     }

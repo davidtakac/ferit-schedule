@@ -1,14 +1,13 @@
-package os.dtakac.feritraspored.settings.view_model
+package os.dtakac.feritraspored.settings.viewmodel
 
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.data.EmailEditorData
-import os.dtakac.feritraspored.common.event.Event
-import os.dtakac.feritraspored.common.event.postEvent
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
+import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
 
 class PreferenceViewModel(
         private val prefs: PreferenceRepository,
@@ -20,11 +19,11 @@ class PreferenceViewModel(
     val filtersEnabled = MutableLiveData<Boolean>()
     val courseIdentifierSummary = MutableLiveData<String>()
     val theme = MutableLiveData<Int>()
-    val showTimePicker = MutableLiveData<Event<Unit>>()
-    val showChangelog = MutableLiveData<Event<Unit>>()
-    val showFiltersHelp = MutableLiveData<Event<Unit>>()
-    val showCourseIdentifierHelp = MutableLiveData<Event<Unit>>()
-    val openEmailEditor = MutableLiveData<Event<EmailEditorData>>()
+    val showTimePicker = SingleLiveEvent<Unit>()
+    val showChangelog = SingleLiveEvent<Unit>()
+    val showFiltersHelp = SingleLiveEvent<Unit>()
+    val showCourseIdentifierHelp = SingleLiveEvent<Unit>()
+    val openEmailEditor = SingleLiveEvent<EmailEditorData>()
 
     init {
         setTimePickerSummary()
@@ -82,62 +81,58 @@ class PreferenceViewModel(
     }
 
     fun onTimePickerClicked() {
-        showTimePicker.postEvent()
+        showTimePicker.call()
     }
 
     fun onChangelogClicked() {
-        showChangelog.postEvent()
+        showChangelog.call()
     }
 
     fun onFiltersHelpClicked() {
-        showFiltersHelp.postEvent()
+        showFiltersHelp.call()
     }
 
     fun onCourseIdentifierHelpClicked() {
-        showCourseIdentifierHelp.postEvent()
+        showCourseIdentifierHelp.call()
     }
 
     fun onMessageToDeveloperClicked() {
         val subject = res.getString(R.string.subject_message_to_developer)
-        openEmailEditor.postEvent(EmailEditorData(subject = subject))
+        openEmailEditor.value = EmailEditorData(subject = subject)
     }
 
     private fun setTimePickerEnabled() {
-        timePickerEnabled.postValue(prefs.isSkipDay)
+        timePickerEnabled.value = prefs.isSkipDay
     }
 
     private fun setFiltersSummary() {
         val filters = prefs.filters
-        filtersSummary.postValue(
-                if(filters.isNullOrEmpty()) {
-                    res.getString(R.string.placeholder_empty)
-                } else {
-                    filters
-                }
-        )
+        filtersSummary.value = if(filters.isNullOrEmpty()) {
+            res.getString(R.string.placeholder_empty)
+        } else {
+            filters
+        }
     }
 
     private fun setFiltersEnabled() {
-        filtersEnabled.postValue(prefs.areFiltersEnabled)
+        filtersEnabled.value = prefs.areFiltersEnabled
     }
 
     private fun setTheme() {
-        theme.postValue(prefs.theme)
+        theme.value = prefs.theme
     }
 
     private fun setCourseIdentifierSummary() {
         val courseIdentifier = prefs.courseIdentifier
-        courseIdentifierSummary.postValue(
-                if(courseIdentifier.isNullOrEmpty()) {
-                    res.getString(R.string.placeholder_empty)
-                } else {
-                    courseIdentifier
-                }
-        )
+        courseIdentifierSummary.value = if(courseIdentifier.isNullOrEmpty()) {
+            res.getString(R.string.placeholder_empty)
+        } else {
+            courseIdentifier
+        }
     }
 
     private fun setTimePickerSummary() {
-        timePickerSummary.postValue(formatTime(prefs.timeHour, prefs.timeMinute))
+        timePickerSummary.value = formatTime(prefs.timeHour, prefs.timeMinute)
     }
 
     private fun formatTime(hour: Int, minute: Int): String {

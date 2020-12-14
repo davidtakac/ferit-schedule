@@ -1,26 +1,25 @@
-package os.dtakac.feritraspored.views.debounce
+package os.dtakac.feritraspored.common.view.debounce
 
 import android.os.SystemClock
-import android.view.MenuItem
+import android.view.View
 import os.dtakac.feritraspored.common.constants.DEBOUNCE_INTERVAL
 
-class DebouncedMenuItemClickListener(
+class DebouncedClickListener(
         private val threshold: Long,
         private val listener: () -> Unit
-): MenuItem.OnMenuItemClickListener {
+): View.OnClickListener {
     private var lastClickTime: Long = 0
 
-    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+    override fun onClick(view: View?) {
         if(SystemClock.elapsedRealtime() - lastClickTime < threshold) {
             //consume click and prevent others from executing
-            return true
+            return
         }
         lastClickTime = SystemClock.elapsedRealtime()
         listener.invoke()
-        return false
     }
 }
 
-fun MenuItem.onDebouncedClick(debounceInterval: Long = DEBOUNCE_INTERVAL, listener: () -> Unit) {
-    setOnMenuItemClickListener(DebouncedMenuItemClickListener(debounceInterval, listener))
+fun View.onDebouncedClick(debounceInterval: Long = DEBOUNCE_INTERVAL, listener: () -> Unit) {
+    setOnClickListener(DebouncedClickListener(debounceInterval, listener))
 }
