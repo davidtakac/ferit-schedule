@@ -10,6 +10,7 @@ import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
+import os.dtakac.feritraspored.common.extensions.urlFormat
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
@@ -130,7 +131,11 @@ class ScheduleViewModel(
             val data = try {
                 getScheduleData()
             } catch (e: Exception) {
-                error = res.getString(R.string.template_error_unexpected).format(e.message)
+                error = res.getString(R.string.template_error_unexpected).format(
+                        e.message,
+                        prefs.courseIdentifier,
+                        selectedDate.urlFormat()
+                )
                 null
             }
 
@@ -198,7 +203,11 @@ class ScheduleViewModel(
                 filters = if (!prefs.areFiltersEnabled) {
                     listOf()
                 } else {
-                    prefs.filters?.split(",")?.map { it.trim() } ?: listOf()
+                    prefs.filters
+                            ?.split(",")
+                            ?.map { it.trim() }
+                            ?.filterNot { it.isEmpty() || it.isBlank() }
+                            ?: listOf()
                 }
         )
 
