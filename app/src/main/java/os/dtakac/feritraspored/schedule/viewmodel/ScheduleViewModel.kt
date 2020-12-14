@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.schedule.view_model
+package os.dtakac.feritraspored.schedule.viewmodel
 
 import android.view.animation.DecelerateInterpolator
 import androidx.lifecycle.*

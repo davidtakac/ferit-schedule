@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentManager
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.DIALOG_WHATS_NEW
-import os.dtakac.feritraspored.views.dialog_info.InfoDialogFragment
+import os.dtakac.feritraspored.common.view.dialog_info.InfoDialogFragment
 
 fun FragmentManager.showInfoDialog(
         @StringRes titleResId: Int,

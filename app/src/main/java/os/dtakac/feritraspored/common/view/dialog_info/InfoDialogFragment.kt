@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.views.dialog_info
+package os.dtakac.feritraspored.common.view.dialog_info
 
 import android.app.Dialog
 import android.content.DialogInterface

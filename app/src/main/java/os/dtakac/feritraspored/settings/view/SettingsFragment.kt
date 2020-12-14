@@ -16,8 +16,8 @@ import os.dtakac.feritraspored.common.extensions.openEmailEditor
 import os.dtakac.feritraspored.common.extensions.preference
 import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.common.extensions.showInfoDialog
-import os.dtakac.feritraspored.settings.view_model.PreferenceViewModel
-import os.dtakac.feritraspored.views.dialog_time_picker.TimePickerDialogFragment
+import os.dtakac.feritraspored.settings.viewmodel.PreferenceViewModel
+import os.dtakac.feritraspored.common.view.dialog_time_picker.TimePickerDialogFragment
 
 @Suppress("unused")
 class SettingsFragment : PreferenceFragmentCompat() {

@@ -24,8 +24,8 @@ import os.dtakac.feritraspored.common.extensions.openEmailEditor
 import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.databinding.FragmentScheduleBinding
 import os.dtakac.feritraspored.schedule.data.ScrollData
-import os.dtakac.feritraspored.schedule.view_model.ScheduleViewModel
-import os.dtakac.feritraspored.views.debounce.onDebouncedClick
+import os.dtakac.feritraspored.schedule.viewmodel.ScheduleViewModel
+import os.dtakac.feritraspored.common.view.debounce.onDebouncedClick
 
 class ScheduleFragment: Fragment() {
     private var _binding: FragmentScheduleBinding? = null
@@ -33,6 +33,25 @@ class ScheduleFragment: Fragment() {
 
     private val viewModel: ScheduleViewModel by viewModel()
     private var scrollAnimator: ObjectAnimator? = null
+
+    private val customTabs by lazy {
+        val colorParams = CustomTabColorSchemeParams.Builder()
+                .setToolbarColor(requireContext().getColorCompat(R.color.colorStatusBar))
+                .build()
+        CustomTabsIntent.Builder()
+                .setDefaultColorSchemeParams(colorParams)
+                .build()
+    }
+    private val scheduleWebViewClient = object : WebViewClient() {
+        override fun onPageFinished(view: WebView?, url: String?) {
+            viewModel.onPageDrawn()
+        }
+
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            viewModel.onUrlClicked(url)
+            return true
+        }
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -89,13 +108,7 @@ class ScheduleFragment: Fragment() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
         }
         viewModel.openInCustomTabs.observe(viewLifecycleOwner) {
-            val colorParams = CustomTabColorSchemeParams.Builder()
-                    .setToolbarColor(requireContext().getColorCompat(R.color.colorStatusBar))
-                    .build()
-            CustomTabsIntent.Builder()
-                    .setDefaultColorSchemeParams(colorParams)
-                    .build()
-                    .launchUrl(requireContext(), Uri.parse(it))
+            customTabs.launchUrl(requireContext(), Uri.parse(it))
         }
         viewModel.showChangelog.observe(viewLifecycleOwner) {
             childFragmentManager.showChangelog()
@@ -176,17 +189,6 @@ class ScheduleFragment: Fragment() {
             anim.interpolator = data.interpolator
             scrollAnimator = anim
             scrollAnimator?.start()
-        }
-    }
-
-    private val scheduleWebViewClient = object : WebViewClient() {
-        override fun onPageFinished(view: WebView?, url: String?) {
-            viewModel.onPageDrawn()
-        }
-
-        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            viewModel.onUrlClicked(url)
-            return true
         }
     }
 }

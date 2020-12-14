@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.settings.view_model
+package os.dtakac.feritraspored.settings.viewmodel
 
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
