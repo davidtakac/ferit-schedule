@@ -105,7 +105,7 @@
     <string name="summary_time_on_blocks">Tekstu bloka dodaj liniju s pripadajućim vremenom izvođenja</string>
     <string name="content_course_identifier_help">
         1. Pomoću preglednika navigiraj do stranice rasporeda za svoj smjer i godinu\n\n
-        2. Poveznica je ovog oblika:<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
+        2. Poveznica je ovog oblika:\n<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
         3. Podebljani dio poveznice je tvoj identifikator smjera i godine
     </string>
 </resources>
