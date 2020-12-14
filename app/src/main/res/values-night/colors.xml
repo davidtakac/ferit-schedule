@@ -4,6 +4,5 @@
     <color name="colorAccent">@color/indianRed</color>
     <color name="colorStatusBar">@color/darkSurface4dp</color>
     <color name="colorNavigationBar">@color/darkSurface8dp</color>
-    <color name="colorHighlightBlock">@color/redSalsa</color>
     <color name="colorControlNormal">@color/bdazzledBlue</color>
 </resources>

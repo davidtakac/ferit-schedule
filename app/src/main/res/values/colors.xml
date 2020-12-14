@@ -11,13 +11,10 @@
     <color name="lightBlue200">#81D4FA</color>
     <color name="aliceBlue">#D6E1EB</color>
     <color name="bdazzledBlue">#2F4A60</color>
-    <color name="cgRed">#E53935</color>
-    <color name="redSalsa">#FF1744</color>
 
     <color name="colorPrimary">@color/steelBlue</color>
     <color name="colorAccent">@color/indianRed</color>
     <color name="colorStatusBar">@color/white</color>
     <color name="colorNavigationBar">@color/white</color>
-    <color name="colorHighlightBlock">@color/cgRed</color>
     <color name="colorControlNormal">@color/aliceBlue</color>
 </resources>

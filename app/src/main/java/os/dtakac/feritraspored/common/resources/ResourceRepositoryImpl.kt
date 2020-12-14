@@ -17,10 +17,6 @@ class ResourceRepositoryImpl(
         return context.resources.getStringArray(resId)
     }
 
-    override fun getColorHex(resId: Int): String {
-        return "#${Integer.toHexString(context.getColorCompat(resId) and 0x00ffffff)}"
-    }
-
     override fun isOnline(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
                 as? ConnectivityManager

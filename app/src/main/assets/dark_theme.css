@@ -50,3 +50,8 @@ body {
 .KV {
     background-color: #a29343 !important;
 }
+.android_app_selected {
+    border-style: solid !important;
+    border-color: #FF312E !important;
+    border-width: 2px !important;
+}
