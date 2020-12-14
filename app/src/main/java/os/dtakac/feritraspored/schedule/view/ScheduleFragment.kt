@@ -42,6 +42,7 @@ class ScheduleFragment: Fragment() {
                 .setDefaultColorSchemeParams(colorParams)
                 .build()
     }
+
     private val scheduleWebViewClient = object : WebViewClient() {
         override fun onPageFinished(view: WebView?, url: String?) {
             viewModel.onPageDrawn()
