@@ -13,10 +13,10 @@
         app:tint="@color/errorRed"
         app:srcCompat="@drawable/ic_baseline_error_outline_24px"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.4"/>
+        app:layout_constraintBottom_toTopOf="@id/tvError"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"/>
     <TextView
         android:id="@+id/tvError"
         android:layout_width="match_parent"
@@ -24,9 +24,10 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         app:layout_constraintTop_toBottomOf="@id/ivError"
-        app:layout_constraintLeft_toLeftOf="@id/ivError"
-        app:layout_constraintRight_toRightOf="@id/ivError"
-        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@id/ivError"
+        app:layout_constraintEnd_toEndOf="@id/ivError"
+        app:layout_constraintBottom_toTopOf="@id/btnBugReport"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         tools:text="Došlo je do neočekivane pogreške"/>
     <Button
@@ -37,5 +38,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="@string/report_bug"
-        android:layout_marginBottom="36dp"/>
+        android:layout_marginBottom="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
