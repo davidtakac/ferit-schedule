@@ -10,7 +10,7 @@
         <item name="colorControlHighlight">@color/colorControlNormal</item>
     </style>
     <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/ic_splash</item>
+        <item name="android:windowBackground">@drawable/splash</item>
         <item name="android:statusBarColor">@color/darkSurface</item>
         <item name="android:navigationBarColor">@color/darkSurface</item>
         <item name="android:windowLightStatusBar">false</item>

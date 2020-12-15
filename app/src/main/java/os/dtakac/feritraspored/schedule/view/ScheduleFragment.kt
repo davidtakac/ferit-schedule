@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -149,7 +150,7 @@ class ScheduleFragment: Fragment() {
             settings.javaScriptEnabled = true
         }
         binding.toolbar.apply {
-            inflateMenu(R.menu.menu)
+            inflateMenu(R.menu.schedule_menu)
             menu.findItem(R.id.item_menu_refresh).onDebouncedClick {
                 viewModel.onRefreshClicked()
             }
@@ -175,6 +176,7 @@ class ScheduleFragment: Fragment() {
             viewModel.onBugReportClicked()
         }
         binding.loader.hide()
+        binding.error.tvError.movementMethod = ScrollingMovementMethod()
     }
 
     private fun scrollWebView(data: ScrollData) {

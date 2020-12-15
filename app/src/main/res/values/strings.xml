@@ -72,7 +72,7 @@
     <string name="label_refresh">Osvježi</string>
     <string name="error_no_network">Došlo je do pogreške pri učitavanju stranice, a izgleda da ne postoji internetska veza. Provjeri internetsku vezu i probaj opet.</string>
     <string name="notify_no_network">Nemoguće učitati stranicu. Provjeri internetsku vezu i probaj opet.</string>
-    <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n [Poruka]: %s [Identifikator]: %s\n  [Datum]: %s</string>
+    <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n [Poruka]: %s [Identifikator]: %s [Datum]: %s</string>
     <string name="title_groups_help">Upute za unos filtera</string>
     <string name="content_groups_help">
         &#8226; Svaki blok koji u svom naslovu ili oblačiću sadrži uneseni filter bit će označen\n
