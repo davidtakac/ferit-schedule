@@ -60,14 +60,7 @@ class ScheduleRepositoryImpl(
         selectFirst("#raspored .odabir").remove()
         selectFirst("#izbor-studija").remove()
         select(".naziv-dan a").removeAttr("href")
-        select("script[src*=cdn.userway.org]").remove()
-        select("script[src*=googletagmanager]").remove()
-        select("script:containsData(var blinker;)").remove()
-        select("script:containsData(function gtag)").remove()
-        select("script:containsData(hs.graphicsDir)").remove()
-        select("script[src*=FileSaver]").remove()
-        select("script[src*=highslide]").remove()
-        select("script[src*=responsiveslides]").remove()
+        select("script").not("script[src=/jquery.js]").remove()
         return this
     }
 
