@@ -84,7 +84,7 @@ class ScheduleFragment: Fragment() {
         viewModel.scheduleData.observe(viewLifecycleOwner) {
             binding.wvSchedule.loadDataWithBaseURL(
                     it.baseUrl,
-                    if(resources.configuration.isNightMode()) it.htmlDark else it.html,
+                    if(resources.configuration.isNightMode()) it.dataDark else it.data,
                     it.mimeType,
                     it.encoding,
                     null
