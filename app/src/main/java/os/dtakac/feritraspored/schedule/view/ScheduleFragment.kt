@@ -109,7 +109,7 @@ class ScheduleFragment: Fragment() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
         }
         viewModel.openInCustomTabs.observe(viewLifecycleOwner) {
-            customTabs.launchUrl(requireContext(), Uri.parse(it))
+            customTabs.launchUrl(requireContext(), it)
         }
         viewModel.showChangelog.observe(viewLifecycleOwner) {
             childFragmentManager.showChangelog()

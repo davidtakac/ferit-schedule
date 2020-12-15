@@ -8,31 +8,35 @@
     <ImageButton
         android:id="@+id/btnPrevious"
         android:layout_width="0dp"
+        app:layout_constraintWidth_max="168dp"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/ic_baseline_navigate_before_24px_"
         android:background="?android:selectableItemBackgroundBorderless"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/btnCurrent" />
+        app:layout_constraintEnd_toStartOf="@id/btnCurrent"
+        app:layout_constraintHorizontal_chainStyle="packed"/>
     <ImageButton
         android:id="@+id/btnCurrent"
         android:layout_width="0dp"
+        app:layout_constraintWidth_max="168dp"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/ic_baseline_today_24px"
         android:background="?android:selectableItemBackgroundBorderless"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/btnPrevious"
-        app:layout_constraintRight_toLeftOf="@id/btnNext" />
+        app:layout_constraintStart_toEndOf="@id/btnPrevious"
+        app:layout_constraintEnd_toStartOf="@id/btnNext" />
     <ImageButton
         android:id="@+id/btnNext"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        app:layout_constraintWidth_max="168dp"
         app:srcCompat="@drawable/ic_baseline_navigate_next_24px"
         android:background="?android:selectableItemBackgroundBorderless"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/btnCurrent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/btnCurrent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

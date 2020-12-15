@@ -9,7 +9,7 @@ android {
         applicationId "os.dtakac.feritraspored"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 17
+        versionCode 18
         versionName "2.3.0"
     }
     buildTypes {

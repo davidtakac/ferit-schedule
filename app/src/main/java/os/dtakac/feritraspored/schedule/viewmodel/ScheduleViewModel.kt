@@ -1,5 +1,6 @@
 package os.dtakac.feritraspored.schedule.viewmodel
 
+import android.net.Uri
 import android.view.animation.DecelerateInterpolator
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
@@ -27,17 +28,16 @@ class ScheduleViewModel(
         private val res: ResourceRepository,
         private val scheduleRepository: ScheduleRepository
 ): ViewModel() {
-    //normal live data
     val scheduleData = MutableLiveData<ScheduleData>()
     val isLoaderVisible = MutableLiveData<Boolean>()
     val errorMessage = MutableLiveData<String?>()
     val isErrorGone: LiveData<Boolean> = Transformations.map(errorMessage) { it == null }
     val areControlsEnabled: LiveData<Boolean> = Transformations.map(isLoaderVisible) { !it }
-    //event live data
+
     val javascript = SingleLiveEvent<JavascriptData>()
     val openSettings = SingleLiveEvent<Unit>()
     val openInExternalBrowser = SingleLiveEvent<String>()
-    val openInCustomTabs = SingleLiveEvent<String>()
+    val openInCustomTabs = SingleLiveEvent<Uri>()
     val openEmailEditor = SingleLiveEvent<EmailEditorData>()
     val showChangelog = SingleLiveEvent<Unit>()
     val snackBarMessage = SingleLiveEvent<String>()
@@ -75,8 +75,9 @@ class ScheduleViewModel(
     }
 
     fun onUrlClicked(url: String?) {
-        if(url != null) {
-            openInCustomTabs.value = url
+        val uri = try { Uri.parse(url) } catch (e: Exception) { null }
+        if(uri != null) {
+            openInCustomTabs.value = uri
         }
     }
 
