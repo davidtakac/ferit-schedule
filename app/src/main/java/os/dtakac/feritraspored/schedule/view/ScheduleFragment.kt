@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,7 +85,7 @@ class ScheduleFragment: Fragment() {
         viewModel.scheduleData.observe(viewLifecycleOwner) {
             binding.wvSchedule.loadDataWithBaseURL(
                     it.baseUrl,
-                    if(resources.configuration.isNightMode()) it.htmlDark else it.html,
+                    if(resources.configuration.isNightMode()) it.dataDark else it.data,
                     it.mimeType,
                     it.encoding,
                     null
@@ -109,7 +110,7 @@ class ScheduleFragment: Fragment() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
         }
         viewModel.openInCustomTabs.observe(viewLifecycleOwner) {
-            customTabs.launchUrl(requireContext(), Uri.parse(it))
+            customTabs.launchUrl(requireContext(), it)
         }
         viewModel.showChangelog.observe(viewLifecycleOwner) {
             childFragmentManager.showChangelog()
@@ -149,7 +150,7 @@ class ScheduleFragment: Fragment() {
             settings.javaScriptEnabled = true
         }
         binding.toolbar.apply {
-            inflateMenu(R.menu.menu)
+            inflateMenu(R.menu.schedule_menu)
             menu.findItem(R.id.item_menu_refresh).onDebouncedClick {
                 viewModel.onRefreshClicked()
             }
@@ -175,6 +176,7 @@ class ScheduleFragment: Fragment() {
             viewModel.onBugReportClicked()
         }
         binding.loader.hide()
+        binding.error.tvError.movementMethod = ScrollingMovementMethod()
     }
 
     private fun scrollWebView(data: ScrollData) {

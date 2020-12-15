@@ -19,39 +19,36 @@ class ScheduleRepositoryImpl(
             showTimeOnBlocks: Boolean,
             filters: List<String>
     ): ScheduleData {
-        val scheduleUrl = getScheduleUrl(withDate, courseIdentifier)
-        val document = getDocument(scheduleUrl)
-        val title = document.getTitle()
-        document.applyTransformations(showTimeOnBlocks, filters)
+        // fetch schedule document
+        val scheduleUrl = res
+                .getString(R.string.template_schedule)
+                .format(withDate.urlFormat(), courseIdentifier)
+        val document = withContext(Dispatchers.IO) {
+            @Suppress("BlockingMethodInNonBlockingContext")
+            Jsoup.connect(scheduleUrl).get()
+        }
+        // get page title before document is cleaned
+        val title = withContext(Dispatchers.IO) {
+            document.getTitle()
+        }
+        // clean document and apply transformations
+        withContext(Dispatchers.IO) {
+            document.removeJunk()
+            if(showTimeOnBlocks) document.applyTimeOnBlocks()
+            if(filters.isNotEmpty()) document.applyFilters(filters)
+        }
+
         return ScheduleData(
                 baseUrl = scheduleUrl,
-                html = document.applyLightTheme().toString(),
-                htmlDark = document.applyDarkTheme().toString(),
+                data = document.applyLightTheme().toString(),
+                dataDark = document.applyDarkTheme().toString(),
                 encoding = "UTF-8",
                 mimeType = "text/html",
                 title = title ?: res.getString(R.string.label_schedule)
         )
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext")
-    private suspend fun getDocument(url: String): Document = withContext(Dispatchers.IO) {
-        Jsoup.connect(url).get()
-    }
-
-    private fun getScheduleUrl(withDate: LocalDate, courseIdentifier: String) = res
-            .getString(R.string.template_schedule)
-            .format(withDate.urlFormat(), courseIdentifier)
-
-    private suspend fun Document.applyTransformations(
-            showTimeOnBlocks: Boolean,
-            filters: List<String>
-    ) = withContext(Dispatchers.IO) {
-        hideJunk()
-        if(showTimeOnBlocks) showTimeOnBlocks()
-        if(filters.isNotEmpty()) highlightBlocks(filters)
-    }
-
-    private fun Document.hideJunk(): Document {
+    private fun Document.removeJunk() = apply {
         selectFirst("#pagewrap").children().not(".narrow-down").remove()
         selectFirst(".narrow-down").children().not("#content-contain").remove()
         selectFirst("#content").children().not("#raspored").remove()
@@ -60,28 +57,18 @@ class ScheduleRepositoryImpl(
         selectFirst("#raspored .odabir").remove()
         selectFirst("#izbor-studija").remove()
         select(".naziv-dan a").removeAttr("href")
-        select("script[src*=cdn.userway.org]").remove()
-        select("script[src*=googletagmanager]").remove()
-        select("script:containsData(var blinker;)").remove()
-        select("script:containsData(function gtag)").remove()
-        select("script:containsData(hs.graphicsDir)").remove()
-        select("script[src*=FileSaver]").remove()
-        select("script[src*=highslide]").remove()
-        select("script[src*=responsiveslides]").remove()
-        return this
+        select("script").remove()
     }
 
-    private fun Document.applyDarkTheme(): Document {
+    private fun Document.applyDarkTheme() = apply {
         head().append("<style>${res.readFromAssets("dark_theme.css")}</style>")
-        return this
     }
 
-    private fun Document.applyLightTheme(): Document {
+    private fun Document.applyLightTheme() = apply {
         head().append("<style>${res.readFromAssets("light_theme.css")}</style>")
-        return this
     }
 
-    private fun Document.showTimeOnBlocks(): Document {
+    private fun Document.applyTimeOnBlocks() = apply {
         select(".blokovi").forEach {
             val time = it.selectFirst("span.hide")
                     .textNodes()
@@ -92,22 +79,21 @@ class ScheduleRepositoryImpl(
                 it.selectFirst(".thumbnail p").append("<br/>$time")
             }
         }
-        return this
     }
 
-    private fun Document.highlightBlocks(filters: List<String>): Document {
+    private fun Document.applyFilters(filters: List<String>) = apply {
         filters.forEach { filter ->
-            select("div.blokovi:contains($filter)").addClass("android_app_selected")
+            select("div.blokovi:contains($filter)")
+                    .addClass("android_app_selected")
         }
-        return this
     }
 
-    private suspend fun Document.getTitle(): String? = withContext(Dispatchers.IO) {
+    private fun Document.getTitle(): String? {
         val title = select("h3.odabir p a")
-                .getOrNull(1)?.text()
+                .getOrNull(1)
+                ?.text()
                 ?.removeSurrounding("\"")
-
-        when {
+        return when {
             title == null
             || title.isBlank()
             || title.isEmpty()

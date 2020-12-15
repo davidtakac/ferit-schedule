@@ -72,7 +72,7 @@
     <string name="label_refresh">Osvježi</string>
     <string name="error_no_network">Došlo je do pogreške pri učitavanju stranice, a izgleda da ne postoji internetska veza. Provjeri internetsku vezu i probaj opet.</string>
     <string name="notify_no_network">Nemoguće učitati stranicu. Provjeri internetsku vezu i probaj opet.</string>
-    <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n [Poruka]: %s [Identifikator]: %s\n  [Datum]: %s</string>
+    <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n [Poruka]: %s [Identifikator]: %s [Datum]: %s</string>
     <string name="title_groups_help">Upute za unos filtera</string>
     <string name="content_groups_help">
         &#8226; Svaki blok koji u svom naslovu ili oblačiću sadrži uneseni filter bit će označen\n
@@ -88,7 +88,7 @@
     <string name="title_appearance">Izgled aplikacije</string>
     <string name="title_theme">Tema</string>
     <string name="title_whats_new">[2.3.0] Brzi update</string>
-    <string name="content_whats_new">Brža navigacija i razne estetske promjene i poboljšanja</string>
+    <string name="content_whats_new">Brža navigacija, razne estetske promjene i poboljšanja, podrška za landscape mode.</string>
     <string name="dismiss_whats_new">kul!</string>
     <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
     <string name="subject_message_to_developer">[Ferit Raspored] Poruka</string>
