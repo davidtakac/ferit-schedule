@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Keys on this screen must match those in [Keys] -->
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         android:title="@string/title_category_display_options">
         <SwitchPreference
-            android:key="@string/key_load_on_resume"
+            android:key="load_on_resume_key"
             android:title="@string/title_load_on_resume"
             android:summary="@string/summary_load_on_resume"
             android:defaultValue="true" />
         <SwitchPreference
-            android:key="@string/key_skip_sat"
+            android:key="skip_saturday_key"
             android:title="@string/title_skip_saturday"
             android:summary="@string/summary_skip_sat" />
         <SwitchPreference
-            android:key="@string/key_skip_day"
+            android:key="skip_day_key"
             android:title="@string/title_skip_day"
             android:summary="@string/summary_skip_day" />
         <Preference
-            android:key="@string/key_time_picker"
+            android:key="timepicker_key"
             android:title="@string/title_timepicker" />
         <ListPreference
-            android:key="@string/key_schedule_language"
+            android:key="url_key"
             android:title="@string/title_schedule_languages"
             android:negativeButtonText="@string/label_back"
             android:entries="@array/schedule_languages_human"
@@ -29,48 +30,48 @@
     <PreferenceCategory
         android:title="@string/title_category_group_highlight">
         <SwitchPreference
-            android:key="@string/key_time_on_blocks"
+            android:key="key_time_on_blocks"
             android:title="@string/title_time_on_blocks"
             android:summary="@string/summary_time_on_blocks" />
         <SwitchPreference
-            android:key="@string/key_filters_toggle"
+            android:key="group_toggle_key"
             android:title="@string/title_group_toggle"
             android:summary="@string/summary_group_toggle" />
         <EditTextPreference
-            android:key="@string/key_filters"
+            android:key="group_highlight_key"
             android:title="@string/title_group_highlight"
             android:negativeButtonText="@string/label_back"
             android:positiveButtonText="@string/label_save" />
         <Preference
-            android:key="@string/key_filters_help"
+            android:key="group_help_key"
             android:title="@string/title_groups_help" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_category_programme_and_year">
         <EditTextPreference
-            android:key="@string/key_course_identifier"
+            android:key="course_identifier"
             android:title="@string/title_course_identifier"
             android:negativeButtonText="@string/label_back"
             android:positiveButtonText="@string/label_save" />
         <Preference
-            android:key="@string/key_course_identifier_help"
+            android:key="course_identifier_help"
             android:title="@string/title_course_identifier_help" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_appearance">
         <ListPreference
-            android:key="@string/key_theme"
+            android:key="prefkey_theme"
             android:title="@string/title_theme"
             android:negativeButtonText="@string/label_back" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_other">
         <Preference
-            android:key="@string/key_developer_message"
+            android:key="dev_msg_key"
             android:title="@string/title_message_developer"
             android:summary="@string/summary_message_developer"/>
         <Preference
-            android:key="@string/key_changelog"
+            android:key="changelog_key"
             android:title="@string/title_whats_new"
             android:summary="@string/summary_whats_new"/>
     </PreferenceCategory>

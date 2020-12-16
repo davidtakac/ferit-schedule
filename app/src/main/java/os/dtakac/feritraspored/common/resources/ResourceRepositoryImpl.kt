@@ -3,7 +3,6 @@ package os.dtakac.feritraspored.common.resources
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.TypedValue
-import os.dtakac.feritraspored.common.extensions.getColorCompat
 import java.util.*
 
 class ResourceRepositoryImpl(
