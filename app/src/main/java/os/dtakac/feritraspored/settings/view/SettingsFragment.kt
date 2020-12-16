@@ -29,6 +29,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val changelog: Preference by preference(R.string.key_changelog)
     private val messageToDeveloper: Preference by preference(R.string.key_developer_message)
     private val courseIdentifierHelp: Preference by preference(R.string.key_course_identifier_help)
+    private val scheduleLanguages: ListPreference by preference(R.string.key_schedule_language)
 
     private val viewModel: PreferenceViewModel by viewModel()
 
@@ -79,6 +80,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             it.hint = resources.getString(R.string.hint_course_identifier)
         }
         themes.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+        scheduleLanguages.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
     }
 
     private fun initializeObservers() {

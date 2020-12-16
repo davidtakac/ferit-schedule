@@ -18,6 +18,7 @@ interface PreferenceRepository {
     var courseIdentifier: String?
     var areFiltersEnabled: Boolean
     var isShowTimeOnBlocks: Boolean
+    val scheduleTemplate: String
 
     fun delete(@StringRes keyResId: Int)
     fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener)

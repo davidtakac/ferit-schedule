@@ -19,6 +19,12 @@
         <Preference
             android:key="@string/key_time_picker"
             android:title="@string/title_timepicker" />
+        <ListPreference
+            android:key="@string/key_schedule_language"
+            android:title="@string/title_schedule_languages"
+            android:negativeButtonText="@string/label_back"
+            android:entries="@array/schedule_languages_human"
+            android:entryValues="@array/schedule_languages" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_category_group_highlight">

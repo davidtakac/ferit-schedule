@@ -6,23 +6,17 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.resources.ResourceRepository
-import os.dtakac.feritraspored.common.extensions.urlFormat
 import os.dtakac.feritraspored.schedule.data.ScheduleData
-import java.time.LocalDate
 
 class ScheduleRepositoryImpl(
         private val res: ResourceRepository
 ): ScheduleRepository {
     override suspend fun getScheduleData(
-            withDate: LocalDate,
-            courseIdentifier: String,
+            scheduleUrl: String,
             showTimeOnBlocks: Boolean,
             filters: List<String>
     ): ScheduleData {
-        // fetch schedule document
-        val scheduleUrl = res
-                .getString(R.string.template_schedule)
-                .format(withDate.urlFormat(), courseIdentifier)
+        // fetch document
         val document = withContext(Dispatchers.IO) {
             @Suppress("BlockingMethodInNonBlockingContext")
             Jsoup.connect(scheduleUrl).get()

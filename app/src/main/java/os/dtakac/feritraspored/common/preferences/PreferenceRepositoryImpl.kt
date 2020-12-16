@@ -86,6 +86,18 @@ class PreferenceRepositoryImpl(
         get() = prefs.getBoolean(R.string.key_time_on_blocks, false)
         set(value) = editor { putBoolean(R.string.key_time_on_blocks, value) }
 
+    override val scheduleTemplate: String
+        get() {
+            val template = prefs.getString(R.string.key_schedule_language, null)
+            return if(template == null) {
+                val defaultUrl = res.getStringArray(R.array.schedule_languages)[0]
+                editor { putString(R.string.key_schedule_language, defaultUrl) }
+                defaultUrl
+            } else {
+                template
+            }
+        }
+
     override fun delete(@StringRes keyResId: Int) {
         editor { remove(res.getString(keyResId)) }
     }

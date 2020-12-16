@@ -198,8 +198,10 @@ class ScheduleViewModel(
     }
 
     private suspend fun getScheduleData() = scheduleRepository.getScheduleData(
-                withDate = selectedDate,
-                courseIdentifier = prefs.courseIdentifier ?: "",
+                scheduleUrl = prefs.scheduleTemplate.format(
+                        selectedDate.urlFormat(),
+                        prefs.courseIdentifier
+                ),
                 showTimeOnBlocks = prefs.isShowTimeOnBlocks,
                 filters = if (!prefs.areFiltersEnabled) {
                     listOf()

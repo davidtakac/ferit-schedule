@@ -24,10 +24,21 @@
     <string name="key_course_identifier" translatable="false">course_identifier</string>
     <string name="key_time_on_blocks" translatable="false">key_time_on_blocks</string>
     <string name="key_course_identifier_help" translatable="false">course_identifier_help</string>
+    <string name="key_schedule_language" translatable="false">url_key</string>
 
     <!--E-mail addresses that will receive bug reports-->
     <string-array name="email_addresses" translatable="false">
         <item>developer.takac@gmail.com</item>
+    </string-array>
+
+    <string-array name="schedule_languages_human">
+        <item>Croatian</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="schedule_languages" translatable="false">
+        <item>https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s</item>
+        <item>https://www.ferit.unios.hr/students/schedule-of-classes-and-exams/%s/%s</item>
     </string-array>
 
     <string-array name="theme_options_human">
@@ -108,4 +119,5 @@
         2. Poveznica je ovog oblika:\n<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
         3. Podebljani dio poveznice je tvoj identifikator smjera i godine
     </string>
+    <string name="title_schedule_languages">Jezik rasporeda</string>
 </resources>
