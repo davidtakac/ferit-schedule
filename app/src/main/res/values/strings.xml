@@ -37,77 +37,71 @@
         <item>English</item>
     </string-array>
 
-    <string-array name="theme_options_human">
-        <item>Prati sistemske postavke</item>
-        <item>Svijetla</item>
-        <item>Tamna</item>
-    </string-array>
-
-    <string name="app_name">Ferit Raspored</string>
-    <string name="app_name_debug">Ferit Raspored Debug</string>
-    <string name="label_settings">Postavke</string>
-    <string name="title_category_programme_and_year">Smjer i godina</string>
-    <string name="title_group_highlight">Aktivni filteri</string>
-    <string name="title_category_group_highlight">Nastavni blokovi</string>
-    <string name="title_timepicker">Vrijeme</string>
-    <string name="title_skip_day">Preskakanje dana</string>
-    <string name="summary_skip_day">Pomiči na sljedeći dan poslije dolje definiranog vremena</string>
-    <string name="title_skip_saturday">Preskoči subotu</string>
-    <string name="title_category_display_options">Prikaz rasporeda</string>
-    <string name="label_back">Natrag</string>
-    <string name="label_save">Spremi</string>
+    <string name="app_name">Ferit Schedule</string>
+    <string name="app_name_debug">Ferit Schedule Debug</string>
+    <string name="label_settings">Settings</string>
+    <string name="title_category_programme_and_year">Study programme and year</string>
+    <string name="title_group_highlight">Active filters</string>
+    <string name="title_category_group_highlight">Classes</string>
+    <string name="title_timepicker">Time</string>
+    <string name="title_skip_day">Skip days</string>
+    <string name="summary_skip_day">Skip to next day after specified time</string>
+    <string name="title_skip_saturday">Skip saturday</string>
+    <string name="title_category_display_options">Schedule appearance</string>
+    <string name="label_back">Back</string>
+    <string name="label_save">Save</string>
     <string name="hint_group_highlight">LV8/16,AV1,PR-2,KV3,LV3/24,…</string>
     <string name="hint_course_identifier" tools:ignore="TypographyDashes">1-1</string>
-    <string name="placeholder_empty">(Nema unosa)</string>
-    <string name="label_schedule">Raspored nastave i ispita</string>
-    <string name="label_open_in_browser">Otvori u pregledniku</string>
-    <string name="title_load_on_resume">Automatski učitaj trenutni tjedan</string>
-    <string name="summary_load_on_resume">Učitaj trenutni tjedan svakim ulaskom u aplikaciju</string>
-    <string name="summary_skip_sat">Učitaj sljedeći tjedan umjesto pomicanja na subotu</string>
-    <string name="title_group_toggle">Primijeni filtere</string>
-    <string name="summary_group_toggle">Uokviri blokove koji sadrže jedan od aktivnih filtera crvenom bojom</string>
-    <string name="label_refresh">Osvježi</string>
-    <string name="error_no_network">Došlo je do pogreške pri učitavanju stranice, a izgleda da ne postoji internetska veza. Provjeri internetsku vezu i probaj opet.</string>
-    <string name="notify_no_network">Nemoguće učitati stranicu. Provjeri internetsku vezu i probaj opet.</string>
-    <string name="template_error_unexpected">Došlo je do neočekivane pogreške.\n [Poruka]: %s [Identifikator]: %s [Datum]: %s</string>
-    <string name="title_groups_help">Upute za unos filtera</string>
+    <string name="placeholder_empty">(Empty)</string>
+    <string name="label_schedule">Schedule of classes and exams</string>
+    <string name="label_open_in_browser">Open in external browser</string>
+    <string name="title_load_on_resume">Automatically load current week</string>
+    <string name="summary_load_on_resume">Load the current week each time you enter the app</string>
+    <string name="summary_skip_sat">Load the next week instead of scrolling to saturday</string>
+    <string name="title_group_toggle">Apply filters</string>
+    <string name="summary_group_toggle">Highlight classes which contain your active filters</string>
+    <string name="label_refresh">Refresh</string>
+    <string name="error_no_network">An error occurred when loading the page and it seems you\'re offline. Please connect to the internet and try again.</string>
+    <string name="notify_no_network">Can\'t load page. Connect to the internet and try again.</string>
+    <string name="template_error_unexpected">An unexpected error occurred.\n [Message]: %s [Identifier]: %s [Date]: %s</string>
+    <string name="title_groups_help">Filters help</string>
     <string name="content_groups_help">
-        &#8226; Svaki blok koji u svom naslovu ili oblačiću sadrži uneseni filter bit će označen\n
-        &#8226; Filteri se odvajaju jednostrukim zarezom\n
-        &#8226; Filteri su osjetljivi na mala i velika slova\n\n
-        &#8226; Primjeri ispravnih unosa:\n
-        <i>Osnove elektrotehnike, LV2/16, IVIĆ</i>\n
-        <i>Programiranje I, PR-2, PR-P</i>\n
+        &#8226; Each class whose title or tooltip text contains an active filter will be highlighted\n
+        &#8226; Filters are comma-separated\n
+        &#8226; Filters are case-sensitive\n\n
+        &#8226; Examples:\n
+        <i>Fundamentals of Electrical Engineering, LV2/16, IVIĆ</i>\n
+        <i>Programming I, PR-2, PR-P</i>\n
         <i>11:30 - 14:45, K2-12, AV3</i>\n
         <i>LV1/24, LV2/16, AV2</i>
     </string>
-    <string name="okay">U redu</string>
-    <string name="title_appearance">Izgled aplikacije</string>
-    <string name="title_theme">Tema</string>
-    <string name="title_whats_new">[2.3.0] Brzi update</string>
-    <string name="content_whats_new">Brža navigacija, razne estetske promjene i poboljšanja, podrška za landscape mode.</string>
-    <string name="dismiss_whats_new">kul!</string>
-    <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
-    <string name="subject_message_to_developer">[Ferit Raspored] Poruka</string>
-    <string name="label_email_via">Pošalji e-mail pomoću…</string>
-    <string name="title_other">Ostalo</string>
-    <string name="report_bug">Prijavi problem</string>
-    <string name="title_message_developer">Kontakt</string>
-    <string name="summary_message_developer">Pošalji poruku razvojnom programeru (problem, prijedlog itd.)</string>
-    <string name="summary_whats_new">Pogledaj što je novo</string>
-    <string name="template_bug_report">Greška: %s\n\nMolim te opiši kako je došlo do problema: </string>
-    <string name="title_course_identifier">Identifikator smjera i godine</string>
-    <string name="title_course_identifier_help">Gdje pronaći identifikator?</string>
-    <string name="title_time_on_blocks">Vrijeme izvođenja na blokovima</string>
-    <string name="summary_time_on_blocks">Tekstu bloka dodaj liniju s pripadajućim vremenom izvođenja</string>
+    <string name="okay">Okay</string>
+    <string name="title_appearance">Appearance</string>
+    <string name="title_theme">Theme</string>
+    <string name="title_whats_new">[2.3.0] Fast update</string>
+    <string name="content_whats_new">Faster navigation, aesthetic changes and landscape mode.</string>
+    <string name="dismiss_whats_new">nice!</string>
+    <string name="subject_bug_report">[Ferit Schedule] Bug report</string>
+    <string name="subject_message_to_developer">[Ferit Schedule] Message</string>
+    <string name="label_email_via">Send e-mail via…</string>
+    <string name="title_other">Other</string>
+    <string name="report_bug">Report problem</string>
+    <string name="title_message_developer">Contact</string>
+    <string name="summary_message_developer">Contact the developer (about a problem, suggestion etc.)</string>
+    <string name="summary_whats_new">What\'s new</string>
+    <string name="template_bug_report">Error message: %s\n\nPlease describe what you were doing when the error occurred: </string>
+    <string name="title_course_identifier">Study programme and year identifier</string>
+    <string name="title_course_identifier_help">Identifier help</string>
+    <string name="title_time_on_blocks">Class period on block</string>
+    <string name="summary_time_on_blocks">Add line with class period to its block</string>
     <string name="content_course_identifier_help">
-        1. Pomoću preglednika navigiraj do stranice rasporeda za svoj smjer i godinu\n\n
-        2. Poveznica je ovog oblika:\n<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
-        3. Podebljani dio poveznice je tvoj identifikator smjera i godine
+        1. Use a browser to navigate to your schedule web-page\n\n
+        2. The link looks like this:\n<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>
+        3. The bold part of the link is your study programme and year identifier
     </string>
-    <string name="title_schedule_languages">Jezik rasporeda</string>
-    <string name="theme_option_system">Prati sistemske postavke</string>
-    <string name="theme_option_light">Svijetla</string>
-    <string name="theme_option_dark">Tamna</string>
+    <string name="title_schedule_languages">Schedule language</string>
+    <string name="theme_option_system">Follow system settings</string>
+    <string name="theme_option_light">Light</string>
+    <string name="theme_option_dark">Dark</string>
     <!--endregion-->
 </resources>
