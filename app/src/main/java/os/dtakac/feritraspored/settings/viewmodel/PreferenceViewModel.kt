@@ -1,6 +1,7 @@
 package os.dtakac.feritraspored.settings.viewmodel
 
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import os.dtakac.feritraspored.R
@@ -18,6 +19,8 @@ class PreferenceViewModel(
     val filtersSummary = MutableLiveData<String>()
     val filtersEnabled = MutableLiveData<Boolean>()
     val courseIdentifierSummary = MutableLiveData<String>()
+    val themeOptionsHuman = MutableLiveData<Array<CharSequence>>()
+    val themeOptions = MutableLiveData<Array<CharSequence>>()
     val theme = MutableLiveData<Int>()
     val showTimePicker = SingleLiveEvent<Unit>()
     val showChangelog = SingleLiveEvent<Unit>()
@@ -26,6 +29,7 @@ class PreferenceViewModel(
     val openEmailEditor = SingleLiveEvent<EmailEditorData>()
 
     init {
+        setThemePickerValues()
         setTimePickerSummary()
         setTimePickerEnabled()
         setFiltersSummary()
@@ -133,6 +137,19 @@ class PreferenceViewModel(
 
     private fun setTimePickerSummary() {
         timePickerSummary.value = formatTime(prefs.timeHour, prefs.timeMinute)
+    }
+
+    private fun setThemePickerValues() {
+        themeOptionsHuman.value = arrayOf(
+                res.getString(R.string.theme_option_system),
+                res.getString(R.string.theme_option_light),
+                res.getString(R.string.theme_option_dark)
+        )
+        themeOptions.value = arrayOf(
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM.toString(),
+                AppCompatDelegate.MODE_NIGHT_NO.toString(),
+                AppCompatDelegate.MODE_NIGHT_YES.toString()
+        )
     }
 
     private fun formatTime(hour: Int, minute: Int): String {

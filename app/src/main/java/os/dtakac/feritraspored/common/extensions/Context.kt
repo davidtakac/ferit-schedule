@@ -11,7 +11,7 @@ import os.dtakac.feritraspored.common.data.EmailEditorData
 fun Context.openEmailEditor(data: EmailEditorData) {
     val intent = Intent(Intent.ACTION_SENDTO)
     intent.data = Uri.parse("mailto:")
-    intent.putExtra(Intent.EXTRA_EMAIL, resources.getStringArray(R.array.email_addresses))
+    intent.putExtra(Intent.EXTRA_EMAIL, resources.getStringArray(R.array.support_emails))
     intent.putExtra(Intent.EXTRA_SUBJECT, data.subject)
     intent.putExtra(Intent.EXTRA_TEXT, data.content)
     startActivity(Intent.createChooser(intent, resources.getString(R.string.label_email_via)))

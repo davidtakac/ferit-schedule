@@ -1,10 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-
-    <string name="template_schedule" formatted="false">
-        https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s
-    </string>
-
-    <!--Preference key strings-->
+    <!--region Untranslatable strings-->
     <string name="key_skip_sat" translatable="false">skip_saturday_key</string>
     <string name="key_skip_day" translatable="false">skip_day_key</string>
     <string name="key_filters" translatable="false">group_highlight_key</string>
@@ -26,19 +21,20 @@
     <string name="key_course_identifier_help" translatable="false">course_identifier_help</string>
     <string name="key_schedule_language" translatable="false">url_key</string>
 
-    <!--E-mail addresses that will receive bug reports-->
-    <string-array name="email_addresses" translatable="false">
+    <string-array name="support_emails" translatable="false">
         <item>developer.takac@gmail.com</item>
-    </string-array>
-
-    <string-array name="schedule_languages_human">
-        <item>Croatian</item>
-        <item>English</item>
     </string-array>
 
     <string-array name="schedule_languages" translatable="false">
         <item>https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s</item>
         <item>https://www.ferit.unios.hr/students/schedule-of-classes-and-exams/%s/%s</item>
+    </string-array>
+    <!--endregion-->
+
+    <!--region User interface strings-->
+    <string-array name="schedule_languages_human">
+        <item>Croatian</item>
+        <item>English</item>
     </string-array>
 
     <string-array name="theme_options_human">
@@ -47,16 +43,6 @@
         <item>Tamna</item>
     </string-array>
 
-    <string-array name="theme_options" translatable="false">
-        <!--MODE_NIGHT_SYSTEM_DEFAULT-->
-        <item>-1</item>
-        <!--MODE_NIGHT_NO-->
-        <item>1</item>
-        <!--MODE_NIGHT_YES-->
-        <item>2</item>
-    </string-array>
-
-    <!--User interface strings-->
     <string name="app_name">Ferit Raspored</string>
     <string name="app_name_debug">Ferit Raspored Debug</string>
     <string name="label_settings">Postavke</string>
@@ -120,4 +106,8 @@
         3. Podebljani dio poveznice je tvoj identifikator smjera i godine
     </string>
     <string name="title_schedule_languages">Jezik rasporeda</string>
+    <string name="theme_option_system">Prati sistemske postavke</string>
+    <string name="theme_option_light">Svijetla</string>
+    <string name="theme_option_dark">Tamna</string>
+    <!--endregion-->
 </resources>
