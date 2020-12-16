@@ -15,25 +15,20 @@ class PreferenceRepositoryImpl(
         migrateToCourseIdentifierPreference()
     }
 
-    override var isSkipSaturday: Boolean
+    override val isSkipSaturday: Boolean
         get() = prefs.getBoolean(R.string.key_skip_sat, false)
-        set(value) = editor { putBoolean(R.string.key_skip_sat, value) }
 
-    override var isSkipDay: Boolean
+    override val isSkipDay: Boolean
         get() = prefs.getBoolean(R.string.key_skip_day, false)
-        set(value) = editor { putBoolean(R.string.key_skip_day, value) }
 
-    override var filters: String?
+    override val filters: String?
         get() = prefs.getString(R.string.key_filters, null)
-        set(value) = editor { putString(R.string.key_filters, value) }
 
-    override var programme: String?
+    override val programme: String?
         get() = prefs.getString(R.string.key_programme, null)
-        set(value) = editor { putString(R.string.key_programme, value) }
 
-    override var year: String?
+    override val year: String?
         get() = prefs.getString(R.string.key_year, null)
-        set(value) = editor { putString(R.string.key_year, value) }
 
     override var timeHour: Int
         get() = prefs.getInt(R.string.key_time_hour, 20)
@@ -53,38 +48,39 @@ class PreferenceRepositoryImpl(
         }
         set(value) = editor { putBoolean(R.string.key_settings_modified, value) }
 
-    override var isLoadOnResume: Boolean
+    override val isLoadOnResume: Boolean
         get() = prefs.getBoolean(R.string.key_load_on_resume, false)
-        set(value) = editor { putBoolean(R.string.key_load_on_resume, value) }
 
-    override var theme: Int
+    override val theme: Int
         get() {
-            val defaultTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            return prefs.getString(R.string.key_theme, null)?.toInt() ?: defaultTheme.also { theme = it }
+            val value = prefs.getString(R.string.key_theme, null)?.toIntOrNull()
+            return if(value == null) {
+                val defaultTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                editor { putString(R.string.key_theme, defaultTheme.toString()) }
+                defaultTheme
+            } else {
+                value
+            }
         }
-        set(value) = editor { putString(R.string.key_theme, value.toString()) }
 
-    override var version: Int
+    override val version: Int
         get() {
             val versionValue = prefs.getInt(R.string.key_version, -1)
             if(versionValue < BuildConfig.VERSION_CODE) {
-                version = BuildConfig.VERSION_CODE
+                editor { putInt(R.string.key_version, BuildConfig.VERSION_CODE) }
             }
             return versionValue
         }
-        set(value) = editor { putInt(R.string.key_version, value) }
 
     override var courseIdentifier: String?
         get() = prefs.getString(R.string.key_course_identifier, null)
         set(value) = editor { putString(R.string.key_course_identifier, value) }
 
-    override var areFiltersEnabled: Boolean
+    override val areFiltersEnabled: Boolean
         get() = prefs.getBoolean(R.string.key_filters_toggle, false)
-        set(value) = editor { putBoolean(R.string.key_filters_toggle, value) }
 
-    override var isShowTimeOnBlocks: Boolean
+    override val isShowTimeOnBlocks: Boolean
         get() = prefs.getBoolean(R.string.key_time_on_blocks, false)
-        set(value) = editor { putBoolean(R.string.key_time_on_blocks, value) }
 
     override val scheduleTemplate: String
         get() {
