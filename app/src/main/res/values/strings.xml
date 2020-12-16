@@ -78,8 +78,8 @@
     <string name="okay">Okay</string>
     <string name="title_appearance">Appearance</string>
     <string name="title_theme">Theme</string>
-    <string name="title_whats_new">[2.3.0] Fast update</string>
-    <string name="content_whats_new">Faster navigation, aesthetic changes and landscape mode.</string>
+    <string name="title_whats_new">[2.3.1] Fast update 2: Electric Boogaloo</string>
+    <string name="content_whats_new">Faster navigation, landscape mode, aesthetic changes and english support</string>
     <string name="dismiss_whats_new">nice!</string>
     <string name="subject_bug_report">[Ferit Schedule] Bug report</string>
     <string name="subject_message_to_developer">[Ferit Schedule] Message</string>
