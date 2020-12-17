@@ -13,7 +13,7 @@ fun Context.openEmailEditor(data: EmailEditorData) {
     val intent = Intent(Intent.ACTION_SENDTO)
     intent.data = Uri.parse("mailto:")
     intent.putExtra(Intent.EXTRA_EMAIL, SUPPORT_EMAILS)
-    intent.putExtra(Intent.EXTRA_SUBJECT, data.subject)
+    intent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(data.subject))
     intent.putExtra(Intent.EXTRA_TEXT, data.content)
     startActivity(Intent.createChooser(intent, resources.getString(R.string.label_email_via)))
 }

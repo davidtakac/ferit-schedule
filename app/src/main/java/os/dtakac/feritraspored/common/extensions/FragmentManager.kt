@@ -3,7 +3,7 @@ package os.dtakac.feritraspored.common.extensions
 import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentManager
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.constants.DIALOG_WHATS_NEW
+import os.dtakac.feritraspored.common.constants.DialogKeys
 import os.dtakac.feritraspored.common.view.dialog_info.InfoDialogFragment
 
 fun FragmentManager.showInfoDialog(
@@ -21,6 +21,6 @@ fun FragmentManager.showChangelog() {
             titleResId = R.string.title_whats_new,
             contentResId = R.string.content_whats_new,
             dismissResId = R.string.dismiss_whats_new,
-            key = DIALOG_WHATS_NEW
+            key =  DialogKeys.WHATS_NEW
     )
 }

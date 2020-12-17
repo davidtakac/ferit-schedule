@@ -3,13 +3,7 @@ package os.dtakac.feritraspored.common.constants
 import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.R
 
-const val DIALOG_WHATS_NEW = "whats_new"
-const val DIALOG_TIME_PICKER = "time_picker"
-const val DIALOG_FILTERS_HELP = "filters_help"
-const val DIALOG_COURSE_IDENTIFIER_HELP = "course_identifier_help"
-
 const val DEBOUNCE_INTERVAL_MS = 300L
-
 const val SHOW_CHANGELOG = false
 
 object SharedPreferenceKeys {
@@ -33,6 +27,13 @@ object SharedPreferenceKeys {
     const val TIME_ON_BLOCKS = "key_time_on_blocks"
     const val IDENTIFIER_HELP = "course_identifier_help"
     const val SCHEDULE_LANG = "url_key"
+}
+
+object DialogKeys {
+    const val WHATS_NEW = "whats_new"
+    const val TIME_PICKER = "time_picker"
+    const val FILTERS_HELP = "filters_help"
+    const val COURSE_IDENTIFIER_HELP = "course_identifier_help"
 }
 
 val SCHEDULE_LANGUAGES = arrayOf(

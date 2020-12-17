@@ -1,10 +1,19 @@
 package os.dtakac.feritraspored.common.extensions
 
+import java.lang.Exception
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 private val TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm")
 
-fun LocalTime.timeFormat() = format(TIME_FORMAT)
+fun LocalTime.timeFormat(): String = try {
+    format(TIME_FORMAT)
+} catch (e: Exception) {
+    ""
+}
 
-fun String.toLocalTime() = LocalTime.parse(this, TIME_FORMAT)
+fun String.toLocalTime(): LocalTime = try{
+    LocalTime.parse(this, TIME_FORMAT)
+} catch (e: Exception) {
+    LocalTime.of(0, 0)
+}

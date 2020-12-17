@@ -106,7 +106,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             AppCompatDelegate.setDefaultNightMode(it)
         }
         viewModel.showTimePicker.observe(viewLifecycleOwner) {
-            TimePickerDialogFragment().show(childFragmentManager, DIALOG_TIME_PICKER)
+            TimePickerDialogFragment().show(childFragmentManager, DialogKeys.TIME_PICKER)
         }
         viewModel.showChangelog.observe(viewLifecycleOwner) {
             childFragmentManager.showChangelog()
@@ -115,14 +115,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_groups_help,
                     contentResId = R.string.content_groups_help,
-                    key = DIALOG_FILTERS_HELP
+                    key =  DialogKeys.FILTERS_HELP
             )
         }
         viewModel.showCourseIdentifierHelp.observe(viewLifecycleOwner) {
             childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_course_identifier_help,
                     contentResId = R.string.content_course_identifier_help,
-                    key = DIALOG_COURSE_IDENTIFIER_HELP
+                    key =  DialogKeys.COURSE_IDENTIFIER_HELP
             )
         }
         viewModel.openEmailEditor.observe(viewLifecycleOwner) {
