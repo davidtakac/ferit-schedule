@@ -95,13 +95,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         viewModel.timePickerSummary.observe(viewLifecycleOwner) {
             timePicker.summary = it
         }
-        viewModel.timePickerEnabled.observe(viewLifecycleOwner) {
-            timePicker.isEnabled = it
-        }
-        viewModel.filtersEnabled.observe(viewLifecycleOwner) {
-            filters.isEnabled = it
-            filtersHelp.isEnabled = it
-        }
         viewModel.theme.observe(viewLifecycleOwner) {
             AppCompatDelegate.setDefaultNightMode(it)
         }

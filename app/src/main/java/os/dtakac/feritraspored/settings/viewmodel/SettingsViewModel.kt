@@ -14,8 +14,6 @@ class SettingsViewModel(
         private val prefs: PreferenceRepository
 ): ViewModel(), SharedPreferences.OnSharedPreferenceChangeListener {
     val timePickerSummary = MutableLiveData<String>()
-    val timePickerEnabled = MutableLiveData<Boolean>()
-    val filtersEnabled = MutableLiveData<Boolean>()
     val theme = MutableLiveData<Int>()
     val showTimePicker = SingleLiveEvent<Unit>()
     val showChangelog = SingleLiveEvent<Unit>()
@@ -25,8 +23,6 @@ class SettingsViewModel(
 
     init {
         setTimePickerSummary()
-        setTimePickerEnabled()
-        setFiltersEnabled()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -34,8 +30,6 @@ class SettingsViewModel(
             prefs.isReloadToApplySettings = true
         }
         when(key) {
-            SharedPreferenceKeys.SKIP_DAY -> onSkipDayChanged()
-            SharedPreferenceKeys.FILTERS_TOGGLE -> onFiltersToggled()
             SharedPreferenceKeys.THEME -> onThemeChanged()
             SharedPreferenceKeys.TIME_PICKER -> onTimeChanged()
         }
@@ -47,14 +41,6 @@ class SettingsViewModel(
 
     fun onPause() {
         prefs.unregisterListener(this)
-    }
-
-    private fun onSkipDayChanged() {
-        setTimePickerEnabled()
-    }
-
-    private fun onFiltersToggled() {
-        setFiltersEnabled()
     }
 
     private fun onThemeChanged() {
@@ -83,14 +69,6 @@ class SettingsViewModel(
 
     fun onMessageToDeveloperClicked() {
         openEmailEditor.value = EmailEditorData(subject = R.string.subject_message_to_developer)
-    }
-
-    private fun setTimePickerEnabled() {
-        timePickerEnabled.value = prefs.isSkipDay
-    }
-
-    private fun setFiltersEnabled() {
-        filtersEnabled.value = prefs.areFiltersEnabled
     }
 
     private fun setTheme() {

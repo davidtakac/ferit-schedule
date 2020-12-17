@@ -19,7 +19,8 @@
             android:summary="@string/summary_skip_day" />
         <Preference
             android:key="timepicker_key"
-            android:title="@string/title_timepicker" />
+            android:title="@string/title_timepicker"
+            android:dependency="skip_day_key"/>
         <ListPreference
             android:key="url_key"
             android:title="@string/title_schedule_languages"
@@ -40,10 +41,12 @@
             android:key="group_highlight_key"
             android:title="@string/title_group_highlight"
             android:negativeButtonText="@string/label_back"
-            android:positiveButtonText="@string/label_save" />
+            android:positiveButtonText="@string/label_save"
+            android:dependency="group_toggle_key"/>
         <Preference
             android:key="group_help_key"
-            android:title="@string/title_groups_help" />
+            android:title="@string/title_groups_help"
+            android:dependency="group_toggle_key" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_category_programme_and_year">
