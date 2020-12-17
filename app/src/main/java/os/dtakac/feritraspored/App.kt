@@ -10,6 +10,7 @@ import os.dtakac.feritraspored.common.di.appModule
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.schedule.di.scheduleModule
 
+@Suppress("unused")
 class App : Application() {
     private val prefs: PreferenceRepository by inject()
 

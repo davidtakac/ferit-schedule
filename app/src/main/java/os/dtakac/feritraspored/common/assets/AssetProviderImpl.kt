@@ -10,6 +10,7 @@ class AssetProviderImpl(
 ) : AssetProvider {
     override suspend fun readFile(fileName: String): String {
         return withContext(Dispatchers.IO) {
+            @Suppress("BlockingMethodInNonBlockingContext")
             val scanner = Scanner(applicationContext.assets.open(fileName))
             val stringBuilder = StringBuilder()
             while (scanner.hasNextLine()) {

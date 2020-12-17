@@ -104,9 +104,6 @@ class ScheduleFragment : Fragment() {
         viewModel.clearWebViewScroll.observe(viewLifecycleOwner) {
             scrollAnimator?.cancel()
         }
-        viewModel.openSettings.observe(viewLifecycleOwner) {
-            findNavController().navigate(R.id.actionSettings)
-        }
         viewModel.openInExternalBrowser.observe(viewLifecycleOwner) {
             startActivity(Intent(Intent.ACTION_VIEW, it))
         }
@@ -153,7 +150,7 @@ class ScheduleFragment : Fragment() {
                 viewModel.onRefreshClicked()
             }
             menu.findItem(R.id.item_menu_settings).onDebouncedClick {
-                viewModel.onSettingsClicked()
+                findNavController().navigate(R.id.actionSettings)
             }
             menu.findItem(R.id.item_menu_browser).onDebouncedClick {
                 viewModel.onOpenInExternalBrowserClicked()

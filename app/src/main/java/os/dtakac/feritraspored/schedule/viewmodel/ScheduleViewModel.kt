@@ -35,7 +35,6 @@ class ScheduleViewModel(
     val areControlsEnabled: LiveData<Boolean> = Transformations.map(isLoaderVisible) { !it }
 
     val javascript = SingleLiveEvent<JavascriptData>()
-    val openSettings = SingleLiveEvent<Unit>()
     val openInExternalBrowser = SingleLiveEvent<Uri>()
     val openInCustomTabs = SingleLiveEvent<Uri>()
     val showChangelog = SingleLiveEvent<Unit>()
@@ -86,10 +85,6 @@ class ScheduleViewModel(
         if (isOnline()) {
             loadSchedule()
         }
-    }
-
-    fun onSettingsClicked() {
-        openSettings.call()
     }
 
     fun onOpenInExternalBrowserClicked() {
