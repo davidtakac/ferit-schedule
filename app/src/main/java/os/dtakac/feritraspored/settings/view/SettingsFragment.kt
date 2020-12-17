@@ -14,7 +14,7 @@ import os.dtakac.feritraspored.common.extensions.openEmailEditor
 import os.dtakac.feritraspored.common.extensions.preference
 import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.common.extensions.showInfoDialog
-import os.dtakac.feritraspored.settings.viewmodel.PreferenceViewModel
+import os.dtakac.feritraspored.settings.viewmodel.SettingsViewModel
 import os.dtakac.feritraspored.common.view.dialog_time_picker.TimePickerDialogFragment
 import os.dtakac.feritraspored.settings.summaryprovider.EditTextPreferenceSummaryProvider
 import os.dtakac.feritraspored.settings.summaryprovider.ListPreferenceSummaryProvider
@@ -31,7 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val courseIdentifierHelp: Preference by preference(SharedPreferenceKeys.IDENTIFIER_HELP)
     private val scheduleLanguages: ListPreference by preference(SharedPreferenceKeys.SCHEDULE_LANG)
 
-    private val viewModel: PreferenceViewModel by viewModel()
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.fragment_preference, rootKey)

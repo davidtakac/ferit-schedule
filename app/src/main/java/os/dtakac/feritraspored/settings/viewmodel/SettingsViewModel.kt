@@ -6,10 +6,11 @@ import androidx.lifecycle.ViewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.SharedPreferenceKeys
 import os.dtakac.feritraspored.common.data.EmailEditorData
+import os.dtakac.feritraspored.common.extensions.timeFormat
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
 
-class PreferenceViewModel(
+class SettingsViewModel(
         private val prefs: PreferenceRepository
 ): ViewModel(), SharedPreferences.OnSharedPreferenceChangeListener {
     val timePickerSummary = MutableLiveData<String>()
@@ -36,8 +37,7 @@ class PreferenceViewModel(
             SharedPreferenceKeys.SKIP_DAY -> onSkipDayChanged()
             SharedPreferenceKeys.FILTERS_TOGGLE -> onFiltersToggled()
             SharedPreferenceKeys.THEME -> onThemeChanged()
-            SharedPreferenceKeys.TIME_HOUR,
-            SharedPreferenceKeys.TIME_MINUTE -> onTimeChanged()
+            SharedPreferenceKeys.TIME_PICKER -> onTimeChanged()
         }
     }
 
@@ -98,12 +98,6 @@ class PreferenceViewModel(
     }
 
     private fun setTimePickerSummary() {
-        timePickerSummary.value = formatTime(prefs.timeHour, prefs.timeMinute)
-    }
-
-    private fun formatTime(hour: Int, minute: Int): String {
-        val hourStr = (if (hour < 10) "0" else "") + hour
-        val minStr = (if (minute < 10) "0" else "") + minute
-        return "$hourStr:$minStr"
+        timePickerSummary.value = prefs.time.timeFormat()
     }
 }

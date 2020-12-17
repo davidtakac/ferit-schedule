@@ -1,6 +1,7 @@
 package os.dtakac.feritraspored.common.preferences
 
 import android.content.SharedPreferences
+import java.time.LocalTime
 
 interface PreferenceRepository {
     val isSkipSaturday: Boolean
@@ -8,8 +9,7 @@ interface PreferenceRepository {
     val filters: String?
     val programme: String?
     val year: String?
-    var timeHour: Int
-    var timeMinute: Int
+    var time: LocalTime
     var isReloadToApplySettings: Boolean
     val isLoadOnResume: Boolean
     val theme: Int

@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.common.constants.SCHEDULE_LANGUAGES
 import os.dtakac.feritraspored.common.constants.SharedPreferenceKeys
+import os.dtakac.feritraspored.common.extensions.timeFormat
+import os.dtakac.feritraspored.common.extensions.toLocalTime
+import java.time.LocalTime
 
 class PreferenceRepositoryImpl(
         private val prefs: SharedPreferences
 ): PreferenceRepository {
     init {
         migrateToCourseIdentifierPreference()
+        migrateToTimePreference()
     }
 
     override val isSkipSaturday: Boolean
@@ -28,13 +32,20 @@ class PreferenceRepositoryImpl(
     override val year: String?
         get() = prefs.getString(SharedPreferenceKeys.YEAR, null)
 
-    override var timeHour: Int
-        get() = prefs.getInt(SharedPreferenceKeys.TIME_HOUR, 20)
-        set(value) = editor { putInt(SharedPreferenceKeys.TIME_HOUR, value) }
-
-    override var timeMinute: Int
-        get() = prefs.getInt(SharedPreferenceKeys.TIME_MINUTE, 0)
-        set(value) = editor { putInt(SharedPreferenceKeys.TIME_MINUTE, value) }
+    override var time: LocalTime
+        get() {
+            val value = prefs.getString(SharedPreferenceKeys.TIME_PICKER, null)
+            return if (value == null) {
+                val defaultTime = LocalTime.of(20, 0)
+                editor { putString(SharedPreferenceKeys.TIME_PICKER, defaultTime.timeFormat()) }
+                defaultTime
+            } else {
+                value.toLocalTime()
+            }
+        }
+        set(value) {
+            editor { putString(SharedPreferenceKeys.TIME_PICKER, value.timeFormat()) }
+        }
 
     override var isReloadToApplySettings: Boolean
         get() {
@@ -105,11 +116,23 @@ class PreferenceRepositoryImpl(
     }
 
     private fun migrateToCourseIdentifierPreference() {
+        //todo: refactor to not use year and programme but get from prefs
         if(courseIdentifier == null) {
             if(year == null || programme == null) return
             courseIdentifier = "${year}-${programme}"
             delete(SharedPreferenceKeys.YEAR)
             delete(SharedPreferenceKeys.PROGRAMME)
+        }
+    }
+
+    private fun migrateToTimePreference() {
+        val timeValue = prefs.getString(SharedPreferenceKeys.TIME_PICKER, null)
+        if (timeValue == null) {
+            val hourValue = prefs.getInt(SharedPreferenceKeys.TIME_HOUR, 20)
+            val minuteValue = prefs.getInt(SharedPreferenceKeys.TIME_MINUTE, 0)
+            time = LocalTime.of(hourValue, minuteValue)
+            delete(SharedPreferenceKeys.TIME_HOUR)
+            delete(SharedPreferenceKeys.TIME_MINUTE)
         }
     }
 

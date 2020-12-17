@@ -175,7 +175,7 @@ class ScheduleViewModel(
         if(newSelectedDate.dayOfWeek == DayOfWeek.SUNDAY) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
-        if(prefs.isSkipDay && LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)) {
+        if(prefs.isSkipDay && LocalTime.now() > prefs.time) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
         return newSelectedDate

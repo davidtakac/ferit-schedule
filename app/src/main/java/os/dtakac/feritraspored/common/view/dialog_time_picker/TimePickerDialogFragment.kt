@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import org.koin.android.ext.android.inject
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
+import java.time.LocalTime
 
 class TimePickerDialogFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
     private val prefs: PreferenceRepository by inject()
@@ -16,8 +17,8 @@ class TimePickerDialogFragment: DialogFragment(), TimePickerDialog.OnTimeSetList
         val dialog = TimePickerDialog(
                 requireContext(),
                 this,
-                prefs.timeHour,
-                prefs.timeMinute,
+                prefs.time.hour,
+                prefs.time.minute,
                 true
         )
         dialog.setButton(TimePickerDialog.BUTTON_NEGATIVE, getString(R.string.label_back), dialog)
@@ -26,7 +27,6 @@ class TimePickerDialogFragment: DialogFragment(), TimePickerDialog.OnTimeSetList
     }
 
     override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
-        prefs.timeHour = hour
-        prefs.timeMinute = minute
+        prefs.time = LocalTime.of(hour, minute)
     }
 }
