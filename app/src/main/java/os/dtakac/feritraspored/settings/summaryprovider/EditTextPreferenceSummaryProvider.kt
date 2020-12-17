@@ -7,7 +7,7 @@ import os.dtakac.feritraspored.R
 object EditTextPreferenceSummaryProvider : Preference.SummaryProvider<EditTextPreference> {
     override fun provideSummary(preference: EditTextPreference): CharSequence {
         val entry = preference.text
-        return if (entry.isEmpty()) {
+        return if (entry.isNullOrEmpty()) {
             preference.context.getString(R.string.placeholder_empty)
         } else {
             entry
