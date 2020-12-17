@@ -36,7 +36,7 @@ class ScheduleViewModel(
 
     val javascript = SingleLiveEvent<JavascriptData>()
     val openSettings = SingleLiveEvent<Unit>()
-    val openInExternalBrowser = SingleLiveEvent<String>()
+    val openInExternalBrowser = SingleLiveEvent<Uri>()
     val openInCustomTabs = SingleLiveEvent<Uri>()
     val showChangelog = SingleLiveEvent<Unit>()
     val snackBarMessage = SingleLiveEvent<@StringRes Int>()
@@ -93,8 +93,10 @@ class ScheduleViewModel(
     }
 
     fun onOpenInExternalBrowserClicked() {
-        val data = scheduleData.value ?: return
-        openInExternalBrowser.value = data.baseUrl
+        val uri = try { Uri.parse(scheduleData.value?.baseUrl) } catch (e: Exception) { null }
+        if (uri != null) {
+            openInExternalBrowser.value = uri
+        }
     }
 
     fun onPreviousWeekClicked() {
@@ -146,10 +148,12 @@ class ScheduleViewModel(
     }
 
     private fun scrollSelectedDateIntoView() {
-        val scrollJs = assetProvider
-                .readFile("template_scroll_into_view.js")
-                .format(selectedDate.scrollFormat())
-        javascript.value = JavascriptData(js = scrollJs, callback = { postScrollEvent(it) })
+        viewModelScope.launch {
+            val scrollJs = assetProvider
+                    .readFile("template_scroll_into_view.js")
+                    .format(selectedDate.scrollFormat())
+            javascript.value = JavascriptData(js = scrollJs, callback = { postScrollEvent(it) })
+        }
     }
 
     private fun postScrollEvent(elementPosition: String) {

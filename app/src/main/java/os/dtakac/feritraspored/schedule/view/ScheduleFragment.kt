@@ -3,7 +3,6 @@ package os.dtakac.feritraspored.schedule.view
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
@@ -109,7 +108,7 @@ class ScheduleFragment : Fragment() {
             findNavController().navigate(R.id.actionSettings)
         }
         viewModel.openInExternalBrowser.observe(viewLifecycleOwner) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+            startActivity(Intent(Intent.ACTION_VIEW, it))
         }
         viewModel.openInCustomTabs.observe(viewLifecycleOwner) {
             customTabs.launchUrl(requireContext(), it)
