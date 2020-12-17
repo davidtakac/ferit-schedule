@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.databinding.FragmentSettingsBinding
 
 class SettingsContainerFragment : Fragment() {
@@ -31,7 +32,19 @@ class SettingsContainerFragment : Fragment() {
         initToolbar()
     }
 
+    override fun onStart() {
+        super.onStart()
+        activity?.window?.setWindowAnimations(R.style.WindowFadeTransition)
+    }
+
+    override fun onStop() {
+        activity?.window?.setWindowAnimations(0)
+        super.onStop()
+    }
+
     private fun initToolbar() {
-        binding.toolbarSettings.setNavigationOnClickListener { findNavController().popBackStack() }
+        binding.toolbarSettings.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 }
