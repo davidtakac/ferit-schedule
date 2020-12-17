@@ -6,6 +6,8 @@ interface ScheduleRepository {
     suspend fun getScheduleData(
             scheduleUrl: String,
             showTimeOnBlocks: Boolean,
-            filters: List<String>
+            filters: List<String>,
+            lightThemeCss: String,
+            darkThemeCss: String
     ): ScheduleData
 }

@@ -198,20 +198,22 @@ class ScheduleViewModel(
     }
 
     private suspend fun getScheduleData() = scheduleRepository.getScheduleData(
-                scheduleUrl = prefs.scheduleTemplate.format(
-                        selectedDate.urlFormat(),
-                        prefs.courseIdentifier
-                ),
-                showTimeOnBlocks = prefs.isShowTimeOnBlocks,
-                filters = if (!prefs.areFiltersEnabled) {
-                    listOf()
-                } else {
-                    prefs.filters
-                            ?.split(",")
-                            ?.map { it.trim() }
-                            ?.filterNot { it.isEmpty() || it.isBlank() }
-                            ?: listOf()
-                }
+            scheduleUrl = prefs.scheduleTemplate.format(
+                    selectedDate.urlFormat(),
+                    prefs.courseIdentifier
+            ),
+            showTimeOnBlocks = prefs.isShowTimeOnBlocks,
+            filters = if (!prefs.areFiltersEnabled) {
+                listOf()
+            } else {
+                prefs.filters
+                        ?.split(",")
+                        ?.map { it.trim() }
+                        ?.filterNot { it.isEmpty() || it.isBlank() }
+                        ?: listOf()
+            },
+            lightThemeCss = res.readFromAssets("light_theme.css"),
+            darkThemeCss = res.readFromAssets("dark_theme.css")
         )
 
     private fun loadCurrentWeek() {

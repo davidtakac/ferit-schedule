@@ -90,7 +90,7 @@ class ScheduleFragment: Fragment() {
                     it.encoding,
                     null
             )
-            binding.toolbar.title = it.title
+            binding.toolbar.title = it.title ?: getString(R.string.label_schedule)
         }
         viewModel.javascript.observe(viewLifecycleOwner) { data ->
             binding.wvSchedule.evaluateJavascript(data.js) {

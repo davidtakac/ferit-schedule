@@ -4,17 +4,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.schedule.data.ScheduleData
 
-class ScheduleRepositoryImpl(
-        private val res: ResourceRepository
-): ScheduleRepository {
+class ScheduleRepositoryImpl: ScheduleRepository {
     override suspend fun getScheduleData(
             scheduleUrl: String,
             showTimeOnBlocks: Boolean,
-            filters: List<String>
+            filters: List<String>,
+            lightThemeCss: String,
+            darkThemeCss: String
     ): ScheduleData {
         // fetch document
         val document = withContext(Dispatchers.IO) {
@@ -34,11 +32,11 @@ class ScheduleRepositoryImpl(
 
         return ScheduleData(
                 baseUrl = scheduleUrl,
-                data = document.applyLightTheme().toString(),
-                dataDark = document.applyDarkTheme().toString(),
+                data = document.applyCss(lightThemeCss).toString(),
+                dataDark = document.applyCss(darkThemeCss).toString(),
                 encoding = "UTF-8",
                 mimeType = "text/html",
-                title = title ?: res.getString(R.string.label_schedule)
+                title = title
         )
     }
 
@@ -54,12 +52,8 @@ class ScheduleRepositoryImpl(
         select("script").remove()
     }
 
-    private fun Document.applyDarkTheme() = apply {
-        head().append("<style>${res.readFromAssets("dark_theme.css")}</style>")
-    }
-
-    private fun Document.applyLightTheme() = apply {
-        head().append("<style>${res.readFromAssets("light_theme.css")}</style>")
+    private fun Document.applyCss(css: String) = apply {
+        head().append("<style>$css</style>")
     }
 
     private fun Document.applyTimeOnBlocks() = apply {
