@@ -10,7 +10,10 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.constants.*
+import os.dtakac.feritraspored.common.constants.DialogKeys
+import os.dtakac.feritraspored.common.constants.SCHEDULE_LANGUAGES
+import os.dtakac.feritraspored.common.constants.SharedPreferenceKeys
+import os.dtakac.feritraspored.common.constants.THEME_NAMES_TO_VALUES
 import os.dtakac.feritraspored.common.extensions.*
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.view.dialog_time_picker.TimePickerDialogFragment

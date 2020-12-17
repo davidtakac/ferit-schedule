@@ -2,7 +2,6 @@ package os.dtakac.feritraspored.common.extensions
 
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import java.lang.IllegalStateException
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 

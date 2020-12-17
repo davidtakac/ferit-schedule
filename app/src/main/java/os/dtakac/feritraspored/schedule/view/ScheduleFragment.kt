@@ -21,9 +21,9 @@ import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.extensions.*
+import os.dtakac.feritraspored.common.view.debounce.onDebouncedClick
 import os.dtakac.feritraspored.databinding.FragmentScheduleBinding
 import os.dtakac.feritraspored.schedule.viewmodel.ScheduleViewModel
-import os.dtakac.feritraspored.common.view.debounce.onDebouncedClick
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -174,7 +174,8 @@ class ScheduleFragment: Fragment() {
         binding.error.btnBugReport.setOnClickListener {
             context?.openEmailEditor(
                     subject = getString(R.string.subject_bug_report),
-                    content = binding.error.tvError.text.toString()
+                    content = getString(R.string.template_bug_report)
+                            .format(binding.error.tvError.text.toString())
             )
         }
         binding.loader.hide()

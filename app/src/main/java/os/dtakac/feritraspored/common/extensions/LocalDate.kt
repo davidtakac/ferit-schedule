@@ -1,6 +1,5 @@
 package os.dtakac.feritraspored.common.extensions
 
-import java.lang.Exception
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

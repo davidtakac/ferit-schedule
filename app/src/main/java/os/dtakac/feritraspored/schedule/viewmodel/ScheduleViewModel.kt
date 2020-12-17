@@ -1,7 +1,7 @@
 package os.dtakac.feritraspored.schedule.viewmodel
 
-import androidx.annotation.StringRes
 import android.net.Uri
+import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.BuildConfig
@@ -9,16 +9,15 @@ import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.assets.AssetProvider
 import os.dtakac.feritraspored.common.constants.SHOW_CHANGELOG
 import os.dtakac.feritraspored.common.data.StringResourceWithArgs
-import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.common.extensions.urlFormat
 import os.dtakac.feritraspored.common.network.NetworkChecker
+import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
 import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
-import java.lang.Exception
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
