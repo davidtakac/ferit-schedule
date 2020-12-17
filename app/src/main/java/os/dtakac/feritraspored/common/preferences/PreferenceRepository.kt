@@ -1,6 +1,5 @@
 package os.dtakac.feritraspored.common.preferences
 
-import android.content.SharedPreferences
 import java.time.LocalTime
 
 interface PreferenceRepository {
@@ -18,7 +17,4 @@ interface PreferenceRepository {
     val areFiltersEnabled: Boolean
     val isShowTimeOnBlocks: Boolean
     val scheduleTemplate: String
-
-    fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener)
-    fun unregisterListener(listener: SharedPreferences.OnSharedPreferenceChangeListener)
 }

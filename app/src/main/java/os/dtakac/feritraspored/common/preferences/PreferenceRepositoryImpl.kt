@@ -122,14 +122,6 @@ class PreferenceRepositoryImpl(
             }
         }
 
-    override fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        prefs.registerOnSharedPreferenceChangeListener(listener)
-    }
-
-    override fun unregisterListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        prefs.unregisterOnSharedPreferenceChangeListener(listener)
-    }
-
     private fun editor(operation: SharedPreferences.Editor.() -> Unit) {
         prefs.edit().also(operation).apply()
     }

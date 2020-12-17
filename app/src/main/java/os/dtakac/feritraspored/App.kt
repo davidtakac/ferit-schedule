@@ -9,7 +9,6 @@ import org.koin.core.context.startKoin
 import os.dtakac.feritraspored.common.di.appModule
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.schedule.di.scheduleModule
-import os.dtakac.feritraspored.settings.di.settingsModule
 
 class App: Application() {
     private val prefs: PreferenceRepository by inject()
@@ -24,7 +23,7 @@ class App: Application() {
         startKoin{
             androidLogger()
             androidContext(this@App)
-            modules(appModule, settingsModule, scheduleModule)
+            modules(appModule, scheduleModule)
         }
     }
 
