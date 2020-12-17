@@ -20,11 +20,11 @@ class ScheduleRepositoryImpl : ScheduleRepository {
             Jsoup.connect(scheduleUrl).get()
         }
         // get page title before document is cleaned
-        val title = withContext(Dispatchers.IO) {
+        val title = withContext(Dispatchers.Default) {
             document.getTitle()
         }
         // clean document and apply transformations
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.Default) {
             document.removeJunk()
             if (showTimeOnBlocks) document.applyTimeOnBlocks()
             if (filters.isNotEmpty()) document.applyFilters(filters)
