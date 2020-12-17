@@ -3,13 +3,16 @@ package os.dtakac.feritraspored.common.di
 import androidx.preference.PreferenceManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import os.dtakac.feritraspored.common.assets.AssetProvider
+import os.dtakac.feritraspored.common.assets.AssetProviderImpl
+import os.dtakac.feritraspored.common.network.NetworkChecker
+import os.dtakac.feritraspored.common.network.NetworkCheckerImpl
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.preferences.PreferenceRepositoryImpl
-import os.dtakac.feritraspored.common.resources.ResourceRepository
-import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl
 
 val appModule = module {
-    single<ResourceRepository>{ ResourceRepositoryImpl(androidContext()) }
+    single<AssetProvider> { AssetProviderImpl(androidContext()) }
+    single<NetworkChecker> { NetworkCheckerImpl(androidContext()) }
     single<PreferenceRepository> {
         PreferenceRepositoryImpl(PreferenceManager.getDefaultSharedPreferences(get()))
     }

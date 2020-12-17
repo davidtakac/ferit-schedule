@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
+import os.dtakac.feritraspored.common.assets.AssetProvider
 import os.dtakac.feritraspored.common.constants.SHOW_CHANGELOG
 import os.dtakac.feritraspored.common.data.EmailEditorData
 import os.dtakac.feritraspored.common.data.StringResourceWithArgs
@@ -13,6 +14,7 @@ import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.common.extensions.urlFormat
+import os.dtakac.feritraspored.common.network.NetworkChecker
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
@@ -24,7 +26,9 @@ import java.time.LocalTime
 
 class ScheduleViewModel(
         private val prefs: PreferenceRepository,
-        private val scheduleRepository: ScheduleRepository
+        private val scheduleRepository: ScheduleRepository,
+        private val assetProvider: AssetProvider,
+        private val networkChecker: NetworkChecker
 ): ViewModel() {
     val scheduleData = MutableLiveData<ScheduleData>()
     val isLoaderVisible = MutableLiveData<Boolean>()
@@ -148,8 +152,8 @@ class ScheduleViewModel(
     }
 
     private fun scrollSelectedDateIntoView() {
-        val scrollJs = res
-                .readFromAssets("template_scroll_into_view.js")
+        val scrollJs = assetProvider
+                .readFile("template_scroll_into_view.js")
                 .format(selectedDate.scrollFormat())
         javascript.value = JavascriptData(js = scrollJs, callback = { postScrollEvent(it) })
     }
@@ -176,7 +180,7 @@ class ScheduleViewModel(
     }
 
     private fun isOnline(): Boolean {
-        val isOnline = res.isOnline()
+        val isOnline = networkChecker.isOnline
         if(!isOnline) {
             if(scheduleData.value == null) {
                 if(errorMessage.value == null) {
@@ -206,8 +210,8 @@ class ScheduleViewModel(
                         ?.filterNot { it.isEmpty() || it.isBlank() }
                         ?: listOf()
             },
-            lightThemeCss = res.readFromAssets("light_theme.css"),
-            darkThemeCss = res.readFromAssets("dark_theme.css")
+            lightThemeCss = assetProvider.readFile("light_theme.css"),
+            darkThemeCss = assetProvider.readFile("dark_theme.css")
         )
 
     private fun loadCurrentWeek() {
