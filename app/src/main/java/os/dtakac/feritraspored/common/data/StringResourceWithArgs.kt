@@ -9,9 +9,10 @@ data class StringResourceWithArgs(
 ) {
     fun buildString(resources: Resources): String {
         val string = resources.getString(content)
-        if (!args.isNullOrEmpty()) {
+        return if (!args.isNullOrEmpty()) {
             string.format(*args.toTypedArray())
+        } else {
+            string
         }
-        return string
     }
 }

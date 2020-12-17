@@ -31,7 +31,7 @@
     <string name="label_refresh">Refresh</string>
     <string name="error_no_network">An error occurred when loading the page and it seems you\'re offline. Please connect to the internet and try again.</string>
     <string name="notify_no_network">Can\'t load page. Connect to the internet and try again.</string>
-    <string name="template_error_unexpected">An unexpected error occurred.\n [Message]: %s [Identifier]: %s [Date]: %s</string>
+    <string name="template_error_unexpected" formatted="false">An unexpected error occurred.\n [Message]: %s [Identifier]: %s [Date]: %s</string>
     <string name="title_groups_help">Filters help</string>
     <string name="content_groups_help">
         &#8226; Each class whose title or tooltip text contains an active filter will be highlighted\n
@@ -57,7 +57,7 @@
     <string name="title_message_developer">Contact</string>
     <string name="summary_message_developer">Contact the developer (about a problem, suggestion etc.)</string>
     <string name="summary_whats_new">What\'s new</string>
-    <string name="template_bug_report">Error message: %s\n\nPlease describe what you were doing when the error occurred: </string>
+    <string name="template_bug_report" formatted="false">Error message: %s\n\nPlease describe what you were doing when the error occurred: </string>
     <string name="title_course_identifier">Study programme and year identifier</string>
     <string name="title_course_identifier_help">Identifier help</string>
     <string name="title_time_on_blocks">Class period on block</string>
