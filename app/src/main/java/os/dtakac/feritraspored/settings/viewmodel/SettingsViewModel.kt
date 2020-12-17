@@ -3,9 +3,7 @@ package os.dtakac.feritraspored.settings.viewmodel
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.SharedPreferenceKeys
-import os.dtakac.feritraspored.common.data.EmailEditorData
 import os.dtakac.feritraspored.common.extensions.timeFormat
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
@@ -19,7 +17,7 @@ class SettingsViewModel(
     val showChangelog = SingleLiveEvent<Unit>()
     val showFiltersHelp = SingleLiveEvent<Unit>()
     val showCourseIdentifierHelp = SingleLiveEvent<Unit>()
-    val openEmailEditor = SingleLiveEvent<EmailEditorData>()
+    val openMessageToDevEditor = SingleLiveEvent<Unit>()
 
     init {
         setTimePickerSummary()
@@ -68,7 +66,7 @@ class SettingsViewModel(
     }
 
     fun onMessageToDeveloperClicked() {
-        openEmailEditor.value = EmailEditorData(subject = R.string.subject_message_to_developer)
+        openMessageToDevEditor.call()
     }
 
     private fun setTheme() {

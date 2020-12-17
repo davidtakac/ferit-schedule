@@ -118,8 +118,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     key =  DialogKeys.COURSE_IDENTIFIER_HELP
             )
         }
-        viewModel.openEmailEditor.observe(viewLifecycleOwner) {
-            context?.openEmailEditor(it)
+        viewModel.openMessageToDevEditor.observe(viewLifecycleOwner) {
+            context?.openEmailEditor(
+                    subject = getString(R.string.subject_message_to_developer)
+            )
         }
     }
 }

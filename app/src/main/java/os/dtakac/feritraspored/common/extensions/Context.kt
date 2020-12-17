@@ -7,14 +7,16 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.constants.SUPPORT_EMAILS
-import os.dtakac.feritraspored.common.data.EmailEditorData
 
-fun Context.openEmailEditor(data: EmailEditorData) {
+fun Context.openEmailEditor(
+        subject: String = "",
+        content: String = ""
+) {
     val intent = Intent(Intent.ACTION_SENDTO)
     intent.data = Uri.parse("mailto:")
     intent.putExtra(Intent.EXTRA_EMAIL, SUPPORT_EMAILS)
-    intent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(data.subject))
-    intent.putExtra(Intent.EXTRA_TEXT, data.content)
+    intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+    intent.putExtra(Intent.EXTRA_TEXT, content)
     startActivity(Intent.createChooser(intent, resources.getString(R.string.label_email_via)))
 }
 

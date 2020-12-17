@@ -122,9 +122,6 @@ class ScheduleFragment: Fragment() {
                     .setAnchorView(binding.navBar.root)
                     .show()
         }
-        viewModel.openEmailEditor.observe(viewLifecycleOwner) {
-            context?.openEmailEditor(it)
-        }
         viewModel.isLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
             binding.loader.apply { if(shouldShow) show() else hide() }
         }
@@ -175,7 +172,10 @@ class ScheduleFragment: Fragment() {
             }
         }
         binding.error.btnBugReport.setOnClickListener {
-            viewModel.onBugReportClicked(binding.error.tvError.text.toString())
+            context?.openEmailEditor(
+                    subject = getString(R.string.subject_bug_report),
+                    content = binding.error.tvError.text.toString()
+            )
         }
         binding.loader.hide()
         binding.error.tvError.movementMethod = ScrollingMovementMethod()

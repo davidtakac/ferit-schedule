@@ -8,7 +8,6 @@ import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.assets.AssetProvider
 import os.dtakac.feritraspored.common.constants.SHOW_CHANGELOG
-import os.dtakac.feritraspored.common.data.EmailEditorData
 import os.dtakac.feritraspored.common.data.StringResourceWithArgs
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.extensions.isSameWeek
@@ -40,7 +39,6 @@ class ScheduleViewModel(
     val openSettings = SingleLiveEvent<Unit>()
     val openInExternalBrowser = SingleLiveEvent<String>()
     val openInCustomTabs = SingleLiveEvent<Uri>()
-    val openEmailEditor = SingleLiveEvent<EmailEditorData>()
     val showChangelog = SingleLiveEvent<Unit>()
     val snackBarMessage = SingleLiveEvent<@StringRes Int>()
     val webViewScroll = SingleLiveEvent<Float>()
@@ -112,13 +110,6 @@ class ScheduleViewModel(
             selectedDate = selectedDate.plusWeeks(1)
             loadSchedule()
         }
-    }
-
-    fun onBugReportClicked(errorMessage: String) {
-        openEmailEditor.value = EmailEditorData(
-                subject = R.string.subject_bug_report,
-                content = errorMessage
-        )
     }
 
     private fun loadSchedule() {
