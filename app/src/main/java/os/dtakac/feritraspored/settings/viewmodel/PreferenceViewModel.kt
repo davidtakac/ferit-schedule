@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import os.dtakac.feritraspored.R
+import os.dtakac.feritraspored.common.constants.SharedPreferenceKeys
 import os.dtakac.feritraspored.common.data.EmailEditorData
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.resources.ResourceRepository
@@ -38,17 +39,17 @@ class PreferenceViewModel(
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if(key != res.getString(R.string.key_theme) && key != res.getString(R.string.key_settings_modified)) {
+        if(key != SharedPreferenceKeys.THEME && key != SharedPreferenceKeys.SETTINGS_MODIFIED) {
             prefs.isReloadToApplySettings = true
         }
         when(key) {
-            res.getString(R.string.key_skip_day) -> onSkipDayChanged()
-            res.getString(R.string.key_filters) -> onFiltersChanged()
-            res.getString(R.string.key_filters_toggle) -> onFiltersToggled()
-            res.getString(R.string.key_theme) -> onThemeChanged()
-            res.getString(R.string.key_course_identifier) -> onCourseIdentifierChanged()
-            res.getString(R.string.key_time_hour),
-            res.getString(R.string.key_time_minute) -> onTimeChanged()
+            SharedPreferenceKeys.SKIP_DAY -> onSkipDayChanged()
+            SharedPreferenceKeys.FILTERS -> onFiltersChanged()
+            SharedPreferenceKeys.FILTERS_TOGGLE -> onFiltersToggled()
+            SharedPreferenceKeys.THEME -> onThemeChanged()
+            SharedPreferenceKeys.IDENTIFIER -> onCourseIdentifierChanged()
+            SharedPreferenceKeys.TIME_HOUR,
+            SharedPreferenceKeys.TIME_MINUTE -> onTimeChanged()
         }
     }
 

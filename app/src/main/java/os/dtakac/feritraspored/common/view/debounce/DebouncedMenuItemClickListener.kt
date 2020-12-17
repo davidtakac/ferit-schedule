@@ -2,7 +2,7 @@ package os.dtakac.feritraspored.common.view.debounce
 
 import android.os.SystemClock
 import android.view.MenuItem
-import os.dtakac.feritraspored.common.constants.DEBOUNCE_INTERVAL
+import os.dtakac.feritraspored.common.constants.DEBOUNCE_INTERVAL_MS
 
 class DebouncedMenuItemClickListener(
         private val threshold: Long,
@@ -21,6 +21,6 @@ class DebouncedMenuItemClickListener(
     }
 }
 
-fun MenuItem.onDebouncedClick(debounceInterval: Long = DEBOUNCE_INTERVAL, listener: () -> Unit) {
+fun MenuItem.onDebouncedClick(debounceInterval: Long = DEBOUNCE_INTERVAL_MS, listener: () -> Unit) {
     setOnMenuItemClickListener(DebouncedMenuItemClickListener(debounceInterval, listener))
 }

@@ -11,6 +11,6 @@ import os.dtakac.feritraspored.common.resources.ResourceRepositoryImpl
 val appModule = module {
     single<ResourceRepository>{ ResourceRepositoryImpl(androidContext()) }
     single<PreferenceRepository> {
-        PreferenceRepositoryImpl(get(), PreferenceManager.getDefaultSharedPreferences(get()))
+        PreferenceRepositoryImpl(PreferenceManager.getDefaultSharedPreferences(get()))
     }
 }

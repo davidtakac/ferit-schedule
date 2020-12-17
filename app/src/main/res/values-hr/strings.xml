@@ -5,7 +5,6 @@
         <item>Engleski</item>
     </string-array>
 
-    <string name="app_name">Ferit Raspored</string>
     <string name="app_name_debug">Ferit Raspored Debug</string>
     <string name="label_settings">Postavke</string>
     <string name="title_category_programme_and_year">Smjer i godina</string>

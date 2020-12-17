@@ -24,8 +24,7 @@
             android:key="url_key"
             android:title="@string/title_schedule_languages"
             android:negativeButtonText="@string/label_back"
-            android:entries="@array/schedule_languages_human"
-            android:entryValues="@array/schedule_languages" />
+            android:entries="@array/schedule_languages_human" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_category_group_highlight">

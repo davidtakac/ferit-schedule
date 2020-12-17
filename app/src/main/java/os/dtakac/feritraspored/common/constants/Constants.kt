@@ -5,16 +5,9 @@ const val DIALOG_TIME_PICKER = "time_picker"
 const val DIALOG_FILTERS_HELP = "filters_help"
 const val DIALOG_COURSE_IDENTIFIER_HELP = "course_identifier_help"
 
-/**
- * Default click debounce interval in ms.
- */
-const val DEBOUNCE_INTERVAL = 300L
+const val DEBOUNCE_INTERVAL_MS = 300L
 
-/**
- * Shared preference keys.
- */
-object Keys {
-    /* Changing the values of these strings will cause the users settings to be lost. */
+object SharedPreferenceKeys {
     const val SKIP_SAT = "skip_saturday_key"
     const val SKIP_DAY = "skip_day_key"
     const val FILTERS = "group_highlight_key"
@@ -36,3 +29,12 @@ object Keys {
     const val IDENTIFIER_HELP = "course_identifier_help"
     const val SCHEDULE_LANG = "url_key"
 }
+
+val SCHEDULE_LANGUAGES = arrayOf(
+        "https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s",
+        "https://www.ferit.unios.hr/students/schedule-of-classes-and-exams/%s/%s"
+)
+
+val SUPPORT_EMAILS = arrayOf(
+        "developer.takac@gmail.com"
+)

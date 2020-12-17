@@ -9,9 +9,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.constants.DIALOG_COURSE_IDENTIFIER_HELP
-import os.dtakac.feritraspored.common.constants.DIALOG_FILTERS_HELP
-import os.dtakac.feritraspored.common.constants.DIALOG_TIME_PICKER
+import os.dtakac.feritraspored.common.constants.*
 import os.dtakac.feritraspored.common.extensions.openEmailEditor
 import os.dtakac.feritraspored.common.extensions.preference
 import os.dtakac.feritraspored.common.extensions.showChangelog
@@ -21,15 +19,15 @@ import os.dtakac.feritraspored.common.view.dialog_time_picker.TimePickerDialogFr
 
 @Suppress("unused")
 class SettingsFragment : PreferenceFragmentCompat() {
-    private val themes: ListPreference by preference(R.string.key_theme)
-    private val filters: EditTextPreference by preference(R.string.key_filters)
-    private val courseIdentifier: EditTextPreference by preference(R.string.key_course_identifier)
-    private val filtersHelp: Preference by preference(R.string.key_filters_help)
-    private val timePicker: Preference by preference(R.string.key_time_picker)
-    private val changelog: Preference by preference(R.string.key_changelog)
-    private val messageToDeveloper: Preference by preference(R.string.key_developer_message)
-    private val courseIdentifierHelp: Preference by preference(R.string.key_course_identifier_help)
-    private val scheduleLanguages: ListPreference by preference(R.string.key_schedule_language)
+    private val themes: ListPreference by preference(SharedPreferenceKeys.THEME)
+    private val filters: EditTextPreference by preference(SharedPreferenceKeys.FILTERS)
+    private val courseIdentifier: EditTextPreference by preference(SharedPreferenceKeys.IDENTIFIER)
+    private val filtersHelp: Preference by preference(SharedPreferenceKeys.FILTERS_HELP)
+    private val timePicker: Preference by preference(SharedPreferenceKeys.TIME_PICKER)
+    private val changelog: Preference by preference(SharedPreferenceKeys.CHANGELOG)
+    private val messageToDeveloper: Preference by preference(SharedPreferenceKeys.DEV_MESSAGE)
+    private val courseIdentifierHelp: Preference by preference(SharedPreferenceKeys.IDENTIFIER_HELP)
+    private val scheduleLanguages: ListPreference by preference(SharedPreferenceKeys.SCHEDULE_LANG)
 
     private val viewModel: PreferenceViewModel by viewModel()
 
@@ -80,6 +78,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             it.hint = resources.getString(R.string.hint_course_identifier)
         }
         themes.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+        scheduleLanguages.entryValues = SCHEDULE_LANGUAGES
         scheduleLanguages.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
     }
 

@@ -1,43 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--region Untranslatable strings-->
-    <string name="key_skip_sat" translatable="false">skip_saturday_key</string>
-    <string name="key_skip_day" translatable="false">skip_day_key</string>
-    <string name="key_filters" translatable="false">group_highlight_key</string>
-    <string name="key_programme" translatable="false">programme_key</string>
-    <string name="key_year" translatable="false">year_key</string>
-    <string name="key_time_picker" translatable="false">timepicker_key</string>
-    <string name="key_time_hour" translatable="false">hour_key</string>
-    <string name="key_time_minute" translatable="false">minute_key</string>
-    <string name="key_settings_modified" translatable="false">settings_modified</string>
-    <string name="key_load_on_resume" translatable="false">load_on_resume_key</string>
-    <string name="key_filters_toggle" translatable="false">group_toggle_key</string>
-    <string name="key_filters_help" translatable="false">group_help_key</string>
-    <string name="key_theme" translatable="false">prefkey_theme</string>
-    <string name="key_changelog" translatable="false">changelog_key</string>
-    <string name="key_developer_message" translatable="false">dev_msg_key</string>
-    <string name="key_version" translatable="false">version_key</string>
-    <string name="key_course_identifier" translatable="false">course_identifier</string>
-    <string name="key_time_on_blocks" translatable="false">key_time_on_blocks</string>
-    <string name="key_course_identifier_help" translatable="false">course_identifier_help</string>
-    <string name="key_schedule_language" translatable="false">url_key</string>
-
-    <string-array name="support_emails" translatable="false">
-        <item>developer.takac@gmail.com</item>
-    </string-array>
-
-    <string-array name="schedule_languages" translatable="false">
-        <item>https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s</item>
-        <item>https://www.ferit.unios.hr/students/schedule-of-classes-and-exams/%s/%s</item>
-    </string-array>
-    <!--endregion-->
-
     <!--region User interface strings-->
     <string-array name="schedule_languages_human">
         <item>Croatian</item>
         <item>English</item>
     </string-array>
 
-    <string name="app_name">Ferit Schedule</string>
     <string name="app_name_debug">Ferit Schedule Debug</string>
     <string name="label_settings">Settings</string>
     <string name="title_category_programme_and_year">Study programme and year</string>
