@@ -2,20 +2,11 @@ package os.dtakac.feritraspored.common.resources
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.util.TypedValue
 import java.util.*
 
 class ResourceRepositoryImpl(
         private val context: Context
 ): ResourceRepository {
-    override fun getString(resId: Int): String {
-        return context.resources.getString(resId)
-    }
-
-    override fun getStringArray(resId: Int): Array<String> {
-        return context.resources.getStringArray(resId)
-    }
-
     override fun isOnline(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE)
                 as? ConnectivityManager
@@ -30,17 +21,5 @@ class ResourceRepositoryImpl(
             stringBuilder.append(scanner.nextLine())
         }
         return stringBuilder.toString()
-    }
-
-    override fun toPx(dp: Float): Float {
-        return TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                context.resources.displayMetrics
-        )
-    }
-
-    override fun getBoolean(resId: Int): Boolean {
-        return context.resources.getBoolean(resId)
     }
 }

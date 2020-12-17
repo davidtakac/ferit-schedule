@@ -1,36 +1,34 @@
 package os.dtakac.feritraspored.schedule.viewmodel
 
+import androidx.annotation.StringRes
 import android.net.Uri
-import android.view.animation.DecelerateInterpolator
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
+import os.dtakac.feritraspored.common.constants.SHOW_CHANGELOG
 import os.dtakac.feritraspored.common.data.EmailEditorData
+import os.dtakac.feritraspored.common.data.StringResourceWithArgs
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
-import os.dtakac.feritraspored.common.resources.ResourceRepository
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.common.extensions.urlFormat
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
-import os.dtakac.feritraspored.schedule.data.ScrollData
 import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
 import java.lang.Exception
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
-import kotlin.math.roundToInt
 
 class ScheduleViewModel(
         private val prefs: PreferenceRepository,
-        private val res: ResourceRepository,
         private val scheduleRepository: ScheduleRepository
 ): ViewModel() {
     val scheduleData = MutableLiveData<ScheduleData>()
     val isLoaderVisible = MutableLiveData<Boolean>()
-    val errorMessage = MutableLiveData<String?>()
+    val errorMessage = MutableLiveData<StringResourceWithArgs?>()
     val isErrorGone: LiveData<Boolean> = Transformations.map(errorMessage) { it == null }
     val areControlsEnabled: LiveData<Boolean> = Transformations.map(isLoaderVisible) { !it }
 
@@ -40,14 +38,12 @@ class ScheduleViewModel(
     val openInCustomTabs = SingleLiveEvent<Uri>()
     val openEmailEditor = SingleLiveEvent<EmailEditorData>()
     val showChangelog = SingleLiveEvent<Unit>()
-    val snackBarMessage = SingleLiveEvent<String>()
-    val webViewScroll = SingleLiveEvent<ScrollData>()
+    val snackBarMessage = SingleLiveEvent<@StringRes Int>()
+    val webViewScroll = SingleLiveEvent<Float>()
     val clearWebViewScroll = SingleLiveEvent<Unit>()
 
     private var wasLoadedInOnCreate = false
     private var selectedDate = buildCurrentDate()
-    private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.2f).toDouble() }
-    private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
     fun onViewCreated() {
         if(isOnline() && (scheduleData.value == null || prefs.isReloadToApplySettings)) {
@@ -55,7 +51,7 @@ class ScheduleViewModel(
             selectedDate = buildCurrentDate()
             loadSchedule()
         }
-        if(res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE) {
+        if(SHOW_CHANGELOG && prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.call()
         }
     }
@@ -114,12 +110,11 @@ class ScheduleViewModel(
         }
     }
 
-    fun onBugReportClicked() {
-        val subject = res.getString(R.string.subject_bug_report)
-        val content = res
-                .getString(R.string.template_bug_report)
-                .format()
-        //openEmailEditor.value = EmailEditorData(subject, content) todo: fix
+    fun onBugReportClicked(errorMessage: String) {
+        openEmailEditor.value = EmailEditorData(
+                subject = R.string.subject_bug_report,
+                content = errorMessage
+        )
     }
 
     private fun loadSchedule() {
@@ -128,14 +123,17 @@ class ScheduleViewModel(
             errorMessage.value = null
             isLoaderVisible.value = true
 
-            var error: String? = null
+            var error: StringResourceWithArgs? = null
             val data = try {
                 getScheduleData()
             } catch (e: Exception) {
-                error = res.getString(R.string.template_error_unexpected).format(
-                        e.message,
-                        prefs.courseIdentifier,
-                        selectedDate.urlFormat()
+                error = StringResourceWithArgs(
+                        content = R.string.template_error_unexpected,
+                        args = listOf(
+                                e.message ?: "",
+                                prefs.courseIdentifier,
+                                selectedDate.urlFormat()
+                        )
                 )
                 null
             }
@@ -159,11 +157,7 @@ class ScheduleViewModel(
     private fun postScrollEvent(elementPosition: String) {
         val elementPositionDp = elementPosition.toFloatOrNull()
         if(elementPositionDp != null) {
-            webViewScroll.value = ScrollData(
-                    speed = scrollPixelsPerMs,
-                    verticalPosition = res.toPx(elementPositionDp).roundToInt(),
-                    interpolator = scrollInterpolator
-            )
+            webViewScroll.value = elementPositionDp
         }
     }
 
@@ -186,12 +180,12 @@ class ScheduleViewModel(
         if(!isOnline) {
             if(scheduleData.value == null) {
                 if(errorMessage.value == null) {
-                    errorMessage.value = res.getString(R.string.error_no_network)
+                    errorMessage.value = StringResourceWithArgs(R.string.error_no_network)
                 } else {
-                    snackBarMessage.value = res.getString(R.string.notify_no_network)
+                    snackBarMessage.value = R.string.notify_no_network
                 }
             } else {
-                snackBarMessage.value = res.getString(R.string.notify_no_network)
+                snackBarMessage.value = R.string.notify_no_network
             }
         }
         return isOnline

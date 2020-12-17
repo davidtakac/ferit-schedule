@@ -9,6 +9,7 @@ import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.browser.customtabs.CustomTabColorSchemeParams
@@ -19,14 +20,13 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.extensions.getColorCompat
-import os.dtakac.feritraspored.common.extensions.isNightMode
-import os.dtakac.feritraspored.common.extensions.openEmailEditor
-import os.dtakac.feritraspored.common.extensions.showChangelog
+import os.dtakac.feritraspored.common.extensions.*
 import os.dtakac.feritraspored.databinding.FragmentScheduleBinding
-import os.dtakac.feritraspored.schedule.data.ScrollData
 import os.dtakac.feritraspored.schedule.viewmodel.ScheduleViewModel
 import os.dtakac.feritraspored.common.view.debounce.onDebouncedClick
+import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 class ScheduleFragment: Fragment() {
     private var _binding: FragmentScheduleBinding? = null
@@ -34,6 +34,8 @@ class ScheduleFragment: Fragment() {
 
     private val viewModel: ScheduleViewModel by viewModel()
     private var scrollAnimator: ObjectAnimator? = null
+    private val scrollSpeed by lazy { resources.displayMetrics.toPixels(dp = 2.2f) }
+    private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
     private val customTabs by lazy {
         val colorParams = CustomTabColorSchemeParams.Builder()
@@ -127,7 +129,7 @@ class ScheduleFragment: Fragment() {
             binding.loader.apply { if(shouldShow) show() else hide() }
         }
         viewModel.errorMessage.observe(viewLifecycleOwner) {
-            binding.error.tvError.text = it
+            binding.error.tvError.text = it?.buildString(resources)
         }
         viewModel.isErrorGone.observe(viewLifecycleOwner) {
             binding.error.root.isGone = it
@@ -173,23 +175,25 @@ class ScheduleFragment: Fragment() {
             }
         }
         binding.error.btnBugReport.setOnClickListener {
-            viewModel.onBugReportClicked()
+            viewModel.onBugReportClicked(binding.error.tvError.text.toString())
         }
         binding.loader.hide()
         binding.error.tvError.movementMethod = ScrollingMovementMethod()
     }
 
-    private fun scrollWebView(data: ScrollData) {
+    private fun scrollWebView(elementPositionDp: Float) {
         if(scrollAnimator?.isStarted != true) {
+            val elementPositionPx = resources.displayMetrics.toPixels(elementPositionDp).roundToInt()
             val currentVerticalPosition = binding.wvSchedule.scrollY
             val anim = ObjectAnimator.ofInt(
                     binding.wvSchedule,
                     "scrollY",
                     currentVerticalPosition,
-                    data.verticalPosition
+                    elementPositionPx
             )
-            anim.duration = data.getScrollDuration(currentVerticalPosition)
-            anim.interpolator = data.interpolator
+            val distance = (currentVerticalPosition - elementPositionPx).absoluteValue
+            anim.duration = (distance / scrollSpeed).roundToLong()
+            anim.interpolator = scrollInterpolator
             scrollAnimator = anim
             scrollAnimator?.start()
         }

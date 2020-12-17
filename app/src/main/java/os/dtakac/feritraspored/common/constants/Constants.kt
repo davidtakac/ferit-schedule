@@ -10,6 +10,8 @@ const val DIALOG_COURSE_IDENTIFIER_HELP = "course_identifier_help"
 
 const val DEBOUNCE_INTERVAL_MS = 300L
 
+const val SHOW_CHANGELOG = false
+
 object SharedPreferenceKeys {
     const val SKIP_SAT = "skip_saturday_key"
     const val SKIP_DAY = "skip_day_key"
