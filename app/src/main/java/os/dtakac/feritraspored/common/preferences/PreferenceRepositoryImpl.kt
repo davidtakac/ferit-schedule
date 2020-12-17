@@ -12,11 +12,6 @@ import java.time.LocalTime
 class PreferenceRepositoryImpl(
         private val prefs: SharedPreferences
 ): PreferenceRepository {
-    init {
-        migrateToCourseIdentifierPreference()
-        migrateToTimePreference()
-    }
-
     override val isSkipSaturday: Boolean
         get() = prefs.getBoolean(SharedPreferenceKeys.SKIP_SAT, false)
 
@@ -36,8 +31,16 @@ class PreferenceRepositoryImpl(
         get() {
             val value = prefs.getString(SharedPreferenceKeys.TIME_PICKER, null)
             return if (value == null) {
-                val defaultTime = LocalTime.of(20, 0)
+                // migrate from old preferences if possible
+                val hourValue = prefs.getInt(SharedPreferenceKeys.TIME_HOUR, 20)
+                val minuteValue = prefs.getInt(SharedPreferenceKeys.TIME_MINUTE, 0)
+                // create default time and persist it
+                val defaultTime = LocalTime.of(hourValue, minuteValue)
                 editor { putString(SharedPreferenceKeys.TIME_PICKER, defaultTime.timeFormat()) }
+                // delete old preferences
+                delete(SharedPreferenceKeys.TIME_HOUR)
+                delete(SharedPreferenceKeys.TIME_MINUTE)
+
                 defaultTime
             } else {
                 value.toLocalTime()
@@ -81,9 +84,25 @@ class PreferenceRepositoryImpl(
             return versionValue
         }
 
-    override var courseIdentifier: String?
-        get() = prefs.getString(SharedPreferenceKeys.IDENTIFIER, null)
-        set(value) = editor { putString(SharedPreferenceKeys.IDENTIFIER, value) }
+    override val courseIdentifier: String
+        get() {
+            val value =  prefs.getString(SharedPreferenceKeys.IDENTIFIER, null)
+            return if (value == null) {
+                // migrate from old preferences
+                val yearValue = prefs.getString(SharedPreferenceKeys.YEAR, "1")
+                val programmeValue = prefs.getString(SharedPreferenceKeys.PROGRAMME, "1")
+                // create new course identifier
+                val defaultIdentifier = "$yearValue-$programmeValue"
+                editor { putString(SharedPreferenceKeys.IDENTIFIER, defaultIdentifier) }
+                // delete old preferences
+                delete(SharedPreferenceKeys.YEAR)
+                delete(SharedPreferenceKeys.PROGRAMME)
+
+                defaultIdentifier
+            } else {
+                value
+            }
+        }
 
     override val areFiltersEnabled: Boolean
         get() = prefs.getBoolean(SharedPreferenceKeys.FILTERS_TOGGLE, false)
@@ -113,27 +132,6 @@ class PreferenceRepositoryImpl(
 
     private fun editor(operation: SharedPreferences.Editor.() -> Unit) {
         prefs.edit().also(operation).apply()
-    }
-
-    private fun migrateToCourseIdentifierPreference() {
-        //todo: refactor to not use year and programme but get from prefs
-        if(courseIdentifier == null) {
-            if(year == null || programme == null) return
-            courseIdentifier = "${year}-${programme}"
-            delete(SharedPreferenceKeys.YEAR)
-            delete(SharedPreferenceKeys.PROGRAMME)
-        }
-    }
-
-    private fun migrateToTimePreference() {
-        val timeValue = prefs.getString(SharedPreferenceKeys.TIME_PICKER, null)
-        if (timeValue == null) {
-            val hourValue = prefs.getInt(SharedPreferenceKeys.TIME_HOUR, 20)
-            val minuteValue = prefs.getInt(SharedPreferenceKeys.TIME_MINUTE, 0)
-            time = LocalTime.of(hourValue, minuteValue)
-            delete(SharedPreferenceKeys.TIME_HOUR)
-            delete(SharedPreferenceKeys.TIME_MINUTE)
-        }
     }
 
     private fun delete(key: String) {

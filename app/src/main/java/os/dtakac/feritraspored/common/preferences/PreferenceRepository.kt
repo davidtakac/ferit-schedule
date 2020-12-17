@@ -14,7 +14,7 @@ interface PreferenceRepository {
     val isLoadOnResume: Boolean
     val theme: Int
     val version: Int
-    var courseIdentifier: String?
+    val courseIdentifier: String
     val areFiltersEnabled: Boolean
     val isShowTimeOnBlocks: Boolean
     val scheduleTemplate: String
