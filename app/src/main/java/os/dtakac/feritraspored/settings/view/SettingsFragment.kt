@@ -46,10 +46,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if(key != SharedPreferenceKeys.THEME && key != SharedPreferenceKeys.SETTINGS_MODIFIED) {
+        if (key != SharedPreferenceKeys.THEME && key != SharedPreferenceKeys.SETTINGS_MODIFIED) {
             prefsRepo.isReloadToApplySettings = true
         }
-        when(key) {
+        when (key) {
             SharedPreferenceKeys.THEME -> onThemeChanged()
             SharedPreferenceKeys.TIME_PICKER -> onTimeChanged()
         }
@@ -90,7 +90,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_groups_help,
                     contentResId = R.string.content_groups_help,
-                    key =  DialogKeys.FILTERS_HELP
+                    key = DialogKeys.FILTERS_HELP
             )
             true
         }
@@ -98,7 +98,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             childFragmentManager.showInfoDialog(
                     titleResId = R.string.title_course_identifier_help,
                     contentResId = R.string.content_course_identifier_help,
-                    key =  DialogKeys.COURSE_IDENTIFIER_HELP
+                    key = DialogKeys.COURSE_IDENTIFIER_HELP
             )
             true
         }

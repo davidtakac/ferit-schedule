@@ -5,11 +5,11 @@ import java.util.*
 
 class AssetProviderImpl(
         private val applicationContext: Context
-): AssetProvider {
+) : AssetProvider {
     override fun readFile(fileName: String): String {
         val scanner = Scanner(applicationContext.assets.open(fileName))
         val stringBuilder = StringBuilder()
-        while(scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) {
             stringBuilder.append(scanner.nextLine())
         }
         return stringBuilder.toString()

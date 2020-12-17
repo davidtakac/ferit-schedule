@@ -10,7 +10,7 @@ import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import java.time.LocalTime
 
-class TimePickerDialogFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TimePickerDialogFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
     private val prefs: PreferenceRepository by inject()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

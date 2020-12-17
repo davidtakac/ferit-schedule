@@ -10,7 +10,7 @@ import os.dtakac.feritraspored.common.di.appModule
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.schedule.di.scheduleModule
 
-class App: Application() {
+class App : Application() {
     private val prefs: PreferenceRepository by inject()
 
     override fun onCreate() {
@@ -20,7 +20,7 @@ class App: Application() {
     }
 
     private fun initKoin() {
-        startKoin{
+        startKoin {
             androidLogger()
             androidContext(this@App)
             modules(appModule, scheduleModule)

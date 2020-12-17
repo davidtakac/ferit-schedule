@@ -11,7 +11,7 @@ import java.time.LocalTime
 
 class PreferenceRepositoryImpl(
         private val prefs: SharedPreferences
-): PreferenceRepository {
+) : PreferenceRepository {
     override val isSkipSaturday: Boolean
         get() = prefs.getBoolean(SharedPreferenceKeys.SKIP_SAT, false)
 
@@ -53,7 +53,7 @@ class PreferenceRepositoryImpl(
     override var isReloadToApplySettings: Boolean
         get() {
             val wereSettingsModified = prefs.getBoolean(SharedPreferenceKeys.SETTINGS_MODIFIED, false)
-            if(wereSettingsModified) {
+            if (wereSettingsModified) {
                 isReloadToApplySettings = false
             }
             return wereSettingsModified
@@ -66,7 +66,7 @@ class PreferenceRepositoryImpl(
     override val theme: Int
         get() {
             val value = prefs.getString(SharedPreferenceKeys.THEME, null)?.toIntOrNull()
-            return if(value == null) {
+            return if (value == null) {
                 val defaultTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 editor { putString(SharedPreferenceKeys.THEME, defaultTheme.toString()) }
                 defaultTheme
@@ -78,7 +78,7 @@ class PreferenceRepositoryImpl(
     override val version: Int
         get() {
             val versionValue = prefs.getInt(SharedPreferenceKeys.VERSION, -1)
-            if(versionValue < BuildConfig.VERSION_CODE) {
+            if (versionValue < BuildConfig.VERSION_CODE) {
                 editor { putInt(SharedPreferenceKeys.VERSION, BuildConfig.VERSION_CODE) }
             }
             return versionValue
@@ -86,7 +86,7 @@ class PreferenceRepositoryImpl(
 
     override val courseIdentifier: String
         get() {
-            val value =  prefs.getString(SharedPreferenceKeys.IDENTIFIER, null)
+            val value = prefs.getString(SharedPreferenceKeys.IDENTIFIER, null)
             return if (value == null) {
                 // migrate from old preferences
                 val yearValue = prefs.getString(SharedPreferenceKeys.YEAR, "1")
@@ -113,7 +113,7 @@ class PreferenceRepositoryImpl(
     override val scheduleTemplate: String
         get() {
             val template = prefs.getString(SharedPreferenceKeys.SCHEDULE_LANG, null)
-            return if(template == null) {
+            return if (template == null) {
                 val defaultUrl = SCHEDULE_LANGUAGES[0]
                 editor { putString(SharedPreferenceKeys.SCHEDULE_LANG, defaultUrl) }
                 defaultUrl

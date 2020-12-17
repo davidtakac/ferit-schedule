@@ -7,7 +7,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
-class InfoDialogFragment: DialogFragment(), DialogInterface.OnClickListener {
+class InfoDialogFragment : DialogFragment(), DialogInterface.OnClickListener {
     companion object {
         private const val KEY_TITLE = "title_key"
         private const val KEY_CONTENT = "content_key"
@@ -18,11 +18,13 @@ class InfoDialogFragment: DialogFragment(), DialogInterface.OnClickListener {
                 @StringRes contentResId: Int,
                 @StringRes dismissResId: Int
         ): InfoDialogFragment {
-            return InfoDialogFragment().also { it.arguments = Bundle().apply {
-                putInt(KEY_TITLE, titleResId)
-                putInt(KEY_CONTENT, contentResId)
-                putInt(KEY_DISMISS, dismissResId)
-            }}
+            return InfoDialogFragment().also {
+                it.arguments = Bundle().apply {
+                    putInt(KEY_TITLE, titleResId)
+                    putInt(KEY_CONTENT, contentResId)
+                    putInt(KEY_DISMISS, dismissResId)
+                }
+            }
         }
     }
 
@@ -34,5 +36,7 @@ class InfoDialogFragment: DialogFragment(), DialogInterface.OnClickListener {
                 .create()
     }
 
-    override fun onClick(p0: DialogInterface?, p1: Int) { dismiss() }
+    override fun onClick(p0: DialogInterface?, p1: Int) {
+        dismiss()
+    }
 }

@@ -21,6 +21,6 @@ fun FragmentManager.showChangelog() {
             titleResId = R.string.title_whats_new,
             contentResId = R.string.content_whats_new,
             dismissResId = R.string.dismiss_whats_new,
-            key =  DialogKeys.WHATS_NEW
+            key = DialogKeys.WHATS_NEW
     )
 }

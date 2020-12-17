@@ -11,7 +11,7 @@ fun LocalTime.timeFormat(): String = try {
     ""
 }
 
-fun String.toLocalTime(): LocalTime = try{
+fun String.toLocalTime(): LocalTime = try {
     LocalTime.parse(this, TIME_FORMAT)
 } catch (e: Exception) {
     LocalTime.of(0, 0)

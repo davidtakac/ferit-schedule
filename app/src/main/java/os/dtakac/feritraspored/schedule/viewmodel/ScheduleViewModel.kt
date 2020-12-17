@@ -27,7 +27,7 @@ class ScheduleViewModel(
         private val scheduleRepository: ScheduleRepository,
         private val assetProvider: AssetProvider,
         private val networkChecker: NetworkChecker
-): ViewModel() {
+) : ViewModel() {
     val scheduleData = MutableLiveData<ScheduleData>()
     val isLoaderVisible = MutableLiveData<Boolean>()
     val errorMessage = MutableLiveData<StringResourceWithArgs?>()
@@ -47,18 +47,18 @@ class ScheduleViewModel(
     private var selectedDate = buildCurrentDate()
 
     fun onViewCreated() {
-        if(isOnline() && (scheduleData.value == null || prefs.isReloadToApplySettings)) {
+        if (isOnline() && (scheduleData.value == null || prefs.isReloadToApplySettings)) {
             wasLoadedInOnCreate = true
             selectedDate = buildCurrentDate()
             loadSchedule()
         }
-        if(SHOW_CHANGELOG && prefs.version < BuildConfig.VERSION_CODE) {
+        if (SHOW_CHANGELOG && prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.call()
         }
     }
 
     fun onResume() {
-        if(!wasLoadedInOnCreate && prefs.isLoadOnResume) {
+        if (!wasLoadedInOnCreate && prefs.isLoadOnResume) {
             loadCurrentWeek()
         }
         wasLoadedInOnCreate = false
@@ -66,20 +66,24 @@ class ScheduleViewModel(
 
     fun onPageDrawn() {
         isLoaderVisible.value = false
-        if(buildCurrentDate().isSameWeek(selectedDate)) {
+        if (buildCurrentDate().isSameWeek(selectedDate)) {
             scrollSelectedDateIntoView()
         }
     }
 
     fun onUrlClicked(url: String?) {
-        val uri = try { Uri.parse(url) } catch (e: Exception) { null }
-        if(uri != null) {
+        val uri = try {
+            Uri.parse(url)
+        } catch (e: Exception) {
+            null
+        }
+        if (uri != null) {
             openInCustomTabs.value = uri
         }
     }
 
     fun onRefreshClicked() {
-        if(isOnline()) {
+        if (isOnline()) {
             loadSchedule()
         }
     }
@@ -94,7 +98,7 @@ class ScheduleViewModel(
     }
 
     fun onPreviousWeekClicked() {
-        if(isOnline()) {
+        if (isOnline()) {
             selectedDate = selectedDate.minusWeeks(1)
             loadSchedule()
         }
@@ -105,7 +109,7 @@ class ScheduleViewModel(
     }
 
     fun onNextWeekClicked() {
-        if(isOnline()) {
+        if (isOnline()) {
             selectedDate = selectedDate.plusWeeks(1)
             loadSchedule()
         }
@@ -132,7 +136,7 @@ class ScheduleViewModel(
                 null
             }
 
-            if(data != null) {
+            if (data != null) {
                 scheduleData.value = data
             } else {
                 errorMessage.value = error
@@ -150,20 +154,20 @@ class ScheduleViewModel(
 
     private fun postScrollEvent(elementPosition: String) {
         val elementPositionDp = elementPosition.toFloatOrNull()
-        if(elementPositionDp != null) {
+        if (elementPositionDp != null) {
             webViewScroll.value = elementPositionDp
         }
     }
 
     private fun buildCurrentDate(): LocalDate {
         var newSelectedDate = LocalDate.now()
-        if(newSelectedDate.dayOfWeek == DayOfWeek.SATURDAY && prefs.isSkipSaturday) {
+        if (newSelectedDate.dayOfWeek == DayOfWeek.SATURDAY && prefs.isSkipSaturday) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
-        if(newSelectedDate.dayOfWeek == DayOfWeek.SUNDAY) {
+        if (newSelectedDate.dayOfWeek == DayOfWeek.SUNDAY) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
-        if(prefs.isSkipDay && LocalTime.now() > prefs.time) {
+        if (prefs.isSkipDay && LocalTime.now() > prefs.time) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
         return newSelectedDate
@@ -171,9 +175,9 @@ class ScheduleViewModel(
 
     private fun isOnline(): Boolean {
         val isOnline = networkChecker.isOnline
-        if(!isOnline) {
-            if(scheduleData.value == null) {
-                if(errorMessage.value == null) {
+        if (!isOnline) {
+            if (scheduleData.value == null) {
+                if (errorMessage.value == null) {
                     errorMessage.value = StringResourceWithArgs(R.string.error_no_network)
                 } else {
                     snackBarMessage.value = R.string.notify_no_network
@@ -202,13 +206,13 @@ class ScheduleViewModel(
             },
             lightThemeCss = assetProvider.readFile("light_theme.css"),
             darkThemeCss = assetProvider.readFile("dark_theme.css")
-        )
+    )
 
     private fun loadCurrentWeek() {
         val currentDate = buildCurrentDate()
-        if(currentDate.isSameWeek(selectedDate) && scheduleData.value != null) {
+        if (currentDate.isSameWeek(selectedDate) && scheduleData.value != null) {
             scrollSelectedDateIntoView()
-        } else if(isOnline()) {
+        } else if (isOnline()) {
             selectedDate = currentDate
             loadSchedule()
         }

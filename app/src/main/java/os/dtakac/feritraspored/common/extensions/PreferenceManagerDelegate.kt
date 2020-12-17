@@ -5,9 +5,9 @@ import androidx.preference.PreferenceFragmentCompat
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-class PreferenceManagerDelegate<T: Preference>(
+class PreferenceManagerDelegate<T : Preference>(
         private val key: String
-): ReadOnlyProperty<PreferenceFragmentCompat, T> {
+) : ReadOnlyProperty<PreferenceFragmentCompat, T> {
     private var preference: T? = null
 
     override operator fun getValue(thisRef: PreferenceFragmentCompat, property: KProperty<*>): T {
@@ -23,4 +23,4 @@ class PreferenceManagerDelegate<T: Preference>(
     }
 }
 
-fun <T: Preference> preference(key: String) = PreferenceManagerDelegate<T>(key)
+fun <T : Preference> preference(key: String) = PreferenceManagerDelegate<T>(key)

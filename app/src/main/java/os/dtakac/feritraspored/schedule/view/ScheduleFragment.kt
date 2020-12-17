@@ -28,7 +28,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-class ScheduleFragment: Fragment() {
+class ScheduleFragment : Fragment() {
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
 
@@ -87,7 +87,7 @@ class ScheduleFragment: Fragment() {
         viewModel.scheduleData.observe(viewLifecycleOwner) {
             binding.wvSchedule.loadDataWithBaseURL(
                     it.baseUrl,
-                    if(resources.configuration.isNightMode()) it.dataDark else it.data,
+                    if (resources.configuration.isNightMode()) it.dataDark else it.data,
                     it.mimeType,
                     it.encoding,
                     null
@@ -123,7 +123,7 @@ class ScheduleFragment: Fragment() {
                     .show()
         }
         viewModel.isLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
-            binding.loader.apply { if(shouldShow) show() else hide() }
+            binding.loader.apply { if (shouldShow) show() else hide() }
         }
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             binding.error.tvError.text = it?.buildString(resources)
@@ -183,7 +183,7 @@ class ScheduleFragment: Fragment() {
     }
 
     private fun scrollWebView(elementPositionDp: Float) {
-        if(scrollAnimator?.isStarted != true) {
+        if (scrollAnimator?.isStarted != true) {
             val elementPositionPx = resources.displayMetrics.toPixels(elementPositionDp).roundToInt()
             val currentVerticalPosition = binding.wvSchedule.scrollY
             val anim = ObjectAnimator.ofInt(

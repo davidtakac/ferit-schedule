@@ -6,7 +6,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import os.dtakac.feritraspored.schedule.data.ScheduleData
 
-class ScheduleRepositoryImpl: ScheduleRepository {
+class ScheduleRepositoryImpl : ScheduleRepository {
     override suspend fun getScheduleData(
             scheduleUrl: String,
             showTimeOnBlocks: Boolean,
@@ -26,8 +26,8 @@ class ScheduleRepositoryImpl: ScheduleRepository {
         // clean document and apply transformations
         withContext(Dispatchers.IO) {
             document.removeJunk()
-            if(showTimeOnBlocks) document.applyTimeOnBlocks()
-            if(filters.isNotEmpty()) document.applyFilters(filters)
+            if (showTimeOnBlocks) document.applyTimeOnBlocks()
+            if (filters.isNotEmpty()) document.applyFilters(filters)
         }
 
         return ScheduleData(
@@ -63,7 +63,7 @@ class ScheduleRepositoryImpl: ScheduleRepository {
                     .getOrNull(3)
                     ?.text()
                     ?.trim()
-            if(time != null) {
+            if (time != null) {
                 it.selectFirst(".thumbnail p").append("<br/>$time")
             }
         }
@@ -83,10 +83,10 @@ class ScheduleRepositoryImpl: ScheduleRepository {
                 ?.removeSurrounding("\"")
         return when {
             title == null
-            || title.isBlank()
-            || title.isEmpty()
-            || title == "null"
-            || title == "undefined" -> null
+                    || title.isBlank()
+                    || title.isEmpty()
+                    || title == "null"
+                    || title == "undefined" -> null
             else -> title
         }
     }

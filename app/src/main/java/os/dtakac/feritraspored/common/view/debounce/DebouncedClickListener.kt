@@ -7,11 +7,11 @@ import os.dtakac.feritraspored.common.constants.DEBOUNCE_INTERVAL_MS
 class DebouncedClickListener(
         private val threshold: Long,
         private val listener: () -> Unit
-): View.OnClickListener {
+) : View.OnClickListener {
     private var lastClickTime: Long = 0
 
     override fun onClick(view: View?) {
-        if(SystemClock.elapsedRealtime() - lastClickTime < threshold) {
+        if (SystemClock.elapsedRealtime() - lastClickTime < threshold) {
             //consume click and prevent others from executing
             return
         }

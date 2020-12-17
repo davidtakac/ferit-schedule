@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import os.dtakac.feritraspored.databinding.FragmentSettingsBinding
 
-class SettingsContainerFragment: Fragment() {
+class SettingsContainerFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
