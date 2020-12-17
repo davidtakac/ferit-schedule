@@ -16,6 +16,8 @@ import os.dtakac.feritraspored.common.extensions.showChangelog
 import os.dtakac.feritraspored.common.extensions.showInfoDialog
 import os.dtakac.feritraspored.settings.viewmodel.PreferenceViewModel
 import os.dtakac.feritraspored.common.view.dialog_time_picker.TimePickerDialogFragment
+import os.dtakac.feritraspored.settings.summaryprovider.EditTextPreferenceSummaryProvider
+import os.dtakac.feritraspored.settings.summaryprovider.ListPreferenceSummaryProvider
 
 @Suppress("unused")
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -71,15 +73,22 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun initializeViews() {
+        // hints
         filters.setOnBindEditTextListener {
             it.hint = resources.getString(R.string.hint_group_highlight)
         }
         courseIdentifier.setOnBindEditTextListener {
             it.hint = resources.getString(R.string.hint_course_identifier)
         }
-        themes.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+        // values for list preference
         scheduleLanguages.entryValues = SCHEDULE_LANGUAGES
-        scheduleLanguages.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+        themes.entries = THEME_NAMES_TO_VALUES.keys.map { getString(it) }.toTypedArray()
+        themes.entryValues = THEME_NAMES_TO_VALUES.values.map { it.toString() }.toTypedArray()
+        // summary providers
+        scheduleLanguages.summaryProvider = ListPreferenceSummaryProvider
+        themes.summaryProvider = ListPreferenceSummaryProvider
+        courseIdentifier.summaryProvider = EditTextPreferenceSummaryProvider
+        filters.summaryProvider = EditTextPreferenceSummaryProvider
     }
 
     private fun initializeObservers() {
@@ -89,24 +98,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         viewModel.timePickerEnabled.observe(viewLifecycleOwner) {
             timePicker.isEnabled = it
         }
-        viewModel.filtersSummary.observe(viewLifecycleOwner) {
-            filters.summary = it
-        }
         viewModel.filtersEnabled.observe(viewLifecycleOwner) {
             filters.isEnabled = it
             filtersHelp.isEnabled = it
         }
-        viewModel.courseIdentifierSummary.observe(viewLifecycleOwner) {
-            courseIdentifier.summary = it
-        }
         viewModel.theme.observe(viewLifecycleOwner) {
             AppCompatDelegate.setDefaultNightMode(it)
-        }
-        viewModel.themeOptionsHuman.observe(viewLifecycleOwner) {
-            themes.entries = it
-        }
-        viewModel.themeOptions.observe(viewLifecycleOwner) {
-            themes.entryValues = it
         }
         viewModel.showTimePicker.observe(viewLifecycleOwner) {
             TimePickerDialogFragment().show(childFragmentManager, DIALOG_TIME_PICKER)

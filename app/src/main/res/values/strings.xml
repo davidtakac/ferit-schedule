@@ -5,6 +5,7 @@
         <item>English</item>
     </string-array>
 
+    <string name="app_name">Ferit Schedule</string>
     <string name="app_name_debug">Ferit Schedule Debug</string>
     <string name="label_settings">Settings</string>
     <string name="title_category_programme_and_year">Study programme and year</string>

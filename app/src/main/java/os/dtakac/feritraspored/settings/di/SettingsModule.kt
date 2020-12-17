@@ -5,5 +5,5 @@ import org.koin.dsl.module
 import os.dtakac.feritraspored.settings.viewmodel.PreferenceViewModel
 
 val settingsModule = module {
-    viewModel { PreferenceViewModel(get(), get()) }
+    viewModel { PreferenceViewModel(get()) }
 }

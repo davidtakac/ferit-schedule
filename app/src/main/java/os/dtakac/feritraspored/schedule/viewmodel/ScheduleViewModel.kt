@@ -118,8 +118,8 @@ class ScheduleViewModel(
         val subject = res.getString(R.string.subject_bug_report)
         val content = res
                 .getString(R.string.template_bug_report)
-                .format(errorMessage.value ?: "")
-        openEmailEditor.value = EmailEditorData(subject, content)
+                .format()
+        //openEmailEditor.value = EmailEditorData(subject, content) todo: fix
     }
 
     private fun loadSchedule() {

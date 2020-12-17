@@ -1,5 +1,8 @@
 package os.dtakac.feritraspored.common.constants
 
+import androidx.appcompat.app.AppCompatDelegate
+import os.dtakac.feritraspored.R
+
 const val DIALOG_WHATS_NEW = "whats_new"
 const val DIALOG_TIME_PICKER = "time_picker"
 const val DIALOG_FILTERS_HELP = "filters_help"
@@ -37,4 +40,10 @@ val SCHEDULE_LANGUAGES = arrayOf(
 
 val SUPPORT_EMAILS = arrayOf(
         "developer.takac@gmail.com"
+)
+
+val THEME_NAMES_TO_VALUES = linkedMapOf(
+        R.string.theme_option_system to AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+        R.string.theme_option_light to AppCompatDelegate.MODE_NIGHT_NO,
+        R.string.theme_option_dark to AppCompatDelegate.MODE_NIGHT_YES
 )
