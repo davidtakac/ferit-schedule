@@ -57,6 +57,7 @@ class ScheduleViewModel(
     }
 
     fun onResume() {
+        fixLoaderEdgeCase()
         if (!wasLoadedInOnCreate && prefs.isLoadOnResume) {
             loadCurrentWeek()
         }
@@ -214,6 +215,21 @@ class ScheduleViewModel(
         } else if (isOnline()) {
             selectedDate = currentDate
             loadSchedule()
+        }
+    }
+
+    /**
+     * Handles edge case:
+     * 1. [isLoaderVisible] value set to false
+     * 2. Observer receives the event and starts hiding the loader
+     * 3. Right as this is happening, user exits app and loader doesn't finish hiding
+     * 4. Loader stays visible even though it should have been hidden
+     *
+     * This method re-posts 'false' to [isLoaderVisible] if it was set.
+     */
+    private fun fixLoaderEdgeCase() {
+        if (isLoaderVisible.value == false) {
+            isLoaderVisible.value = false
         }
     }
 }
