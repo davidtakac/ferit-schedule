@@ -29,7 +29,7 @@ body {
     background-color: #212121 !important;
     color: #BDBDBD !important;
 }
-.vrijeme-mobitel .satnica {
+.vrijeme-mobitel .satnica, .vrijeme .satnica {
     color: #BDBDBD !important;
 }
 .blokovi:not(.Ne) p {

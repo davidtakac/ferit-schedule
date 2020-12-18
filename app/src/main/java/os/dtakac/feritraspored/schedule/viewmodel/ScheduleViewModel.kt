@@ -1,67 +1,64 @@
 package os.dtakac.feritraspored.schedule.viewmodel
 
 import android.net.Uri
-import android.view.animation.DecelerateInterpolator
+import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.data.EmailEditorData
-import os.dtakac.feritraspored.common.preferences.PreferenceRepository
-import os.dtakac.feritraspored.common.resources.ResourceRepository
+import os.dtakac.feritraspored.common.assets.AssetProvider
+import os.dtakac.feritraspored.common.constants.SHOW_CHANGELOG
+import os.dtakac.feritraspored.common.data.StringResourceWithArgs
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.common.extensions.urlFormat
+import os.dtakac.feritraspored.common.network.NetworkChecker
+import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
-import os.dtakac.feritraspored.schedule.data.ScrollData
 import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
-import java.lang.Exception
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
-import kotlin.math.roundToInt
 
 class ScheduleViewModel(
         private val prefs: PreferenceRepository,
-        private val res: ResourceRepository,
-        private val scheduleRepository: ScheduleRepository
-): ViewModel() {
+        private val scheduleRepository: ScheduleRepository,
+        private val assetProvider: AssetProvider,
+        private val networkChecker: NetworkChecker
+) : ViewModel() {
     val scheduleData = MutableLiveData<ScheduleData>()
     val isLoaderVisible = MutableLiveData<Boolean>()
-    val errorMessage = MutableLiveData<String?>()
+    val errorMessage = MutableLiveData<StringResourceWithArgs?>()
     val isErrorGone: LiveData<Boolean> = Transformations.map(errorMessage) { it == null }
     val areControlsEnabled: LiveData<Boolean> = Transformations.map(isLoaderVisible) { !it }
 
     val javascript = SingleLiveEvent<JavascriptData>()
-    val openSettings = SingleLiveEvent<Unit>()
-    val openInExternalBrowser = SingleLiveEvent<String>()
+    val openInExternalBrowser = SingleLiveEvent<Uri>()
     val openInCustomTabs = SingleLiveEvent<Uri>()
-    val openEmailEditor = SingleLiveEvent<EmailEditorData>()
     val showChangelog = SingleLiveEvent<Unit>()
-    val snackBarMessage = SingleLiveEvent<String>()
-    val webViewScroll = SingleLiveEvent<ScrollData>()
+    val snackBarMessage = SingleLiveEvent<@StringRes Int>()
+    val webViewScroll = SingleLiveEvent<Float>()
     val clearWebViewScroll = SingleLiveEvent<Unit>()
 
     private var wasLoadedInOnCreate = false
     private var selectedDate = buildCurrentDate()
-    private val scrollPixelsPerMs by lazy { res.toPx(dp = 2.2f).toDouble() }
-    private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
     fun onViewCreated() {
-        if(isOnline() && (scheduleData.value == null || prefs.isReloadToApplySettings)) {
+        if (isOnline() && (scheduleData.value == null || prefs.isReloadToApplySettings)) {
             wasLoadedInOnCreate = true
             selectedDate = buildCurrentDate()
             loadSchedule()
         }
-        if(res.getBoolean(R.bool.showChangelog) && prefs.version < BuildConfig.VERSION_CODE) {
+        if (SHOW_CHANGELOG && prefs.version < BuildConfig.VERSION_CODE) {
             showChangelog.call()
         }
     }
 
     fun onResume() {
-        if(!wasLoadedInOnCreate && prefs.isLoadOnResume) {
+        fixLoaderEdgeCase()
+        if (!wasLoadedInOnCreate && prefs.isLoadOnResume) {
             loadCurrentWeek()
         }
         wasLoadedInOnCreate = false
@@ -69,35 +66,37 @@ class ScheduleViewModel(
 
     fun onPageDrawn() {
         isLoaderVisible.value = false
-        if(buildCurrentDate().isSameWeek(selectedDate)) {
+        if (buildCurrentDate().isSameWeek(selectedDate)) {
             scrollSelectedDateIntoView()
         }
     }
 
     fun onUrlClicked(url: String?) {
-        val uri = try { Uri.parse(url) } catch (e: Exception) { null }
-        if(uri != null) {
+        val uri = try {
+            Uri.parse(url)
+        } catch (e: Exception) {
+            null
+        }
+        if (uri != null) {
             openInCustomTabs.value = uri
         }
     }
 
     fun onRefreshClicked() {
-        if(isOnline()) {
+        if (isOnline()) {
             loadSchedule()
         }
     }
 
-    fun onSettingsClicked() {
-        openSettings.call()
-    }
-
     fun onOpenInExternalBrowserClicked() {
-        val data = scheduleData.value ?: return
-        openInExternalBrowser.value = data.baseUrl
+        val uri = try { Uri.parse(scheduleData.value?.baseUrl) } catch (e: Exception) { null }
+        if (uri != null) {
+            openInExternalBrowser.value = uri
+        }
     }
 
     fun onPreviousWeekClicked() {
-        if(isOnline()) {
+        if (isOnline()) {
             selectedDate = selectedDate.minusWeeks(1)
             loadSchedule()
         }
@@ -108,18 +107,10 @@ class ScheduleViewModel(
     }
 
     fun onNextWeekClicked() {
-        if(isOnline()) {
+        if (isOnline()) {
             selectedDate = selectedDate.plusWeeks(1)
             loadSchedule()
         }
-    }
-
-    fun onBugReportClicked() {
-        val subject = res.getString(R.string.subject_bug_report)
-        val content = res
-                .getString(R.string.template_bug_report)
-                .format(errorMessage.value ?: "")
-        openEmailEditor.value = EmailEditorData(subject, content)
     }
 
     private fun loadSchedule() {
@@ -128,19 +119,22 @@ class ScheduleViewModel(
             errorMessage.value = null
             isLoaderVisible.value = true
 
-            var error: String? = null
+            var error: StringResourceWithArgs? = null
             val data = try {
                 getScheduleData()
             } catch (e: Exception) {
-                error = res.getString(R.string.template_error_unexpected).format(
-                        e.message,
-                        prefs.courseIdentifier,
-                        selectedDate.urlFormat()
+                error = StringResourceWithArgs(
+                        content = R.string.template_error_unexpected,
+                        args = listOf(
+                                e.message ?: "",
+                                prefs.courseIdentifier,
+                                selectedDate.urlFormat()
+                        )
                 )
                 null
             }
 
-            if(data != null) {
+            if (data != null) {
                 scheduleData.value = data
             } else {
                 errorMessage.value = error
@@ -150,75 +144,92 @@ class ScheduleViewModel(
     }
 
     private fun scrollSelectedDateIntoView() {
-        val scrollJs = res
-                .readFromAssets("template_scroll_into_view.js")
-                .format(selectedDate.scrollFormat())
-        javascript.value = JavascriptData(js = scrollJs, callback = { postScrollEvent(it) })
+        viewModelScope.launch {
+            val scrollJs = assetProvider
+                    .readFile("template_scroll_into_view.js")
+                    .format(selectedDate.scrollFormat())
+            javascript.value = JavascriptData(js = scrollJs, callback = { postScrollEvent(it) })
+        }
     }
 
     private fun postScrollEvent(elementPosition: String) {
         val elementPositionDp = elementPosition.toFloatOrNull()
-        if(elementPositionDp != null) {
-            webViewScroll.value = ScrollData(
-                    speed = scrollPixelsPerMs,
-                    verticalPosition = res.toPx(elementPositionDp).roundToInt(),
-                    interpolator = scrollInterpolator
-            )
+        if (elementPositionDp != null) {
+            webViewScroll.value = elementPositionDp
         }
     }
 
     private fun buildCurrentDate(): LocalDate {
         var newSelectedDate = LocalDate.now()
-        if(newSelectedDate.dayOfWeek == DayOfWeek.SATURDAY && prefs.isSkipSaturday) {
+        if (newSelectedDate.dayOfWeek == DayOfWeek.SATURDAY && prefs.isSkipSaturday) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
-        if(newSelectedDate.dayOfWeek == DayOfWeek.SUNDAY) {
+        if (newSelectedDate.dayOfWeek == DayOfWeek.SUNDAY) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
-        if(prefs.isSkipDay && LocalTime.now() > LocalTime.of(prefs.timeHour, prefs.timeMinute)) {
+        if (prefs.isSkipDay && LocalTime.now() > prefs.time) {
             newSelectedDate = newSelectedDate.plusDays(1)
         }
         return newSelectedDate
     }
 
     private fun isOnline(): Boolean {
-        val isOnline = res.isOnline()
-        if(!isOnline) {
-            if(scheduleData.value == null) {
-                if(errorMessage.value == null) {
-                    errorMessage.value = res.getString(R.string.error_no_network)
+        val isOnline = networkChecker.isOnline
+        if (!isOnline) {
+            if (scheduleData.value == null) {
+                if (errorMessage.value == null) {
+                    errorMessage.value = StringResourceWithArgs(R.string.error_no_network)
                 } else {
-                    snackBarMessage.value = res.getString(R.string.notify_no_network)
+                    snackBarMessage.value = R.string.notify_no_network
                 }
             } else {
-                snackBarMessage.value = res.getString(R.string.notify_no_network)
+                snackBarMessage.value = R.string.notify_no_network
             }
         }
         return isOnline
     }
 
     private suspend fun getScheduleData() = scheduleRepository.getScheduleData(
-                withDate = selectedDate,
-                courseIdentifier = prefs.courseIdentifier ?: "",
-                showTimeOnBlocks = prefs.isShowTimeOnBlocks,
-                filters = if (!prefs.areFiltersEnabled) {
-                    listOf()
-                } else {
-                    prefs.filters
-                            ?.split(",")
-                            ?.map { it.trim() }
-                            ?.filterNot { it.isEmpty() || it.isBlank() }
-                            ?: listOf()
-                }
-        )
+            scheduleUrl = prefs.scheduleTemplate.format(
+                    selectedDate.urlFormat(),
+                    prefs.courseIdentifier
+            ),
+            showTimeOnBlocks = prefs.isShowTimeOnBlocks,
+            filters = if (!prefs.areFiltersEnabled) {
+                listOf()
+            } else {
+                prefs.filters
+                        ?.split(",")
+                        ?.map { it.trim() }
+                        ?.filterNot { it.isEmpty() || it.isBlank() }
+                        ?: listOf()
+            },
+            lightThemeCss = assetProvider.readFile("light_theme.css"),
+            darkThemeCss = assetProvider.readFile("dark_theme.css")
+    )
 
     private fun loadCurrentWeek() {
         val currentDate = buildCurrentDate()
-        if(currentDate.isSameWeek(selectedDate) && scheduleData.value != null) {
+        if (currentDate.isSameWeek(selectedDate) && scheduleData.value != null) {
             scrollSelectedDateIntoView()
-        } else if(isOnline()) {
+        } else if (isOnline()) {
             selectedDate = currentDate
             loadSchedule()
+        }
+    }
+
+    /**
+     * Handles edge case:
+     * 1. [isLoaderVisible] value set to false
+     * 2. Observer receives the event and starts hiding the loader
+     * 3. Right as this is happening, user exits app and loader doesn't finish hiding
+     * 4. Loader stays visible even though it should have been hidden
+     *
+     * This method re-posts 'false' to [isLoaderVisible] if it was set.
+     */
+    private fun fixLoaderEdgeCase() {
+        if (isLoaderVisible.value == false) {
+            isLoaderVisible.value = false
         }
     }
 }

@@ -6,5 +6,5 @@ data class ScheduleData(
         val dataDark: String,
         val encoding: String,
         val mimeType: String,
-        val title: String
+        val title: String?
 )

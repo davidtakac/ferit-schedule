@@ -4,47 +4,39 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.resources.ResourceRepository
-import os.dtakac.feritraspored.common.extensions.urlFormat
 import os.dtakac.feritraspored.schedule.data.ScheduleData
-import java.time.LocalDate
 
-class ScheduleRepositoryImpl(
-        private val res: ResourceRepository
-): ScheduleRepository {
+class ScheduleRepositoryImpl : ScheduleRepository {
     override suspend fun getScheduleData(
-            withDate: LocalDate,
-            courseIdentifier: String,
+            scheduleUrl: String,
             showTimeOnBlocks: Boolean,
-            filters: List<String>
+            filters: List<String>,
+            lightThemeCss: String,
+            darkThemeCss: String
     ): ScheduleData {
-        // fetch schedule document
-        val scheduleUrl = res
-                .getString(R.string.template_schedule)
-                .format(withDate.urlFormat(), courseIdentifier)
+        // fetch document
         val document = withContext(Dispatchers.IO) {
             @Suppress("BlockingMethodInNonBlockingContext")
             Jsoup.connect(scheduleUrl).get()
         }
         // get page title before document is cleaned
-        val title = withContext(Dispatchers.IO) {
+        val title = withContext(Dispatchers.Default) {
             document.getTitle()
         }
         // clean document and apply transformations
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.Default) {
             document.removeJunk()
-            if(showTimeOnBlocks) document.applyTimeOnBlocks()
-            if(filters.isNotEmpty()) document.applyFilters(filters)
+            if (showTimeOnBlocks) document.applyTimeOnBlocks()
+            if (filters.isNotEmpty()) document.applyFilters(filters)
         }
 
         return ScheduleData(
                 baseUrl = scheduleUrl,
-                data = document.applyLightTheme().toString(),
-                dataDark = document.applyDarkTheme().toString(),
+                data = document.applyCss(lightThemeCss).toString(),
+                dataDark = document.applyCss(darkThemeCss).toString(),
                 encoding = "UTF-8",
                 mimeType = "text/html",
-                title = title ?: res.getString(R.string.label_schedule)
+                title = title
         )
     }
 
@@ -60,12 +52,8 @@ class ScheduleRepositoryImpl(
         select("script").remove()
     }
 
-    private fun Document.applyDarkTheme() = apply {
-        head().append("<style>${res.readFromAssets("dark_theme.css")}</style>")
-    }
-
-    private fun Document.applyLightTheme() = apply {
-        head().append("<style>${res.readFromAssets("light_theme.css")}</style>")
+    private fun Document.applyCss(css: String) = apply {
+        head().append("<style>$css</style>")
     }
 
     private fun Document.applyTimeOnBlocks() = apply {
@@ -75,7 +63,7 @@ class ScheduleRepositoryImpl(
                     .getOrNull(3)
                     ?.text()
                     ?.trim()
-            if(time != null) {
+            if (time != null) {
                 it.selectFirst(".thumbnail p").append("<br/>$time")
             }
         }
@@ -95,10 +83,10 @@ class ScheduleRepositoryImpl(
                 ?.removeSurrounding("\"")
         return when {
             title == null
-            || title.isBlank()
-            || title.isEmpty()
-            || title == "null"
-            || title == "undefined" -> null
+                    || title.isBlank()
+                    || title.isEmpty()
+                    || title == "null"
+                    || title == "undefined" -> null
             else -> title
         }
     }

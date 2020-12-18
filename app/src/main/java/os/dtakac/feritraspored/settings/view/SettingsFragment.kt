@@ -1,5 +1,6 @@
 package os.dtakac.feritraspored.settings.view
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
@@ -7,30 +8,32 @@ import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.constants.DIALOG_COURSE_IDENTIFIER_HELP
-import os.dtakac.feritraspored.common.constants.DIALOG_FILTERS_HELP
-import os.dtakac.feritraspored.common.constants.DIALOG_TIME_PICKER
-import os.dtakac.feritraspored.common.extensions.openEmailEditor
-import os.dtakac.feritraspored.common.extensions.preference
-import os.dtakac.feritraspored.common.extensions.showChangelog
-import os.dtakac.feritraspored.common.extensions.showInfoDialog
-import os.dtakac.feritraspored.settings.viewmodel.PreferenceViewModel
+import os.dtakac.feritraspored.common.constants.DialogKeys
+import os.dtakac.feritraspored.common.constants.SCHEDULE_LANGUAGES
+import os.dtakac.feritraspored.common.constants.SharedPreferenceKeys
+import os.dtakac.feritraspored.common.constants.THEME_NAMES_TO_VALUES
+import os.dtakac.feritraspored.common.extensions.*
+import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.view.dialog_time_picker.TimePickerDialogFragment
+import os.dtakac.feritraspored.settings.summaryprovider.EditTextPreferenceSummaryProvider
+import os.dtakac.feritraspored.settings.summaryprovider.ListPreferenceSummaryProvider
 
 @Suppress("unused")
-class SettingsFragment : PreferenceFragmentCompat() {
-    private val themes: ListPreference by preference(R.string.key_theme)
-    private val filters: EditTextPreference by preference(R.string.key_filters)
-    private val courseIdentifier: EditTextPreference by preference(R.string.key_course_identifier)
-    private val filtersHelp: Preference by preference(R.string.key_filters_help)
-    private val timePicker: Preference by preference(R.string.key_time_picker)
-    private val changelog: Preference by preference(R.string.key_changelog)
-    private val messageToDeveloper: Preference by preference(R.string.key_developer_message)
-    private val courseIdentifierHelp: Preference by preference(R.string.key_course_identifier_help)
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+    private val themes: ListPreference by preference(SharedPreferenceKeys.THEME)
+    private val filters: EditTextPreference by preference(SharedPreferenceKeys.FILTERS)
+    private val courseIdentifier: EditTextPreference by preference(SharedPreferenceKeys.IDENTIFIER)
+    private val filtersHelp: Preference by preference(SharedPreferenceKeys.FILTERS_HELP)
+    private val timePicker: Preference by preference(SharedPreferenceKeys.TIME_PICKER)
+    private val changelog: Preference by preference(SharedPreferenceKeys.CHANGELOG)
+    private val messageToDeveloper: Preference by preference(SharedPreferenceKeys.DEV_MESSAGE)
+    private val courseIdentifierHelp: Preference by preference(SharedPreferenceKeys.IDENTIFIER_HELP)
+    private val scheduleLanguages: ListPreference by preference(SharedPreferenceKeys.SCHEDULE_LANG)
 
-    private val viewModel: PreferenceViewModel by viewModel()
+    private val prefsRepo: PreferenceRepository by inject()
+    private val sharedPrefs: SharedPreferences by inject()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.fragment_preference, rootKey)
@@ -40,89 +43,85 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onViewCreated(view, savedInstanceState)
         initializeClickListeners()
         initializeViews()
-        initializeObservers()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key != SharedPreferenceKeys.THEME && key != SharedPreferenceKeys.SETTINGS_MODIFIED) {
+            prefsRepo.isReloadToApplySettings = true
+        }
+        when (key) {
+            SharedPreferenceKeys.THEME -> onThemeChanged()
+            SharedPreferenceKeys.TIME_PICKER -> onTimeChanged()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.onResume()
+        sharedPrefs.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPause() {
-        viewModel.onPause()
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(this)
         super.onPause()
+    }
+
+    private fun onThemeChanged() {
+        AppCompatDelegate.setDefaultNightMode(prefsRepo.theme)
+    }
+
+    private fun onTimeChanged() {
+        setTimePickerSummary()
     }
 
     private fun initializeClickListeners() {
         timePicker.setOnPreferenceClickListener {
-            viewModel.onTimePickerClicked(); true
+            TimePickerDialogFragment().show(childFragmentManager, DialogKeys.TIME_PICKER)
+            true
         }
         changelog.setOnPreferenceClickListener {
-            viewModel.onChangelogClicked(); true
+            childFragmentManager.showChangelog()
+            true
         }
         messageToDeveloper.setOnPreferenceClickListener {
-            viewModel.onMessageToDeveloperClicked(); true
+            context?.openEmailEditor(subject = getString(R.string.subject_message_to_developer))
+            true
         }
         filtersHelp.setOnPreferenceClickListener {
-            viewModel.onFiltersHelpClicked(); true
+            childFragmentManager.showInfoDialog(
+                    titleResId = R.string.title_groups_help,
+                    contentResId = R.string.content_groups_help,
+                    key = DialogKeys.FILTERS_HELP
+            )
+            true
         }
         courseIdentifierHelp.setOnPreferenceClickListener {
-            viewModel.onCourseIdentifierHelpClicked(); true
+            childFragmentManager.showInfoDialog(
+                    titleResId = R.string.title_course_identifier_help,
+                    contentResId = R.string.content_course_identifier_help,
+                    key = DialogKeys.COURSE_IDENTIFIER_HELP
+            )
+            true
         }
     }
 
     private fun initializeViews() {
-        filters.setOnBindEditTextListener {
-            it.hint = resources.getString(R.string.hint_group_highlight)
-        }
-        courseIdentifier.setOnBindEditTextListener {
-            it.hint = resources.getString(R.string.hint_course_identifier)
-        }
-        themes.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+        // hints
+        filters.setOnBindEditTextListener { it.hint = getString(R.string.hint_group_highlight) }
+        courseIdentifier.setOnBindEditTextListener { it.hint = getString(R.string.hint_course_identifier) }
+        // values for list preferences
+        scheduleLanguages.entryValues = SCHEDULE_LANGUAGES
+        themes.entries = THEME_NAMES_TO_VALUES.keys.map { getString(it) }.toTypedArray()
+        themes.entryValues = THEME_NAMES_TO_VALUES.values.map { it.toString() }.toTypedArray()
+        // summary providers
+        scheduleLanguages.summaryProvider = ListPreferenceSummaryProvider
+        themes.summaryProvider = ListPreferenceSummaryProvider
+        courseIdentifier.summaryProvider = EditTextPreferenceSummaryProvider
+        filters.summaryProvider = EditTextPreferenceSummaryProvider
+        // force time summary to apply
+        setTimePickerSummary()
     }
 
-    private fun initializeObservers() {
-        viewModel.timePickerSummary.observe(viewLifecycleOwner) {
-            timePicker.summary = it
-        }
-        viewModel.timePickerEnabled.observe(viewLifecycleOwner) {
-            timePicker.isEnabled = it
-        }
-        viewModel.filtersSummary.observe(viewLifecycleOwner) {
-            filters.summary = it
-        }
-        viewModel.filtersEnabled.observe(viewLifecycleOwner) {
-            filters.isEnabled = it
-            filtersHelp.isEnabled = it
-        }
-        viewModel.courseIdentifierSummary.observe(viewLifecycleOwner) {
-            courseIdentifier.summary = it
-        }
-        viewModel.theme.observe(viewLifecycleOwner) {
-            AppCompatDelegate.setDefaultNightMode(it)
-        }
-        viewModel.showTimePicker.observe(viewLifecycleOwner) {
-            TimePickerDialogFragment().show(childFragmentManager, DIALOG_TIME_PICKER)
-        }
-        viewModel.showChangelog.observe(viewLifecycleOwner) {
-            childFragmentManager.showChangelog()
-        }
-        viewModel.showFiltersHelp.observe(viewLifecycleOwner) {
-            childFragmentManager.showInfoDialog(
-                    titleResId = R.string.title_groups_help,
-                    contentResId = R.string.content_groups_help,
-                    key = DIALOG_FILTERS_HELP
-            )
-        }
-        viewModel.showCourseIdentifierHelp.observe(viewLifecycleOwner) {
-            childFragmentManager.showInfoDialog(
-                    titleResId = R.string.title_course_identifier_help,
-                    contentResId = R.string.content_course_identifier_help,
-                    key = DIALOG_COURSE_IDENTIFIER_HELP
-            )
-        }
-        viewModel.openEmailEditor.observe(viewLifecycleOwner) {
-            context?.openEmailEditor(it)
-        }
+    private fun setTimePickerSummary() {
+        timePicker.summary = prefsRepo.time.timeFormat()
     }
 }

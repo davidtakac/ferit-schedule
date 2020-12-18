@@ -1,25 +1,20 @@
 package os.dtakac.feritraspored.common.preferences
 
-import android.content.SharedPreferences
-import androidx.annotation.StringRes
+import java.time.LocalTime
 
 interface PreferenceRepository {
-    var isSkipSaturday: Boolean
-    var isSkipDay: Boolean
-    var filters: String?
-    var programme: String?
-    var year: String?
-    var timeHour: Int
-    var timeMinute: Int
+    val isSkipSaturday: Boolean
+    val isSkipDay: Boolean
+    val filters: String?
+    val programme: String?
+    val year: String?
+    var time: LocalTime
     var isReloadToApplySettings: Boolean
-    var isLoadOnResume: Boolean
-    var theme: Int
-    var version: Int
-    var courseIdentifier: String?
-    var areFiltersEnabled: Boolean
-    var isShowTimeOnBlocks: Boolean
-
-    fun delete(@StringRes keyResId: Int)
-    fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener)
-    fun unregisterListener(listener: SharedPreferences.OnSharedPreferenceChangeListener)
+    val isLoadOnResume: Boolean
+    val theme: Int
+    val version: Int
+    val courseIdentifier: String
+    val areFiltersEnabled: Boolean
+    val isShowTimeOnBlocks: Boolean
+    val scheduleTemplate: String
 }

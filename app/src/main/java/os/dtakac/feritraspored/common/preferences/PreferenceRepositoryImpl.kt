@@ -1,137 +1,132 @@
 package os.dtakac.feritraspored.common.preferences
 
 import android.content.SharedPreferences
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.BuildConfig
-import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.resources.ResourceRepository
+import os.dtakac.feritraspored.common.constants.SCHEDULE_LANGUAGES
+import os.dtakac.feritraspored.common.constants.SharedPreferenceKeys
+import os.dtakac.feritraspored.common.extensions.timeFormat
+import os.dtakac.feritraspored.common.extensions.toLocalTime
+import java.time.LocalTime
 
 class PreferenceRepositoryImpl(
-        private val res: ResourceRepository,
         private val prefs: SharedPreferences
-): PreferenceRepository {
-    init {
-        migrateToCourseIdentifierPreference()
-    }
+) : PreferenceRepository {
+    override val isSkipSaturday: Boolean
+        get() = prefs.getBoolean(SharedPreferenceKeys.SKIP_SAT, false)
 
-    override var isSkipSaturday: Boolean
-        get() = prefs.getBoolean(R.string.key_skip_sat, false)
-        set(value) = editor { putBoolean(R.string.key_skip_sat, value) }
+    override val isSkipDay: Boolean
+        get() = prefs.getBoolean(SharedPreferenceKeys.SKIP_DAY, false)
 
-    override var isSkipDay: Boolean
-        get() = prefs.getBoolean(R.string.key_skip_day, false)
-        set(value) = editor { putBoolean(R.string.key_skip_day, value) }
+    override val filters: String?
+        get() = prefs.getString(SharedPreferenceKeys.FILTERS, null)
 
-    override var filters: String?
-        get() = prefs.getString(R.string.key_filters, null)
-        set(value) = editor { putString(R.string.key_filters, value) }
+    override val programme: String?
+        get() = prefs.getString(SharedPreferenceKeys.PROGRAMME, null)
 
-    override var programme: String?
-        get() = prefs.getString(R.string.key_programme, null)
-        set(value) = editor { putString(R.string.key_programme, value) }
+    override val year: String?
+        get() = prefs.getString(SharedPreferenceKeys.YEAR, null)
 
-    override var year: String?
-        get() = prefs.getString(R.string.key_year, null)
-        set(value) = editor { putString(R.string.key_year, value) }
+    override var time: LocalTime
+        get() {
+            val value = prefs.getString(SharedPreferenceKeys.TIME_PICKER, null)
+            return if (value == null) {
+                // migrate from old preferences if possible
+                val hourValue = prefs.getInt(SharedPreferenceKeys.TIME_HOUR, 20)
+                val minuteValue = prefs.getInt(SharedPreferenceKeys.TIME_MINUTE, 0)
+                // create default time and persist it
+                val defaultTime = LocalTime.of(hourValue, minuteValue)
+                editor { putString(SharedPreferenceKeys.TIME_PICKER, defaultTime.timeFormat()) }
+                // delete old preferences
+                delete(SharedPreferenceKeys.TIME_HOUR)
+                delete(SharedPreferenceKeys.TIME_MINUTE)
 
-    override var timeHour: Int
-        get() = prefs.getInt(R.string.key_time_hour, 20)
-        set(value) = editor { putInt(R.string.key_time_hour, value) }
-
-    override var timeMinute: Int
-        get() = prefs.getInt(R.string.key_time_minute, 0)
-        set(value) = editor { putInt(R.string.key_time_minute, value) }
+                defaultTime
+            } else {
+                value.toLocalTime()
+            }
+        }
+        set(value) {
+            editor { putString(SharedPreferenceKeys.TIME_PICKER, value.timeFormat()) }
+        }
 
     override var isReloadToApplySettings: Boolean
         get() {
-            val wereSettingsModified = prefs.getBoolean(R.string.key_settings_modified, false)
-            if(wereSettingsModified) {
+            val wereSettingsModified = prefs.getBoolean(SharedPreferenceKeys.SETTINGS_MODIFIED, false)
+            if (wereSettingsModified) {
                 isReloadToApplySettings = false
             }
             return wereSettingsModified
         }
-        set(value) = editor { putBoolean(R.string.key_settings_modified, value) }
+        set(value) = editor { putBoolean(SharedPreferenceKeys.SETTINGS_MODIFIED, value) }
 
-    override var isLoadOnResume: Boolean
-        get() = prefs.getBoolean(R.string.key_load_on_resume, false)
-        set(value) = editor { putBoolean(R.string.key_load_on_resume, value) }
+    override val isLoadOnResume: Boolean
+        get() = prefs.getBoolean(SharedPreferenceKeys.LOAD_ON_RESUME, false)
 
-    override var theme: Int
+    override val theme: Int
         get() {
-            val defaultTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            return prefs.getString(R.string.key_theme, null)?.toInt() ?: defaultTheme.also { theme = it }
+            val value = prefs.getString(SharedPreferenceKeys.THEME, null)?.toIntOrNull()
+            return if (value == null) {
+                val defaultTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                editor { putString(SharedPreferenceKeys.THEME, defaultTheme.toString()) }
+                defaultTheme
+            } else {
+                value
+            }
         }
-        set(value) = editor { putString(R.string.key_theme, value.toString()) }
 
-    override var version: Int
+    override val version: Int
         get() {
-            val versionValue = prefs.getInt(R.string.key_version, -1)
-            if(versionValue < BuildConfig.VERSION_CODE) {
-                version = BuildConfig.VERSION_CODE
+            val versionValue = prefs.getInt(SharedPreferenceKeys.VERSION, -1)
+            if (versionValue < BuildConfig.VERSION_CODE) {
+                editor { putInt(SharedPreferenceKeys.VERSION, BuildConfig.VERSION_CODE) }
             }
             return versionValue
         }
-        set(value) = editor { putInt(R.string.key_version, value) }
 
-    override var courseIdentifier: String?
-        get() = prefs.getString(R.string.key_course_identifier, null)
-        set(value) = editor { putString(R.string.key_course_identifier, value) }
+    override val courseIdentifier: String
+        get() {
+            val value = prefs.getString(SharedPreferenceKeys.IDENTIFIER, null)
+            return if (value == null) {
+                // migrate from old preferences
+                val yearValue = prefs.getString(SharedPreferenceKeys.YEAR, "1")
+                val programmeValue = prefs.getString(SharedPreferenceKeys.PROGRAMME, "1")
+                // create new course identifier
+                val defaultIdentifier = "$yearValue-$programmeValue"
+                editor { putString(SharedPreferenceKeys.IDENTIFIER, defaultIdentifier) }
+                // delete old preferences
+                delete(SharedPreferenceKeys.YEAR)
+                delete(SharedPreferenceKeys.PROGRAMME)
 
-    override var areFiltersEnabled: Boolean
-        get() = prefs.getBoolean(R.string.key_filters_toggle, false)
-        set(value) = editor { putBoolean(R.string.key_filters_toggle, value) }
-
-    override var isShowTimeOnBlocks: Boolean
-        get() = prefs.getBoolean(R.string.key_time_on_blocks, false)
-        set(value) = editor { putBoolean(R.string.key_time_on_blocks, value) }
-
-    override fun delete(@StringRes keyResId: Int) {
-        editor { remove(res.getString(keyResId)) }
-    }
-
-    override fun registerListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        prefs.registerOnSharedPreferenceChangeListener(listener)
-    }
-
-    override fun unregisterListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        prefs.unregisterOnSharedPreferenceChangeListener(listener)
-    }
-
-    private fun editor(editor: SharedPreferences.Editor.() -> Unit) {
-        prefs.edit().also(editor).apply()
-    }
-
-    private fun SharedPreferences.getBoolean(@StringRes keyResId: Int, defaultValue: Boolean): Boolean {
-        return getBoolean(res.getString(keyResId), defaultValue)
-    }
-
-    private fun SharedPreferences.Editor.putBoolean(@StringRes keyResId: Int, value: Boolean) {
-        putBoolean(res.getString(keyResId), value)
-    }
-
-    private fun SharedPreferences.getString(@StringRes keyResId: Int, defaultValue: String?): String? {
-        return getString(res.getString(keyResId), defaultValue)
-    }
-
-    private fun SharedPreferences.Editor.putString(@StringRes keyResId: Int, value: String?) {
-        putString(res.getString(keyResId), value)
-    }
-
-    private fun SharedPreferences.getInt(@StringRes keyResId: Int, defaultValue: Int): Int {
-        return getInt(res.getString(keyResId), defaultValue)
-    }
-
-    private fun SharedPreferences.Editor.putInt(@StringRes keyResId: Int, value: Int) {
-        putInt(res.getString(keyResId), value)
-    }
-
-    private fun migrateToCourseIdentifierPreference() {
-        if(courseIdentifier == null) {
-            if(year == null || programme == null) return
-            courseIdentifier = "${year}-${programme}"
-            delete(R.string.key_year)
-            delete(R.string.key_programme)
+                defaultIdentifier
+            } else {
+                value
+            }
         }
+
+    override val areFiltersEnabled: Boolean
+        get() = prefs.getBoolean(SharedPreferenceKeys.FILTERS_TOGGLE, false)
+
+    override val isShowTimeOnBlocks: Boolean
+        get() = prefs.getBoolean(SharedPreferenceKeys.TIME_ON_BLOCKS, false)
+
+    override val scheduleTemplate: String
+        get() {
+            val template = prefs.getString(SharedPreferenceKeys.SCHEDULE_LANG, null)
+            return if (template == null) {
+                val defaultUrl = SCHEDULE_LANGUAGES[0]
+                editor { putString(SharedPreferenceKeys.SCHEDULE_LANG, defaultUrl) }
+                defaultUrl
+            } else {
+                template
+            }
+        }
+
+    private fun editor(operation: SharedPreferences.Editor.() -> Unit) {
+        prefs.edit().also(operation).apply()
+    }
+
+    private fun delete(key: String) {
+        editor { remove(key) }
     }
 }

@@ -3,12 +3,12 @@ package os.dtakac.feritraspored.schedule.view
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.browser.customtabs.CustomTabColorSchemeParams
@@ -19,21 +19,22 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.extensions.getColorCompat
-import os.dtakac.feritraspored.common.extensions.isNightMode
-import os.dtakac.feritraspored.common.extensions.openEmailEditor
-import os.dtakac.feritraspored.common.extensions.showChangelog
-import os.dtakac.feritraspored.databinding.FragmentScheduleBinding
-import os.dtakac.feritraspored.schedule.data.ScrollData
-import os.dtakac.feritraspored.schedule.viewmodel.ScheduleViewModel
+import os.dtakac.feritraspored.common.extensions.*
 import os.dtakac.feritraspored.common.view.debounce.onDebouncedClick
+import os.dtakac.feritraspored.databinding.FragmentScheduleBinding
+import os.dtakac.feritraspored.schedule.viewmodel.ScheduleViewModel
+import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
-class ScheduleFragment: Fragment() {
+class ScheduleFragment : Fragment() {
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: ScheduleViewModel by viewModel()
     private var scrollAnimator: ObjectAnimator? = null
+    private val scrollSpeed by lazy { resources.displayMetrics.toPixels(dp = 2.2f) }
+    private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
     private val customTabs by lazy {
         val colorParams = CustomTabColorSchemeParams.Builder()
@@ -85,12 +86,12 @@ class ScheduleFragment: Fragment() {
         viewModel.scheduleData.observe(viewLifecycleOwner) {
             binding.wvSchedule.loadDataWithBaseURL(
                     it.baseUrl,
-                    if(resources.configuration.isNightMode()) it.dataDark else it.data,
+                    if (resources.configuration.isNightMode()) it.dataDark else it.data,
                     it.mimeType,
                     it.encoding,
                     null
             )
-            binding.toolbar.title = it.title
+            binding.toolbar.title = it.title ?: getString(R.string.label_schedule)
         }
         viewModel.javascript.observe(viewLifecycleOwner) { data ->
             binding.wvSchedule.evaluateJavascript(data.js) {
@@ -103,11 +104,8 @@ class ScheduleFragment: Fragment() {
         viewModel.clearWebViewScroll.observe(viewLifecycleOwner) {
             scrollAnimator?.cancel()
         }
-        viewModel.openSettings.observe(viewLifecycleOwner) {
-            findNavController().navigate(R.id.actionSettings)
-        }
         viewModel.openInExternalBrowser.observe(viewLifecycleOwner) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+            startActivity(Intent(Intent.ACTION_VIEW, it))
         }
         viewModel.openInCustomTabs.observe(viewLifecycleOwner) {
             customTabs.launchUrl(requireContext(), it)
@@ -120,14 +118,11 @@ class ScheduleFragment: Fragment() {
                     .setAnchorView(binding.navBar.root)
                     .show()
         }
-        viewModel.openEmailEditor.observe(viewLifecycleOwner) {
-            context?.openEmailEditor(it)
-        }
         viewModel.isLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
-            binding.loader.apply { if(shouldShow) show() else hide() }
+            binding.loader.apply { if (shouldShow) show() else hide() }
         }
         viewModel.errorMessage.observe(viewLifecycleOwner) {
-            binding.error.tvError.text = it
+            binding.error.tvError.text = it?.buildString(resources)
         }
         viewModel.isErrorGone.observe(viewLifecycleOwner) {
             binding.error.root.isGone = it
@@ -155,7 +150,7 @@ class ScheduleFragment: Fragment() {
                 viewModel.onRefreshClicked()
             }
             menu.findItem(R.id.item_menu_settings).onDebouncedClick {
-                viewModel.onSettingsClicked()
+                findNavController().navigate(R.id.actionSettings)
             }
             menu.findItem(R.id.item_menu_browser).onDebouncedClick {
                 viewModel.onOpenInExternalBrowserClicked()
@@ -173,23 +168,29 @@ class ScheduleFragment: Fragment() {
             }
         }
         binding.error.btnBugReport.setOnClickListener {
-            viewModel.onBugReportClicked()
+            context?.openEmailEditor(
+                    subject = getString(R.string.subject_bug_report),
+                    content = getString(R.string.template_bug_report)
+                            .format(binding.error.tvError.text.toString())
+            )
         }
         binding.loader.hide()
         binding.error.tvError.movementMethod = ScrollingMovementMethod()
     }
 
-    private fun scrollWebView(data: ScrollData) {
-        if(scrollAnimator?.isStarted != true) {
+    private fun scrollWebView(elementPositionDp: Float) {
+        if (scrollAnimator?.isStarted != true) {
+            val elementPositionPx = resources.displayMetrics.toPixels(elementPositionDp).roundToInt()
             val currentVerticalPosition = binding.wvSchedule.scrollY
             val anim = ObjectAnimator.ofInt(
                     binding.wvSchedule,
                     "scrollY",
                     currentVerticalPosition,
-                    data.verticalPosition
+                    elementPositionPx
             )
-            anim.duration = data.getScrollDuration(currentVerticalPosition)
-            anim.interpolator = data.interpolator
+            val distance = (currentVerticalPosition - elementPositionPx).absoluteValue
+            anim.duration = (distance / scrollSpeed).roundToLong()
+            anim.interpolator = scrollInterpolator
             scrollAnimator = anim
             scrollAnimator?.start()
         }
