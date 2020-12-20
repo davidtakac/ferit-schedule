@@ -6,6 +6,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import os.dtakac.feritraspored.calendar.di.calendarModule
 import os.dtakac.feritraspored.common.di.appModule
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.schedule.di.scheduleModule
@@ -24,7 +25,7 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(appModule, scheduleModule)
+            modules(appModule, scheduleModule, calendarModule)
         }
     }
 

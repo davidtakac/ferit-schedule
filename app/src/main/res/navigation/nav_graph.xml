@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/scheduleFragment">
+    <include app:graph="@navigation/nav_graph_calendar" />
     <fragment
         android:id="@+id/scheduleFragment"
         android:name="os.dtakac.feritraspored.schedule.view.ScheduleFragment"
@@ -12,6 +13,14 @@
         <action
             android:id="@+id/actionSettings"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/actionCalendar"
+            app:destination="@id/nav_graph_calendar">
+            <argument
+                android:name="scheduleUrl"
+                app:nullable="false"
+                app:argType="string"/>
+        </action>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

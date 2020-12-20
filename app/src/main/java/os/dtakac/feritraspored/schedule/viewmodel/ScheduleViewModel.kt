@@ -41,6 +41,7 @@ class ScheduleViewModel(
     val snackBarMessage = SingleLiveEvent<@StringRes Int>()
     val webViewScroll = SingleLiveEvent<Float>()
     val clearWebViewScroll = SingleLiveEvent<Unit>()
+    val openAddToCalendar = SingleLiveEvent<String>()
 
     private var wasLoadedInOnCreate = false
     private var selectedDate = buildCurrentDate()
@@ -110,6 +111,13 @@ class ScheduleViewModel(
         if (isOnline()) {
             selectedDate = selectedDate.plusWeeks(1)
             loadSchedule()
+        }
+    }
+
+    fun onAddToCalendarClicked() {
+        val url = scheduleData.value?.baseUrl
+        if (url != null) {
+            openAddToCalendar.value = url
         }
     }
 

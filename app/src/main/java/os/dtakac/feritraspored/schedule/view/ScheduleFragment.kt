@@ -1,14 +1,10 @@
 package os.dtakac.feritraspored.schedule.view
 
-import android.Manifest
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +13,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -80,49 +75,6 @@ class ScheduleFragment : Fragment() {
         initViews()
         initObservers()
         viewModel.onViewCreated()
-
-        if(checkSelfPermission(requireContext(), Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-            testCalendar()
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.READ_CALENDAR), 1)
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            1 -> {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    testCalendar()
-                }
-            }
-            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        }
-    }
-
-    private fun testCalendar() {
-        val eventProjection: Array<String> = arrayOf(
-                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                CalendarContract.Calendars.ACCOUNT_NAME,
-                CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL,
-                CalendarContract.Calendars._ID
-        )
-        val cursor = requireContext().contentResolver.query(
-                CalendarContract.Calendars.CONTENT_URI,
-                eventProjection,
-                null,
-                null
-        )
-        while (cursor?.moveToNext() == true) {
-            val access = cursor.getInt(2) //todo: filter this in the query
-            if (access >= CalendarContract.Calendars.CAL_ACCESS_CONTRIBUTOR) {
-                Log.d("caltag", "calendar name: ${cursor.getString(0)}")
-                Log.d("caltag", "account name: ${cursor.getString(1)}")
-                Log.d("caltag", "access level: $access")
-                Log.d("caltag", "id: ${cursor.getString(3)}")
-                Log.d("caltag", "------------------------------")
-            }
-        }
-        //todo: use this ^ data for screen 1 where you pick the calendar
     }
 
     override fun onResume() {
@@ -183,6 +135,9 @@ class ScheduleFragment : Fragment() {
             }
             binding.toolbar.menu.findItem(R.id.item_menu_refresh).isEnabled = it
         }
+        viewModel.openAddToCalendar.observe(viewLifecycleOwner) {
+            findNavController().navigate(ScheduleFragmentDirections.actionCalendar(it))
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -202,6 +157,9 @@ class ScheduleFragment : Fragment() {
             }
             menu.findItem(R.id.item_menu_browser).onDebouncedClick {
                 viewModel.onOpenInExternalBrowserClicked()
+            }
+            menu.findItem(R.id.item_menu_calendar).onDebouncedClick {
+                viewModel.onAddToCalendarClicked()
             }
         }
         binding.navBar.apply {

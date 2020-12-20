@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_calendar"
+    app:startDestination="@id/calendarPickerFragment">
+    <fragment
+        android:id="@+id/calendarPickerFragment"
+        android:name="os.dtakac.feritraspored.calendar.calendarpicker.view.CalendarPickerFragment"
+        android:label="Calendar picker"
+        tools:layout="@layout/fragment_calendar_picker">
+        <argument
+            android:name="scheduleUrl"
+            app:argType="string"
+            app:nullable="false"/>
+    </fragment>
+</navigation>

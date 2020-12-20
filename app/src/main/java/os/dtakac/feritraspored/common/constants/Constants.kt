@@ -5,6 +5,8 @@ import os.dtakac.feritraspored.R
 
 const val DEBOUNCE_INTERVAL_MS = 300L
 const val SHOW_CHANGELOG = false
+const val REQUEST_WRITE_CALENDAR = 2
+const val REQUEST_READ_CALENDAR = 1
 
 object SharedPreferenceKeys {
     const val SKIP_SAT = "skip_saturday_key"
