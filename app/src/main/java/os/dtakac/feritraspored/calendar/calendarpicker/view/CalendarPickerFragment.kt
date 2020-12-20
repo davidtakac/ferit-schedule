@@ -9,23 +9,26 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.viewmodel.ext.android.viewModel
+import os.dtakac.feritraspored.calendar.calendarpicker.adapter.CalendarRecyclerAdapter
 import os.dtakac.feritraspored.calendar.calendarpicker.viewmodel.CalendarPickerViewModel
 import os.dtakac.feritraspored.common.constants.REQUEST_READ_CALENDAR
-import os.dtakac.feritraspored.databinding.FragmentCalendarPickerBinding
+import os.dtakac.feritraspored.databinding.FragmentCalendarsBinding
 
-class CalendarPickerFragment : Fragment() {
-    private var _binding: FragmentCalendarPickerBinding? = null
+class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener {
+    private var _binding: FragmentCalendarsBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: CalendarPickerViewModel by viewModel()
+    private val adapter by lazy { CalendarRecyclerAdapter(this) }
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCalendarPickerBinding.inflate(inflater, container, false)
+        _binding = FragmentCalendarsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -45,7 +48,7 @@ class CalendarPickerFragment : Fragment() {
         when (requestCode) {
             REQUEST_READ_CALENDAR -> {
                 if (grantResults.getOrNull(0) == PackageManager.PERMISSION_GRANTED) {
-                    viewModel.onReadCalendarPermissionGranted()
+                    viewModel.getCalendars()
                 } else {
                     findNavController().popBackStack()
                 }
@@ -55,19 +58,40 @@ class CalendarPickerFragment : Fragment() {
         }
     }
 
+    override fun onClick(calendarId: String) {
+        val temp = 0
+        // todo: go to events fragment, pass calendarId and scheduleUrl from args
+    }
+
     private fun checkPermissionsAndInitialize() {
         if(checkSelfPermission(requireContext(), Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-            viewModel.onReadCalendarPermissionGranted()
+            viewModel.getCalendars()
         } else {
             requestPermissions(arrayOf(Manifest.permission.READ_CALENDAR), REQUEST_READ_CALENDAR)
         }
     }
 
     private fun initObservers() {
-
+        viewModel.calendars.observe(viewLifecycleOwner) {
+            adapter.setCalendars(it)
+        }
+        viewModel.isLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
+            binding.loader.apply { if (shouldShow) show() else hide() }
+        }
     }
 
     private fun initViews() {
-        // todo: init recycler and others
+        binding.rvCalendars.apply {
+            adapter = this@CalendarPickerFragment.adapter
+            layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL,
+                    false
+            )
+            addItemDecoration(CalendarItemDecoration())
+        }
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 }

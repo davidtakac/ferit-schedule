@@ -72,5 +72,7 @@
     <string name="theme_option_light">Light</string>
     <string name="theme_option_dark">Dark</string>
     <string name="add_week_to_calendar">Add week to calendar</string>
+    <string name="events">Events</string>
+    <string name="label_calendars">Calendar</string>
     <!--endregion-->
 </resources>

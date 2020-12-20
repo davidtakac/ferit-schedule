@@ -8,7 +8,7 @@
         android:id="@+id/calendarPickerFragment"
         android:name="os.dtakac.feritraspored.calendar.calendarpicker.view.CalendarPickerFragment"
         android:label="Calendar picker"
-        tools:layout="@layout/fragment_calendar_picker">
+        tools:layout="@layout/fragment_calendars">
         <argument
             android:name="scheduleUrl"
             app:argType="string"
