@@ -1,10 +1,18 @@
 package os.dtakac.feritraspored.calendar.repository
 
 import android.content.ContentResolver
+import android.net.Uri
 import android.provider.CalendarContract
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.jsoup.Jsoup
 import os.dtakac.feritraspored.calendar.response.CalendarResponse
+import os.dtakac.feritraspored.calendar.response.EventResponse
+import os.dtakac.feritraspored.common.constants.CALENDAR_DATETIME_FORMAT
+import java.lang.Exception
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 class CalendarRepositoryImpl(
         private val contentResolver: ContentResolver
@@ -44,5 +52,55 @@ class CalendarRepositoryImpl(
             }
         }
         return calendars
+    }
+
+    override suspend fun getEvents(scheduleUrl: String): List<EventResponse> {
+        // fetch document
+        val document = withContext(Dispatchers.IO) {
+            @Suppress("BlockingMethodInNonBlockingContext")
+            Jsoup.connect(scheduleUrl).get()
+        }
+        // select all google calendar links
+        val uris = withContext(Dispatchers.Default) {
+            document.select(".hide a[href*=calendar]")
+                    .eachAttr("href")
+                    .map { Uri.parse(it) }
+        }
+        // extract their info and map to response
+        val events = mutableListOf<EventResponse>()
+        withContext(Dispatchers.Default) {
+            for (i in uris.indices) {
+                val uri = uris[i]
+                val dates = uri.getQueryParameter("dates")?.split("/")
+                val start = getMillis(dates?.getOrNull(0))
+                val end = getMillis(dates?.getOrNull(1))
+                if (start == null || end == null) {
+                    continue
+                }
+                val title = uri.getQueryParameter("text")
+                val description = uri.getQueryParameter("details")
+
+                events.add(EventResponse(
+                        start = start,
+                        end = end,
+                        title = title,
+                        description = description,
+                ))
+            }
+        }
+        Log.d("caltag", events.size.toString())
+        return events
+    }
+
+    private fun getMillis(dateFromUrl: String?): Long? {
+        return try {
+            val dateTime = LocalDateTime.parse(dateFromUrl, CALENDAR_DATETIME_FORMAT)
+            val zoneId = ZoneId.of("CET")
+            val zoneOffset = zoneId.rules.getOffset(LocalDateTime.now())
+            val result = dateTime.toInstant(zoneOffset).toEpochMilli()
+            result
+        } catch (e: Exception) {
+            null
+        }
     }
 }

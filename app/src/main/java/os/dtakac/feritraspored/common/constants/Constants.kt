@@ -2,6 +2,7 @@ package os.dtakac.feritraspored.common.constants
 
 import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.R
+import java.time.format.DateTimeFormatter
 
 const val DEBOUNCE_INTERVAL_MS = 300L
 const val SHOW_CHANGELOG = false
@@ -52,3 +53,11 @@ val THEME_NAMES_TO_VALUES = linkedMapOf(
         R.string.theme_option_light to AppCompatDelegate.MODE_NIGHT_NO,
         R.string.theme_option_dark to AppCompatDelegate.MODE_NIGHT_YES
 )
+
+val SCROLL_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.")
+
+val URL_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+val TIME_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+val CALENDAR_DATETIME_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'")

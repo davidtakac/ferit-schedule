@@ -1,9 +1,7 @@
 package os.dtakac.feritraspored.common.extensions
 
+import os.dtakac.feritraspored.common.constants.TIME_FORMAT
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-
-private val TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm")
 
 fun LocalTime.timeFormat(): String = try {
     format(TIME_FORMAT)
