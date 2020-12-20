@@ -3,7 +3,6 @@ package os.dtakac.feritraspored.calendar.repository
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.CalendarContract
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
@@ -12,7 +11,6 @@ import os.dtakac.feritraspored.calendar.response.EventResponse
 import os.dtakac.feritraspored.common.constants.CALENDAR_DATETIME_FORMAT
 import java.lang.Exception
 import java.time.LocalDateTime
-import java.time.ZoneId
 
 class CalendarRepositoryImpl(
         private val contentResolver: ContentResolver
@@ -72,8 +70,8 @@ class CalendarRepositoryImpl(
             for (i in uris.indices) {
                 val uri = uris[i]
                 val dates = uri.getQueryParameter("dates")?.split("/")
-                val start = getMillis(dates?.getOrNull(0))
-                val end = getMillis(dates?.getOrNull(1))
+                val start = parseDate(dates?.getOrNull(0))
+                val end = parseDate(dates?.getOrNull(1))
                 if (start == null || end == null) {
                     continue
                 }
@@ -81,6 +79,7 @@ class CalendarRepositoryImpl(
                 val description = uri.getQueryParameter("details")
 
                 events.add(EventResponse(
+                        id = i,
                         start = start,
                         end = end,
                         title = title,
@@ -88,17 +87,12 @@ class CalendarRepositoryImpl(
                 ))
             }
         }
-        Log.d("caltag", events.size.toString())
         return events
     }
 
-    private fun getMillis(dateFromUrl: String?): Long? {
+    private fun parseDate(dateFromUrl: String?): LocalDateTime? {
         return try {
-            val dateTime = LocalDateTime.parse(dateFromUrl, CALENDAR_DATETIME_FORMAT)
-            val zoneId = ZoneId.of("CET")
-            val zoneOffset = zoneId.rules.getOffset(LocalDateTime.now())
-            val result = dateTime.toInstant(zoneOffset).toEpochMilli()
-            result
+            LocalDateTime.parse(dateFromUrl, CALENDAR_DATETIME_FORMAT)
         } catch (e: Exception) {
             null
         }

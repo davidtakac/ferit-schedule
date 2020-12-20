@@ -1,5 +1,6 @@
 package os.dtakac.feritraspored.calendar.eventpicker.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -10,7 +11,9 @@ class EventPickerViewModel(
 ) : ViewModel() {
     fun getEvents(scheduleUrl: String) {
         viewModelScope.launch {
-            calendarRepository.getEvents(scheduleUrl)
+            calendarRepository.getEvents(scheduleUrl).forEach {
+                Log.d("caltag", it.toString())
+            }
         }
     }
 }
