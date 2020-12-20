@@ -7,10 +7,25 @@
     <fragment
         android:id="@+id/calendarPickerFragment"
         android:name="os.dtakac.feritraspored.calendar.calendarpicker.view.CalendarPickerFragment"
-        android:label="Calendar picker"
-        tools:layout="@layout/fragment_calendars">
+        tools:layout="@layout/fragment_calendar_picker">
         <argument
             android:name="scheduleUrl"
+            app:argType="string"
+            app:nullable="false"/>
+        <action
+            android:id="@+id/actionEvents"
+            app:destination="@id/eventPickerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventPickerFragment"
+        android:name="os.dtakac.feritraspored.calendar.eventpicker.view.EventPickerFragment"
+        tools:layout="@layout/fragment_event_picker">
+        <argument
+            android:name="scheduleUrl"
+            app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="calendarId"
             app:argType="string"
             app:nullable="false"/>
     </fragment>

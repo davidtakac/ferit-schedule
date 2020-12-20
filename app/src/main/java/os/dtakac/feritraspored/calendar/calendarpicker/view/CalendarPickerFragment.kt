@@ -9,18 +9,20 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.calendar.calendarpicker.adapter.CalendarRecyclerAdapter
 import os.dtakac.feritraspored.calendar.calendarpicker.viewmodel.CalendarPickerViewModel
 import os.dtakac.feritraspored.common.constants.REQUEST_READ_CALENDAR
-import os.dtakac.feritraspored.databinding.FragmentCalendarsBinding
+import os.dtakac.feritraspored.databinding.FragmentCalendarPickerBinding
 
 class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener {
-    private var _binding: FragmentCalendarsBinding? = null
+    private var _binding: FragmentCalendarPickerBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: CalendarPickerViewModel by viewModel()
+    private val args: CalendarPickerFragmentArgs by navArgs()
     private val adapter by lazy { CalendarRecyclerAdapter(this) }
 
     override fun onCreateView(
@@ -28,7 +30,7 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCalendarsBinding.inflate(inflater, container, false)
+        _binding = FragmentCalendarPickerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -59,8 +61,10 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
     }
 
     override fun onClick(calendarId: String) {
-        val temp = 0
-        // todo: go to events fragment, pass calendarId and scheduleUrl from args
+        findNavController().navigate(CalendarPickerFragmentDirections.actionEvents(
+                scheduleUrl = args.scheduleUrl,
+                calendarId = calendarId
+        ))
     }
 
     private fun checkPermissionsAndInitialize() {
@@ -93,5 +97,6 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+        binding.loader.hide()
     }
 }
