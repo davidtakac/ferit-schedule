@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class EventRecyclerAdapter(
-        private val checkListener: CheckListener
+        private val eventListener: EventListener
 ) : ListAdapter<EventData, RecyclerView.ViewHolder>(EventDiffCallback()) {
     companion object {
         private const val TYPE_GROUP = 1
@@ -48,33 +48,36 @@ class EventRecyclerAdapter(
             TYPE_GROUP -> {
                 val binding = CellEventGroupBinding
                         .inflate(LayoutInflater.from(parent.context), parent, false)
-                EventGroupViewHolder(binding, checkListener)
+                EventGroupViewHolder(binding, eventListener)
             }
 
             TYPE_EVENT -> {
                 val binding = CellEventBinding
                         .inflate(LayoutInflater.from(parent.context), parent, false)
-                EventViewHolder(binding, checkListener)
+                EventViewHolder(binding, eventListener)
             }
 
             else -> throw IllegalStateException("No ViewHolder defined for view type.")
         }
     }
 
-    interface CheckListener {
-        fun onChecked(data: EventData, isChecked: Boolean)
+    interface EventListener {
+        fun onEventChecked(data: EventSingleData, isChecked: Boolean)
+        fun onGroupChecked(data: EventGroupData, isChecked: Boolean)
     }
 
     private class EventGroupViewHolder(
             private val binding: CellEventGroupBinding,
-            private val checkListener: CheckListener
+            private val eventListener: EventListener
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: EventGroupData) {
             binding.apply {
                 tvLabel.text = buildTitleString(data.date)
-                checkbox.isChecked = data.isChecked
-                checkbox.setOnClickListener {
-                    checkListener.onChecked(data, !data.isChecked)
+                btnSelectAll.setOnClickListener {
+                    eventListener.onGroupChecked(data, true)
+                }
+                btnUnselectAll.setOnClickListener {
+                    eventListener.onGroupChecked(data, false)
                 }
             }
         }
@@ -89,7 +92,7 @@ class EventRecyclerAdapter(
 
     private class EventViewHolder(
             private val binding: CellEventBinding,
-            private val checkListener: CheckListener
+            private val eventListener: EventListener
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: EventSingleData) {
             binding.apply {
@@ -98,7 +101,7 @@ class EventRecyclerAdapter(
                 tvTimes.text = buildTimesString(data.start, data.end)
                 checkbox.isChecked = data.isChecked
                 checkbox.setOnClickListener {
-                    checkListener.onChecked(data, !data.isChecked)
+                    eventListener.onEventChecked(data, !data.isChecked)
                 }
             }
         }

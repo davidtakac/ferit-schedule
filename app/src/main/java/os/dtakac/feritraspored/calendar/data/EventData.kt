@@ -10,7 +10,6 @@ abstract class EventData(
 data class EventGroupData(
         override val id: String,
         val date: LocalDate,
-        val isChecked: Boolean
 ): EventData(id)
 
 data class EventSingleData(

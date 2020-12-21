@@ -76,5 +76,7 @@
     <string name="label_calendars">Choose and save to calendar</string>
     <string name="label_events">Choose events</string>
     <string name="template_time_span" formatted="false">%s - %s</string>
+    <string name="select_all">Select</string>
+    <string name="unselect_all">Unselect</string>
     <!--endregion-->
 </resources>

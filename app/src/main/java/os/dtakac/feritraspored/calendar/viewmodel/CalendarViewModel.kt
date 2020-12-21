@@ -63,12 +63,33 @@ class CalendarViewModel(
         }
     }
 
-    fun onEventDataChecked(data: EventData, isChecked: Boolean) {
+    fun onEventChecked(data: EventSingleData, isChecked: Boolean) {
         viewModelScope.launch {
-            when (data) {
-                is EventGroupData -> onGroupChecked(data, isChecked)
-                is EventSingleData -> onEventChecked(data, isChecked)
+            val updatedEventData = mutableListOf<EventData>()
+            withContext(Dispatchers.Default) {
+                updatedEventData.addAll(eventData.value ?: listOf())
+                updatedEventData.forEachIndexed { index, it ->
+                    if (it is EventSingleData && it.id == data.id) {
+                        updatedEventData[index] = it.copy(isChecked = isChecked)
+                    }
+                }
             }
+            eventData.value = updatedEventData
+        }
+    }
+
+    fun onEventGroupChecked(data: EventGroupData, isChecked: Boolean) {
+        viewModelScope.launch {
+            val updatedEventData = mutableListOf<EventData>()
+            withContext(Dispatchers.IO) {
+                updatedEventData.addAll(eventData.value ?: listOf())
+                updatedEventData.forEachIndexed { index, it ->
+                    if (it is EventSingleData && it.groupId == data.id) {
+                        updatedEventData[index] = it.copy(isChecked = isChecked)
+                    }
+                }
+            }
+            eventData.value = updatedEventData
         }
     }
 
@@ -80,8 +101,7 @@ class CalendarViewModel(
                 val groupId = "group$idx"
                 val eventGroup = EventGroupData(
                         id = groupId,
-                        date = date,
-                        isChecked = true
+                        date = date
                 )
                 results.add(eventGroup)
                 eventsToDates[date]?.forEach {
@@ -112,33 +132,5 @@ class CalendarViewModel(
                 )
             }
         }
-    }
-
-    private suspend fun onEventChecked(data: EventSingleData, isChecked: Boolean) {
-        val updatedEventData = mutableListOf<EventData>()
-        withContext(Dispatchers.Default) {
-            updatedEventData.addAll(eventData.value ?: listOf())
-            updatedEventData.forEachIndexed { index, it ->
-                if (it is EventSingleData && it.id == data.id) {
-                    updatedEventData[index] = it.copy(isChecked = isChecked)
-                }
-            }
-        }
-        eventData.value = updatedEventData
-    }
-
-    private suspend fun onGroupChecked(data: EventGroupData, isChecked: Boolean) {
-        val updatedEventData = mutableListOf<EventData>()
-        withContext(Dispatchers.IO) {
-            updatedEventData.addAll(eventData.value ?: listOf())
-            updatedEventData.forEachIndexed { index, it ->
-                if (it is EventGroupData && it.id == data.id) {
-                    updatedEventData[index] = it.copy(isChecked = isChecked)
-                } else if (it is EventSingleData && it.groupId == data.id) {
-                    updatedEventData[index] = it.copy(isChecked = isChecked)
-                }
-            }
-        }
-        eventData.value = updatedEventData
     }
 }

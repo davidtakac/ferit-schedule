@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.calendar.adapter.events.EventItemDecoration
 import os.dtakac.feritraspored.calendar.adapter.events.EventRecyclerAdapter
-import os.dtakac.feritraspored.calendar.data.EventData
+import os.dtakac.feritraspored.calendar.data.EventGroupData
+import os.dtakac.feritraspored.calendar.data.EventSingleData
 import os.dtakac.feritraspored.calendar.viewmodel.CalendarViewModel
 import os.dtakac.feritraspored.common.extensions.navGraphViewModel
 import os.dtakac.feritraspored.databinding.FragmentEventPickerBinding
 
-class EventPickerFragment : Fragment(), EventRecyclerAdapter.CheckListener {
+class EventPickerFragment : Fragment(), EventRecyclerAdapter.EventListener {
     private var _binding: FragmentEventPickerBinding? = null
     private val binding get() = _binding!!
 
@@ -38,8 +39,12 @@ class EventPickerFragment : Fragment(), EventRecyclerAdapter.CheckListener {
         _binding = null
     }
 
-    override fun onChecked(data: EventData, isChecked: Boolean) {
-        viewModel.onEventDataChecked(data, isChecked)
+    override fun onEventChecked(data: EventSingleData, isChecked: Boolean) {
+        viewModel.onEventChecked(data, isChecked)
+    }
+
+    override fun onGroupChecked(data: EventGroupData, isChecked: Boolean) {
+        viewModel.onEventGroupChecked(data, isChecked)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
