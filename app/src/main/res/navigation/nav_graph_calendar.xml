@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_calendar"
-    app:startDestination="@id/calendarPickerFragment">
+    app:startDestination="@id/eventPickerFragment">
     <fragment
-        android:id="@+id/calendarPickerFragment"
-        android:name="os.dtakac.feritraspored.calendar.view.CalendarPickerFragment"
-        tools:layout="@layout/fragment_calendar_picker">
+        android:id="@+id/eventPickerFragment"
+        android:name="os.dtakac.feritraspored.calendar.view.EventPickerFragment"
+        tools:layout="@layout/fragment_event_picker">
         <argument
             android:name="scheduleUrl"
             app:argType="string"
             app:nullable="false"/>
         <action
-            android:id="@+id/actionEvents"
-            app:destination="@id/eventPickerFragment" />
+            android:id="@+id/actionCalendar"
+            app:destination="@id/calendarPickerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/eventPickerFragment"
-        android:name="os.dtakac.feritraspored.calendar.view.EventPickerFragment"
-        tools:layout="@layout/fragment_event_picker"/>
+        android:id="@+id/calendarPickerFragment"
+        android:name="os.dtakac.feritraspored.calendar.view.CalendarPickerFragment"
+        tools:layout="@layout/fragment_calendar_picker"/>
 </navigation>

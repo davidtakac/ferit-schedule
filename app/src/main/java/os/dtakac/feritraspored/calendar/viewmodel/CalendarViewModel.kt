@@ -13,14 +13,13 @@ import os.dtakac.feritraspored.calendar.data.EventSingleData
 import os.dtakac.feritraspored.calendar.repository.CalendarRepository
 import os.dtakac.feritraspored.calendar.response.CalendarResponse
 import os.dtakac.feritraspored.calendar.response.EventResponse
-import os.dtakac.feritraspored.common.extensions.scrollFormat
-import os.dtakac.feritraspored.common.extensions.timeFormat
 
 class CalendarViewModel(
         private val calendarRepository: CalendarRepository
 ) : ViewModel() {
     private lateinit var scheduleUrl: String
     private lateinit var calendarId: String
+    private lateinit var eventResponse: List<EventResponse>
 
     val calendarData = MutableLiveData<List<CalendarData>>()
     val eventData = MutableLiveData<List<EventData>>()
@@ -32,8 +31,9 @@ class CalendarViewModel(
         this.scheduleUrl = scheduleUrl
     }
 
-    fun setCalendarId(calendarId: String) {
+    fun onCalendarPicked(calendarId: String) {
         this.calendarId = calendarId
+        // todo: display dialog to user, ask for permissions etc
     }
 
     fun getCalendars() {
@@ -55,6 +55,7 @@ class CalendarViewModel(
                 isEventsLoaderVisible.value = true
 
                 val response = calendarRepository.getEvents(scheduleUrl)
+                eventResponse = response
                 eventData.value = createEventData(response)
 
                 isEventsLoaderVisible.value = false
@@ -63,9 +64,11 @@ class CalendarViewModel(
     }
 
     fun onEventDataChecked(data: EventData, isChecked: Boolean) {
-        when (data) {
-            is EventGroupData -> onGroupChecked(data, isChecked)
-            is EventSingleData -> onEventChecked(data, isChecked)
+        viewModelScope.launch {
+            when (data) {
+                is EventGroupData -> onGroupChecked(data, isChecked)
+                is EventSingleData -> onEventChecked(data, isChecked)
+            }
         }
     }
 
@@ -77,16 +80,18 @@ class CalendarViewModel(
                 val groupId = "group$idx"
                 val eventGroup = EventGroupData(
                         id = groupId,
-                        title = date.scrollFormat(),
-                        isChecked = true)
+                        date = date,
+                        isChecked = true
+                )
                 results.add(eventGroup)
                 eventsToDates[date]?.forEach {
                     val event = EventSingleData(
                             id = it.id,
                             groupId = groupId,
-                            title = it.title ?: "",
-                            description = it.description ?: "",
-                            times = "${it.start.toLocalTime().timeFormat()} - ${it.end.toLocalTime().timeFormat()}",
+                            title = it.title,
+                            description = it.description,
+                            start = it.start,
+                            end = it.end,
                             isChecked = true
                     )
                     results.add(event)
@@ -109,27 +114,29 @@ class CalendarViewModel(
         }
     }
 
-    private fun onEventChecked(data: EventSingleData, isChecked: Boolean) {
-        val updatedEventData = mutableListOf<EventData>().apply {
-            addAll(eventData.value ?: listOf())
-        }
-        updatedEventData.forEachIndexed { index, it ->
-            if (it is EventSingleData && it.id == data.id) {
-                updatedEventData[index] = it.copy(isChecked = isChecked)
+    private suspend fun onEventChecked(data: EventSingleData, isChecked: Boolean) {
+        val updatedEventData = mutableListOf<EventData>()
+        withContext(Dispatchers.Default) {
+            updatedEventData.addAll(eventData.value ?: listOf())
+            updatedEventData.forEachIndexed { index, it ->
+                if (it is EventSingleData && it.id == data.id) {
+                    updatedEventData[index] = it.copy(isChecked = isChecked)
+                }
             }
         }
         eventData.value = updatedEventData
     }
 
-    private fun onGroupChecked(data: EventGroupData, isChecked: Boolean) {
-        val updatedEventData = mutableListOf<EventData>().apply {
-            addAll(eventData.value ?: listOf())
-        }
-        updatedEventData.forEachIndexed { index, it ->
-            if (it is EventGroupData && it.id == data.id) {
-                updatedEventData[index] = it.copy(isChecked = isChecked)
-            } else if (it is EventSingleData && it.groupId == data.id) {
-                updatedEventData[index] = it.copy(isChecked = isChecked)
+    private suspend fun onGroupChecked(data: EventGroupData, isChecked: Boolean) {
+        val updatedEventData = mutableListOf<EventData>()
+        withContext(Dispatchers.IO) {
+            updatedEventData.addAll(eventData.value ?: listOf())
+            updatedEventData.forEachIndexed { index, it ->
+                if (it is EventGroupData && it.id == data.id) {
+                    updatedEventData[index] = it.copy(isChecked = isChecked)
+                } else if (it is EventSingleData && it.groupId == data.id) {
+                    updatedEventData[index] = it.copy(isChecked = isChecked)
+                }
             }
         }
         eventData.value = updatedEventData

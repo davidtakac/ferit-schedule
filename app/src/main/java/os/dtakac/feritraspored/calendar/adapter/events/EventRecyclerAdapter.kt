@@ -6,12 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.calendar.data.EventData
 import os.dtakac.feritraspored.calendar.data.EventGroupData
 import os.dtakac.feritraspored.calendar.data.EventSingleData
+import os.dtakac.feritraspored.common.constants.EVENT_GROUP_PATTERN
+import os.dtakac.feritraspored.common.constants.TIME_PATTERN
 import os.dtakac.feritraspored.databinding.CellEventBinding
 import os.dtakac.feritraspored.databinding.CellEventGroupBinding
 import java.lang.IllegalStateException
+import java.time.*
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class EventRecyclerAdapter(
         private val checkListener: CheckListener
@@ -65,12 +71,19 @@ class EventRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: EventGroupData) {
             binding.apply {
-                tvLabel.text = data.title
+                tvLabel.text = buildTitleString(data.date)
                 checkbox.isChecked = data.isChecked
                 checkbox.setOnClickListener {
                     checkListener.onChecked(data, !data.isChecked)
                 }
             }
+        }
+
+        private fun buildTitleString(date: LocalDate): String {
+            return date.format(DateTimeFormatter.ofPattern(
+                    EVENT_GROUP_PATTERN,
+                    binding.root.resources.configuration.locale
+            ))
         }
     }
 
@@ -80,14 +93,33 @@ class EventRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: EventSingleData) {
             binding.apply {
-                tvTitle.text = data.title
-                tvDescription.text = data.description
-                tvTimes.text = data.times
+                tvTitle.text = data.title ?: root.resources.getString(R.string.placeholder_empty)
+                tvDescription.text = data.description ?: root.resources.getString(R.string.placeholder_empty)
+                tvTimes.text = buildTimesString(data.start, data.end)
                 checkbox.isChecked = data.isChecked
                 checkbox.setOnClickListener {
                     checkListener.onChecked(data, !data.isChecked)
                 }
             }
+        }
+
+        private fun buildTimesString(start: ZonedDateTime, end: ZonedDateTime): String {
+            val zoneId = ZoneId.of(TimeZone.getDefault().id)
+            val startLocalized = start
+                    .withZoneSameInstant(zoneId)
+                    .format(DateTimeFormatter.ofPattern(
+                            TIME_PATTERN,
+                            binding.root.resources.configuration.locale
+                    ))
+            val endLocalized = end
+                    .withZoneSameInstant(zoneId)
+                    .format(DateTimeFormatter.ofPattern(
+                            TIME_PATTERN,
+                            binding.root.resources.configuration.locale
+                    ))
+            return binding.root.resources
+                    .getString(R.string.template_time_span)
+                    .format(startLocalized, endLocalized)
         }
     }
 

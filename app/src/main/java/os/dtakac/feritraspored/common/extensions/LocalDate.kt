@@ -1,7 +1,7 @@
 package os.dtakac.feritraspored.common.extensions
 
-import os.dtakac.feritraspored.common.constants.SCROLL_FORMAT
-import os.dtakac.feritraspored.common.constants.URL_FORMAT
+import os.dtakac.feritraspored.common.constants.SCHEDULE_URL_PATTERN
+import os.dtakac.feritraspored.common.constants.SCROLL_PATTERN
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -14,6 +14,6 @@ fun LocalDate.isSameWeek(otherDate: LocalDate): Boolean {
     }
 }
 
-fun LocalDate.scrollFormat(): String = format(SCROLL_FORMAT)
+fun LocalDate.scrollFormat(): String = format(DateTimeFormatter.ofPattern(SCROLL_PATTERN))
 
-fun LocalDate.urlFormat(): String = format(URL_FORMAT)
+fun LocalDate.urlFormat(): String = format(DateTimeFormatter.ofPattern(SCHEDULE_URL_PATTERN))

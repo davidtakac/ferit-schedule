@@ -71,9 +71,10 @@
     <string name="theme_option_system">Follow system settings</string>
     <string name="theme_option_light">Light</string>
     <string name="theme_option_dark">Dark</string>
-    <string name="add_week_to_calendar">Add week to calendar</string>
+    <string name="add_week_to_calendar">Add to calendar…</string>
     <string name="events">Events</string>
-    <string name="label_calendars">Calendar</string>
-    <string name="label_events">Add events</string>
+    <string name="label_calendars">Choose and save to calendar</string>
+    <string name="label_events">Choose events</string>
+    <string name="template_time_span" formatted="false">%s - %s</string>
     <!--endregion-->
 </resources>

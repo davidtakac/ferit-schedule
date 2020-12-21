@@ -8,9 +8,12 @@ import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import os.dtakac.feritraspored.calendar.response.CalendarResponse
 import os.dtakac.feritraspored.calendar.response.EventResponse
-import os.dtakac.feritraspored.common.constants.CALENDAR_DATETIME_FORMAT
+import os.dtakac.feritraspored.common.constants.CALENDAR_URL_PATTERN
 import java.lang.Exception
 import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 class CalendarRepositoryImpl(
         private val contentResolver: ContentResolver
@@ -90,9 +93,11 @@ class CalendarRepositoryImpl(
         return events
     }
 
-    private fun parseDate(dateFromUrl: String?): LocalDateTime? {
+    private fun parseDate(dateFromUrl: String?): ZonedDateTime? {
         return try {
-            LocalDateTime.parse(dateFromUrl, CALENDAR_DATETIME_FORMAT)
+            LocalDateTime
+                    .parse(dateFromUrl, DateTimeFormatter.ofPattern(CALENDAR_URL_PATTERN))
+                    .atZone(ZoneOffset.UTC)
         } catch (e: Exception) {
             null
         }

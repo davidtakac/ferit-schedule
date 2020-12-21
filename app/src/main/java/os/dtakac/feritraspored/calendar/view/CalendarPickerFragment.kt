@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.calendar.adapter.calendars.CalendarItemDecoration
@@ -24,7 +23,6 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
     private val binding get() = _binding!!
 
     private val viewModel: CalendarViewModel by navGraphViewModel(R.id.nav_graph_calendar)
-    private val args: CalendarPickerFragmentArgs by navArgs()
     private val adapter by lazy { CalendarRecyclerAdapter(this) }
 
     override fun onCreateView(
@@ -43,7 +41,6 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.initialize(args.scheduleUrl)
         checkPermissionsAndInitialize()
         initViews()
         initObservers()
@@ -64,8 +61,7 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
     }
 
     override fun onClick(calendarId: String) {
-        viewModel.setCalendarId(calendarId)
-        findNavController().navigate(R.id.actionEvents)
+        viewModel.onCalendarPicked(calendarId)
     }
 
     private fun checkPermissionsAndInitialize() {

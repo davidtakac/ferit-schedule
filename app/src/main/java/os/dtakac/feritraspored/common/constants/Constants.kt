@@ -2,12 +2,17 @@ package os.dtakac.feritraspored.common.constants
 
 import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.R
-import java.time.format.DateTimeFormatter
 
 const val DEBOUNCE_INTERVAL_MS = 300L
 const val SHOW_CHANGELOG = false
 const val REQUEST_WRITE_CALENDAR = 2
 const val REQUEST_READ_CALENDAR = 1
+
+const val EVENT_GROUP_PATTERN = "E, dd.MM.yyyy."
+const val TIME_PATTERN = "HH:mm"
+const val CALENDAR_URL_PATTERN = "yyyyMMdd'T'HHmmss'Z'"
+const val SCROLL_PATTERN = "dd.MM.yyyy."
+const val SCHEDULE_URL_PATTERN = "yyyy-MM-dd"
 
 object SharedPreferenceKeys {
     const val SKIP_SAT = "skip_saturday_key"
@@ -53,11 +58,3 @@ val THEME_NAMES_TO_VALUES = linkedMapOf(
         R.string.theme_option_light to AppCompatDelegate.MODE_NIGHT_NO,
         R.string.theme_option_dark to AppCompatDelegate.MODE_NIGHT_YES
 )
-
-val SCROLL_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.")
-
-val URL_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
-val TIME_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-
-val CALENDAR_DATETIME_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'")
