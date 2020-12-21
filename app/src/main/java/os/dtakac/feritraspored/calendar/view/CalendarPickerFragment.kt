@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.calendar.calendarpicker.view
+package os.dtakac.feritraspored.calendar.view
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -11,17 +11,19 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.koin.android.viewmodel.ext.android.viewModel
-import os.dtakac.feritraspored.calendar.calendarpicker.adapter.CalendarRecyclerAdapter
-import os.dtakac.feritraspored.calendar.calendarpicker.viewmodel.CalendarPickerViewModel
+import os.dtakac.feritraspored.R
+import os.dtakac.feritraspored.calendar.adapter.calendar.CalendarItemDecoration
+import os.dtakac.feritraspored.calendar.adapter.calendar.CalendarRecyclerAdapter
+import os.dtakac.feritraspored.calendar.viewmodel.CalendarViewModel
 import os.dtakac.feritraspored.common.constants.REQUEST_READ_CALENDAR
+import os.dtakac.feritraspored.common.extensions.navGraphViewModel
 import os.dtakac.feritraspored.databinding.FragmentCalendarPickerBinding
 
 class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener {
     private var _binding: FragmentCalendarPickerBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: CalendarPickerViewModel by viewModel()
+    private val viewModel: CalendarViewModel by navGraphViewModel(R.id.nav_graph_calendar)
     private val args: CalendarPickerFragmentArgs by navArgs()
     private val adapter by lazy { CalendarRecyclerAdapter(this) }
 
@@ -41,6 +43,7 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.initialize(args.scheduleUrl)
         checkPermissionsAndInitialize()
         initViews()
         initObservers()
@@ -61,10 +64,8 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
     }
 
     override fun onClick(calendarId: String) {
-        findNavController().navigate(CalendarPickerFragmentDirections.actionEvents(
-                scheduleUrl = args.scheduleUrl,
-                calendarId = calendarId
-        ))
+        viewModel.setCalendarId(calendarId)
+        findNavController().navigate(R.id.actionEvents)
     }
 
     private fun checkPermissionsAndInitialize() {
@@ -79,7 +80,7 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
         viewModel.calendars.observe(viewLifecycleOwner) {
             adapter.setCalendars(it)
         }
-        viewModel.isLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
+        viewModel.isCalendarsLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
             binding.loader.apply { if (shouldShow) show() else hide() }
         }
     }

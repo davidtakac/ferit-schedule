@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.calendar.calendarpicker.view
+package os.dtakac.feritraspored.calendar.adapter.calendar
 
 import android.graphics.Rect
 import android.view.View

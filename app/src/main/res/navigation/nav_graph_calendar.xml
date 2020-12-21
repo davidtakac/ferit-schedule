@@ -6,7 +6,7 @@
     app:startDestination="@id/calendarPickerFragment">
     <fragment
         android:id="@+id/calendarPickerFragment"
-        android:name="os.dtakac.feritraspored.calendar.calendarpicker.view.CalendarPickerFragment"
+        android:name="os.dtakac.feritraspored.calendar.view.CalendarPickerFragment"
         tools:layout="@layout/fragment_calendar_picker">
         <argument
             android:name="scheduleUrl"
@@ -18,15 +18,6 @@
     </fragment>
     <fragment
         android:id="@+id/eventPickerFragment"
-        android:name="os.dtakac.feritraspored.calendar.eventpicker.view.EventPickerFragment"
-        tools:layout="@layout/fragment_event_picker">
-        <argument
-            android:name="scheduleUrl"
-            app:argType="string"
-            app:nullable="false"/>
-        <argument
-            android:name="calendarId"
-            app:argType="string"
-            app:nullable="false"/>
-    </fragment>
+        android:name="os.dtakac.feritraspored.calendar.view.EventPickerFragment"
+        tools:layout="@layout/fragment_event_picker"/>
 </navigation>
