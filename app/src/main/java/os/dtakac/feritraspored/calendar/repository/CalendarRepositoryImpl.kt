@@ -1,6 +1,7 @@
 package os.dtakac.feritraspored.calendar.repository
 
 import android.content.ContentResolver
+import android.content.ContentValues
 import android.net.Uri
 import android.provider.CalendarContract
 import kotlinx.coroutines.Dispatchers
@@ -11,9 +12,11 @@ import os.dtakac.feritraspored.calendar.response.EventResponse
 import os.dtakac.feritraspored.common.constants.CALENDAR_URL_PATTERN
 import java.lang.Exception
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class CalendarRepositoryImpl(
         private val contentResolver: ContentResolver
@@ -91,6 +94,28 @@ class CalendarRepositoryImpl(
             }
         }
         return events
+    }
+
+    override suspend fun addEvents(calendarId: String, events: List<EventResponse>) {
+        val zoneId = ZoneId.of(TimeZone.getDefault().id)
+        val bulkValues = withContext(Dispatchers.Default) {
+            events.map {
+                ContentValues().apply {
+                    put(CalendarContract.Events.DTSTART, it.start.toInstant().toEpochMilli())
+                    put(CalendarContract.Events.DTEND, it.end.toInstant().toEpochMilli())
+                    put(CalendarContract.Events.TITLE, it.title)
+                    put(CalendarContract.Events.DESCRIPTION, it.description)
+                    put(CalendarContract.Events.CALENDAR_ID, calendarId)
+                    put(CalendarContract.Events.EVENT_TIMEZONE, zoneId.id)
+                }
+            }.toTypedArray()
+        }
+        withContext(Dispatchers.IO) {
+            contentResolver.bulkInsert(
+                    CalendarContract.Events.CONTENT_URI,
+                    bulkValues
+            )
+        }
     }
 
     private fun parseDate(dateFromUrl: String?): ZonedDateTime? {

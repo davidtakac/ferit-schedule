@@ -6,4 +6,8 @@ import os.dtakac.feritraspored.calendar.response.EventResponse
 interface CalendarRepository {
     suspend fun getAvailableCalendars(): List<CalendarResponse>
     suspend fun getEvents(scheduleUrl: String): List<EventResponse>
+    suspend fun addEvents(
+            calendarId: String,
+            events: List<EventResponse>
+    )
 }
