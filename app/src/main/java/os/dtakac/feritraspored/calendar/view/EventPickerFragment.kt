@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import os.dtakac.feritraspored.R
+import os.dtakac.feritraspored.calendar.adapter.events.EventItemDecoration
+import os.dtakac.feritraspored.calendar.adapter.events.EventRecyclerAdapter
 import os.dtakac.feritraspored.calendar.viewmodel.CalendarViewModel
 import os.dtakac.feritraspored.common.extensions.navGraphViewModel
 import os.dtakac.feritraspored.databinding.FragmentEventPickerBinding
@@ -16,6 +19,7 @@ class EventPickerFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: CalendarViewModel by navGraphViewModel(R.id.nav_graph_calendar)
+    private val adapter by lazy { EventRecyclerAdapter() }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -39,6 +43,15 @@ class EventPickerFragment : Fragment() {
     }
 
     private fun initViews() {
+        binding.rvEvents.apply {
+            adapter = this@EventPickerFragment.adapter
+            layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL,
+                    false
+            )
+            addItemDecoration(EventItemDecoration())
+        }
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -46,6 +59,11 @@ class EventPickerFragment : Fragment() {
     }
 
     private fun initObservers() {
-
+        viewModel.isEventsLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
+            binding.loader.apply { if (shouldShow) show() else hide() }
+        }
+        viewModel.events.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 }

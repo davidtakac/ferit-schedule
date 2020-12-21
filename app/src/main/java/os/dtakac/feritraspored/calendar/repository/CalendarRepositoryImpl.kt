@@ -79,7 +79,7 @@ class CalendarRepositoryImpl(
                 val description = uri.getQueryParameter("details")
 
                 events.add(EventResponse(
-                        id = i,
+                        id = i.toString(),
                         start = start,
                         end = end,
                         title = title,

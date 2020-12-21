@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.calendar.adapter.calendar.CalendarItemDecoration
-import os.dtakac.feritraspored.calendar.adapter.calendar.CalendarRecyclerAdapter
+import os.dtakac.feritraspored.calendar.adapter.calendars.CalendarItemDecoration
+import os.dtakac.feritraspored.calendar.adapter.calendars.CalendarRecyclerAdapter
 import os.dtakac.feritraspored.calendar.viewmodel.CalendarViewModel
 import os.dtakac.feritraspored.common.constants.REQUEST_READ_CALENDAR
 import os.dtakac.feritraspored.common.extensions.navGraphViewModel
@@ -77,7 +77,7 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
     }
 
     private fun initObservers() {
-        viewModel.calendars.observe(viewLifecycleOwner) {
+        viewModel.calendarData.observe(viewLifecycleOwner) {
             adapter.setCalendars(it)
         }
         viewModel.isCalendarsLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->

@@ -1,4 +1,4 @@
-package os.dtakac.feritraspored.calendar.adapter.calendar
+package os.dtakac.feritraspored.calendar.adapter.calendars
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

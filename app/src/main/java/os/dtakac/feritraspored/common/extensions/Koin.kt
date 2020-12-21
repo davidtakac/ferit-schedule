@@ -10,6 +10,7 @@ import org.koin.android.viewmodel.koin.getViewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 
+// adapted from https://github.com/InsertKoinIO/koin/issues/442#issuecomment-585748864
 inline fun <reified VM : ViewModel> Fragment.navGraphViewModel(
         @IdRes navGraphId: Int,
         qualifier: Qualifier? = null,
