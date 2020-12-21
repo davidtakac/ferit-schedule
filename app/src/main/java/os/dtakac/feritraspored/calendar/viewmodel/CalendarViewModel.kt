@@ -23,7 +23,7 @@ class CalendarViewModel(
     private lateinit var calendarId: String
 
     val calendarData = MutableLiveData<List<CalendarData>>()
-    val events = MutableLiveData<List<EventData>>()
+    val eventData = MutableLiveData<List<EventData>>()
 
     val isCalendarsLoaderVisible = MutableLiveData<Boolean>()
     val isEventsLoaderVisible = MutableLiveData<Boolean>()
@@ -50,13 +50,22 @@ class CalendarViewModel(
     }
 
     fun getEvents() {
-        viewModelScope.launch {
-            isEventsLoaderVisible.value = true
+        if (eventData.value == null) {
+            viewModelScope.launch {
+                isEventsLoaderVisible.value = true
 
-            val response = calendarRepository.getEvents(scheduleUrl)
-            events.value = createEventData(response)
+                val response = calendarRepository.getEvents(scheduleUrl)
+                eventData.value = createEventData(response)
 
-            isEventsLoaderVisible.value = false
+                isEventsLoaderVisible.value = false
+            }
+        }
+    }
+
+    fun onEventDataChecked(data: EventData, isChecked: Boolean) {
+        when (data) {
+            is EventGroupData -> onGroupChecked(data, isChecked)
+            is EventSingleData -> onEventChecked(data, isChecked)
         }
     }
 
@@ -65,14 +74,16 @@ class CalendarViewModel(
         withContext(Dispatchers.Default) {
             val eventsToDates = events.groupBy { it.start.toLocalDate() }
             eventsToDates.keys.forEachIndexed { idx, date ->
+                val groupId = "group$idx"
                 val eventGroup = EventGroupData(
-                        id = "group$idx",
+                        id = groupId,
                         title = date.scrollFormat(),
                         isChecked = true)
                 results.add(eventGroup)
                 eventsToDates[date]?.forEach {
                     val event = EventSingleData(
                             id = it.id,
+                            groupId = groupId,
                             title = it.title ?: "",
                             description = it.description ?: "",
                             times = "${it.start.toLocalTime().timeFormat()} - ${it.end.toLocalTime().timeFormat()}",
@@ -96,5 +107,13 @@ class CalendarViewModel(
                 )
             }
         }
+    }
+
+    private fun onEventChecked(data: EventSingleData, isChecked: Boolean) {
+        // todo
+    }
+
+    private fun onGroupChecked(data: EventGroupData, isChecked: Boolean) {
+        // todo
     }
 }

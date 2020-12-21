@@ -12,6 +12,7 @@ data class EventGroupData(
 
 data class EventSingleData(
         override val id: String,
+        val groupId: String,
         val title: String,
         val description: String,
         val times: String,

@@ -13,7 +13,9 @@ import os.dtakac.feritraspored.databinding.CellEventBinding
 import os.dtakac.feritraspored.databinding.CellEventGroupBinding
 import java.lang.IllegalStateException
 
-class EventRecyclerAdapter : ListAdapter<EventData, RecyclerView.ViewHolder>(EventDiffCallback()) {
+class EventRecyclerAdapter(
+        private val checkListener: CheckListener
+) : ListAdapter<EventData, RecyclerView.ViewHolder>(EventDiffCallback()) {
     companion object {
         private const val TYPE_GROUP = 1
         private const val TYPE_EVENT = 2
@@ -40,32 +42,41 @@ class EventRecyclerAdapter : ListAdapter<EventData, RecyclerView.ViewHolder>(Eve
             TYPE_GROUP -> {
                 val binding = CellEventGroupBinding
                         .inflate(LayoutInflater.from(parent.context), parent, false)
-                EventGroupViewHolder(binding)
+                EventGroupViewHolder(binding, checkListener)
             }
 
             TYPE_EVENT -> {
                 val binding = CellEventBinding
                         .inflate(LayoutInflater.from(parent.context), parent, false)
-                EventViewHolder(binding)
+                EventViewHolder(binding, checkListener)
             }
 
             else -> throw IllegalStateException("No ViewHolder defined for view type.")
         }
     }
 
+    interface CheckListener {
+        fun onChecked(data: EventData, isChecked: Boolean)
+    }
+
     private class EventGroupViewHolder(
-            private val binding: CellEventGroupBinding
+            private val binding: CellEventGroupBinding,
+            private val checkListener: CheckListener
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: EventGroupData) {
             binding.apply {
                 tvLabel.text = data.title
                 checkbox.isChecked = data.isChecked
+                checkbox.setOnCheckedChangeListener { _, isChecked ->
+                    checkListener.onChecked(data, isChecked)
+                }
             }
         }
     }
 
     private class EventViewHolder(
-            private val binding: CellEventBinding
+            private val binding: CellEventBinding,
+            private val checkListener: CheckListener
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: EventSingleData) {
             binding.apply {
@@ -73,11 +84,14 @@ class EventRecyclerAdapter : ListAdapter<EventData, RecyclerView.ViewHolder>(Eve
                 tvDescription.text = data.description
                 tvTimes.text = data.times
                 checkbox.isChecked = data.isChecked
+                checkbox.setOnCheckedChangeListener { _, isChecked ->
+                    checkListener.onChecked(data, isChecked)
+                }
             }
         }
     }
 
-    class EventDiffCallback : DiffUtil.ItemCallback<EventData>() {
+    private class EventDiffCallback : DiffUtil.ItemCallback<EventData>() {
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: EventData, newItem: EventData): Boolean {
             // all [EventData] implementations are data classes

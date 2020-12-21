@@ -10,16 +10,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.calendar.adapter.events.EventItemDecoration
 import os.dtakac.feritraspored.calendar.adapter.events.EventRecyclerAdapter
+import os.dtakac.feritraspored.calendar.data.EventData
 import os.dtakac.feritraspored.calendar.viewmodel.CalendarViewModel
 import os.dtakac.feritraspored.common.extensions.navGraphViewModel
 import os.dtakac.feritraspored.databinding.FragmentEventPickerBinding
 
-class EventPickerFragment : Fragment() {
+class EventPickerFragment : Fragment(), EventRecyclerAdapter.CheckListener {
     private var _binding: FragmentEventPickerBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: CalendarViewModel by navGraphViewModel(R.id.nav_graph_calendar)
-    private val adapter by lazy { EventRecyclerAdapter() }
+    private val adapter by lazy { EventRecyclerAdapter(this) }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -33,6 +34,10 @@ class EventPickerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onChecked(data: EventData, isChecked: Boolean) {
+        viewModel.onEventDataChecked(data, isChecked)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +67,7 @@ class EventPickerFragment : Fragment() {
         viewModel.isEventsLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
             binding.loader.apply { if (shouldShow) show() else hide() }
         }
-        viewModel.events.observe(viewLifecycleOwner) {
+        viewModel.eventData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
     }
