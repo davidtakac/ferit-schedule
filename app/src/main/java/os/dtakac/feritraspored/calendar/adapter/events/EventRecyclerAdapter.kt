@@ -67,8 +67,8 @@ class EventRecyclerAdapter(
             binding.apply {
                 tvLabel.text = data.title
                 checkbox.isChecked = data.isChecked
-                checkbox.setOnCheckedChangeListener { _, isChecked ->
-                    checkListener.onChecked(data, isChecked)
+                checkbox.setOnClickListener {
+                    checkListener.onChecked(data, !data.isChecked)
                 }
             }
         }
@@ -84,8 +84,8 @@ class EventRecyclerAdapter(
                 tvDescription.text = data.description
                 tvTimes.text = data.times
                 checkbox.isChecked = data.isChecked
-                checkbox.setOnCheckedChangeListener { _, isChecked ->
-                    checkListener.onChecked(data, isChecked)
+                checkbox.setOnClickListener {
+                    checkListener.onChecked(data, !data.isChecked)
                 }
             }
         }

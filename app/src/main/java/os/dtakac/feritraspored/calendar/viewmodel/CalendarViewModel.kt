@@ -110,10 +110,28 @@ class CalendarViewModel(
     }
 
     private fun onEventChecked(data: EventSingleData, isChecked: Boolean) {
-        // todo
+        val updatedEventData = mutableListOf<EventData>().apply {
+            addAll(eventData.value ?: listOf())
+        }
+        updatedEventData.forEachIndexed { index, it ->
+            if (it is EventSingleData && it.id == data.id) {
+                updatedEventData[index] = it.copy(isChecked = isChecked)
+            }
+        }
+        eventData.value = updatedEventData
     }
 
     private fun onGroupChecked(data: EventGroupData, isChecked: Boolean) {
-        // todo
+        val updatedEventData = mutableListOf<EventData>().apply {
+            addAll(eventData.value ?: listOf())
+        }
+        updatedEventData.forEachIndexed { index, it ->
+            if (it is EventGroupData && it.id == data.id) {
+                updatedEventData[index] = it.copy(isChecked = isChecked)
+            } else if (it is EventSingleData && it.groupId == data.id) {
+                updatedEventData[index] = it.copy(isChecked = isChecked)
+            }
+        }
+        eventData.value = updatedEventData
     }
 }
