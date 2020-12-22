@@ -8,4 +8,5 @@ data class EventResponse(
         val end: ZonedDateTime,
         val title: String?,
         val description: String?,
+        val location: String?
 )

@@ -112,6 +112,7 @@ class CalendarViewModel(
                             description = it.description,
                             start = it.start,
                             end = it.end,
+                            location = it.location,
                             isChecked = true
                     )
                     results.add(event)

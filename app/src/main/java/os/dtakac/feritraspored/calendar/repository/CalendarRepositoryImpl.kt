@@ -7,6 +7,7 @@ import android.provider.CalendarContract
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import os.dtakac.feritraspored.calendar.response.CalendarResponse
 import os.dtakac.feritraspored.calendar.response.EventResponse
 import os.dtakac.feritraspored.common.constants.CALENDAR_URL_PATTERN
@@ -64,6 +65,73 @@ class CalendarRepositoryImpl(
             @Suppress("BlockingMethodInNonBlockingContext")
             Jsoup.connect(scheduleUrl).get()
         }
+        return extractEventsFromBlocks(document)
+    }
+
+    override suspend fun addEvents(calendarId: String, events: List<EventResponse>) {
+        val zoneId = ZoneId.of(TimeZone.getDefault().id)
+        val bulkValues = withContext(Dispatchers.Default) {
+            events.map {
+                ContentValues().apply {
+                    put(CalendarContract.Events.DTSTART, it.start.toInstant().toEpochMilli())
+                    put(CalendarContract.Events.DTEND, it.end.toInstant().toEpochMilli())
+                    put(CalendarContract.Events.TITLE, it.title)
+                    put(CalendarContract.Events.DESCRIPTION, it.description)
+                    put(CalendarContract.Events.CALENDAR_ID, calendarId)
+                    put(CalendarContract.Events.EVENT_TIMEZONE, zoneId.id)
+                }
+            }.toTypedArray()
+        }
+        withContext(Dispatchers.IO) {
+            contentResolver.bulkInsert(
+                    CalendarContract.Events.CONTENT_URI,
+                    bulkValues
+            )
+        }
+    }
+
+    private suspend fun extractEventsFromBlocks(document: Document): List<EventResponse> {
+        val blocks = withContext(Dispatchers.Default) {
+            document.select(".blokovi")
+        }
+        val events = mutableListOf<EventResponse>()
+        withContext(Dispatchers.Default) {
+            for (i in blocks.indices) {
+                val blockText = blocks[i].select("p")
+                val blockHide = blocks[i].select(".hide")
+
+                val dates = Uri.parse(blockHide
+                        .select("a[href*=calendar]")
+                        .attr("href")
+                ).getQueryParameter("dates")?.split("/")
+                val start = parseDate(dates?.getOrNull(0))
+                val end = parseDate(dates?.getOrNull(1))
+                if (start == null || end == null) {
+                    continue
+                }
+
+                val name = blockText.textNodes().getOrNull(0)?.text()?.trim()
+                val type = blockHide.textNodes().getOrNull(0)?.text()?.trim()
+                val staff = blockHide
+                        .select("a[href*=imenik-djelatnika], a[href*=staff-directory]")
+                        .text()
+                        .trim()
+                val location = blockText.textNodes().getOrNull(1)?.text()?.trim()
+
+                events.add(EventResponse(
+                        id = i.toString(),
+                        start = start,
+                        end = end,
+                        title = name,
+                        description = "$type - $staff",
+                        location = location
+                ))
+            }
+        }
+        return events
+    }
+
+    private suspend fun extractEventsFromCalendarLinks(document: Document): List<EventResponse> {
         // select all google calendar links
         val uris = withContext(Dispatchers.Default) {
             document.select(".hide a[href*=calendar]")
@@ -90,32 +158,11 @@ class CalendarRepositoryImpl(
                         end = end,
                         title = title,
                         description = description,
+                        location = null
                 ))
             }
         }
         return events
-    }
-
-    override suspend fun addEvents(calendarId: String, events: List<EventResponse>) {
-        val zoneId = ZoneId.of(TimeZone.getDefault().id)
-        val bulkValues = withContext(Dispatchers.Default) {
-            events.map {
-                ContentValues().apply {
-                    put(CalendarContract.Events.DTSTART, it.start.toInstant().toEpochMilli())
-                    put(CalendarContract.Events.DTEND, it.end.toInstant().toEpochMilli())
-                    put(CalendarContract.Events.TITLE, it.title)
-                    put(CalendarContract.Events.DESCRIPTION, it.description)
-                    put(CalendarContract.Events.CALENDAR_ID, calendarId)
-                    put(CalendarContract.Events.EVENT_TIMEZONE, zoneId.id)
-                }
-            }.toTypedArray()
-        }
-        withContext(Dispatchers.IO) {
-            contentResolver.bulkInsert(
-                    CalendarContract.Events.CONTENT_URI,
-                    bulkValues
-            )
-        }
     }
 
     private fun parseDate(dateFromUrl: String?): ZonedDateTime? {

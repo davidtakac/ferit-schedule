@@ -19,5 +19,6 @@ data class EventSingleData(
         val description: String?,
         val start: ZonedDateTime,
         val end: ZonedDateTime,
+        val location: String?,
         val isChecked: Boolean
 ): EventData(id)

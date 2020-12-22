@@ -96,9 +96,11 @@ class EventRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: EventSingleData) {
             binding.apply {
-                tvTitle.text = data.title ?: root.resources.getString(R.string.placeholder_empty)
-                tvDescription.text = data.description ?: root.resources.getString(R.string.placeholder_empty)
+                val empty = root.resources.getString(R.string.placeholder_empty)
+                tvTitle.text = data.title ?: empty
+                tvDescription.text = data.description ?: empty
                 tvTimes.text = buildTimesString(data.start, data.end)
+                tvLocation.text = data.location ?: empty
                 checkbox.isChecked = data.isChecked
                 checkbox.setOnClickListener {
                     eventListener.onEventChecked(data, !data.isChecked)

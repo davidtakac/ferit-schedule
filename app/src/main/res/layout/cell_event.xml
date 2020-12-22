@@ -15,27 +15,63 @@
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/checkbox"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Pouzdanost i dijagnostika rač. sustava LV - laboratorijske vježbe K3-1"/>
+    <ImageView
+        android:id="@+id/ivDescription"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_constraintTop_toTopOf="@id/tvDescription"
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        app:layout_constraintBottom_toBottomOf="@id/tvDescription"
+        app:srcCompat="@drawable/description"/>
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:layout_constraintStart_toEndOf="@id/checkbox"
+        app:layout_constraintStart_toEndOf="@id/ivDescription"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Grupa DRC-LV1/24 OMRČEN LUKA"/>
+        android:layout_marginStart="4dp"
+        tools:text="Grupa DRC-LV1/24 OMRČEN LUKA i neki dugacki opis hmm kako se ponasa"/>
+    <ImageView
+        android:id="@+id/ivLocation"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_constraintTop_toTopOf="@id/tvLocation"
+        app:layout_constraintStart_toStartOf="@id/ivDescription"
+        app:layout_constraintBottom_toBottomOf="@id/tvLocation"
+        app:srcCompat="@drawable/location"/>
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/tvDescription"
+        app:layout_constraintStart_toEndOf="@id/ivLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="4dp"
+        tools:text="Virtualna ucionica 9"/>
+    <ImageView
+        android:id="@+id/ivTime"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_constraintTop_toTopOf="@id/tvTimes"
+        app:layout_constraintStart_toStartOf="@id/ivLocation"
+        app:layout_constraintBottom_toBottomOf="@id/tvTimes"
+        app:srcCompat="@drawable/time"/>
     <TextView
         android:id="@+id/tvTimes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tvDescription"
-        app:layout_constraintStart_toEndOf="@id/checkbox"
+        app:layout_constraintTop_toBottomOf="@id/tvLocation"
+        app:layout_constraintStart_toEndOf="@id/ivTime"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="4dp"
         tools:text="11:15 - 15:00"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
