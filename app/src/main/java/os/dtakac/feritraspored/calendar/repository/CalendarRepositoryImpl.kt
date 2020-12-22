@@ -110,12 +110,27 @@ class CalendarRepositoryImpl(
                     continue
                 }
 
-                val name = blockText.textNodes().getOrNull(0)?.text()?.trim()
-                val type = blockHide.textNodes().getOrNull(0)?.text()?.trim()
+                val name = blockText
+                        .textNodes()
+                        .getOrNull(0)
+                        ?.text()
+                        ?.trim()
+                val type = blockHide
+                        .textNodes()
+                        .getOrNull(0)
+                        ?.text()
+                        ?.trim()
                 val staff = blockHide
                         .select("a[href*=imenik-djelatnika], a[href*=staff-directory]")
                         .text()
                         .trim()
+                val group = blockHide
+                        .select("a[href*=grupa]")
+                        .getOrNull(0)
+                        ?.text()
+                        ?.split("Otvori grupu")
+                        ?.getOrNull(1)
+                        ?.trim()
                 val location = blockText.textNodes().getOrNull(1)?.text()?.trim()
 
                 events.add(EventResponse(
@@ -123,7 +138,7 @@ class CalendarRepositoryImpl(
                         start = start,
                         end = end,
                         title = name,
-                        description = "$type - $staff",
+                        description = "$group - $staff: $type",
                         location = location
                 ))
             }
