@@ -41,7 +41,7 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkPermissionsAndInitialize()
+        checkReadCalendarPermission()
         initViews()
         initObservers()
     }
@@ -60,11 +60,12 @@ class CalendarPickerFragment : Fragment(), CalendarRecyclerAdapter.ClickListener
         }
     }
 
-    override fun onClick(calendarId: String) {
+    override fun onCalendarClicked(calendarId: String) {
         viewModel.onCalendarPicked(calendarId)
+        findNavController().navigate(R.id.actionConfirmation)
     }
 
-    private fun checkPermissionsAndInitialize() {
+    private fun checkReadCalendarPermission() {
         if(checkSelfPermission(requireContext(), Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
             viewModel.getCalendars()
         } else {

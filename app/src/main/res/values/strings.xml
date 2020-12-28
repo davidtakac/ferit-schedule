@@ -73,10 +73,17 @@
     <string name="theme_option_dark">Dark</string>
     <string name="add_week_to_calendar">Add to calendar…</string>
     <string name="events">Events</string>
-    <string name="label_calendars">Choose and save to calendar</string>
-    <string name="label_events">Choose events</string>
+    <string name="label_events">Events</string>
+    <string name="calendar">Calendar</string>
+    <string name="label_calendar">Calendar</string>
+    <string name="label_confirmation">Review</string>
     <string name="template_time_span" formatted="false">%s - %s</string>
     <string name="select_all">Select</string>
     <string name="unselect_all">Unselect</string>
+    <string name="week_name">Week name</string>
+    <string name="num_events">Number of events</string>
+    <string name="confirm_and_add">Confirm and add</string>
+    <string name="template_events_review" formatted="false">%s / %s</string>
+    <string name="template_calendar_review" formatted="false">%s (%s)</string>
     <!--endregion-->
 </resources>

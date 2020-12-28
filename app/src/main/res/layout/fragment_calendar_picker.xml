@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/colorStatusBar"
-        app:title="@string/label_calendars"
+        app:title="@string/label_calendar"
         app:layout_constraintTop_toTopOf="parent"
         android:elevation="4dp"
         app:navigationIcon="?attr/homeAsUpIndicator"/>

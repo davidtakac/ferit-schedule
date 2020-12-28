@@ -1,11 +1,14 @@
 package os.dtakac.feritraspored.calendar.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.calendar.data.CalendarData
 import os.dtakac.feritraspored.calendar.data.EventData
 import os.dtakac.feritraspored.calendar.data.EventGroupData
@@ -13,16 +16,26 @@ import os.dtakac.feritraspored.calendar.data.EventSingleData
 import os.dtakac.feritraspored.calendar.repository.CalendarRepository
 import os.dtakac.feritraspored.calendar.response.CalendarResponse
 import os.dtakac.feritraspored.calendar.response.EventResponse
+import os.dtakac.feritraspored.common.data.StringResourceWithArgs
 
 class CalendarViewModel(
         private val calendarRepository: CalendarRepository
 ) : ViewModel() {
     private lateinit var scheduleUrl: String
     private lateinit var calendarId: String
-    private lateinit var eventResponse: List<EventResponse>
+    private lateinit var events: List<EventResponse>
 
-    val calendarData = MutableLiveData<List<CalendarData>>()
     val eventData = MutableLiveData<List<EventData>>()
+    val calendarData = MutableLiveData<List<CalendarData>>()
+    val eventsReviewData = Transformations.map(eventData) {
+        val numSelected = it.filter { e -> (e as? EventSingleData)?.isChecked == true }.size
+        val numTotal = it.filterIsInstance<EventSingleData>().size
+        StringResourceWithArgs(
+                R.string.template_events_review,
+                listOf(numSelected.toString(), numTotal.toString())
+        )
+    }
+    val calendarReviewData = MutableLiveData<CalendarData>()
 
     val isCalendarsLoaderVisible = MutableLiveData<Boolean>()
     val isEventsLoaderVisible = MutableLiveData<Boolean>()
@@ -33,7 +46,7 @@ class CalendarViewModel(
 
     fun onCalendarPicked(calendarId: String) {
         this.calendarId = calendarId
-        // todo: display dialog to user, ask for permissions etc
+        calendarReviewData.value = calendarData.value?.first { it.id == calendarId }
     }
 
     fun getCalendars() {
@@ -55,7 +68,7 @@ class CalendarViewModel(
                 isEventsLoaderVisible.value = true
 
                 val response = calendarRepository.getEvents(scheduleUrl)
-                eventResponse = response
+                events = response
                 eventData.value = createEventData(response)
 
                 isEventsLoaderVisible.value = false
@@ -91,6 +104,10 @@ class CalendarViewModel(
             }
             eventData.value = updatedEventData
         }
+    }
+
+    fun onAddClicked() {
+        Log.d("caltag", "clicked add!")
     }
 
     private suspend fun createEventData(events: List<EventResponse>): List<EventData> {

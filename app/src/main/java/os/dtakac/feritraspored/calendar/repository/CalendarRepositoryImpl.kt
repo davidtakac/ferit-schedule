@@ -17,11 +17,12 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 class CalendarRepositoryImpl(
         private val contentResolver: ContentResolver
 ) : CalendarRepository {
+    private val zoneId = ZoneId.of("GMT+1")
+
     override suspend fun getAvailableCalendars(): List<CalendarResponse> {
         // query content provider for writeable calendars
         val eventProjection: Array<String> = arrayOf(
@@ -60,7 +61,6 @@ class CalendarRepositoryImpl(
     }
 
     override suspend fun getEvents(scheduleUrl: String): List<EventResponse> {
-        // fetch document
         val document = withContext(Dispatchers.IO) {
             @Suppress("BlockingMethodInNonBlockingContext")
             Jsoup.connect(scheduleUrl).get()
@@ -69,7 +69,6 @@ class CalendarRepositoryImpl(
     }
 
     override suspend fun addEvents(calendarId: String, events: List<EventResponse>) {
-        val zoneId = ZoneId.of(TimeZone.getDefault().id)
         val bulkValues = withContext(Dispatchers.Default) {
             events.map {
                 ContentValues().apply {
@@ -110,16 +109,8 @@ class CalendarRepositoryImpl(
                     continue
                 }
 
-                val name = blockText
-                        .textNodes()
-                        .getOrNull(0)
-                        ?.text()
-                        ?.trim()
-                val type = blockHide
-                        .textNodes()
-                        .getOrNull(0)
-                        ?.text()
-                        ?.trim()
+                val name = blockText.textNodes().getOrNull(0)?.text()?.trim()
+                val type = blockHide.textNodes().getOrNull(0)?.text()?.trim()
                 val staff = blockHide
                         .select("a[href*=imenik-djelatnika], a[href*=staff-directory]")
                         .text()
@@ -185,6 +176,7 @@ class CalendarRepositoryImpl(
             LocalDateTime
                     .parse(dateFromUrl, DateTimeFormatter.ofPattern(CALENDAR_URL_PATTERN))
                     .atZone(ZoneOffset.UTC)
+                    .withZoneSameInstant(zoneId)
         } catch (e: Exception) {
             null
         }

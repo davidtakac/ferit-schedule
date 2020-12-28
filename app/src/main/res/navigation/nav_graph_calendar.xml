@@ -19,5 +19,13 @@
     <fragment
         android:id="@+id/calendarPickerFragment"
         android:name="os.dtakac.feritraspored.calendar.view.CalendarPickerFragment"
-        tools:layout="@layout/fragment_calendar_picker"/>
+        tools:layout="@layout/fragment_calendar_picker">
+        <action
+            android:id="@+id/actionConfirmation"
+            app:destination="@id/confirmationFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/confirmationFragment"
+        android:name="os.dtakac.feritraspored.calendar.view.ConfirmationFragment"
+        tools:layout="@layout/fragment_confirmation"/>
 </navigation>

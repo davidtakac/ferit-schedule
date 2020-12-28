@@ -109,15 +109,12 @@ class EventRecyclerAdapter(
         }
 
         private fun buildTimesString(start: ZonedDateTime, end: ZonedDateTime): String {
-            val zoneId = ZoneId.of(TimeZone.getDefault().id)
             val startLocalized = start
-                    .withZoneSameInstant(zoneId)
                     .format(DateTimeFormatter.ofPattern(
                             TIME_PATTERN,
                             binding.root.resources.configuration.locale
                     ))
             val endLocalized = end
-                    .withZoneSameInstant(zoneId)
                     .format(DateTimeFormatter.ofPattern(
                             TIME_PATTERN,
                             binding.root.resources.configuration.locale

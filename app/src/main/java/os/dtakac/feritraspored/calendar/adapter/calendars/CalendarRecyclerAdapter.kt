@@ -42,12 +42,12 @@ class CalendarRecyclerAdapter(
                 ivColor.setColorFilter(data.color ?: root.context.getColorCompat(R.color.colorPrimary))
                 tvName.text = data.name ?: root.context.getString(R.string.events)
                 tvAccount.text = data.account
-                root.setOnClickListener { clickListener.onClick(data.id) }
+                root.setOnClickListener { clickListener.onCalendarClicked(data.id) }
             }
         }
     }
 
     interface ClickListener {
-        fun onClick(calendarId: String)
+        fun onCalendarClicked(calendarId: String)
     }
 }
