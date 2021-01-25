@@ -174,7 +174,6 @@ class ScheduleFragment : Fragment() {
                             .format(binding.error.tvError.text.toString())
             )
         }
-        binding.loader.hide()
         binding.error.tvError.movementMethod = ScrollingMovementMethod()
     }
 
