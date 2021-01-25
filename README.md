@@ -3,12 +3,23 @@
 A wrapper app for [Ferit's](https://www.ferit.unios.hr) online class schedule.
 [Latest version - on Play Store](https://play.google.com/store/apps/details?id=os.dtakac.feritraspored)
 
-## Further development
-If you have suggestions or wish to maintain the project after I finish college, please let me know at 
-developer.takac@gmail.com. 
+## Contributions
+Contributions are very welcome and encouraged! You can contribute by: 
+- Creating a **pull request**. Use the `dev` branch for development and as the target. 
+- Creating **issues**. Describe what you were doing when an issue occurred and what you expected to 
+happen instead. 
+- Sending and **email** to developer.takac@gmail.com. This includes written feature requests or bug 
+reports. 
 
-## App features
-- Heavily de-bloated original web-page (remove redundant elements and all scripts)
+## How it works - in a nutshell
+1. Download HTML of schedule web-page for given settings
+2. Extract data from HTML (title)
+3. De-bloat (remove scripts and unneeded elements)
+4. Apply transformations (highlights, time on blocks and dark theme)
+5. Display in WebView
+
+## Features
+- Remove scripts and unneeded elements
 - Automatically load current week and scroll to current day for your study programme and year
 - Switch between Croatian and English schedule language in-app
 - Display class period on its block
