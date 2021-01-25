@@ -81,13 +81,14 @@ class ScheduleRepositoryImpl : ScheduleRepository {
                 .getOrNull(1)
                 ?.text()
                 ?.removeSurrounding("\"")
-        return when {
-            title == null
-                    || title.isBlank()
-                    || title.isEmpty()
-                    || title == "null"
-                    || title == "undefined" -> null
-            else -> title
+        return if (title == null
+                || title.isBlank()
+                || title.isEmpty()
+                || title == "null"
+                || title == "undefined") {
+                    null
+        } else {
+            title
         }
     }
 }

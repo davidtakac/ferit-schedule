@@ -118,11 +118,10 @@ class ScheduleViewModel(
             errorMessage.value = null
             isLoaderVisible.value = true
 
-            var error: StringResourceWithArgs? = null
-            val data = try {
-                getScheduleData()
+            try {
+                scheduleData.value = getScheduleData()
             } catch (e: Exception) {
-                error = StringResourceWithArgs(
+                errorMessage.value = StringResourceWithArgs(
                         content = R.string.template_error_unexpected,
                         args = listOf(
                                 e.message ?: "",
@@ -130,13 +129,6 @@ class ScheduleViewModel(
                                 selectedDate.urlFormat()
                         )
                 )
-                null
-            }
-
-            if (data != null) {
-                scheduleData.value = data
-            } else {
-                errorMessage.value = error
                 isLoaderVisible.value = false
             }
         }
@@ -147,7 +139,10 @@ class ScheduleViewModel(
             val scrollJs = assetProvider
                     .readFile("template_scroll_into_view.js")
                     .format(selectedDate.scrollFormat())
-            javascript.value = JavascriptData(js = scrollJs, callback = { postScrollEvent(it) })
+            javascript.value = JavascriptData(
+                    js = scrollJs,
+                    callback = { postScrollEvent(it) }
+            )
         }
     }
 
