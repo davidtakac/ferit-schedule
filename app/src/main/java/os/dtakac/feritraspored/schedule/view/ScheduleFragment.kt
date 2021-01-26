@@ -118,16 +118,17 @@ class ScheduleFragment : Fragment() {
                     .setAnchorView(binding.navBar.root)
                     .show()
         }
-        viewModel.isLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
+        viewModel.loaderVisible.observe(viewLifecycleOwner) { shouldShow ->
             binding.loader.apply { if (shouldShow) show() else hide() }
         }
-        viewModel.errorMessage.observe(viewLifecycleOwner) {
-            binding.error.tvError.text = it?.buildString(resources)
+        viewModel.error.observe(viewLifecycleOwner) {
+            if (it == null) {
+                binding.error.root.isGone = true
+            } else {
+                binding.error.tvError.text = getString(it.message)
+            }
         }
-        viewModel.isErrorGone.observe(viewLifecycleOwner) {
-            binding.error.root.isGone = it
-        }
-        viewModel.areControlsEnabled.observe(viewLifecycleOwner) {
+        viewModel.controlsEnabled.observe(viewLifecycleOwner) {
             binding.navBar.apply {
                 btnPrevious.isEnabled = it
                 btnCurrent.isEnabled = it

@@ -31,7 +31,7 @@
     <string name="label_refresh">Osvježi</string>
     <string name="error_no_network">Došlo je do pogreške pri učitavanju stranice, a izgleda da ne postoji internetska veza. Provjeri internetsku vezu i probaj opet.</string>
     <string name="notify_no_network">Nemoguće učitati stranicu. Provjeri internetsku vezu i probaj opet.</string>
-    <string name="template_error_unexpected" formatted="false">Došlo je do neočekivane pogreške.\n [Poruka]: %s [Identifikator]: %s [Datum]: %s</string>
+    <string name="error_unexpected" formatted="false">Došlo je do neočekivane pogreške. Ako vidiš ovo, vjerojatno trebaš prijaviti problem.</string>
     <string name="title_groups_help">Upute za unos filtera</string>
     <string name="content_groups_help">
         &#8226; Svaki blok koji u svom naslovu ili oblačiću sadrži uneseni filter bit će označen\n
@@ -73,5 +73,7 @@
     <string name="theme_option_dark">Tamna</string>
     <string name="notify_error_open_external">Dogodila se greška. Je li stranica rasporeda učitana?</string>
     <string name="notify_error_open_link">Neuspjelo otvaranje poveznice.</string>
+    <string name="error_page_unavailable">Čini se da je Feritova stranica trenutno nedostupna. Problem bi se trebao riješiti sam od sebe nakon što stranica postane dostupna. Molim te prijavi ga u suprotnom.</string>
+    <string name="error_timeout">Isteklo je vrijeme čekanja na odgovor web-stranice. Molim te provjeri svoju internetsku vezu i da je Feritova stranica dostupna te probaj opet.</string>
     <!--endregion-->
 </resources>

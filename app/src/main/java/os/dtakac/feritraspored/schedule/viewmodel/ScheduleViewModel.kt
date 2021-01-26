@@ -4,20 +4,22 @@ import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import org.jsoup.HttpStatusException
 import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.assets.AssetProvider
 import os.dtakac.feritraspored.common.constants.SHOW_CHANGELOG
-import os.dtakac.feritraspored.common.data.StringResourceWithArgs
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.common.extensions.urlFormat
 import os.dtakac.feritraspored.common.network.NetworkChecker
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
+import os.dtakac.feritraspored.schedule.data.ErrorData
 import os.dtakac.feritraspored.schedule.data.JavascriptData
 import os.dtakac.feritraspored.schedule.data.ScheduleData
 import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
+import java.net.SocketTimeoutException
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
@@ -29,10 +31,9 @@ class ScheduleViewModel(
         private val networkChecker: NetworkChecker
 ) : ViewModel() {
     val scheduleData = MutableLiveData<ScheduleData>()
-    val isLoaderVisible = MutableLiveData<Boolean>()
-    val errorMessage = MutableLiveData<StringResourceWithArgs?>()
-    val isErrorGone: LiveData<Boolean> = Transformations.map(errorMessage) { it == null }
-    val areControlsEnabled: LiveData<Boolean> = Transformations.map(isLoaderVisible) { !it }
+    val loaderVisible = MutableLiveData<Boolean>()
+    val error = MutableLiveData<ErrorData?>()
+    val controlsEnabled: LiveData<Boolean> = Transformations.map(loaderVisible) { !it }
 
     val javascript = SingleLiveEvent<JavascriptData>()
     val openInExternalBrowser = SingleLiveEvent<Uri>()
@@ -64,7 +65,7 @@ class ScheduleViewModel(
     }
 
     fun onPageDrawn() {
-        isLoaderVisible.value = false
+        loaderVisible.value = false
         if (buildCurrentDate().isSameWeek(selectedDate)) {
             scrollSelectedDateIntoView()
         }
@@ -113,21 +114,16 @@ class ScheduleViewModel(
     private fun loadSchedule() {
         viewModelScope.launch {
             clearWebViewScroll.call()
-            errorMessage.value = null
-            isLoaderVisible.value = true
-
+            error.value = null
+            loaderVisible.value = true
             try {
                 scheduleData.value = getScheduleData()
+            } catch (e: HttpStatusException) {
+                handleHttpStatusException(e)
+            } catch (e: SocketTimeoutException) {
+                handleSocketTimeoutException(e)
             } catch (e: Exception) {
-                errorMessage.value = StringResourceWithArgs(
-                        content = R.string.template_error_unexpected,
-                        args = listOf(
-                                e.message ?: "",
-                                prefs.courseIdentifier,
-                                selectedDate.urlFormat()
-                        )
-                )
-                isLoaderVisible.value = false
+                handleOtherException(e)
             }
         }
     }
@@ -169,8 +165,8 @@ class ScheduleViewModel(
         val isOnline = networkChecker.isOnline
         if (!isOnline) {
             if (scheduleData.value == null) {
-                if (errorMessage.value == null) {
-                    errorMessage.value = StringResourceWithArgs(R.string.error_no_network)
+                if (error.value == null) {
+                    error.value = ErrorData(R.string.error_no_network)
                 } else {
                     snackBarMessage.value = R.string.notify_no_network
                 }
@@ -208,5 +204,26 @@ class ScheduleViewModel(
             selectedDate = currentDate
             loadSchedule()
         }
+    }
+
+    private fun handleHttpStatusException(e: HttpStatusException) {
+        error.value = ErrorData(
+                message = when (e.statusCode) {
+                    in 400..599 -> R.string.error_page_unavailable
+                    else -> R.string.error_unexpected
+                },
+                exception = e
+        )
+        loaderVisible.value = false
+    }
+
+    private fun handleSocketTimeoutException(e: SocketTimeoutException) {
+        error.value = ErrorData(R.string.error_timeout, e)
+        loaderVisible.value = false
+    }
+
+    private fun handleOtherException(e: Exception) {
+        error.value = ErrorData(R.string.error_unexpected, e)
+        loaderVisible.value = false
     }
 }
