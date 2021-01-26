@@ -71,5 +71,7 @@
     <string name="theme_option_system">Follow system settings</string>
     <string name="theme_option_light">Light</string>
     <string name="theme_option_dark">Dark</string>
+    <string name="notify_error_open_external">An error occurred. Is the schedule loaded?</string>
+    <string name="notify_error_open_link">An error occurred when opening this link.</string>
     <!--endregion-->
 </resources>

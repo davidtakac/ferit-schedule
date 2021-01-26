@@ -71,13 +71,10 @@ class ScheduleViewModel(
     }
 
     fun onUrlClicked(url: String?) {
-        val uri = try {
-            Uri.parse(url)
+        try {
+            openInCustomTabs.value = Uri.parse(url)
         } catch (e: Exception) {
-            null
-        }
-        if (uri != null) {
-            openInCustomTabs.value = uri
+            snackBarMessage.value = R.string.notify_error_open_link
         }
     }
 
@@ -88,9 +85,10 @@ class ScheduleViewModel(
     }
 
     fun onOpenInExternalBrowserClicked() {
-        val uri = try { Uri.parse(scheduleData.value?.baseUrl) } catch (e: Exception) { null }
-        if (uri != null) {
-            openInExternalBrowser.value = uri
+        try {
+            openInExternalBrowser.value = Uri.parse(scheduleData.value?.baseUrl)
+        } catch (e: Exception) {
+            snackBarMessage.value = R.string.notify_error_open_external
         }
     }
 
