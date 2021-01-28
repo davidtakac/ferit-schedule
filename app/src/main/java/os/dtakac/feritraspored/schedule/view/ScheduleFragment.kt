@@ -128,6 +128,12 @@ class ScheduleFragment : Fragment() {
                 binding.error.tvError.text = getString(it.message)
             }
         }
+        viewModel.bugReport.observe(viewLifecycleOwner) {
+            context?.openEmailEditor(
+                    subject = getString(R.string.subject_bug_report),
+                    content = it
+            )
+        }
         viewModel.controlsEnabled.observe(viewLifecycleOwner) {
             binding.navBar.apply {
                 btnPrevious.isEnabled = it
@@ -169,11 +175,7 @@ class ScheduleFragment : Fragment() {
             }
         }
         binding.error.btnBugReport.setOnClickListener {
-            context?.openEmailEditor(
-                    subject = getString(R.string.subject_bug_report),
-                    content = getString(R.string.template_bug_report)
-                            .format(binding.error.tvError.text.toString())
-            )
+            viewModel.onBugReportClicked(binding.error.tvError.text.toString())
         }
         binding.error.tvError.movementMethod = ScrollingMovementMethod()
     }

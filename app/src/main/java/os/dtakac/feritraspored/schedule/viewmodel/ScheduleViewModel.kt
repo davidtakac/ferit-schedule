@@ -42,6 +42,7 @@ class ScheduleViewModel(
     val snackBarMessage = SingleLiveEvent<@StringRes Int>()
     val webViewScroll = SingleLiveEvent<Float>()
     val clearWebViewScroll = SingleLiveEvent<Unit>()
+    val bugReport = SingleLiveEvent<String>()
 
     private var wasLoadedInOnCreate = false
     private var selectedDate = buildCurrentDate()
@@ -111,6 +112,10 @@ class ScheduleViewModel(
         }
     }
 
+    fun onBugReportClicked(displayedErrorMessage: String) {
+        bugReport.value = buildBugReport(displayedErrorMessage)
+    }
+
     private fun loadSchedule() {
         viewModelScope.launch {
             clearWebViewScroll.call()
@@ -118,12 +123,8 @@ class ScheduleViewModel(
             loaderVisible.value = true
             try {
                 scheduleData.value = getScheduleData()
-            } catch (e: HttpStatusException) {
-                handleHttpStatusException(e)
-            } catch (e: SocketTimeoutException) {
-                handleSocketTimeoutException(e)
             } catch (e: Exception) {
-                handleOtherException(e)
+                handleScheduleException(e)
             }
         }
     }
@@ -206,24 +207,33 @@ class ScheduleViewModel(
         }
     }
 
-    private fun handleHttpStatusException(e: HttpStatusException) {
+    private fun handleScheduleException(e: Exception) {
+        val errorMessage = when {
+            e is HttpStatusException && e.statusCode in 400..599 -> R.string.error_page_unavailable
+            e is SocketTimeoutException -> R.string.error_timeout
+            else -> R.string.error_unexpected
+        }
         error.value = ErrorData(
-                message = when (e.statusCode) {
-                    in 400..599 -> R.string.error_page_unavailable
-                    else -> R.string.error_unexpected
-                },
+                message = errorMessage,
                 exception = e
         )
         loaderVisible.value = false
     }
 
-    private fun handleSocketTimeoutException(e: SocketTimeoutException) {
-        error.value = ErrorData(R.string.error_timeout, e)
-        loaderVisible.value = false
-    }
-
-    private fun handleOtherException(e: Exception) {
-        error.value = ErrorData(R.string.error_unexpected, e)
-        loaderVisible.value = false
+    private fun buildBugReport(displayedErrorMessage: String): String {
+        val errorData = error.value
+        return if (errorData == null) {
+            ""
+        } else {
+            "[Displayed error message] $displayedErrorMessage\n" +
+                    "---\n" +
+                    "[Exception message] ${errorData.exception?.message}\n" +
+                    "---\n" +
+                    "[Identifier] ${prefs.courseIdentifier}" +
+                    "---\n" +
+                    "[Date] $selectedDate" +
+                    "---\n" +
+                    "[URL] ${scheduleData.value?.baseUrl}"
+        }
     }
 }
