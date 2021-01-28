@@ -122,10 +122,13 @@ class ScheduleFragment : Fragment() {
             binding.loader.apply { if (shouldShow) show() else hide() }
         }
         viewModel.error.observe(viewLifecycleOwner) {
-            if (it == null) {
-                binding.error.root.isGone = true
-            } else {
-                binding.error.tvError.text = getString(it.message)
+            binding.error.apply {
+                if (it == null) {
+                    root.isGone = true
+                } else {
+                    tvError.text = getString(it.message)
+                    root.isGone = false
+                }
             }
         }
         viewModel.bugReport.observe(viewLifecycleOwner) {

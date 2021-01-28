@@ -225,14 +225,14 @@ class ScheduleViewModel(
         return if (errorData == null) {
             ""
         } else {
-            "[Displayed error message] $displayedErrorMessage\n" +
-                    "---\n" +
-                    "[Exception message] ${errorData.exception?.message}\n" +
-                    "---\n" +
+            "[Displayed error message] $displayedErrorMessage" +
+                    "\n---\n" +
+                    "[Exception message] ${errorData.exception?.message}" +
+                    "\n---\n" +
                     "[Identifier] ${prefs.courseIdentifier}" +
-                    "---\n" +
+                    "\n---\n" +
                     "[Date] $selectedDate" +
-                    "---\n" +
+                    "\n---\n" +
                     "[URL] ${scheduleData.value?.baseUrl}"
         }
     }
