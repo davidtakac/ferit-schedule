@@ -13,26 +13,26 @@
     <string name="title_category_group_highlight">Classes</string>
     <string name="title_timepicker">Time</string>
     <string name="title_skip_day">Skip days</string>
-    <string name="summary_skip_day">Skip to next day after specified time</string>
+    <string name="summary_skip_day">Scroll to next day after time</string>
     <string name="title_skip_saturday">Skip saturday</string>
     <string name="title_category_display_options">Schedule appearance</string>
-    <string name="label_back">Back</string>
-    <string name="label_save">Save</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_ok">OK</string>
     <string name="hint_group_highlight">LV8/16,AV1,PR-2,KV3,LV3/24,…</string>
     <string name="hint_course_identifier" tools:ignore="TypographyDashes">1-1</string>
     <string name="placeholder_empty">(Empty)</string>
     <string name="label_schedule">Schedule of classes and exams</string>
     <string name="label_open_in_browser">Open in external browser</string>
-    <string name="title_load_on_resume">Automatically load current week</string>
-    <string name="summary_load_on_resume">Load the current week each time you enter the app</string>
-    <string name="summary_skip_sat">Load the next week instead of scrolling to saturday</string>
+    <string name="title_load_on_resume">Always show current day</string>
+    <string name="summary_load_on_resume">Show current day every time you enter the app</string>
+    <string name="summary_skip_sat">Load next week\'s schedule instead of scrolling to saturday</string>
     <string name="title_group_toggle">Apply filters</string>
-    <string name="summary_group_toggle">Highlight classes which contain your active filters</string>
+    <string name="summary_group_toggle">Highlight lectures that contain active filters</string>
     <string name="label_refresh">Refresh</string>
     <string name="error_no_network">An error occurred when loading the page and it seems you\'re offline. Please connect to the internet and try again.</string>
     <string name="notify_no_network">Can\'t load page. Connect to the internet and try again.</string>
     <string name="template_error_unexpected" formatted="false">An unexpected error occurred.\n [Message]: %s [Identifier]: %s [Date]: %s</string>
-    <string name="title_groups_help">Filters help</string>
+    <string name="title_groups_help">Help</string>
     <string name="content_groups_help">
         &#8226; Each class whose title or tooltip text contains an active filter will be highlighted\n
         &#8226; Filters are comma-separated\n
@@ -46,9 +46,9 @@
     <string name="okay">Okay</string>
     <string name="title_appearance">Appearance</string>
     <string name="title_theme">Theme</string>
-    <string name="title_whats_new">[2.3.1] Fast update 2: Electric Boogaloo</string>
-    <string name="content_whats_new">Faster navigation, landscape mode, aesthetic changes and english support</string>
-    <string name="dismiss_whats_new">nice!</string>
+    <string name="title_whats_new">[2.3.2] New layout</string>
+    <string name="content_whats_new">The app now supports the new schedule layout.</string>
+    <string name="dismiss_whats_new">Sweet!</string>
     <string name="subject_bug_report">[Ferit Schedule] Bug report</string>
     <string name="subject_message_to_developer">[Ferit Schedule] Message</string>
     <string name="label_email_via">Send e-mail via…</string>
@@ -59,9 +59,9 @@
     <string name="summary_whats_new">What\'s new</string>
     <string name="template_bug_report" formatted="false">Error message: %s\n\nPlease describe what you were doing when the error occurred: </string>
     <string name="title_course_identifier">Study programme and year identifier</string>
-    <string name="title_course_identifier_help">Identifier help</string>
-    <string name="title_time_on_blocks">Class period on block</string>
-    <string name="summary_time_on_blocks">Add line with class period to its block</string>
+    <string name="title_course_identifier_help">Help</string>
+    <string name="title_time_on_blocks">Lecture time</string>
+    <string name="summary_time_on_blocks">Add lecture time to it\'s block.</string>
     <string name="content_course_identifier_help">
         1. Use a browser to navigate to your schedule web-page\n\n
         2. The link looks like this:\n<i>https://www.ferit.unios.hr\n/studenti/raspored-nastave-i-ispita\n/2020-11-10/<b>1-60</b>#anc\n\n</i>

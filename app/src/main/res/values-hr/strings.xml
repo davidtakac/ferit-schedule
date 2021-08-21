@@ -13,18 +13,18 @@
     <string name="title_category_group_highlight">Nastavni blokovi</string>
     <string name="title_timepicker">Vrijeme</string>
     <string name="title_skip_day">Preskakanje dana</string>
-    <string name="summary_skip_day">Pomiči na sljedeći dan poslije dolje definiranog vremena</string>
+    <string name="summary_skip_day">Pomiči na sljedeći dan poslije vremena</string>
     <string name="title_skip_saturday">Preskoči subotu</string>
     <string name="title_category_display_options">Prikaz rasporeda</string>
-    <string name="label_back">Natrag</string>
-    <string name="label_save">Spremi</string>
+    <string name="label_cancel">Otkaži</string>
+    <string name="label_ok">OK</string>
     <string name="hint_group_highlight">LV8/16,AV1,PR-2,KV3,LV3/24,…</string>
     <string name="hint_course_identifier" tools:ignore="TypographyDashes">1-1</string>
     <string name="placeholder_empty">(Nema unosa)</string>
     <string name="label_schedule">Raspored nastave i ispita</string>
     <string name="label_open_in_browser">Otvori u pregledniku</string>
     <string name="title_load_on_resume">Automatski učitaj trenutni tjedan</string>
-    <string name="summary_load_on_resume">Učitaj trenutni tjedan svakim ulaskom u aplikaciju</string>
+    <string name="summary_load_on_resume">Učitaj današnji dan svakim ulaskom u aplikaciju</string>
     <string name="summary_skip_sat">Učitaj sljedeći tjedan umjesto pomicanja na subotu</string>
     <string name="title_group_toggle">Primijeni filtere</string>
     <string name="summary_group_toggle">Uokviri blokove koji sadrže jedan od aktivnih filtera crvenom bojom</string>
@@ -46,9 +46,9 @@
     <string name="okay">U redu</string>
     <string name="title_appearance">Izgled aplikacije</string>
     <string name="title_theme">Tema</string>
-    <string name="title_whats_new">[2.3.0] Brzi update 2: Rz brzotrz</string>
-    <string name="content_whats_new">Brža navigacija, estetske promjene, podrška za landscape mode i engleski jezik</string>
-    <string name="dismiss_whats_new">kul!</string>
+    <string name="title_whats_new">[2.3.2] Novi izgled</string>
+    <string name="content_whats_new">Aplikacija sad podržava novi izgled FERIT-ovog rasporeda.</string>
+    <string name="dismiss_whats_new">Super!</string>
     <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
     <string name="subject_message_to_developer">[Ferit Raspored] Poruka</string>
     <string name="label_email_via">Pošalji e-mail pomoću…</string>

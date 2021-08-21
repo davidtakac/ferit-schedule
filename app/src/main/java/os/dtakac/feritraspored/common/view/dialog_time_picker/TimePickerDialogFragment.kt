@@ -21,8 +21,8 @@ class TimePickerDialogFragment : DialogFragment(), TimePickerDialog.OnTimeSetLis
                 prefs.time.minute,
                 true
         )
-        dialog.setButton(TimePickerDialog.BUTTON_NEGATIVE, getString(R.string.label_back), dialog)
-        dialog.setButton(TimePickerDialog.BUTTON_POSITIVE, getString(R.string.label_save), dialog)
+        dialog.setButton(TimePickerDialog.BUTTON_NEGATIVE, getString(R.string.label_cancel), dialog)
+        dialog.setButton(TimePickerDialog.BUTTON_POSITIVE, getString(R.string.label_ok), dialog)
         return dialog
     }
 

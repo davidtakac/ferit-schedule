@@ -24,7 +24,7 @@
         <ListPreference
             android:key="url_key"
             android:title="@string/title_schedule_languages"
-            android:negativeButtonText="@string/label_back"
+            android:negativeButtonText="@string/label_cancel"
             android:entries="@array/schedule_languages_human" />
     </PreferenceCategory>
     <PreferenceCategory
@@ -40,8 +40,8 @@
         <EditTextPreference
             android:key="group_highlight_key"
             android:title="@string/title_group_highlight"
-            android:negativeButtonText="@string/label_back"
-            android:positiveButtonText="@string/label_save"
+            android:negativeButtonText="@string/label_cancel"
+            android:positiveButtonText="@string/label_ok"
             android:dependency="group_toggle_key"/>
         <Preference
             android:key="group_help_key"
@@ -53,8 +53,8 @@
         <EditTextPreference
             android:key="course_identifier"
             android:title="@string/title_course_identifier"
-            android:negativeButtonText="@string/label_back"
-            android:positiveButtonText="@string/label_save" />
+            android:negativeButtonText="@string/label_cancel"
+            android:positiveButtonText="@string/label_ok" />
         <Preference
             android:key="course_identifier_help"
             android:title="@string/title_course_identifier_help" />
@@ -64,7 +64,7 @@
         <ListPreference
             android:key="prefkey_theme"
             android:title="@string/title_theme"
-            android:negativeButtonText="@string/label_back" />
+            android:negativeButtonText="@string/label_cancel" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/title_other">
