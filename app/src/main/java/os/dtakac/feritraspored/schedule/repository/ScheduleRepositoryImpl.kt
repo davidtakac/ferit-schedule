@@ -41,18 +41,24 @@ class ScheduleRepositoryImpl : ScheduleRepository {
     }
 
     private fun Document.removeJunk() = apply {
-        selectFirst("body").children().not(".sirina").remove()
-        //selectFirst("#raspored").select(".odabir").remove()
-        //selectFirst(".sirina").select("script").remove()
-        //select(".sirina")[1].remove()
-
-        /*selectFirst(".sirina").children().not("#raspored").remove()
-        selectFirst("#content").children().not("#raspored").remove()
-        selectFirst("#raspored").children()
-                .not(".vrijeme, .vrijeme-mobitel, .dan, .odabir").remove()
-        selectFirst("#raspored .odabir").remove()
-        selectFirst("#izbor-studija").remove()
-        select(".naziv-dan a").removeAttr("href")*/
+        // removes userway
+        selectFirst("head").select("script")[1].remove()
+        // removes body junk
+        select("#vrh").remove()
+        select("#izbornik").remove()
+        select("#mizbornik").remove()
+        select("#mpodizbornik").remove()
+        select("#header-kategorija").remove()
+        select("#img-out").remove()
+        select("#podnozje").remove()
+        select("#gototopdiv").remove()
+        select("#tekst-dokumenti").remove()
+        selectFirst(".tekst-dokumenti").remove()
+        // removes schedule header
+        select("#tekst").remove()
+        select("#raspored > .odabir").remove()
+        // removes scrolling to day behavior
+        select(".naziv-dan > a").removeAttr("href")
     }
 
     private fun Document.applyCss(css: String) = apply {
