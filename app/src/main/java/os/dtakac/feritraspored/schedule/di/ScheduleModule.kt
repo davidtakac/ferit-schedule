@@ -1,6 +1,6 @@
 package os.dtakac.feritraspored.schedule.di
 
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import os.dtakac.feritraspored.schedule.repository.ScheduleRepository
 import os.dtakac.feritraspored.schedule.repository.ScheduleRepositoryImpl

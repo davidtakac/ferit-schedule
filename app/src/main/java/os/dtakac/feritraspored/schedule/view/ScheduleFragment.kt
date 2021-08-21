@@ -17,7 +17,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.extensions.*
 import os.dtakac.feritraspored.common.view.debounce.onDebouncedClick

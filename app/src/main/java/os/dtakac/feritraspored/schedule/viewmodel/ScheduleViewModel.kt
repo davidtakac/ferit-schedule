@@ -12,6 +12,7 @@ import os.dtakac.feritraspored.common.data.StringResourceWithArgs
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.common.extensions.urlFormat
+import os.dtakac.feritraspored.common.extensions.urlYearFormat
 import os.dtakac.feritraspored.common.network.NetworkChecker
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
@@ -119,6 +120,7 @@ class ScheduleViewModel(
             try {
                 scheduleData.value = getScheduleData()
             } catch (e: Exception) {
+                e.printStackTrace()
                 errorMessage.value = StringResourceWithArgs(
                         content = R.string.template_error_unexpected,
                         args = listOf(
@@ -183,6 +185,7 @@ class ScheduleViewModel(
 
     private suspend fun getScheduleData() = scheduleRepository.getScheduleData(
             scheduleUrl = prefs.scheduleTemplate.format(
+                    selectedDate.urlYearFormat(),
                     selectedDate.urlFormat(),
                     prefs.courseIdentifier
             ),

@@ -41,15 +41,18 @@ class ScheduleRepositoryImpl : ScheduleRepository {
     }
 
     private fun Document.removeJunk() = apply {
-        selectFirst("#pagewrap").children().not(".narrow-down").remove()
-        selectFirst(".narrow-down").children().not("#content-contain").remove()
+        selectFirst("body").children().not(".sirina").remove()
+        //selectFirst("#raspored").select(".odabir").remove()
+        //selectFirst(".sirina").select("script").remove()
+        //select(".sirina")[1].remove()
+
+        /*selectFirst(".sirina").children().not("#raspored").remove()
         selectFirst("#content").children().not("#raspored").remove()
         selectFirst("#raspored").children()
                 .not(".vrijeme, .vrijeme-mobitel, .dan, .odabir").remove()
         selectFirst("#raspored .odabir").remove()
         selectFirst("#izbor-studija").remove()
-        select(".naziv-dan a").removeAttr("href")
-        select("script").remove()
+        select(".naziv-dan a").removeAttr("href")*/
     }
 
     private fun Document.applyCss(css: String) = apply {

@@ -37,8 +37,8 @@ object DialogKeys {
 }
 
 val SCHEDULE_LANGUAGES = arrayOf(
-        "https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s",
-        "https://www.ferit.unios.hr/students/schedule-of-classes-and-exams/%s/%s"
+        "https://www.ferit.unios.hr/%s/studenti/raspored-nastave-i-ispita/%s/%s",
+        "https://www.ferit.unios.hr/%s/students/schedule-of-classes-and-exams/%s/%s"
 )
 
 val SUPPORT_EMAILS = arrayOf(

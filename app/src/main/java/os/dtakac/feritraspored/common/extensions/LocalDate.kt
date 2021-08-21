@@ -15,3 +15,5 @@ fun LocalDate.isSameWeek(otherDate: LocalDate): Boolean {
 fun LocalDate.scrollFormat(): String = format(DateTimeFormatter.ofPattern("dd.MM.yyyy."))
 
 fun LocalDate.urlFormat(): String = format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+fun LocalDate.urlYearFormat(): String = format(DateTimeFormatter.ofPattern("yyyy"))
