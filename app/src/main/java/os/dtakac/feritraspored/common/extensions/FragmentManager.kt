@@ -9,7 +9,7 @@ import os.dtakac.feritraspored.common.view.dialog_info.InfoDialogFragment
 fun FragmentManager.showInfoDialog(
         @StringRes titleResId: Int,
         @StringRes contentResId: Int,
-        @StringRes dismissResId: Int = R.string.okay,
+        @StringRes dismissResId: Int = R.string.label_ok,
         key: String
 ) {
     val infoDialog = InfoDialogFragment.newInstance(titleResId, contentResId, dismissResId)
