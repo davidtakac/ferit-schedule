@@ -113,7 +113,9 @@ class PreferenceRepositoryImpl(
     override val scheduleTemplate: String
         get() {
             val template = prefs.getString(SharedPreferenceKeys.SCHEDULE_LANG, null)
-            return if (template == null) {
+            // migrate from old template
+            val isOldTemplate = SCHEDULE_LANGUAGES.none { it == template }
+            return if (template == null || isOldTemplate) {
                 val defaultUrl = SCHEDULE_LANGUAGES[0]
                 editor { putString(SharedPreferenceKeys.SCHEDULE_LANG, defaultUrl) }
                 defaultUrl

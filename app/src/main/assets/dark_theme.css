@@ -6,6 +6,9 @@ body {
 #raspored {
     background-color: #121212 !important;
 }
+#raspored > h2 {
+    color: #E0E0E0 !important;
+}
 #content-contain {
     background-color: #121212 !important;
 }

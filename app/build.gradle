@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "os.dtakac.feritraspored"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 20
+        targetSdkVersion 31
+        versionCode 21
         versionName "2.3.2"
     }
     buildTypes {
