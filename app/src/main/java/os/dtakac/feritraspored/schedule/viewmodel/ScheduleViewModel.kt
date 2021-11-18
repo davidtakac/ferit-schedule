@@ -111,6 +111,18 @@ class ScheduleViewModel(
         }
     }
 
+    fun scrollStudentGroupsIntoView() {
+        viewModelScope.launch {
+            val scrollJs = assetProvider
+                .readFile("template_scroll_into_view.js")
+                .format("tr.imegrupe")
+            javascript.value = JavascriptData(
+                js = scrollJs,
+                callback = { postScrollEvent(it) }
+            )
+        }
+    }
+
     private fun loadSchedule() {
         viewModelScope.launch {
             clearWebViewScroll.call()

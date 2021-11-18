@@ -22,6 +22,7 @@ import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.extensions.*
 import os.dtakac.feritraspored.common.view.debounce.onDebouncedClick
 import os.dtakac.feritraspored.databinding.FragmentScheduleBinding
+import os.dtakac.feritraspored.schedule.ScheduleJavascriptInterface
 import os.dtakac.feritraspored.schedule.viewmodel.ScheduleViewModel
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
@@ -38,16 +39,17 @@ class ScheduleFragment : Fragment() {
 
     private val customTabs by lazy {
         val colorParams = CustomTabColorSchemeParams.Builder()
-                .setToolbarColor(requireContext().getColorCompat(R.color.colorStatusBar))
-                .build()
+            .setToolbarColor(requireContext().getColorCompat(R.color.colorStatusBar))
+            .build()
         CustomTabsIntent.Builder()
-                .setDefaultColorSchemeParams(colorParams)
-                .build()
+            .setDefaultColorSchemeParams(colorParams)
+            .build()
     }
 
     private val scheduleWebViewClient = object : WebViewClient() {
         override fun onPageFinished(view: WebView?, url: String?) {
             viewModel.onPageDrawn()
+            view?.loadUrl("javascript:window.onhashchange = function() { scheduleJsi.onHashChanged(); };");
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
@@ -57,9 +59,9 @@ class ScheduleFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentScheduleBinding.inflate(inflater, container, false)
         return binding.root
@@ -85,11 +87,11 @@ class ScheduleFragment : Fragment() {
     private fun initObservers() {
         viewModel.scheduleData.observe(viewLifecycleOwner) {
             binding.wvSchedule.loadDataWithBaseURL(
-                    it.baseUrl,
-                    if (resources.configuration.isNightMode()) it.dataDark else it.data,
-                    it.mimeType,
-                    it.encoding,
-                    null
+                it.baseUrl,
+                if (resources.configuration.isNightMode()) it.dataDark else it.data,
+                it.mimeType,
+                it.encoding,
+                null
             )
             binding.toolbar.title = it.title ?: getString(R.string.label_schedule)
         }
@@ -115,8 +117,8 @@ class ScheduleFragment : Fragment() {
         }
         viewModel.snackBarMessage.observe(viewLifecycleOwner) {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
-                    .setAnchorView(binding.navBar.root)
-                    .show()
+                .setAnchorView(binding.navBar.root)
+                .show()
         }
         viewModel.isLoaderVisible.observe(viewLifecycleOwner) { shouldShow ->
             binding.loader.apply { if (shouldShow) show() else hide() }
@@ -137,10 +139,17 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     private fun initViews() {
         binding.wvSchedule.apply {
             setBackgroundColor(context.getColorCompat(android.R.color.transparent))
+            addJavascriptInterface(
+                object : ScheduleJavascriptInterface {
+                    override fun onHashChanged() {
+                        viewModel.scrollStudentGroupsIntoView()
+                    }
+                }, "scheduleJsi"
+            )
             webViewClient = scheduleWebViewClient
             settings.javaScriptEnabled = true
         }
@@ -169,9 +178,9 @@ class ScheduleFragment : Fragment() {
         }
         binding.error.btnBugReport.setOnClickListener {
             context?.openEmailEditor(
-                    subject = getString(R.string.subject_bug_report),
-                    content = getString(R.string.template_bug_report)
-                            .format(binding.error.tvError.text.toString())
+                subject = getString(R.string.subject_bug_report),
+                content = getString(R.string.template_bug_report)
+                    .format(binding.error.tvError.text.toString())
             )
         }
         binding.error.tvError.movementMethod = ScrollingMovementMethod()
@@ -179,13 +188,14 @@ class ScheduleFragment : Fragment() {
 
     private fun scrollWebView(elementPositionDp: Float) {
         if (scrollAnimator?.isStarted != true) {
-            val elementPositionPx = resources.displayMetrics.toPixels(elementPositionDp).roundToInt()
+            val elementPositionPx =
+                resources.displayMetrics.toPixels(elementPositionDp).roundToInt()
             val currentVerticalPosition = binding.wvSchedule.scrollY
             val anim = ObjectAnimator.ofInt(
-                    binding.wvSchedule,
-                    "scrollY",
-                    currentVerticalPosition,
-                    elementPositionPx
+                binding.wvSchedule,
+                "scrollY",
+                currentVerticalPosition,
+                elementPositionPx
             )
             val distance = (currentVerticalPosition - elementPositionPx).absoluteValue
             anim.duration = (distance / scrollSpeed).roundToLong()
