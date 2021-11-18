@@ -58,3 +58,25 @@ body {
     border-color: #FF312E !important;
     border-width: 2px !important;
 }
+div.tablicagrupestudenata > div > h3 {
+    color: #E0E0E0 !important;
+}
+input {
+    background-color: #212121 !important;
+    color: #E0E0E0 !important;
+}
+.imegrupe {
+    color: #E0E0E0 !important;
+}
+td:nth-child(1) {
+    color: #BDBDBD !important;
+}
+td:nth-child(4) {
+    color: #E0E0E0 !important;
+}
+td:nth-child(5) {
+    color: #E0E0E0 !important;
+}
+td:nth-child(6) {
+    color: #BDBDBD !important;
+}
