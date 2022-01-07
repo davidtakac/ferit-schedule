@@ -1,7 +1,7 @@
 package os.dtakac.feritraspored.common.constants
 
 enum class ScheduleLanguage {
-    EN, HR
+    HR, EN
 }
 
 fun getScheduleUrl(scheduleLanguage: ScheduleLanguage): String {
