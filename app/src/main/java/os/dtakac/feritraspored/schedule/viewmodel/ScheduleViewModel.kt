@@ -197,7 +197,6 @@ class ScheduleViewModel(
 
     private suspend fun getScheduleData() = scheduleRepository.getScheduleData(
             scheduleUrl = prefs.scheduleTemplate.format(
-                    selectedDate.urlYearFormat(),
                     selectedDate.urlFormat(),
                     prefs.courseIdentifier
             ),
