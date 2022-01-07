@@ -31,11 +31,14 @@ import kotlin.math.roundToLong
 class ScheduleFragment : Fragment() {
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: ScheduleViewModel by viewModel()
+
     private var scrollAnimator: ObjectAnimator? = null
     private val scrollSpeed by lazy { resources.displayMetrics.toPixels(dp = 2.2f) }
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
+
+    private val scheduleJsiName = "scheduleJsi"
+    private val onHashChangedJsiMethod = "javascript:window.onhashchange = function() { $scheduleJsiName.onHashChanged(); };"
 
     private val customTabs by lazy {
         val colorParams = CustomTabColorSchemeParams.Builder()
@@ -49,7 +52,7 @@ class ScheduleFragment : Fragment() {
     private val scheduleWebViewClient = object : WebViewClient() {
         override fun onPageFinished(view: WebView?, url: String?) {
             viewModel.onPageDrawn()
-            view?.loadUrl("javascript:window.onhashchange = function() { scheduleJsi.onHashChanged(); };");
+            view?.loadUrl(onHashChangedJsiMethod)
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
@@ -148,7 +151,7 @@ class ScheduleFragment : Fragment() {
                     override fun onHashChanged() {
                         viewModel.scrollStudentGroupsIntoView()
                     }
-                }, "scheduleJsi"
+                }, scheduleJsiName
             )
             webViewClient = scheduleWebViewClient
             settings.javaScriptEnabled = true
