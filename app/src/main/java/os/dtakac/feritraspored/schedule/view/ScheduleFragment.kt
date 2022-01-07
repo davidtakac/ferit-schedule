@@ -22,7 +22,6 @@ import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.extensions.*
 import os.dtakac.feritraspored.common.view.debounce.onDebouncedClick
 import os.dtakac.feritraspored.databinding.FragmentScheduleBinding
-import os.dtakac.feritraspored.schedule.ScheduleJavascriptInterface
 import os.dtakac.feritraspored.schedule.viewmodel.ScheduleViewModel
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
@@ -104,7 +103,7 @@ class ScheduleFragment : Fragment() {
             }
         }
         viewModel.webViewScroll.observe(viewLifecycleOwner) {
-            scrollWebView(it)
+            //scrollWebView(it)
         }
         viewModel.clearWebViewScroll.observe(viewLifecycleOwner) {
             scrollAnimator?.cancel()
@@ -207,4 +206,8 @@ class ScheduleFragment : Fragment() {
             scrollAnimator?.start()
         }
     }
+}
+
+interface ScheduleJavascriptInterface {
+    fun onHashChanged()
 }

@@ -8,9 +8,9 @@
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
--keepclassmembers class os.dtakac.feritraspored.schedule.ScheduleJavascriptInterface {
-   public *;
-}
+#-keepclassmembers class os.dtakac.feritraspored.schedule.ScheduleJavascriptInterface {
+#   public *;
+#}
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
