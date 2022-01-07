@@ -5,10 +5,10 @@ A wrapper app for [Ferit's](https://www.ferit.unios.hr) online class schedule.
 
 ## Contributions
 Contributions are very welcome and encouraged! You can contribute by: 
-- Creating a **pull request**. Use the `dev` branch for development and as the target. 
+- Creating a **pull request** for the `master` branch.
 - Creating **issues**. Describe what you were doing when an issue occurred and what you expected to 
 happen instead. 
-- Sending and **email** to developer.takac@gmail.com. This includes written feature requests or bug 
+- Sending an **email** to developer.takac@gmail.com. This includes written feature requests or bug
 reports. 
 
 ## How it works - in a nutshell

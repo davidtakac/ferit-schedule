@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.R
 
 const val DEBOUNCE_INTERVAL_MS = 300L
-const val SHOW_CHANGELOG = false
+const val SHOW_CHANGELOG = true
 
 object SharedPreferenceKeys {
     const val SKIP_SAT = "skip_saturday_key"

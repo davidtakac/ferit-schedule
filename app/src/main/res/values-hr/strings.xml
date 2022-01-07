@@ -45,9 +45,19 @@
     </string>
     <string name="title_appearance">Izgled aplikacije</string>
     <string name="title_theme">Tema</string>
-    <string name="title_whats_new">[2.3.2] Novi izgled</string>
-    <string name="content_whats_new">Aplikacija sad podržava novi izgled FERIT-ovog rasporeda.</string>
-    <string name="dismiss_whats_new">Super!</string>
+    <string name="title_whats_new">[2.3.3] Napokon popravljeni bugovi i poruka za vas</string>
+    <string name="content_whats_new">
+        Popravljeni bugovi:\n
+        - Članovi grupe sad vidljivi i u tamnoj temi\n
+        - Glatko pomicanje do članova grupe\n
+        - URL rasporeda ažuriran\n\n
+        Poruka:\n
+        Diplomirao sam prošle godine i sada imam posao. Još uvijek želim podržavati ovu aplikaciju,
+        ali kako vrijeme ide, imam sve manje i manje vremena za to. Zato je za popravak prijavljenih
+        bugova trebalo tako dugo. Ako mi želite pomoći i ubrzati ovaj proces, molim vas nemojte oklijevati
+        i napravite pull request na github.com/davidtakac/ferit-schedule. Hvala!
+    </string>
+    <string name="dismiss_whats_new">OK</string>
     <string name="subject_bug_report">[Ferit Raspored] Bug report</string>
     <string name="subject_message_to_developer">[Ferit Raspored] Poruka</string>
     <string name="label_email_via">Pošalji e-mail pomoću…</string>
