@@ -7,6 +7,7 @@ import os.dtakac.feritraspored.BuildConfig
 import os.dtakac.feritraspored.R
 import os.dtakac.feritraspored.common.assets.AssetProvider
 import os.dtakac.feritraspored.common.constants.SHOW_CHANGELOG
+import os.dtakac.feritraspored.common.constants.getScheduleUrl
 import os.dtakac.feritraspored.common.data.StringResourceWithArgs
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
@@ -193,7 +194,7 @@ class ScheduleViewModel(
     }
 
     private suspend fun getScheduleData() = scheduleRepository.getScheduleData(
-            scheduleUrl = prefs.scheduleTemplate.format(
+            scheduleUrl = getScheduleUrl(prefs.scheduleLanguage).format(
                     selectedDate.urlFormat(),
                     prefs.courseIdentifier
             ),

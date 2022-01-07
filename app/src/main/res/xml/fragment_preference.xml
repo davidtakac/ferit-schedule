@@ -22,7 +22,8 @@
             android:title="@string/title_timepicker"
             android:dependency="skip_day_key"/>
         <ListPreference
-            android:key="url_key"
+            android:key="schedule_lang"
+            android:defaultValue="HR"
             android:title="@string/title_schedule_languages"
             android:negativeButtonText="@string/label_cancel"
             android:entries="@array/schedule_languages_human" />

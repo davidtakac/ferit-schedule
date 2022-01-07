@@ -10,10 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import os.dtakac.feritraspored.R
-import os.dtakac.feritraspored.common.constants.DialogKeys
-import os.dtakac.feritraspored.common.constants.SCHEDULE_LANGUAGES
-import os.dtakac.feritraspored.common.constants.SharedPreferenceKeys
-import os.dtakac.feritraspored.common.constants.THEME_NAMES_TO_VALUES
+import os.dtakac.feritraspored.common.constants.*
 import os.dtakac.feritraspored.common.extensions.*
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.view.dialog_time_picker.TimePickerDialogFragment
@@ -109,7 +106,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         filters.setOnBindEditTextListener { it.hint = getString(R.string.hint_group_highlight) }
         courseIdentifier.setOnBindEditTextListener { it.hint = getString(R.string.hint_course_identifier) }
         // values for list preferences
-        scheduleLanguages.entryValues = SCHEDULE_LANGUAGES
+        scheduleLanguages.entryValues = ScheduleLanguage.values().map { it.toString() }.toTypedArray()
         themes.entries = THEME_NAMES_TO_VALUES.keys.map { getString(it) }.toTypedArray()
         themes.entryValues = THEME_NAMES_TO_VALUES.values.map { it.toString() }.toTypedArray()
         // summary providers

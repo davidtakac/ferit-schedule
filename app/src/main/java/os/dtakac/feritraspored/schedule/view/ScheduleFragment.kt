@@ -36,9 +36,6 @@ class ScheduleFragment : Fragment() {
     private val scrollSpeed by lazy { resources.displayMetrics.toPixels(dp = 2.2f) }
     private val scrollInterpolator by lazy { DecelerateInterpolator(2.5f) }
 
-    private val scheduleJsiName = "scheduleJsi"
-    private val onHashChangedJsiMethod = "javascript:window.onhashchange = function() { $scheduleJsiName.onHashChanged(); };"
-
     private val customTabs by lazy {
         val colorParams = CustomTabColorSchemeParams.Builder()
             .setToolbarColor(requireContext().getColorCompat(R.color.colorStatusBar))
@@ -49,9 +46,13 @@ class ScheduleFragment : Fragment() {
     }
 
     private val scheduleWebViewClient = object : WebViewClient() {
+        var dispatchedPageDrawn: Boolean = false
+
         override fun onPageFinished(view: WebView?, url: String?) {
-            viewModel.onPageDrawn()
-            view?.loadUrl(onHashChangedJsiMethod)
+            if (!dispatchedPageDrawn) {
+                viewModel.onPageDrawn()
+                dispatchedPageDrawn = true
+            }
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
@@ -88,6 +89,7 @@ class ScheduleFragment : Fragment() {
 
     private fun initObservers() {
         viewModel.scheduleData.observe(viewLifecycleOwner) {
+            scheduleWebViewClient.dispatchedPageDrawn = false
             binding.wvSchedule.loadDataWithBaseURL(
                 it.baseUrl,
                 if (resources.configuration.isNightMode()) it.dataDark else it.data,
@@ -103,7 +105,7 @@ class ScheduleFragment : Fragment() {
             }
         }
         viewModel.webViewScroll.observe(viewLifecycleOwner) {
-            //scrollWebView(it)
+            scrollWebView(it)
         }
         viewModel.clearWebViewScroll.observe(viewLifecycleOwner) {
             scrollAnimator?.cancel()
@@ -145,13 +147,6 @@ class ScheduleFragment : Fragment() {
     private fun initViews() {
         binding.wvSchedule.apply {
             setBackgroundColor(context.getColorCompat(android.R.color.transparent))
-            addJavascriptInterface(
-                object : ScheduleJavascriptInterface {
-                    override fun onHashChanged() {
-                        viewModel.scrollStudentGroupsIntoView()
-                    }
-                }, scheduleJsiName
-            )
             webViewClient = scheduleWebViewClient
             settings.javaScriptEnabled = true
         }
@@ -206,8 +201,4 @@ class ScheduleFragment : Fragment() {
             scrollAnimator?.start()
         }
     }
-}
-
-interface ScheduleJavascriptInterface {
-    fun onHashChanged()
 }

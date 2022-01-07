@@ -6,40 +6,12 @@ import os.dtakac.feritraspored.R
 const val DEBOUNCE_INTERVAL_MS = 300L
 const val SHOW_CHANGELOG = true
 
-object SharedPreferenceKeys {
-    const val SKIP_SAT = "skip_saturday_key"
-    const val SKIP_DAY = "skip_day_key"
-    const val FILTERS = "group_highlight_key"
-    const val PROGRAMME = "programme_key"
-    const val YEAR = "year_key"
-    const val TIME_PICKER = "timepicker_key"
-    const val TIME_HOUR = "hour_key"
-    const val TIME_MINUTE = "minute_key"
-    const val SETTINGS_MODIFIED = "settings_modified"
-    const val LOAD_ON_RESUME = "load_on_resume_key"
-    const val FILTERS_TOGGLE = "group_toggle_key"
-    const val FILTERS_HELP = "group_help_key"
-    const val THEME = "prefkey_theme"
-    const val CHANGELOG = "changelog_key"
-    const val DEV_MESSAGE = "dev_msg_key"
-    const val VERSION = "version_key"
-    const val IDENTIFIER = "course_identifier"
-    const val TIME_ON_BLOCKS = "key_time_on_blocks"
-    const val IDENTIFIER_HELP = "course_identifier_help"
-    const val SCHEDULE_LANG = "url_key"
-}
-
 object DialogKeys {
     const val WHATS_NEW = "whats_new"
     const val TIME_PICKER = "time_picker"
     const val FILTERS_HELP = "filters_help"
     const val COURSE_IDENTIFIER_HELP = "course_identifier_help"
 }
-
-val SCHEDULE_LANGUAGES = arrayOf(
-        "https://www.ferit.unios.hr/2021/studenti/raspored-nastave-i-ispita/%s/%s",
-        "https://www.ferit.unios.hr/2021/students/schedule-of-classes-and-exams/%s/%s"
-)
 
 val SUPPORT_EMAILS = arrayOf(
         "developer.takac@gmail.com"

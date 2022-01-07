@@ -3,8 +3,9 @@ package os.dtakac.feritraspored.common.preferences
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.BuildConfig
-import os.dtakac.feritraspored.common.constants.SCHEDULE_LANGUAGES
+import os.dtakac.feritraspored.common.constants.ScheduleLanguage
 import os.dtakac.feritraspored.common.constants.SharedPreferenceKeys
+import os.dtakac.feritraspored.common.constants.getScheduleUrl
 import os.dtakac.feritraspored.common.extensions.timeFormat
 import os.dtakac.feritraspored.common.extensions.toLocalTime
 import java.time.LocalTime
@@ -110,18 +111,13 @@ class PreferenceRepositoryImpl(
     override val isShowTimeOnBlocks: Boolean
         get() = prefs.getBoolean(SharedPreferenceKeys.TIME_ON_BLOCKS, false)
 
-    override val scheduleTemplate: String
+    override val scheduleTemplate: String get() = getScheduleUrl(ScheduleLanguage.HR)
+
+    override val scheduleLanguage: ScheduleLanguage
         get() {
-            val template = prefs.getString(SharedPreferenceKeys.SCHEDULE_LANG, null)
-            // migrate from old template
-            val isOldTemplate = SCHEDULE_LANGUAGES.none { it == template }
-            return if (template == null || isOldTemplate) {
-                val defaultUrl = SCHEDULE_LANGUAGES[0]
-                editor { putString(SharedPreferenceKeys.SCHEDULE_LANG, defaultUrl) }
-                defaultUrl
-            } else {
-                template
-            }
+            val scheduleLanguageValue = prefs.getString(SharedPreferenceKeys.SCHEDULE_LANG, null)
+                    ?: ScheduleLanguage.HR.toString()
+            return ScheduleLanguage.valueOf(scheduleLanguageValue)
         }
 
     private fun editor(operation: SharedPreferences.Editor.() -> Unit) {
