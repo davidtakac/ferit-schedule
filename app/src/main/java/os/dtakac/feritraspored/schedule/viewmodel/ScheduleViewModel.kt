@@ -1,7 +1,6 @@
 package os.dtakac.feritraspored.schedule.viewmodel
 
 import android.net.Uri
-import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import os.dtakac.feritraspored.BuildConfig
@@ -12,7 +11,6 @@ import os.dtakac.feritraspored.common.data.StringResourceWithArgs
 import os.dtakac.feritraspored.common.extensions.isSameWeek
 import os.dtakac.feritraspored.common.extensions.scrollFormat
 import os.dtakac.feritraspored.common.extensions.urlFormat
-import os.dtakac.feritraspored.common.extensions.urlYearFormat
 import os.dtakac.feritraspored.common.network.NetworkChecker
 import os.dtakac.feritraspored.common.preferences.PreferenceRepository
 import os.dtakac.feritraspored.common.singlelivedata.SingleLiveEvent
@@ -39,7 +37,7 @@ class ScheduleViewModel(
     val openInExternalBrowser = SingleLiveEvent<Uri>()
     val openInCustomTabs = SingleLiveEvent<Uri>()
     val showChangelog = SingleLiveEvent<Unit>()
-    val snackBarMessage = SingleLiveEvent<@StringRes Int>()
+    val snackBarMessage = SingleLiveEvent<Int>()
     val webViewScroll = SingleLiveEvent<Float>()
     val clearWebViewScroll = SingleLiveEvent<Unit>()
 
@@ -159,9 +157,8 @@ class ScheduleViewModel(
     }
 
     private fun postScrollEvent(elementPosition: String) {
-        val elementPositionDp = elementPosition.toFloatOrNull()
-        if (elementPositionDp != null) {
-            webViewScroll.value = elementPositionDp
+        elementPosition.toFloatOrNull()?.let {
+            webViewScroll.value = it
         }
     }
 

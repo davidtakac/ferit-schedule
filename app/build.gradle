@@ -16,7 +16,7 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [ appLabel: "@string/app_name"]
         }
         debug {
@@ -47,7 +47,6 @@ dependencies {
     implementation "androidx.preference:preference-ktx:${versions.preference}"
     implementation "androidx.browser:browser:${versions.browser}"
     implementation "androidx.core:core-ktx:${versions.core_ktx}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
     implementation "io.insert-koin:koin-android:${versions.koin}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}"
