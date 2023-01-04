@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import os.dtakac.feritraspored.R
 
 const val DEBOUNCE_INTERVAL_MS = 300L
-const val SHOW_CHANGELOG = true
+const val SHOW_CHANGELOG = false
 
 object DialogKeys {
     const val WHATS_NEW = "whats_new"

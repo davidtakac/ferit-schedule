@@ -45,19 +45,8 @@
     </string>
     <string name="title_appearance">Appearance</string>
     <string name="title_theme">Theme</string>
-    <string name="title_whats_new">[2.3.3] Long overdue fixes and announcement</string>
-    <string name="content_whats_new">
-        Bugs fixed:\n
-        - Group members now visible in dark theme\n
-        - Smooth-scrolling to group members\n
-        - Schedule URL updated\n\n
-        Announcement:\n
-        I graduated last year and I have a full-time job. I still want to support this application,
-        but as time goes on, I have less and less time to do so. This is why some of your reported
-        bugs have been in the pipeline for so long. If you want to help me out and speed up this process,
-        please create pull requests at github.com/davidtakac/ferit-schedule.
-        Thank you!
-    </string>
+    <string name="title_whats_new">[2.3.4] Updated URL</string>
+    <string name="content_whats_new">Updated URL for 2023</string>
     <string name="dismiss_whats_new">OK</string>
     <string name="subject_bug_report">[Ferit Schedule] Bug report</string>
     <string name="subject_message_to_developer">[Ferit Schedule] Message</string>

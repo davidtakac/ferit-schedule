@@ -10,7 +10,7 @@ class DebouncedMenuItemClickListener(
 ) : MenuItem.OnMenuItemClickListener {
     private var lastClickTime: Long = 0
 
-    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+    override fun onMenuItemClick(menuItem: MenuItem): Boolean {
         if (SystemClock.elapsedRealtime() - lastClickTime < threshold) {
             //consume click and prevent others from executing
             return true
