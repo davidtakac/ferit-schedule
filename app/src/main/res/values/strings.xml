@@ -46,7 +46,7 @@
     <string name="title_appearance">Appearance</string>
     <string name="title_theme">Theme</string>
     <string name="title_whats_new">[2.3.4] Updated URL</string>
-    <string name="content_whats_new">Updated URL for 2023</string>
+    <string name="content_whats_new">Updated URL for 2023 (thank you, Leon Gal)</string>
     <string name="dismiss_whats_new">OK</string>
     <string name="subject_bug_report">[Ferit Schedule] Bug report</string>
     <string name="subject_message_to_developer">[Ferit Schedule] Message</string>
