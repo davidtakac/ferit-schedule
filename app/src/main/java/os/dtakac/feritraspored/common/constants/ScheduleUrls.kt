@@ -10,5 +10,5 @@ fun getScheduleUrl(scheduleLanguage: ScheduleLanguage): String {
 
 private val SCHEDULE_URLS = mapOf(
         ScheduleLanguage.HR to "https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s",
-        ScheduleLanguage.EN to "https://www.ferit.unios.hr/studenti/raspored-nastave-i-ispita/%s/%s"
+        ScheduleLanguage.EN to "https://www.ferit.unios.hr/students/schedule-of-classes-and-exams/%s/%s"
 )
