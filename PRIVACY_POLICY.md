@@ -36,7 +36,7 @@ Users can periodically check the privacy policy for updates. We reserve the righ
 
 ## 9. Contact Information
 
-For privacy concerns or questions, users can contact us at developer.takac@mailbox.org.
+For privacy concerns or questions, users can contact us at developer.takac@gmail.com.
 
 Last updated: Jan 14 2024
 
